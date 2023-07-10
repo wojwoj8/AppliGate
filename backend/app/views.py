@@ -9,3 +9,4 @@ from rest_framework.response import Response
 class ReactView(viewsets.ModelViewSet):
     serializer_class = ReactSerializer
     queryset = React.objects.all()
+

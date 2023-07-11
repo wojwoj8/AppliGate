@@ -12,11 +12,11 @@ class LoginView(APIView):
 
     def get(self, request):
         # Retrieve all User instances from the database
-        instance = User.objects.all()
+        instances = User.objects.all()
         data={}
-        if instance:
+        if instances:
             # Many because if not it doesn't work
-            data = UserSerializer(instance, many=True).data
+            data = UserSerializer(instances, many=True).data
         return Response(data)
     
     def post(self, request):
@@ -25,8 +25,10 @@ class LoginView(APIView):
         #hash that password
         hashed_password = make_password(password)
         serializer = UserSerializer(data=request.data)
+        print(serializer)
 
         if serializer.is_valid(raise_exception=True):
+            #print('valid')
             #access to field
             serializer.validated_data['password'] = hashed_password
 

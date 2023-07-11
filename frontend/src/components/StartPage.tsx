@@ -6,7 +6,7 @@ const StartPage: React.FC = () =>{
 
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
-
+    const [err, setErr] = useState('');
 
     const handleLogin = (data: string) =>{
         setLogin(data);
@@ -24,6 +24,12 @@ const StartPage: React.FC = () =>{
             console.log(res)
         }).catch((err) =>{
             console.log(err)
+            for (const key in err.response.data) {
+                if (err.response.data.hasOwnProperty(key)) {
+                  console.log(key, err.response.data[key][0]);
+                  setErr(err.response.data[key][0])
+                }
+              }
         })
         
     }

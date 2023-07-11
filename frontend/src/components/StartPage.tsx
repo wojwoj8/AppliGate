@@ -18,7 +18,7 @@ const StartPage: React.FC = () =>{
 
     const createUser = () =>{
         axios.post('/api/', {
-            login: login,
+            username: login,
             password: password
         }).then((res) =>{
             console.log(res)
@@ -55,7 +55,7 @@ const StartPage: React.FC = () =>{
                             onChange={data => handlePassword(data.target.value)} 
                             required
                         />
-                        <button type='submit' >LogIn</button>      
+                        <button type='submit' >SignUp</button>      
                     </form>
                 </div>
             </div>

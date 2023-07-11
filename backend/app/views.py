@@ -25,7 +25,7 @@ class LoginView(APIView):
         #hash that password
         hashed_password = make_password(password)
         serializer = UserSerializer(data=request.data)
-        print(serializer)
+
 
         if serializer.is_valid(raise_exception=True):
             #print('valid')

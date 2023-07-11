@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const StartPage: React.FC = () =>{
 
@@ -16,6 +16,22 @@ const StartPage: React.FC = () =>{
         setPassword(data);
     }
 
+    const createUser = () =>{
+        axios.post('/api/', {
+            login: login,
+            password: password
+        }).then((res) =>{
+            console.log(res)
+        }).catch((err) =>{
+            console.log(err)
+        })
+        
+    }
+    const handleForm = (e: React.FormEvent<HTMLFormElement>) =>{
+        createUser()
+        e.preventDefault()
+    }
+
 
     return(
         <div className='start-page-wrapper'>
@@ -23,7 +39,7 @@ const StartPage: React.FC = () =>{
                 <h1>Welcome at AppliGate!</h1>
 
                 <div className='start-login-form'>
-                    <form className='login-form'>
+                    <form className='login-form' onSubmit={e => handleForm(e)}>
                         <label htmlFor='login'>Login:</label>
                         <input 
                             name='login' 
@@ -38,7 +54,8 @@ const StartPage: React.FC = () =>{
                             type='password' 
                             onChange={data => handlePassword(data.target.value)} 
                             required
-                        />      
+                        />
+                        <button type='submit' >LogIn</button>      
                     </form>
                 </div>
             </div>

@@ -17,14 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 # from django.conf.urls import url
 from rest_framework import routers
-from app.views import *
+from app import views
 
 router = routers.DefaultRouter()
-router.register(r'reacts', ReactView, 'todo')
+# router.register(r'user', LoginView, 'login')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     #set endpoints
-    path('api/', include(router.urls)),
+    path('api/', views.LoginView.as_view()),
 ]

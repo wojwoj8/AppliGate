@@ -1,15 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
 import { BrowserRouter, Routes, Route, Navigate, redirect, HashRouter} from "react-router-dom";
-import './App.css';
 import StartPage from './components/StartPage';
 
 function App() {
   return (
     <BrowserRouter>
+    <div className='min-h-screen'>
       <Routes>
-        <Route path="/" element={<StartPage></StartPage>}></Route>
+
+          <Route path="/" element={<StartPage></StartPage>}></Route>
+        
       </Routes>
+    </div>
     </BrowserRouter>
     
   );

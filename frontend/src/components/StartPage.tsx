@@ -40,27 +40,31 @@ const StartPage: React.FC = () =>{
 
 
     return(
-        <div className='start-page-wrapper'>
-            <div className="start-page">
-                <h1>Welcome at AppliGate!</h1>
-
-                <div className='start-login-form'>
-                    <form className='login-form' onSubmit={e => handleForm(e)}>
-                        <label htmlFor='login'>Login:</label>
-                        <input 
-                            name='login' 
-                            type='text' 
-                            onChange={data => handleLogin(data.target.value)} 
-                            required
-                        />
-                    
-                        <label htmlFor='password' >Password:</label>
-                        <input 
-                            name='password' 
-                            type='password' 
-                            onChange={data => handlePassword(data.target.value)} 
-                            required
-                        />
+        <div className='flex justify-center'>
+            <div className="flex flex-col">
+                <h1 className='text-center text-4xl font-bold'>Welcome at AppliGate!</h1>
+                <div className='flex flex-col mt-4'>
+                    <form className='border-black border-[1px] flex flex-col' onSubmit={e => handleForm(e)}>
+                        <div className=''>   
+                            <label htmlFor='login'>Login:</label>
+                            <input 
+                                name='login' 
+                                type='text' 
+                                onChange={data => handleLogin(data.target.value)} 
+                                required
+                            />
+                        </div>
+                        
+                        <div>
+                            <label htmlFor='password' >Password:</label>
+                            <input 
+                                name='password' 
+                                type='password' 
+                                onChange={data => handlePassword(data.target.value)} 
+                                required
+                            />
+                        </div>
+                        
                         <button type='submit' >SignUp</button>      
                     </form>
                 </div>

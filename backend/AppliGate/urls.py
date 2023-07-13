@@ -20,11 +20,11 @@ from rest_framework import routers
 from app import views
 
 router = routers.DefaultRouter()
-router.register(r'user', views.LoginView.as_view(), 'login')
+router.register(r'user', views.SignupView.as_view(), 'signup')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     #set endpoints
-    path('api/', views.LoginView.as_view()),
+    path('api/', views.SignupView.as_view()),
 ]

@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useSyncExternalStore } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-const StartPage: React.FC = () =>{
+const SignUp: React.FC = () =>{
 
 
     const [login, setLogin] = useState('')
@@ -30,6 +31,7 @@ const StartPage: React.FC = () =>{
         axios.post('/api/', {
             username: login,
             password: password,
+            confirm: confirm,
             email: email
         }).then((res) =>{
             console.log(res)
@@ -57,10 +59,11 @@ const StartPage: React.FC = () =>{
 
 
     return(
-        <div className='flex justify-center'>
-            <div className="flex flex-col">
-                {err && <p className='text-red-600 text-center'>{err}</p>}
-                <h1 className='text-center text-4xl font-bold'>Welcome at AppliGate!</h1>
+        <div className=''>
+            {err && <p className='text-red-600 text-center font-bold'>{err}</p>}
+            <h1 className='text-center text-4xl font-bold'>Welcome at AppliGate!</h1>
+            <div className="justify-center sm:mx-auto sm:w-full sm:max-w-sm ">
+                
                 <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
                     <form className='space-y-6' onSubmit={e => handleForm(e)}>
                         <div className=''>   
@@ -71,9 +74,10 @@ const StartPage: React.FC = () =>{
                                     type='text' 
                                     onChange={data => handleLogin(data.target.value)} 
                                     required
+                                    placeholder='account1'
                                     className='block mx w-full rounded-md border-0 py-1.5 px-4 text-gray-900 
                                     shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 
-                                    focus:ring-2 focus:ring-inset focus:ring-indigo-600 focus-visible:outline-0 
+                                    focus:ring-2 focus:ring-inset focus:ring-primary-normal focus-visible:outline-0 
                                     sm:text-sm sm:leading-6' 
                                 />
                             </div>
@@ -88,7 +92,11 @@ const StartPage: React.FC = () =>{
                                         type='password' 
                                         onChange={data => handlePassword(data.target.value)} 
                                         required
-                                        className='block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 focus-visible:outline-0 sm:text-sm sm:leading-6'
+                                        className='block w-full rounded-md border-0 py-1.5 px-4
+                                        text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
+                                        placeholder:text-gray-400 focus:ring-2 focus:ring-inset
+                                        focus:ring-primary-normal focus-visible:outline-0 sm:text-sm 
+                                        sm:leading-6'
 
                                     />
                                 </div>
@@ -102,7 +110,11 @@ const StartPage: React.FC = () =>{
                                     type='password' 
                                     onChange={data => handleConfirm(data.target.value)} 
                                     required
-                                    className='block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 focus-visible:outline-0 sm:text-sm sm:leading-6'
+                                    className='block w-full rounded-md border-0 py-1.5 px-4
+                                    text-gray-900 shadow-sm ring-1 ring-inset
+                                    ring-gray-300 placeholder:text-gray-400
+                                    focus:ring-2 focus:ring-inset focus:ring-primary-normal
+                                    focus-visible:outline-0 sm:text-sm sm:leading-6'
 
                                 />
                             </div>
@@ -116,7 +128,12 @@ const StartPage: React.FC = () =>{
                                     type='email' 
                                     onChange={data => handleEmail(data.target.value)} 
                                     required
-                                    className='block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 focus-visible:outline-0 sm:text-sm sm:leading-6'
+                                    placeholder='example@test.com'
+                                    className='block w-full rounded-md border-0 py-1.5 px-4
+                                    text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
+                                    placeholder:text-gray-400 focus:ring-2 focus:ring-inset
+                                    focus:ring-primary-normal focus-visible:outline-0 sm:text-sm
+                                    sm:leading-6'
 
                                 />
                             </div>
@@ -124,15 +141,22 @@ const StartPage: React.FC = () =>{
                         <div className=''>
                             <button 
                                 type='submit' 
-                                className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                                className='flex w-full justify-center rounded-md
+                                bg-primary-normal px-3 py-1.5 text-sm font-semibold leading-6
+                                text-white shadow-sm hover:bg-primary-hover focus-visible:outline
+                                focus-visible:outline-2 focus-visible:outline-offset-2
+                                focus-visible:bg-primary-normal'
                                 >SignUp
                             </button>      
                         </div>
                         
+                        <div className='flex justify-center'>
+                        <p className="">Already have an account? <Link to='/login' className="text-purple-500"> Log In Here!</Link></p>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     )
 }
-export default StartPage;
+export default SignUp;

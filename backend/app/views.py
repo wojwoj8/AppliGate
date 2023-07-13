@@ -8,7 +8,7 @@ from django.contrib.auth.hashers import make_password
 
 # Create your views here.
 
-class LoginView(APIView):
+class SignupView(APIView):
 
     def get(self, request):
         # Retrieve all User instances from the database
@@ -22,6 +22,11 @@ class LoginView(APIView):
     def post(self, request):
         #get password from request
         password = request.data.get('password')
+        confirm = request.data.get('confirm')
+
+        if (confirm != password):
+            return Response({"invalid":"not good data"}, status=400)
+
         #hash that password
         hashed_password = make_password(password)
         serializer = UserSerializer(data=request.data)

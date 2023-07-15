@@ -26,5 +26,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     #set endpoints
-    path('api/', views.SignupView.as_view()),
+    path('register/', views.SignupView.as_view()),
+    path('login/', views.LoginView.as_view())
 ]

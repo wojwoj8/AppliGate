@@ -10,10 +10,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary:{
-          normal: '#54B65C',
-          hover: '#439D4B',
-        } 
+        primary: {
+          normal: colors.emerald,
+        },
+        text: {
+          light: '#333333',
+          dark: '#FFFFFF',
+        },
 
       },
     },

@@ -1,50 +1,12 @@
 from django.shortcuts import render
-from rest_framework import viewsets, status, generics, mixins
+from rest_framework import viewsets, status, generics, mixins, authentication, permissions
 from rest_framework.views import APIView
 from .models import User
 from .serializer import UserSerializer
 from rest_framework.response import Response
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth import authenticate, login, logout
 
-# Create your views here.
-
-# class SignupView(APIView):
-
-#     def get(self, request):
-#         # Retrieve all User instances from the database
-#         instances = User.objects.all()
-#         data={}
-#         if instances:
-#             # Many because if not it doesn't work
-#             data = UserSerializer(instances, many=True).data
-#         return Response(data)
-    
-#     def post(self, request):
-#         #get password from request
-#         password = request.data.get('password')
-#         confirm = request.data.get('confirm')
-
-#         if (confirm != password):
-#             return Response({"invalid":"not good data"}, status=400)
-
-#         #hash that password
-#         hashed_password = make_password(password)
-#         serializer = UserSerializer(data=request.data)
-
-
-#         if serializer.is_valid(raise_exception=True):
-#             #print('valid')
-#             #access to field
-#             serializer.validated_data['password'] = hashed_password
-
-#             # Save the serializer instance to create a new User object
-#             instance = serializer.save()
-            
-           
-#             return Response(serializer.data)
-        
-        
-#         return Response({"invalid":"not good data"}, status=400)
     
 class SignupView(
     mixins.ListModelMixin,
@@ -53,6 +15,7 @@ class SignupView(
     ):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -71,13 +34,44 @@ class SignupView(
 
 
     
-# class LoginView(APIView):
-#     def get(self, request):
+class LoginView(
+    mixins.CreateModelMixin,
+    generics.GenericAPIView
+):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            # Return success response if login is successful
+            return Response({'message': 'Login successful'})
+        else:
+            # Return error response if login is unsuccessful
+            return Response({'error': 'Invalid credentials'}, status=400)
         
-#         serializer = UserSerializer(data=request.data)
+class LogoutView(APIView):
+    def post(self, request):
+        logout(request)
+        return Response({'message': 'Logout successful'})   
+         
+class IndexView(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    generics.GenericAPIView,
+    mixins.RetrieveModelMixin,
+    ):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-#         return Response(serializer.data)
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
     
-#     def post(self, request):
-
-#         serializer = UserSerializer(data=request.data)
+    def post(self, request, *args, **kwargs):
+        username = kwargs.get('username')
+        if username is not None:
+            return self.retrieve(request, *args, **kwargs)

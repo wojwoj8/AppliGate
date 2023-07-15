@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 
 const SignUp: React.FC = () =>{
 
+    
 
     const [login, setLogin] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirm, setConfirm] = useState('')
     const [err, setErr] = useState('');
+
 
     const handleLogin = (data: string) =>{
         setLogin(data);
@@ -28,7 +30,7 @@ const SignUp: React.FC = () =>{
     }
 
     const createUser = () =>{
-        axios.post('/api/', {
+        axios.post('/register/', {
             username: login,
             password: password,
             confirm: confirm,
@@ -75,9 +77,9 @@ const SignUp: React.FC = () =>{
                                     onChange={data => handleLogin(data.target.value)} 
                                     required
                                     placeholder='account1'
-                                    className='block mx w-full rounded-md border-0 py-1.5 px-4 text-gray-900 
+                                    className='block mx w-full rounded-md border-0 py-1.5 px-4 text-text-light 
                                     shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 
-                                    focus:ring-2 focus:ring-inset focus:ring-primary-normal focus-visible:outline-0 
+                                    focus:ring-2 focus:ring-inset focus:ring-primary-normal-500 focus-visible:outline-0 
                                     sm:text-sm sm:leading-6' 
                                 />
                             </div>
@@ -95,7 +97,7 @@ const SignUp: React.FC = () =>{
                                         className='block w-full rounded-md border-0 py-1.5 px-4
                                         text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
                                         placeholder:text-gray-400 focus:ring-2 focus:ring-inset
-                                        focus:ring-primary-normal focus-visible:outline-0 sm:text-sm 
+                                        focus:ring-primary-normal-500 focus-visible:outline-0 sm:text-sm 
                                         sm:leading-6'
 
                                     />
@@ -113,7 +115,7 @@ const SignUp: React.FC = () =>{
                                     className='block w-full rounded-md border-0 py-1.5 px-4
                                     text-gray-900 shadow-sm ring-1 ring-inset
                                     ring-gray-300 placeholder:text-gray-400
-                                    focus:ring-2 focus:ring-inset focus:ring-primary-normal
+                                    focus:ring-2 focus:ring-inset focus:ring-primary-normal-500
                                     focus-visible:outline-0 sm:text-sm sm:leading-6'
 
                                 />
@@ -132,7 +134,7 @@ const SignUp: React.FC = () =>{
                                     className='block w-full rounded-md border-0 py-1.5 px-4
                                     text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
                                     placeholder:text-gray-400 focus:ring-2 focus:ring-inset
-                                    focus:ring-primary-normal focus-visible:outline-0 sm:text-sm
+                                    focus:ring-primary-normal-500 focus-visible:outline-0 sm:text-sm
                                     sm:leading-6'
 
                                 />
@@ -142,7 +144,7 @@ const SignUp: React.FC = () =>{
                             <button 
                                 type='submit' 
                                 className='flex w-full justify-center rounded-md
-                                bg-primary-normal px-3 py-1.5 text-sm font-semibold leading-6
+                                bg-primary-normal-500 px-3 py-1.5 text-sm font-semibold leading-6
                                 text-white shadow-sm hover:bg-primary-hover focus-visible:outline
                                 focus-visible:outline-2 focus-visible:outline-offset-2
                                 focus-visible:bg-primary-normal'

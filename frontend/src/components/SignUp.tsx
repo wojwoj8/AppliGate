@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useSyncExternalStore } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignUp: React.FC = () =>{
-
-    
 
     const [login, setLogin] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirm, setConfirm] = useState('')
     const [err, setErr] = useState('');
+    const navigate = useNavigate();
 
 
     const handleLogin = (data: string) =>{
@@ -37,6 +36,7 @@ const SignUp: React.FC = () =>{
             email: email
         }).then((res) =>{
             console.log(res)
+            navigate('/index')
         }).catch((err) =>{
             console.log(err)
             for (const key in err.response.data) {

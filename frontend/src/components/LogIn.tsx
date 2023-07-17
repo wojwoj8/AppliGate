@@ -1,6 +1,7 @@
 import React, {useState} from "react"
 import axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
+
 const LogIn: React.FC = () =>{
 
     const [login, setLogin] = useState('')
@@ -21,8 +22,12 @@ const LogIn: React.FC = () =>{
             password: password,
         }).then((res) =>{
             console.log(res)
-            // navigate('/index')
+            navigate('/index')
+            
         }).catch((err) =>{
+            if (err.response.data?.error){
+                setErr(err.response.data?.error)
+            }
             console.log(err)
             // for (const key in err.response.data) {
             //     if (err.response.data.hasOwnProperty(key)) {

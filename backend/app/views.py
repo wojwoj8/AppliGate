@@ -6,7 +6,10 @@ from .serializer import UserSerializer
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import authenticate, login, logout
-
+from rest_framework.decorators import permission_classes\
+    ,authentication_classes
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
     
 class SignupView(
     mixins.ListModelMixin,
@@ -55,6 +58,8 @@ class LoginView(
             return Response({'error': 'Invalid credentials'}, status=400)
         
 class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes=[ SessionAuthentication ]
     def post(self, request):
         logout(request)
         return Response({'message': 'Logout successful'})   
@@ -65,6 +70,8 @@ class IndexView(
     generics.GenericAPIView,
     mixins.RetrieveModelMixin,
     ):
+    authentication_classes=[ SessionAuthentication ]
+    permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 

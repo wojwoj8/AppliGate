@@ -22,25 +22,6 @@ const LogIn: React.FC = () => {
     e.preventDefault();
     loginUser(e); // Call the loginUser function from the AuthContext
   };
-    // const LoginUser = () =>{
-    //     axios.post('/login/', {
-    //         username: login,
-    //         password: password,
-    //     }, {
-    //         withCredentials: true,
-    //       }).then((res) =>{
-    //         console.log(res)
-    //         navigate('/')
-            
-    //     }).catch((err) =>{
-    //         if (err.response.data?.error){
-    //             setErr(err.response.data?.error)
-    //         }
-    //         console.log(err)
-    //     })
-        
-    // }
-
 
     return(
         <div className=''>
@@ -109,4 +90,21 @@ const LogIn: React.FC = () => {
         </div>
     )
 }
-export default LogIn;
+export default LogIn;    // const LoginUser = () =>{
+    //     axios.post('/login/', {
+    //         username: login,
+    //         password: password,
+    //     }, {
+    //         withCredentials: true,
+    //       }).then((res) =>{
+    //         console.log(res)
+    //         navigate('/')
+            
+    //     }).catch((err) =>{
+    //         if (err.response.data?.error){
+    //             setErr(err.response.data?.error)
+    //         }
+    //         console.log(err)
+    //     })
+        
+    // }

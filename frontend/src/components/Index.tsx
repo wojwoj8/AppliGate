@@ -12,7 +12,7 @@ const Index: React.FC = () =>{
 
     const { authTokens, logoutUser } = useContext(AuthContext);
     let [profile, setProfile] = useState<ProfileData | null>(null)
-
+    // console.log(localStorage)
     useEffect(() => {
         getProfile()
     },[])

@@ -4,8 +4,8 @@ import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
 import Navbar from './components/Navbar';
 import Index from './components/Index';
-import Logout from './components/Logout';
 import PrivateRoute from './utils/PrivateRoute';
+import IfLoggedIn from './utils/IfLoggedIn';
 import axios from 'axios';
 import { AuthProvider } from './utils/AuthProvider';
 
@@ -21,9 +21,10 @@ function App() {
       <AuthProvider>
         <Navbar></Navbar>
         <Routes>
-            <Route path="/login" element={<LogIn></LogIn>}></Route>
-            <Route path="/register" element={<SignUp></SignUp>}></Route>
-            <Route path="/logout" element={<Logout/>}></Route>
+          {/* default route */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/login" element={<IfLoggedIn><LogIn/></IfLoggedIn>}></Route>
+            <Route path="/register" element={<IfLoggedIn><SignUp/></IfLoggedIn>}></Route>
             <Route path="/" element={<PrivateRoute><Index/></PrivateRoute>} />
           
         </Routes>

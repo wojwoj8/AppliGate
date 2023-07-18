@@ -35,18 +35,15 @@ class SignupView(
         return Response({"created": "Account created successfully"}, status=200)
 
          
-class IndexView(
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
-    generics.GenericAPIView,
-    mixins.RetrieveModelMixin,
-    ):
+class IndexView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    
 
     def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+        user = request.user
+        serializer_class = UserSerializer(user, many=False)
+        return Response(serializer_class.data)
     
     def post(self, request, *args, **kwargs):
         username = kwargs.get('username')

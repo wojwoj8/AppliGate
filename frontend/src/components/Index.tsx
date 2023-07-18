@@ -1,11 +1,12 @@
+import { useContext } from "react";
 import axios from "axios";
+import AuthContext from "../utils/AuthProvider";
 
 const Index: React.FC = () =>{
-  console.log(localStorage)
 
-  const isAuthenticated = false;
-    return (
-        isAuthenticated ? (
+    const { user } = useContext(AuthContext);
+
+    return (user ? (
         <div>
             <p>You are logged in to the homepage!</p>
         </div>

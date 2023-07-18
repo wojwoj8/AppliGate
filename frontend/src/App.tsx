@@ -5,7 +5,9 @@ import LogIn from './components/LogIn';
 import Navbar from './components/Navbar';
 import Index from './components/Index';
 import Logout from './components/Logout';
+import PrivateRoute from './utils/PrivateRoute';
 import axios from 'axios';
+import { AuthProvider } from './utils/AuthProvider';
 
 axios.defaults.withCredentials = true; // even for get requests if
                                     // demand session authentication
@@ -16,14 +18,16 @@ function App() {
   return (
     <BrowserRouter>
     <div className='min-h-screen'>
-      <Navbar></Navbar>
-      <Routes>
-          <Route path="/login" element={<LogIn></LogIn>}></Route>
-          <Route path="/register" element={<SignUp></SignUp>}></Route>
-          <Route path="/logout" element={<Logout/>}></Route>
-          <Route path="/" element={<Index/>}></Route>
-        
-      </Routes>
+      <AuthProvider>
+        <Navbar></Navbar>
+        <Routes>
+            <Route path="/login" element={<LogIn></LogIn>}></Route>
+            <Route path="/register" element={<SignUp></SignUp>}></Route>
+            <Route path="/logout" element={<Logout/>}></Route>
+            <Route path="/" element={<PrivateRoute><Index/></PrivateRoute>} />
+          
+        </Routes>
+      </AuthProvider>
     </div>
     </BrowserRouter>
     

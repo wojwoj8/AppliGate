@@ -1,54 +1,45 @@
-import React, {useState} from "react"
-import axios from "axios"
-import { Link, useNavigate } from "react-router-dom"
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import AuthContext from "../utils/AuthProvider";
 
-const LogIn: React.FC = () =>{
+const LogIn: React.FC = () => {
+  const { loginUser } = useContext(AuthContext);
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+  const [err, setErr] = useState("");
+  const navigate = useNavigate();
 
-    const [login, setLogin] = useState('')
-    const [password, setPassword] = useState('')
-    const [err, setErr] = useState('');
-    const navigate = useNavigate();
-    const handleLogin = (data: string) =>{
-        setLogin(data);
-    }
+  const handleLogin = (data: string) => {
+    setLogin(data);
+  };
 
-    const handlePassword = (data: string) =>{
-        setPassword(data);
-    }
+  const handlePassword = (data: string) => {
+    setPassword(data);
+  };
 
-    const LoginUser = () =>{
-        axios.post('/login/', {
-            username: login,
-            password: password,
-        }, {
-            withCredentials: true,
-          }).then((res) =>{
-            console.log(res)
-            // The session cookie is stored in the response headers
-            const sessionCookie = res.headers['set-cookie']?.[0];
-
-            // Store the session cookie in local storage or a cookie
-            localStorage.setItem('sessionCookie', sessionCookie || '');
-            navigate('/')
+  const handleForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    loginUser(e); // Call the loginUser function from the AuthContext
+  };
+    // const LoginUser = () =>{
+    //     axios.post('/login/', {
+    //         username: login,
+    //         password: password,
+    //     }, {
+    //         withCredentials: true,
+    //       }).then((res) =>{
+    //         console.log(res)
+    //         navigate('/')
             
-        }).catch((err) =>{
-            if (err.response.data?.error){
-                setErr(err.response.data?.error)
-            }
-            console.log(err)
-            // for (const key in err.response.data) {
-            //     if (err.response.data.hasOwnProperty(key)) {
-            //       console.log(key, err.response.data[key][0]);
-            //       setErr(err.response.data[key][0])
-            //     }
-            //   }
-        })
+    //     }).catch((err) =>{
+    //         if (err.response.data?.error){
+    //             setErr(err.response.data?.error)
+    //         }
+    //         console.log(err)
+    //     })
         
-    }
-    const handleForm = (e: React.FormEvent<HTMLFormElement>) =>{
-        LoginUser();
-        e.preventDefault();
-    }
+    // }
 
 
     return(
@@ -59,7 +50,7 @@ const LogIn: React.FC = () =>{
                 
                 
                 <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 '>
-                    <form className='space-y-6' onSubmit={e => handleForm(e)}>
+                    <form className='space-y-6' onSubmit={handleForm}>
                         <div className=' '>   
                             <label htmlFor='login' className="text-base">Login:</label>
                             <div className='mt-2'>

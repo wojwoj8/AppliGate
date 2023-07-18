@@ -94,16 +94,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           });
       
           let data = response.data;
-      
+          console.log(data)
           if (response.status === 200) {
             // Perform login after successful signup
+            // console.log(data)
             const loginResponse = await axios.post('http://127.0.0.1:8000/api/token/', {
               username,
               password,
             });
       
             const loginData = loginResponse.data;
-      
+            console.log(loginResponse)
             if (loginResponse.status === 200) {
               localStorage.setItem('authTokens', JSON.stringify(loginData));
               setAuthTokens(loginData);
@@ -113,6 +114,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               alert('Something went wrong while logging in the user!');
             }
           } else {
+            console.log(data)
+            console.log(response.status)
             alert('Something went wrong while signing up the user!');
           }
         } catch (error) {

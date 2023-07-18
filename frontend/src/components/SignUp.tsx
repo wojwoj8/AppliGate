@@ -1,6 +1,9 @@
-import React, { useEffect, useState, useSyncExternalStore } from 'react';
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import AuthContext from "../utils/AuthProvider";
+
+
 
 const SignUp: React.FC = () =>{
 
@@ -10,47 +13,47 @@ const SignUp: React.FC = () =>{
     const [confirm, setConfirm] = useState('')
     const [err, setErr] = useState('');
     const navigate = useNavigate();
+    const { signupUser } = useContext(AuthContext)
 
+    // const handleLogin = (data: string) =>{
+    //     setLogin(data);
+    // }
 
-    const handleLogin = (data: string) =>{
-        setLogin(data);
-    }
+    // const handlePassword = (data: string) =>{
+    //     setPassword(data);
+    // }
 
-    const handlePassword = (data: string) =>{
-        setPassword(data);
-    }
+    // const handleEmail = (data: string) => {
+    //     setEmail(data);
+    // }
 
-    const handleEmail = (data: string) => {
-        setEmail(data);
-    }
+    // const handleConfirm = (data:string) =>{
+    //     setConfirm(data)
+    // }
 
-    const handleConfirm = (data:string) =>{
-        setConfirm(data)
-    }
-
-    const createUser = () =>{
-        axios.post('/register/', {
-            username: login,
-            password: password,
-            confirm: confirm,
-            email: email
-        }).then((res) =>{
-            console.log(res)
-            navigate('/')
-        }).catch((err) =>{
-            console.log(err)
-            for (const key in err.response.data) {
-                if (err.response.data.hasOwnProperty(key)) {
-                  console.log(key, err.response.data[key][0]);
-                  setErr(err.response.data[key][0])
-                }
-              }
-        })
+    // const createUser = () =>{
+    //     axios.post('/register/', {
+    //         username: login,
+    //         password: password,
+    //         confirm: confirm,
+    //         email: email
+    //     }).then((res) =>{
+    //         console.log(res)
+    //         navigate('/')
+    //     }).catch((err) =>{
+    //         console.log(err)
+    //         for (const key in err.response.data) {
+    //             if (err.response.data.hasOwnProperty(key)) {
+    //               console.log(key, err.response.data[key][0]);
+    //               setErr(err.response.data[key][0])
+    //             }
+    //           }
+    //     })
         
-    }
+    // }
     const handleForm = (e: React.FormEvent<HTMLFormElement>) =>{
         if (password === confirm){
-            createUser()
+            signupUser(e)
         }
         else{
             setErr('Passwords are not the same')
@@ -74,7 +77,7 @@ const SignUp: React.FC = () =>{
                                 <input 
                                     name='login' 
                                     type='text' 
-                                    onChange={data => handleLogin(data.target.value)} 
+                                    // onChange={data => handleLogin(data.target.value)} 
                                     required
                                     placeholder='account1'
                                     className='block mx w-full rounded-md border-0 py-1.5 px-4 text-text-light 
@@ -92,7 +95,7 @@ const SignUp: React.FC = () =>{
                                     <input 
                                         name='password' 
                                         type='password' 
-                                        onChange={data => handlePassword(data.target.value)} 
+                                        // onChange={data => handlePassword(data.target.value)} 
                                         required
                                         className='block w-full rounded-md border-0 py-1.5 px-4
                                         text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
@@ -110,7 +113,7 @@ const SignUp: React.FC = () =>{
                                 <input 
                                     name='confirm' 
                                     type='password' 
-                                    onChange={data => handleConfirm(data.target.value)} 
+                                    // onChange={data => handleConfirm(data.target.value)} 
                                     required
                                     className='block w-full rounded-md border-0 py-1.5 px-4
                                     text-gray-900 shadow-sm ring-1 ring-inset
@@ -128,7 +131,7 @@ const SignUp: React.FC = () =>{
                                 <input 
                                     name='email' 
                                     type='email' 
-                                    onChange={data => handleEmail(data.target.value)} 
+                                    // onChange={data => handleEmail(data.target.value)} 
                                     required
                                     placeholder='example@test.com'
                                     className='block w-full rounded-md border-0 py-1.5 px-4

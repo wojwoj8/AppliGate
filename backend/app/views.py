@@ -31,7 +31,8 @@ class SignupView(
         #hash that password
         hashed_password = make_password(password)
         request.data['password'] = hashed_password
-        return self.create(request, *args, **kwargs)
+        self.create(request, *args, **kwargs)
+        return Response({"created": "Account created successfully"}, status=200)
 
          
 class IndexView(

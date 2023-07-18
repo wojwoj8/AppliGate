@@ -19,6 +19,7 @@ from django.urls import path, include
 from rest_framework import routers
 from app import views
 
+
 router = routers.DefaultRouter()
 router.register(r'user', views.SignupView.as_view(), 'signup')
 
@@ -29,5 +30,6 @@ urlpatterns = [
     path('register/', views.SignupView.as_view()),
     path('login/', views.LoginView.as_view()),
     path('logout/', views.LogoutView.as_view()),
+    path('api/', include('app.api.urls'))
     # path('api/csrf_token/', views.csrf_token, name='csrf_token')
 ]

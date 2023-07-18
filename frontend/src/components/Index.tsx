@@ -3,11 +3,17 @@ import axios from "axios";
 const Index: React.FC = () =>{
   console.log(localStorage)
 
-    return(
+  const isAuthenticated = false;
+    return (
+        isAuthenticated ? (
         <div>
-            Index
-
+            <p>You are logged in to the homepage!</p>
         </div>
+        ):(
+        <div>
+            <p>You are not logged in, redirecting...</p>
+        </div>
+        )
     )
 }
 export default Index;

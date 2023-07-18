@@ -36,7 +36,7 @@ const SignUp: React.FC = () =>{
             email: email
         }).then((res) =>{
             console.log(res)
-            navigate('/index')
+            navigate('/')
         }).catch((err) =>{
             console.log(err)
             for (const key in err.response.data) {

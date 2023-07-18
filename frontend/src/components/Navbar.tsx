@@ -3,16 +3,16 @@ import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () =>{
 
-    const [isAuth, setIsAuth] = useState(false);
-    useEffect(() =>{
-        if (localStorage.getItem('access_token') !== null){
-            setIsAuth(true);
-        }
-    }, [isAuth])
+    const [user, setUser] = useState('')
+
     return(
         <div>
-            {isAuth ? (
-                <Link to='/logout'>Logout</Link>
+            {user ? (
+                <div>
+                    <p>Hello {user}!</p>
+                    <Link to='/logout'>Logout</Link>
+                </div>
+                
             ) : (
                 <div>
                     <Link to='/login'>Login</Link>

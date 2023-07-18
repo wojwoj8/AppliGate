@@ -20,9 +20,16 @@ const LogIn: React.FC = () =>{
         axios.post('/login/', {
             username: login,
             password: password,
-        }).then((res) =>{
+        }, {
+            withCredentials: true,
+          }).then((res) =>{
             console.log(res)
-            navigate('/index')
+            // The session cookie is stored in the response headers
+            const sessionCookie = res.headers['set-cookie']?.[0];
+
+            // Store the session cookie in local storage or a cookie
+            localStorage.setItem('sessionCookie', sessionCookie || '');
+            navigate('/')
             
         }).catch((err) =>{
             if (err.response.data?.error){

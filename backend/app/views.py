@@ -10,6 +10,7 @@ from rest_framework.decorators import permission_classes\
     ,authentication_classes
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.sessions.backends.db import SessionStore
     
 class SignupView(
     mixins.ListModelMixin,
@@ -51,8 +52,16 @@ class LoginView(
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            # Return success response if login is successful
-            return Response({'message': 'Login successful'})
+            # Create a new session and send the session cookie in the response headers
+            session = SessionStore()
+            session.create()
+            session['session_key'] = request.session.session_key
+            session.save()
+            response = Response({'message': 'Login successful'})
+            response.set_cookie('sessionid', session.session_key)
+
+            # Return success response with session cookie
+            return response
         else:
             # Return error response if login is unsuccessful
             return Response({'error': 'Invalid credentials'}, status=400)

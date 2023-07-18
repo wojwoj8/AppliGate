@@ -28,8 +28,11 @@ urlpatterns = [
 
     #set endpoints
     path('register/', views.SignupView.as_view()),
-    path('login/', views.LoginView.as_view()),
-    path('logout/', views.LogoutView.as_view()),
+    # path('login/', views.LoginView.as_view()),
+    # path('logout/', views.LogoutView.as_view()),
+    path('index/', views.IndexView.as_view()),
+
+    #Authentication
     path('api/', include('app.api.urls'))
-    # path('api/csrf_token/', views.csrf_token, name='csrf_token')
+
 ]

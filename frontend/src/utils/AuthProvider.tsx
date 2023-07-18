@@ -11,6 +11,7 @@ interface AuthContextData {
     user: any;
     authTokens: any;
     loginUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+    signupUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
     logoutUser: () => void;
   }
   
@@ -18,6 +19,7 @@ interface AuthContextData {
     user: null,
     authTokens: null,
     loginUser: async (e: React.FormEvent<HTMLFormElement>) => {},
+    signupUser: async (e: React.FormEvent<HTMLFormElement>) => {},
     logoutUser: () => {},
   });
 
@@ -75,7 +77,49 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(null)
         navigate('/login')
     }
-
+    let signupUser = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+          const formData = new FormData(e.currentTarget);
+          const username = formData.get('login') as string;
+          const password = formData.get('password') as string;
+          const confirm = formData.get('confirm') as string;
+          const email = formData.get('email') as string;
+      
+          const response = await axios.post('/register/', {
+            username,
+            password,
+            confirm,
+            email,
+          });
+      
+          let data = response.data;
+      
+          if (response.status === 200) {
+            // Perform login after successful signup
+            const loginResponse = await axios.post('http://127.0.0.1:8000/api/token/', {
+              username,
+              password,
+            });
+      
+            const loginData = loginResponse.data;
+      
+            if (loginResponse.status === 200) {
+              localStorage.setItem('authTokens', JSON.stringify(loginData));
+              setAuthTokens(loginData);
+              setUser(jwtDecode(loginData.access));
+              navigate('/');
+            } else {
+              alert('Something went wrong while logging in the user!');
+            }
+          } else {
+            alert('Something went wrong while signing up the user!');
+          }
+        } catch (error) {
+          console.log(error);
+          alert('An error occurred while signing up the user!');
+        }
+      };
     const updateToken = async () => {
         const response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
             method: 'POST',
@@ -104,6 +148,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         authTokens:authTokens,
         loginUser:loginUser,
         logoutUser:logoutUser,
+        signupUser:signupUser,
     }
 
     useEffect(()=>{

@@ -23,7 +23,6 @@ const Navbar: React.FC = () =>{
                 <div>
                     <Link to='/login'>Login</Link>
                     <Link to='/register'>SignUp</Link>
-                    <Link to='/logout'>Logout</Link>
                 </div>
                 
             )}

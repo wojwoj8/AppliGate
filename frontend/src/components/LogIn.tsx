@@ -5,18 +5,7 @@ import AuthContext from "../utils/AuthProvider";
 
 const LogIn: React.FC = () => {
   const { loginUser } = useContext(AuthContext);
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
-  const navigate = useNavigate();
-
-  const handleLogin = (data: string) => {
-    setLogin(data);
-  };
-
-  const handlePassword = (data: string) => {
-    setPassword(data);
-  };
 
   const handleForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,7 +27,7 @@ const LogIn: React.FC = () => {
                                 <input 
                                     name='login' 
                                     type='text' 
-                                    onChange={data => handleLogin(data.target.value)} 
+                                   
                                     required
                                     className='block mx w-full rounded-md border-0 py-1.5 px-4 text-gray-900 
                                     shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 
@@ -55,7 +44,7 @@ const LogIn: React.FC = () => {
                                     <input 
                                         name='password' 
                                         type='password' 
-                                        onChange={data => handlePassword(data.target.value)} 
+                                        
                                         required
                                         className='block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 
                                         ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
@@ -90,21 +79,4 @@ const LogIn: React.FC = () => {
         </div>
     )
 }
-export default LogIn;    // const LoginUser = () =>{
-    //     axios.post('/login/', {
-    //         username: login,
-    //         password: password,
-    //     }, {
-    //         withCredentials: true,
-    //       }).then((res) =>{
-    //         console.log(res)
-    //         navigate('/')
-            
-    //     }).catch((err) =>{
-    //         if (err.response.data?.error){
-    //             setErr(err.response.data?.error)
-    //         }
-    //         console.log(err)
-    //     })
-        
-    // }
+export default LogIn;

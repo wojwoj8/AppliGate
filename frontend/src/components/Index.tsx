@@ -4,7 +4,6 @@ import AuthContext from "../utils/AuthProvider";
 
 interface ProfileData {
     username: string;
-    last_name: string;
     email: string;
   }
 
@@ -26,7 +25,7 @@ const Index: React.FC = () =>{
         }
         })
         let data = await response.json()
-        console.log(data)
+        // console.log(data)
         if(response.status === 200){
             setProfile(data)
         } else if(response.statusText === 'Unauthorized'){

@@ -1,48 +1,16 @@
-import React, {useState} from "react"
-import axios from "axios"
-import { Link, useNavigate } from "react-router-dom"
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import AuthContext from "../utils/AuthProvider";
 
-const LogIn: React.FC = () =>{
+const LogIn: React.FC = () => {
+  const { loginUser } = useContext(AuthContext);
+  const [err, setErr] = useState("");
 
-    const [login, setLogin] = useState('')
-    const [password, setPassword] = useState('')
-    const [err, setErr] = useState('');
-    const navigate = useNavigate();
-    const handleLogin = (data: string) =>{
-        setLogin(data);
-    }
-
-    const handlePassword = (data: string) =>{
-        setPassword(data);
-    }
-
-    const LoginUser = () =>{
-        axios.post('/login/', {
-            username: login,
-            password: password,
-        }).then((res) =>{
-            console.log(res)
-            navigate('/index')
-            
-        }).catch((err) =>{
-            if (err.response.data?.error){
-                setErr(err.response.data?.error)
-            }
-            console.log(err)
-            // for (const key in err.response.data) {
-            //     if (err.response.data.hasOwnProperty(key)) {
-            //       console.log(key, err.response.data[key][0]);
-            //       setErr(err.response.data[key][0])
-            //     }
-            //   }
-        })
-        
-    }
-    const handleForm = (e: React.FormEvent<HTMLFormElement>) =>{
-        LoginUser();
-        e.preventDefault();
-    }
-
+  const handleForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    loginUser(e); // Call the loginUser function from the AuthContext
+  };
 
     return(
         <div className=''>
@@ -52,14 +20,14 @@ const LogIn: React.FC = () =>{
                 
                 
                 <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 '>
-                    <form className='space-y-6' onSubmit={e => handleForm(e)}>
+                    <form className='space-y-6' onSubmit={handleForm}>
                         <div className=' '>   
                             <label htmlFor='login' className="text-base">Login:</label>
                             <div className='mt-2'>
                                 <input 
                                     name='login' 
                                     type='text' 
-                                    onChange={data => handleLogin(data.target.value)} 
+                                   
                                     required
                                     className='block mx w-full rounded-md border-0 py-1.5 px-4 text-gray-900 
                                     shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 
@@ -76,7 +44,7 @@ const LogIn: React.FC = () =>{
                                     <input 
                                         name='password' 
                                         type='password' 
-                                        onChange={data => handlePassword(data.target.value)} 
+                                        
                                         required
                                         className='block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 
                                         ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 

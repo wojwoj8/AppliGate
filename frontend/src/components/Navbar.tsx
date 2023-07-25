@@ -56,32 +56,32 @@ const Navbar: React.FC = () =>{
       const { user, logoutUser } = authContext;
 
     return(
-        <nav className="bg-primary-normal-500">
+        <nav className="">
             
-            <div className="max-w py-2 px-2 flex-wrap flex justify-between align-baseline">
+            <div className="">
                 <div className="">
-                    <Link to='/' className="text-2xl font-bold">AppliGate</Link>
+                    <Link to='/' className="">AppliGate</Link>
                 </div>
                 
                
                     <div onClick={hamburgerMenu} >
-                        {small && <Icon path={mdiMenu} size={1.25} className="cursor-pointer" /> }
+                        {small && <Icon path={mdiMenu} size={1.25} className="" /> }
                     </div>
                 
 
                 <div className={`${small ? 'hidden' : 'block'} h-auto self-center`}>
 
                 {user ? (
-                    <div className="flex gap-4">
-                        <p className="text-text-dark">Hello {user.username}!</p>
-                        <p onClick={logoutUser} className="text-text-dark hover:text-text-light cursor-pointer">Logout</p>
+                    <div className="">
+                        <p className="">Hello {user.username}!</p>
+                        <p onClick={logoutUser} className="">Logout</p>
                     </div>
                     
                 ) : (
                     
-                        <ul className="flex gap-4">
-                            <li><Link to='/login' className="text-text-dark hover:text-text-light">Login</Link></li>
-                            <li><Link to='/register' className="text-text-dark hover:text-text-light">SignUp</Link></li>
+                        <ul className="">
+                            <li><Link to='/login' className="">Login</Link></li>
+                            <li><Link to='/register' className="">SignUp</Link></li>
                         </ul>
                         
     

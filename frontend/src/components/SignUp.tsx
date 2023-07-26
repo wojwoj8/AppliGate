@@ -7,14 +7,18 @@ import AuthContext from "../utils/AuthProvider";
 
 const SignUp: React.FC = () =>{
 
-    const [login, setLogin] = useState('')
-    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirm, setConfirm] = useState('')
     const [err, setErr] = useState('');
     const navigate = useNavigate();
     const { signupUser } = useContext(AuthContext)
 
+    const handlePassword = (e:string) =>{
+        setPassword(e)
+    }
+    const handleConfirm = (e:string) =>{
+        setConfirm(e)
+    }
     const handleForm = (e: React.FormEvent<HTMLFormElement>) =>{
         if (password === confirm){
             signupUser(e)
@@ -28,81 +32,79 @@ const SignUp: React.FC = () =>{
 
 
     return(
-        <div className="">
-            {err && <p className="">{err}</p>}
-            <h1 className="">Welcome at AppliGate!</h1>
-            <div className="">
-                
-                <div className="">
-                    <form className="" onSubmit={e => handleForm(e)}>
-                        <div className="">   
-                            <label htmlFor='login' className="">Login:</label>
-                            <div className="">
-                                <input 
-                                    name='login' 
-                                    type='text' 
-                                    // onChange={data => handleLogin(data.target.value)} 
-                                    required
-                                    placeholder='account1'
-                                    className="" 
-                                />
-                            </div>
-                            
-                        </div>
-                        
-                            <div className="">
-                                <label htmlFor='password' className="">Password:</label>
-                                <div className="">
-                                    <input 
-                                        name='password' 
-                                        type='password' 
-                                        // onChange={data => handlePassword(data.target.value)} 
-                                        required
-                                        className=""
+        <div className="container">
+            {err && <p className="text-danger text-center ">{err}</p>}
+            <h1 className="text-center display-4">Welcome at AppliGate!</h1>
+            <div className="row justify-content-center">
+                <div className="col-sm-12 col-md-8 col-lg-6">
+                <form onSubmit={e => handleForm(e)}>
+                    <div className="mb-3">   
+                    <label htmlFor="login" className="form-label">Login:</label>
+                    <div className="">
+                        <input 
+                        name="login" 
+                        type="text" 
+                        // onChange={data => handleLogin(data.target.value)} 
+                        required
+                        placeholder="account1"
+                        className="form-control" 
+                        />
+                    </div>
+                    </div>
+                    
+                    <div className="mb-3">
+                    <label htmlFor="password" className="form-label">Password:</label>
+                    <div className="">
+                        <input 
+                        name="password" 
+                        type="password" 
+                        onChange={data => handlePassword(data.target.value)} 
+                        required
+                        className="form-control"
+                        />
+                    </div>
+                    </div>
 
-                                    />
-                                </div>
-                            </div>
+                    <div className="mb-3">
+                    <label htmlFor="confirm" className="form-label">Confirm Password:</label>
+                    <div className="">
+                        <input 
+                        name="confirm" 
+                        type="password" 
+                        onChange={data => handleConfirm(data.target.value)} 
+                        required
+                        className="form-control"
+                        />
+                    </div>
+                    </div>
 
-                        <div className="">
-                            <label htmlFor='confirm' className="">Confirm Password:</label>
-                            <div className="">
-                                <input 
-                                    name='confirm' 
-                                    type='password' 
-                                    // onChange={data => handleConfirm(data.target.value)} 
-                                    required
-                                    className=""
+                    <div className="mb-3">
+                    <label htmlFor="email" className="form-label">Email:</label>
+                    <div className="">
+                        <input 
+                        name="email" 
+                        type="email" 
+                        // onChange={data => handleEmail(data.target.value)} 
+                        required
+                        placeholder="example@test.com"
+                        className="form-control"
+                        />
+                    </div>
+                    </div>
 
-                                />
-                            </div>
-                        </div>
+                    <div className="d-grid py-2 text-center">
+                    <button 
+                        type="submit" 
+                        className="btn btn-primary btn-block"
+                    >
+                        Sign Up
+                    </button>      
+                    </div>
 
-                        <div className="">
-                            <label htmlFor='email' className="">Email:</label>
-                            <div className="">
-                                <input 
-                                    name='email' 
-                                    type='email' 
-                                    // onChange={data => handleEmail(data.target.value)} 
-                                    required
-                                    placeholder='example@test.com'
-                                    className=""
-                                />
-                            </div>
-                        </div>
-                        <div className="">
-                            <button 
-                                type='submit' 
-                                className=""
-                                >SignUp
-                            </button>      
-                        </div>
-                        
-                        <div className="">
-                        <p className="">Already have an account? <Link to='/login' className=""> Log In Here!</Link></p>
-                        </div>
-                    </form>
+                    <div className="mb-3 text-center">
+                    <p className="">Already have an account? <Link to="/login" className="">Log In Here!</Link></p>
+                    </div>
+                </form>
                 </div>
             </div>
         </div>

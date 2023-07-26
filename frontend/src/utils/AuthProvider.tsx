@@ -61,11 +61,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setUser(jwtDecode(data.access));
             navigate('/');
           } else {
-            alert('Something went wrong while logging in the user!');
+            console.log('Something went wrong while logging in the user!');
           }
         } catch (error) {
           console.log(error);
-          alert('An error occurred while logging in the user!');
+          console.log('An error occurred while logging in the user!');
         }
       };
       let logoutUser = (e?: React.FormEvent<HTMLFormElement>) => {
@@ -111,16 +111,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               setUser(jwtDecode(loginData.access));
               navigate('/');
             } else {
-              alert('Something went wrong while logging in the user!');
+              console.log('Something went wrong while logging in the user!');
             }
           } else {
             console.log(data)
             console.log(response.status)
-            alert('Something went wrong while signing up the user!');
+            console.log('Something went wrong while signing up the user!');
           }
         } catch (error) {
           console.log(error);
-          alert('An error occurred while signing up the user!');
+          console.log('An error occurred while signing up the user!');
         }
       };
     const updateToken = async () => {

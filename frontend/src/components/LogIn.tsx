@@ -13,58 +13,47 @@ const LogIn: React.FC = () => {
   };
 
     return(
-        <div className="">
-            {err && <p className="">{err}</p>}
-            <h1 className="">Welcome at AppliGate!</h1>
-            <div className="">
-                
-                
-                <div className="">
-                    <form className="" onSubmit={handleForm}>
-                        <div className="">   
-                            <label htmlFor='login' className="">Login:</label>
-                            <div className="">
-                                <input 
-                                    name='login' 
-                                    type='text' 
-                                   
-                                    required
-                                    className='' 
-                                />
-                            </div>
-                            
-                        </div>
-                        
-                            <div className="">
-                                <label htmlFor='password' className="">Password:</label>
-                                <div className="">
-                                    <input 
-                                        name='password' 
-                                        type='password' 
-                                        
-                                        required
-                                        className=''
-
-                                    />
-                                </div>
-                            </div>
-
-
-                        <div className="">
-                            <button 
-                                type='submit' 
-                                className=''
-                                >LogIn
-                            </button>      
-                        </div>
-
-                        <div className="">
-                            <p className="">Don't have an account? <Link to='/register' className=""> Create it Here!</Link></p>
-                            
-                        </div>
-                        
-                    </form>
+        <div className="container">
+            {err && <p className="text-danger text-center font-bold">{err}</p>}
+            <h1 className="text-center display-4 font-bold">Welcome at AppliGate!</h1>
+            <div className="row justify-content-center">
+            <div className="col-sm-12 col-md-8 col-lg-6">
+                <form onSubmit={handleForm}>
+                <div className="mb-3">
+                    <label htmlFor="login" className="form-label">
+                    Login:
+                    </label>
+                    <input
+                    name="login"
+                    type="text"
+                    required
+                    className="form-control"
+                    />
                 </div>
+                <div className="mb-3">
+                    <label htmlFor="password" className="form-label">
+                    Password:
+                    </label>
+                    <input
+                    name="password"
+                    type="password"
+                    required
+                    className="form-control"
+                    />
+                </div>
+                <div className="d-grid py-2 text-center">
+                    <button
+                    type="submit"
+                    className="btn btn-primary btn-block"
+                    >
+                    Log In
+                    </button>
+                </div>
+                <div className="text-center">
+                    <p className="mb-0">Don't have an account? <Link to="/register" className="text-purple-500">Create it Here!</Link></p>
+                </div>
+                </form>
+            </div>
             </div>
         </div>
     )

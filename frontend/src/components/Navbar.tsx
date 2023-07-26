@@ -1,53 +1,10 @@
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../utils/AuthProvider";
-import Icon from '@mdi/react';
-import { mdiMenu } from '@mdi/js';
+
 
 const Navbar: React.FC = () =>{
     
-    const [toggle, setToggle] = useState(false);
-    const [small, setSmall] = useState(false);
-    
-    const hamburgerMenu = () =>{
-        
-        setToggle(!toggle)
-    }
-
-    // handle unclicking button while expanded and expanding page
-
-    useEffect(() => {
-        const handleResize = () => {
-          if (window.innerWidth > 768 && toggle === true) {
-            setToggle(false);
-          }
-        };
-      
-        window.addEventListener('resize', handleResize);
-      
-        return () => {
-          window.removeEventListener('resize', handleResize);
-        };
-      }, [toggle]);
-      
-      useEffect(() => {
-        const handleSmall = () => {
-          if (window.innerWidth <= 1280 && !small) {
-            setSmall(true);
-          } else if (window.innerWidth > 1280 && small) {
-            setSmall(false);
-          }
-        };
-      
-        handleSmall(); // Call handleSmall initially to set the correct 'small' state
-        window.addEventListener('resize', handleSmall);
-      
-        return () => {
-          window.removeEventListener('resize', handleSmall);
-        };
-      }, [small]);
-
-
     const authContext = useContext(AuthContext);
     if (!authContext) {
         // Handle the case when context is undefined
@@ -56,42 +13,58 @@ const Navbar: React.FC = () =>{
       const { user, logoutUser } = authContext;
 
     return(
-        <nav className="">
-            
-            <div className="">
-                <div className="">
-                    <Link to='/' className="">AppliGate</Link>
-                </div>
-                
-               
-                    <div onClick={hamburgerMenu} >
-                        {small && <Icon path={mdiMenu} size={1.25} className="" /> }
-                    </div>
-                
-
-                <div className={`${small ? 'hidden' : 'block'} h-auto self-center`}>
-
-                {user ? (
-                    <div className="">
-                        <p className="">Hello {user.username}!</p>
-                        <p onClick={logoutUser} className="">Logout</p>
-                    </div>
-                    
-                ) : (
-                    
-                        <ul className="">
-                            <li><Link to='/login' className="">Login</Link></li>
-                            <li><Link to='/register' className="">SignUp</Link></li>
-                        </ul>
-                        
-    
-                    
-                )}
-             
-                </div>
+      <nav className="navbar navbar-expand-lg bg-body-tertiary bg-primary" data-bs-theme="dark">
+        <div className="container-fluid">
+          <Link to='/' className="navbar-brand">AppliGate</Link>
+          <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="offcanvas offcanvas-end" tabIndex={-1} id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div className="offcanvas-header">
+              <h5 className="offcanvas-title" id="offcanvasNavbarLabel">AppliGate</h5>
+              <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
+            <div className="offcanvas-body">
+            {user ? (
+              <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li className="nav-item">
+                  <Link to='/' className="nav-link active" aria-current="page">Home</Link>
+                </li>
+                <li className="nav-item" onClick={logoutUser}>
+                  <a className="nav-link active" href="/">Log Out</a>
+                </li>
+     
+              </ul>
             
-        </nav>
+              ) : (
+              <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
+                {/* <li className="nav-item">
+                  <Link to='/' className="nav-link active" aria-current="page">Home</Link>
+                </li> */}
+                <li className="nav-item">
+                  <Link to='/login' className="nav-link">Log In</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to='/register' className="nav-link">Sign Up</Link>
+                </li>
+              </ul>
+              )}
+              {/* <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li className="nav-item">
+                  <Link to='/' className="nav-link active" aria-current="page">Home</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to='/login' className="nav-link">Log In</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to='/register' className="nav-link">Sign Up</Link>
+                </li>
+              </ul> */}
+            </div>
+          </div>
+        </div>
+        <div className=""></div>
+      </nav>
     )
 
 }

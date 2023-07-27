@@ -28,10 +28,10 @@ const Navbar: React.FC = () =>{
             {user ? (
               <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li className="nav-item">
-                  <Link to='/' className="nav-link active" aria-current="page">Home</Link>
+                  <Link to='/' className="nav-link" aria-current="page">Home</Link>
                 </li>
                 <li className="nav-item" onClick={logoutUser}>
-                  <a className="nav-link active" href="/">Log Out</a>
+                  <a className="nav-link" href="/">Log Out</a>
                 </li>
      
               </ul>

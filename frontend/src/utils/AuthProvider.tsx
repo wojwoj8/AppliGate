@@ -1,7 +1,7 @@
 import { ReactNode, createContext, useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -10,6 +10,8 @@ interface AuthProviderProps {
 interface AuthContextData {
     user: any;
     authTokens: any;
+    errorLogIn: { [key: string]: string } | null;
+    errorSignUp: { [key: string]: string[] } | null;
     loginUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
     signupUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
     logoutUser: () => void;
@@ -18,6 +20,8 @@ interface AuthContextData {
   const AuthContext = createContext<AuthContextData>({
     user: null,
     authTokens: null,
+    errorLogIn: null,
+    errorSignUp: null,
     loginUser: async (e: React.FormEvent<HTMLFormElement>) => {},
     signupUser: async (e: React.FormEvent<HTMLFormElement>) => {},
     logoutUser: () => {},
@@ -38,6 +42,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
       let [authTokens, setAuthTokens] = useState(() => (localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens') as string) : null));
     let [loading, setLoading] = useState(true)
+    let [errorLogIn, setErrorLogIn] = useState<{ [key: string]: string } | null>(null);
+    let [errorSignUp, setErrorSignUp] = useState<{ [key: string]: string[] } | null>(null);
 
     const navigate = useNavigate()
 
@@ -60,11 +66,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setAuthTokens(data);
             setUser(jwtDecode(data.access));
             navigate('/');
+            setErrorSignUp(null)
+            setErrorLogIn(null)
           } else {
+            
             console.log('Something went wrong while logging in the user!');
           }
-        } catch (error) {
-          console.log(error);
+        } catch (err: unknown) {
+          // console.log(err);
+          if (axios.isAxiosError(err)) {
+            
+            await setErrorLogIn(err.response?.data)
+            // console.log(errorLogIn)
+          }
           console.log('An error occurred while logging in the user!');
         }
       };
@@ -94,7 +108,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           });
       
           let data = response.data;
-          console.log(data)
+          // console.log(data)
           if (response.status === 200) {
             // Perform login after successful signup
             // console.log(data)
@@ -104,22 +118,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             });
       
             const loginData = loginResponse.data;
-            console.log(loginResponse)
+            // console.log(loginResponse)
             if (loginResponse.status === 200) {
               localStorage.setItem('authTokens', JSON.stringify(loginData));
               setAuthTokens(loginData);
               setUser(jwtDecode(loginData.access));
               navigate('/');
+              setErrorSignUp(null)
+              setErrorLogIn(null)
             } else {
               console.log('Something went wrong while logging in the user!');
             }
           } else {
-            console.log(data)
+            // console.log(data)
             console.log(response.status)
+            
             console.log('Something went wrong while signing up the user!');
           }
-        } catch (error) {
-          console.log(error);
+        } catch (err) {
+          if (axios.isAxiosError(err)) {
+            // console.log(err)
+            setErrorSignUp(err.response?.data)
+            // console.log(errorSignUp)
+          }
           console.log('An error occurred while signing up the user!');
         }
       };
@@ -148,7 +169,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     let contextData = {
         user:user,
+        errorLogIn: errorLogIn,
         authTokens:authTokens,
+        errorSignUp: errorSignUp,
         loginUser:loginUser,
         logoutUser:logoutUser,
         signupUser:signupUser,

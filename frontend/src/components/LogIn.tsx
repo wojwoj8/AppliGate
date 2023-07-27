@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../utils/AuthProvider";
 
 const LogIn: React.FC = () => {
-  const { loginUser } = useContext(AuthContext);
-  const [err, setErr] = useState("");
+  const { loginUser, errorLogIn } = useContext(AuthContext);
+
 
   const handleForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -14,7 +14,12 @@ const LogIn: React.FC = () => {
 
     return(
         <div className="container">
-            {err && <p className="text-danger text-center font-bold">{err}</p>}
+            {errorLogIn !== null &&
+                Object.keys(errorLogIn).map((fieldName) => (
+                <div key={fieldName} className="text-danger text-center">
+                    <p>{errorLogIn[fieldName]}</p>
+                </div>
+                ))}
             <h1 className="text-center display-4 font-bold">Welcome at AppliGate!</h1>
             <div className="row justify-content-center">
             <div className="col-sm-12 col-md-8 col-lg-6">

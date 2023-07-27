@@ -11,7 +11,7 @@ const SignUp: React.FC = () =>{
     const [confirm, setConfirm] = useState('')
     const [err, setErr] = useState('');
     const navigate = useNavigate();
-    const { signupUser } = useContext(AuthContext)
+    const { signupUser, errorSignUp } = useContext(AuthContext)
 
     const handlePassword = (e:string) =>{
         setPassword(e)
@@ -20,6 +20,7 @@ const SignUp: React.FC = () =>{
         setConfirm(e)
     }
     const handleForm = (e: React.FormEvent<HTMLFormElement>) =>{
+        setErr('')
         if (password === confirm){
             signupUser(e)
         }
@@ -30,10 +31,20 @@ const SignUp: React.FC = () =>{
         e.preventDefault()
     }
 
-
     return(
         <div className="container">
+            
             {err && <p className="text-danger text-center ">{err}</p>}
+            <div className="container">
+                {errorSignUp !== null && 
+                    Object.keys(errorSignUp).map((fieldName) => (
+                    <div key={fieldName} className="text-danger text-center">
+                        {errorSignUp[fieldName].map((errorMessage, index) => (
+                            <p key={index}>{errorMessage}</p>
+                        ))}
+                    </div>
+                ))}
+            </div>
             <h1 className="text-center display-4">Welcome at AppliGate!</h1>
             <div className="row justify-content-center">
                 <div className="col-sm-12 col-md-8 col-lg-6">

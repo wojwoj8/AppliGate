@@ -2,6 +2,7 @@ import { ReactNode, createContext, useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom'
 import axios, { AxiosError } from 'axios';
+import { error } from 'console';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -75,9 +76,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         } catch (err: unknown) {
           // console.log(err);
           if (axios.isAxiosError(err)) {
+            if(err.response?.status === 500){
+              console.log(err)
+              setErrorLogIn({error: 'Something went wrong'})
+            }
+            else{
+              setErrorLogIn(err.response?.data)
+              console.log(err.response)
+              console.log(errorLogIn)
+            }
             
-            await setErrorLogIn(err.response?.data)
-            // console.log(errorLogIn)
           }
           console.log('An error occurred while logging in the user!');
         }
@@ -137,9 +145,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           }
         } catch (err) {
           if (axios.isAxiosError(err)) {
-            // console.log(err)
-            setErrorSignUp(err.response?.data)
-            // console.log(errorSignUp)
+            if(err.response?.status === 500){
+              setErrorSignUp({error:['Something went wrong while signing up the user!']})
+            }
+            else{
+              // console.log(err)
+              setErrorSignUp(err.response?.data)
+              // console.log(errorSignUp)
+            }
+            
           }
           console.log('An error occurred while signing up the user!');
         }

@@ -64,4 +64,4 @@ class ProfileView(
         if serializer_class.is_valid():
             serializer_class.save()
             return Response(serializer_class.data)
-        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer_class.errors, status=400)

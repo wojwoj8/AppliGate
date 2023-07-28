@@ -15,8 +15,12 @@ const Profile: React.FC = () =>{
         <div className="container-sm">
             <div className="container-fluid text-center">
                 <span>First Name Last Name</span>
-                <p>Date of birth, Residence</p>
+                <p>Date of birth, Country, city</p>
                 
+            </div>
+            <div className='text-center'>
+                <button className='btn btn-secondary'>Cancel</button>
+                <button className='btn btn-primary'>Save</button>
             </div>
         </div>
     )

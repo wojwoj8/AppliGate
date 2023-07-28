@@ -40,7 +40,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
         return null; // Or any other default value
       });
-      let [authTokens, setAuthTokens] = useState(() => (localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens') as string) : null));
+    let [authTokens, setAuthTokens] = useState(() => (localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens') as string) : null));
     let [loading, setLoading] = useState(true)
     let [errorLogIn, setErrorLogIn] = useState<{ [key: string]: string } | null>(null);
     let [errorSignUp, setErrorSignUp] = useState<{ [key: string]: string[] } | null>(null);

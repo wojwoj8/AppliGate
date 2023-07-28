@@ -1,16 +1,12 @@
-from django.shortcuts import render
 from rest_framework import viewsets, status, generics, mixins, authentication, permissions
-from rest_framework.views import APIView
 from .models import User
-from .serializer import UserSerializer
+from .serializer import UserSerializer, ProfileSerializer
 from rest_framework.response import Response
-from django.contrib.auth.hashers import make_password, check_password
-from django.contrib.auth import authenticate, login, logout
-from rest_framework.decorators import permission_classes\
-    ,authentication_classes
-from rest_framework.authentication import SessionAuthentication
+from django.contrib.auth.hashers import make_password
+
+
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.sessions.backends.db import SessionStore
+
     
 class SignupView(
     mixins.ListModelMixin,
@@ -49,3 +45,23 @@ class IndexView(generics.GenericAPIView):
         username = kwargs.get('username')
         if username is not None:
             return self.retrieve(request, *args, **kwargs)
+        
+
+class ProfileView(
+    generics.GenericAPIView,
+    mixins.UpdateModelMixin):
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        serializer_class = ProfileSerializer(user, many=False)
+        return Response(serializer_class.data)
+
+    def put(self, request, *args, **kwargs):
+        user = request.user
+        serializer_class = ProfileSerializer(user, many=False)
+        if serializer_class.is_valid():
+            serializer_class.save()
+            return Response(serializer_class.data)
+        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)

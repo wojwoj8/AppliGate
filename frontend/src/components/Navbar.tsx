@@ -30,8 +30,11 @@ const Navbar: React.FC = () =>{
                 <li className="nav-item">
                   <Link to='/' className="nav-link" aria-current="page">Home</Link>
                 </li>
+                <li className="nav-item">
+                  <Link to='/profile' className="nav-link" aria-current="page">Profile</Link>
+                </li>
                 <li className="nav-item" onClick={logoutUser}>
-                  <a className="nav-link" href="/">Log Out</a>
+                  <a className="nav-link" href="/" data-bs-dismiss="offcanvas">Log Out</a>
                 </li>
      
               </ul>
@@ -42,24 +45,14 @@ const Navbar: React.FC = () =>{
                   <Link to='/' className="nav-link active" aria-current="page">Home</Link>
                 </li> */}
                 <li className="nav-item">
-                  <Link to='/login' className="nav-link">Log In</Link>
+                  <Link to='/login' className="nav-link" >Log In</Link>
                 </li>
                 <li className="nav-item">
                   <Link to='/register' className="nav-link">Sign Up</Link>
                 </li>
               </ul>
               )}
-              {/* <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li className="nav-item">
-                  <Link to='/' className="nav-link active" aria-current="page">Home</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to='/login' className="nav-link">Log In</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to='/register' className="nav-link">Sign Up</Link>
-                </li>
-              </ul> */}
+
             </div>
           </div>
         </div>

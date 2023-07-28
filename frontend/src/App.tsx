@@ -5,7 +5,8 @@ import LogIn from './components/LogIn';
 import Navbar from './components/Navbar';
 import Index from './components/Index';
 import PrivateRoute from './utils/PrivateRoute';
-import IfLoggedIn from './utils/IfLoggedIn';
+import IfNotLoggedIn from './utils/IfLoggedIn';
+import Profile from './components/Profile';
 import axios from 'axios';
 import { AuthProvider } from './utils/AuthProvider';
 
@@ -23,8 +24,12 @@ function App() {
         <Routes>
           {/* default route */}
             <Route path="*" element={<Navigate to="/" replace />} />
-            <Route path="/login" element={<IfLoggedIn><LogIn/></IfLoggedIn>}></Route>
-            <Route path="/register" element={<IfLoggedIn><SignUp/></IfLoggedIn>}></Route>
+            {/* IfNotLoggedIn = Accessable IfNotLoggedIn */}
+            <Route path="/login" element={<IfNotLoggedIn><LogIn/></IfNotLoggedIn>}></Route>
+            <Route path="/register" element={<IfNotLoggedIn><SignUp/></IfNotLoggedIn>}></Route>
+
+            {/* PrivateRoute = Accessable if logged in */}
+            <Route path="/profile" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>
             <Route path="/" element={<PrivateRoute><Index/></PrivateRoute>} />
           
         </Routes>

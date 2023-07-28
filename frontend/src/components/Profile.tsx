@@ -15,7 +15,7 @@ interface ProfileData{
 const Profile: React.FC = () =>{
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [editing, setEditing] = useState(false);
-    const { authTokens } = useContext(AuthContext);
+    const { authTokens, logoutUser } = useContext(AuthContext);
     const editProfile = () =>{
         // e.preventDefault()
         setEditing(!editing);
@@ -35,30 +35,45 @@ const Profile: React.FC = () =>{
               });
             setProfile(response.data)
             const data = response.data;
+            if (data.date_of_birth) {
+                data.date_of_birth = new Date(data.date_of_birth);
+            }
             if(response.status === 200){
                 console.log(data)
             }
         }catch(error: any){
-            console.log(error)
+            if (error.response && error.response.status === 401) {
+                // Unauthorized - Logout the user
+                logoutUser();
+              } else {
+                // Handle other errors here
+                console.error('Error fetching profile:', error);
+              }
         }
     }
 
     const editProfileData = async () =>{
         try{
-            const response = await axios.put('/index', profile,  {
+            const response = await axios.put('/profile/', profile,  {
                 headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
                 },
               });
-              
+            setEditing(false);
         }catch(error:any){
             console.log(error)
         }
     }
-    const handleForm = () =>{
-
-    }
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        const newValue = name === 'date_of_birth' ? new Date(value) : value;
+      
+        setProfile((prevProfile) => ({
+          ...prevProfile!,
+          [name]: newValue,
+        }));
+      };
 
     useEffect(() =>{
         getProfileData();
@@ -66,12 +81,13 @@ const Profile: React.FC = () =>{
     return(
         <div className="container-sm">
             <div className="container-fluid">
+            {!editing && 
                 <div className='text-center'>
-                {!editing && 
+                
                     <button className='btn btn-secondary' onClick={editProfile}>
                         <Icon path={mdiPencil} size={1} />
                     </button>
-                    }
+                    
                     <h2 className='mb-1 text-primary'>
                         {profile?.first_name || 'Name'} {profile?.last_name || 'Surname'}
                     </h2>
@@ -79,6 +95,7 @@ const Profile: React.FC = () =>{
                         {profile?.date_of_birth ? profile.date_of_birth.toLocaleDateString() : 'Birth'} {profile?.country || 'Country'} {profile?.city || 'City'}
                     </p>
                 </div>
+            }
                 
                 {editing &&  
                 <div className="container">
@@ -86,32 +103,35 @@ const Profile: React.FC = () =>{
                         <div className='row'>
                             <div className='mb-3 col-4'>
                                 <label htmlFor='first_name' className="form-label">First name:</label>
-                                <input type='text' name='first_name' className="form-control" placeholder='John'></input>
+                                <input type='text' name='first_name' className="form-control" placeholder='John' value={profile?.first_name} onChange={handleInputChange}></input>
                             </div>
                             <div className='mb-3 col-4'>
                                 <label htmlFor='last_name' className="form-label">Last name:</label>
-                                <input type='text' name='last_name' className="form-control" placeholder='Smith'></input>
+                                <input type='text' name='last_name' className="form-control" placeholder='Smith' value={profile?.last_name} onChange={handleInputChange}></input>
                             </div>
                         </div>
                         <div className='row'>
                             <div className='mb-3 col-4'>
                                 <label htmlFor='date_of_birth' className="form-label">Date of Birth:</label>
-                                <input type='date' name='date_of_birth' className="form-control" ></input>
+                                <input type='date' name='date_of_birth' className="form-control" 
+                                    value={profile?.date_of_birth ? profile.date_of_birth.toISOString().slice(0, 10) : ''}
+                                    onChange={handleInputChange}>  
+                                </input>
                             </div>
                             <div className='mb-3 col-4'>
                                 <label htmlFor='country' className="form-label">Country:</label>
-                                <input type='text' name='country' className="form-control" placeholder='Poland'></input>
+                                <input type='text' name='country' className="form-control" placeholder='Poland' value={profile?.country} onChange={handleInputChange}></input>
                             </div>
                             <div className='mb-3 col-4'>
                                 <label htmlFor='city' className="form-label">City:</label>
-                                <input type='text' name='city' className="form-control" placeholder='Radom'></input>
+                                <input type='text' name='city' className="form-control" placeholder='Radom' value={profile?.city} onChange={handleInputChange}></input>
                             </div>
                         </div>
                         
                     </form>
                     <div className='text-center'>
                         <button className='btn btn-secondary' onClick={cancelEditProfile}>Cancel</button>
-                        <button className='btn btn-primary'>Save</button>
+                        <button className='btn btn-primary' onClick={editProfileData}>Save</button>
                     </div>
                 </div>
                  

@@ -6,7 +6,7 @@ from django.contrib.auth.hashers import make_password
 
 
 from rest_framework.permissions import IsAuthenticated
-
+from datetime import datetime
     
 class SignupView(
     mixins.ListModelMixin,
@@ -60,7 +60,11 @@ class ProfileView(
 
     def put(self, request, *args, **kwargs):
         user = request.user
-        serializer_class = ProfileSerializer(user, many=False)
+        serializer_class = ProfileSerializer(user, data=request.data)
+        date = request.data['date_of_birth']
+        date_object = datetime.fromisoformat(date[:-1])  # Remove the "Z" at the end
+        request.data['date_of_birth'] = date_object.strftime('%Y-%m-%d')
+        print(request.data)
         if serializer_class.is_valid():
             serializer_class.save()
             return Response(serializer_class.data)

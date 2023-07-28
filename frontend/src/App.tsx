@@ -18,7 +18,7 @@ import { AuthProvider } from './utils/AuthProvider';
 function App() {
   return (
     <BrowserRouter>
-    <div className='min-h-screen'>
+    <div className='min-vh-100'>
       <AuthProvider>
         <Navbar></Navbar>
         <Routes>

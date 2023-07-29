@@ -26,6 +26,9 @@ const Profile: React.FC = () =>{
     const [err, setErr] = useState<ErrorResponse| undefined>(undefined)
     const { authTokens, logoutUser } = useContext(AuthContext);
 
+    const [editPersonal, setEditPersonal] = useState(false);
+    const [editContact, setEditContact] = useState(false);
+
     const getProfileData = async () =>{
         try{
             const response = await axios.get('/profile/', {
@@ -62,6 +65,8 @@ const Profile: React.FC = () =>{
                   Authorization: 'Bearer ' + String(authTokens.access),
                 },
               });
+            setEditPersonal(false)
+            setEditContact(false)
             setErr({})
         }catch (error: any) {
             const axiosError = error as AxiosError<ErrorResponse>;
@@ -93,6 +98,8 @@ const Profile: React.FC = () =>{
                 getProfileData={getProfileData}
                 err={err}
                 setErr={setErr}
+                setEditPersonal={setEditPersonal}
+                editPersonal={editPersonal}
             />
             <ProfileContact
                 contact={profile}
@@ -101,6 +108,8 @@ const Profile: React.FC = () =>{
                 getProfileData={getProfileData}
                 err={err}
                 setErr={setErr}
+                setEditContact={setEditContact}
+                editContact={editContact}
             />
         </div>
     )

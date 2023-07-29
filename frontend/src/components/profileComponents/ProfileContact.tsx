@@ -13,6 +13,8 @@ interface ProfileContactProps{
     getProfileData: () => void;
     err: ErrorResponse | undefined;
     setErr: React.Dispatch<React.SetStateAction<ErrorResponse | undefined>>;
+    setEditContact: React.Dispatch<React.SetStateAction<boolean>>;
+    editContact: boolean;
 }
 
 
@@ -21,15 +23,17 @@ interface ErrorResponse{
     [key: string]: string[];
 }
 
-const ProfileContact: React.FC<ProfileContactProps> = ({contact, setErr, handleInputChange, getProfileData, editProfileData, err}) =>{
-    const [contactEdit, setContactEditing] = useState(false);
+const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, setEditContact, setErr, handleInputChange, getProfileData, editProfileData, err}) =>{
 
-    const editContact = () =>{
-        setContactEditing(!contactEdit);
-        getProfileData();
+
+    const editContactData = () =>{
+        setEditContact(!editContact);
+        if(editContact === true){
+            getProfileData();
+        }
     }
     const cancelEditContact = () =>{
-        setContactEditing(false);
+        setEditContact(false);
         setErr({})
         getProfileData();
     }
@@ -44,12 +48,12 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, setErr, handleI
                 <div className='text-center bg-info-subtle row'>
                     <p className='fs-4 fw-semibold text-info col'>Contact Data</p>
                     <div className='col-auto'>
-                        <button className='btn btn btn-outline-secondary btn-sm' onClick={editContact}>
+                        <button className='btn btn btn-outline-secondary btn-sm' onClick={editContactData}>
                             <Icon path={mdiPencil} size={1} />
                         </button>
                     </div>
                 </div>
-                {!contactEdit &&
+                {!editContact &&
                 <div className='text-center'>
                     <div className='d-flex justify-content-evenly'>
                         <p>
@@ -61,7 +65,7 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, setErr, handleI
                     </div>
                 </div>
                 }
-                {contactEdit &&  
+                {editContact &&  
                         <div className="container">
                             <form>
                                 <div className='row'>

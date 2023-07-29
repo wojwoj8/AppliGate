@@ -10,6 +10,8 @@ interface ProfilePersonalProps {
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     editProfileData: () => void;
     getProfileData: () => void;
+    err: ErrorResponse | undefined;
+    setErr: React.Dispatch<React.SetStateAction<ErrorResponse | undefined>>;
   }
 
 interface ErrorResponse{
@@ -18,13 +20,17 @@ interface ErrorResponse{
 }
 
 
-const ProfilePersonal: React.FC<ProfilePersonalProps> = ({ personal, handleInputChange, getProfileData, editProfileData}) => {
+const ProfilePersonal: React.FC<ProfilePersonalProps> = ({ personal, err, setErr, handleInputChange, getProfileData, editProfileData}) => {
     const [editing, setEditing] = useState(false);
-    const [err, setErr] = useState<ErrorResponse| undefined>(undefined)
+
     // const { authTokens, logoutUser } = useContext(AuthContext);
 
     const editProfile = () =>{
         setEditing(!editing);
+        if(editing === true){
+            getProfileData();
+        }
+        
     }
     const cancelEditProfile = () =>{
         setEditing(false);

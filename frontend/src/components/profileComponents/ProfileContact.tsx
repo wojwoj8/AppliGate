@@ -11,6 +11,8 @@ interface ProfileContactProps{
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     editProfileData: () => void;
     getProfileData: () => void;
+    err: ErrorResponse | undefined;
+    setErr: React.Dispatch<React.SetStateAction<ErrorResponse | undefined>>;
 }
 
 
@@ -19,14 +21,12 @@ interface ErrorResponse{
     [key: string]: string[];
 }
 
-const ProfileContact: React.FC<ProfileContactProps> = ({contact, handleInputChange, getProfileData, editProfileData}) =>{
-    const [profile, setProfile] = useState<ProfileData | null>(null);
-    const [err, setErr] = useState<ErrorResponse| undefined>(undefined)
+const ProfileContact: React.FC<ProfileContactProps> = ({contact, setErr, handleInputChange, getProfileData, editProfileData, err}) =>{
     const [contactEdit, setContactEditing] = useState(false);
-    const { authTokens, logoutUser } = useContext(AuthContext);
 
     const editContact = () =>{
         setContactEditing(!contactEdit);
+        getProfileData();
     }
     const cancelEditContact = () =>{
         setContactEditing(false);
@@ -36,7 +36,6 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, handleInputChan
 
     const saveEdit = async () =>{
         await editProfileData()
-
         // setContactEditing(false);
     }
     return(
@@ -76,7 +75,10 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, handleInputChan
                                     </div>
                                     <div className='mb-3 col-4'>
                                         <label htmlFor='phone_number' className="form-label">Phone Number:</label>
-                                        <input type='text' name='phone_number' className="form-control" placeholder='+123456789' value={contact?.phone_number} onChange={handleInputChange}></input>
+                                        <input type='text' name='phone_number' className={`form-control ${err && err.phone_number && ' is-invalid'}`} placeholder='+123456789' value={contact?.phone_number} onChange={handleInputChange}></input>
+                                        {err && err.phone_number && (
+                                        <span className="text-danger">{err.phone_number[0]}</span>
+                                        )}
                                     </div>
                                 </div>
                             

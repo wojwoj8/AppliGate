@@ -41,7 +41,7 @@ const Profile: React.FC = () =>{
                 data.date_of_birth = new Date(data.date_of_birth);
             }
             if(response.status === 200){
-                console.log(data)
+                // console.log(data)
             }
         }catch(error: any){
             if (error.response && error.response.status === 401) {
@@ -91,12 +91,16 @@ const Profile: React.FC = () =>{
                 handleInputChange={handleInputChange}
                 editProfileData={editProfileData}
                 getProfileData={getProfileData}
+                err={err}
+                setErr={setErr}
             />
             <ProfileContact
                 contact={profile}
                 handleInputChange={handleInputChange}
                 editProfileData={editProfileData}
                 getProfileData={getProfileData}
+                err={err}
+                setErr={setErr}
             />
         </div>
     )

@@ -6,7 +6,7 @@ import AuthContext from '../utils/AuthProvider';
 import ProfileContact from './profileComponents/ProfileContact';
 import ProfilePersonal from './profileComponents/ProfilePersonal';
 
-interface ProfileData{
+export interface ProfileData{
     first_name: string;
     last_name: string;
     date_of_birth: Date;
@@ -35,6 +35,7 @@ const Profile: React.FC = () =>{
                 },
               });
             setProfile(response.data)
+            console.log(profile)
             const data = response.data;
             if (data.date_of_birth) {
                 data.date_of_birth = new Date(data.date_of_birth);
@@ -91,7 +92,12 @@ const Profile: React.FC = () =>{
                 editProfileData={editProfileData}
                 getProfileData={getProfileData}
             />
-            <ProfileContact/>
+            <ProfileContact
+                contact={profile}
+                handleInputChange={handleInputChange}
+                editProfileData={editProfileData}
+                getProfileData={getProfileData}
+            />
         </div>
     )
 }

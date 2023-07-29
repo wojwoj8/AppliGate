@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
 import AuthContext from '../../utils/AuthProvider';
-import { ProfileData } from './ProfileContact';
+import { ProfileData } from '../Profile';
 
 interface ProfilePersonalProps {
     personal: ProfileData | null;

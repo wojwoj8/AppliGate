@@ -3,16 +3,14 @@ import axios, { AxiosError } from 'axios';
 import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
 import AuthContext from '../../utils/AuthProvider';
+import { ProfileData } from '../Profile';
 
 
-export interface ProfileData{
-    first_name: string;
-    last_name: string;
-    date_of_birth: Date;
-    country: string;
-    city: string;
-    email: string;
-    phone_number: string;
+interface ProfileContactProps{
+    contact: ProfileData | null;
+    handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    editProfileData: () => void;
+    getProfileData: () => void;
 }
 
 
@@ -21,14 +19,13 @@ interface ErrorResponse{
     [key: string]: string[];
 }
 
-const ProfileContact: React.FC = () =>{
+const ProfileContact: React.FC<ProfileContactProps> = ({contact, handleInputChange, getProfileData, editProfileData}) =>{
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [err, setErr] = useState<ErrorResponse| undefined>(undefined)
     const [contactEdit, setContactEditing] = useState(false);
     const { authTokens, logoutUser } = useContext(AuthContext);
 
     const editContact = () =>{
-        // e.preventDefault()
         setContactEditing(!contactEdit);
     }
     const cancelEditContact = () =>{
@@ -37,65 +34,11 @@ const ProfileContact: React.FC = () =>{
         getProfileData();
     }
 
+    const saveEdit = async () =>{
+        await editProfileData()
 
-    const getProfileData = async () =>{
-        try{
-            const response = await axios.get('/profile/', {
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: 'Bearer ' + String(authTokens.access),
-                },
-              });
-            setProfile(response.data)
-            const data = response.data;
-            if (data.date_of_birth) {
-                data.date_of_birth = new Date(data.date_of_birth);
-            }
-            if(response.status === 200){
-                console.log(data)
-            }
-        }catch(error: any){
-            if (error.response && error.response.status === 401) {
-                // Unauthorized - Logout the user
-                logoutUser();
-              } else {
-                // Handle other errors here
-                console.error('Error fetching profile:', error);
-              }
-        }
+        // setContactEditing(false);
     }
-
-    const editProfileData = async () =>{
-        try{
-            const response = await axios.put('/profile/', profile,  {
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: 'Bearer ' + String(authTokens.access),
-                },
-              });
-            setContactEditing(false);
-            setErr({})
-        }catch (error: any) {
-            const axiosError = error as AxiosError<ErrorResponse>;
-            if (axiosError.response?.data) {
-              setErr(axiosError.response.data);
-            }
-            console.log(error);
-          }
-    }
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
-        const newValue = name === 'date_of_birth' ? new Date(value) : value;
-        // console.log(name)
-        setProfile((prevProfile) => ({
-          ...prevProfile!,
-          [name]: newValue,
-        }));
-      };
-
-    useEffect(() =>{
-        getProfileData();
-    }, [])
     return(
         <div className="container ">
             <div className='container border border-1 border-danger-subtle'>
@@ -111,10 +54,10 @@ const ProfileContact: React.FC = () =>{
                 <div className='text-center'>
                     <div className='d-flex justify-content-evenly'>
                         <p>
-                            <b>Email:</b> {profile?.email || ''}
+                            <b>Email:</b> {contact?.email || ''}
                         </p>
                         <p>
-                            <b>Phone Number: </b> {profile?.phone_number || ''}
+                            <b>Phone Number: </b> {contact?.phone_number || ''}
                         </p>
                     </div>
                 </div>
@@ -126,14 +69,14 @@ const ProfileContact: React.FC = () =>{
                                     <div className='mb-3 col-4'>
                                     
                                         <label htmlFor='email' className="form-label">Email:</label>
-                                        <input type='text' name='email' className={`form-control ${err && err.email && ' is-invalid'}`} placeholder='example@email.com' value={profile?.email} onChange={handleInputChange}></input>
+                                        <input type='text' name='email' className={`form-control ${err && err.email && ' is-invalid'}`} placeholder='example@email.com' value={contact?.email} onChange={handleInputChange}></input>
                                         {err && err.email && (
                                         <span className="text-danger">{err.email[0]}</span>
                                         )}
                                     </div>
                                     <div className='mb-3 col-4'>
                                         <label htmlFor='phone_number' className="form-label">Phone Number:</label>
-                                        <input type='text' name='phone_number' className="form-control" placeholder='+123456789' value={profile?.phone_number} onChange={handleInputChange}></input>
+                                        <input type='text' name='phone_number' className="form-control" placeholder='+123456789' value={contact?.phone_number} onChange={handleInputChange}></input>
                                     </div>
                                 </div>
                             
@@ -141,7 +84,7 @@ const ProfileContact: React.FC = () =>{
                             </form>
                             <div className='text-center'>
                                 <button className='btn btn-secondary' onClick={cancelEditContact}>Cancel</button>
-                                <button className='btn btn-primary' onClick={editProfileData}>Save</button>
+                                <button className='btn btn-primary' onClick={saveEdit}>Save</button>
                             </div>
                         </div>
                         

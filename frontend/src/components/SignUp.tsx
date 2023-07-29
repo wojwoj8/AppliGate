@@ -9,7 +9,7 @@ const SignUp: React.FC = () =>{
 
     const [password, setPassword] = useState('')
     const [confirm, setConfirm] = useState('')
-    const [err, setErr] = useState('');
+    const [err, setErr] = useState<{ [key: string]: string[] } | null>(null);
     const navigate = useNavigate();
     const { signupUser, errorSignUp } = useContext(AuthContext)
 
@@ -20,12 +20,15 @@ const SignUp: React.FC = () =>{
         setConfirm(e)
     }
     const handleForm = (e: React.FormEvent<HTMLFormElement>) =>{
-        setErr('')
+        setErr({})
         if (password === confirm){
             signupUser(e)
+            setErr({})
         }
         else{
-            setErr('Passwords are not the same')
+            setErr({
+                confirm: ['Passwords are not the same']
+              });
         }
         
         e.preventDefault()
@@ -34,16 +37,14 @@ const SignUp: React.FC = () =>{
     return(
         <div className="container">
             
-            {err && <p className="text-danger text-center ">{err}</p>}
+            {/* {err && <p className="text-danger text-center ">{err}</p>} */}
             <div className="container">
-                {errorSignUp !== null && 
-                    Object.keys(errorSignUp).map((fieldName) => (
-                    <div key={fieldName} className="text-danger text-center">
-                        {errorSignUp[fieldName].map((errorMessage, index) => (
-                            <p key={index}>{errorMessage}</p>
-                        ))}
-                    </div>
-                ))}
+                <div className="text-center">   
+                    {errorSignUp && errorSignUp.error && (
+                        <span className="text-danger">{errorSignUp.error[0]}</span>
+                        )}
+                </div>
+                
             </div>
             <h1 className="text-center display-4">Welcome at AppliGate!</h1>
             <div className="row justify-content-center">
@@ -51,6 +52,7 @@ const SignUp: React.FC = () =>{
                 <form onSubmit={e => handleForm(e)}>
                     <div className="mb-3">   
                     <label htmlFor="login" className="form-label">Login:</label>
+                    
                     <div className="">
                         <input 
                         name="login" 
@@ -58,9 +60,12 @@ const SignUp: React.FC = () =>{
                         // onChange={data => handleLogin(data.target.value)} 
                         required
                         placeholder="account1"
-                        className="form-control" 
+                        className={`form-control ${errorSignUp && errorSignUp.username && 'is-invalid'}`} 
                         />
                     </div>
+                    {errorSignUp && errorSignUp.username && (
+                                <span className="text-danger">{errorSignUp.username[0]}</span>
+                                )}
                     </div>
                     
                     <div className="mb-3">
@@ -84,9 +89,12 @@ const SignUp: React.FC = () =>{
                         type="password" 
                         onChange={data => handleConfirm(data.target.value)} 
                         required
-                        className="form-control"
+                        className={`form-control ${err && err.confirm && 'is-invalid'}`}
                         />
                     </div>
+                    {err && err.confirm && (
+                                <span className="text-danger">{err.confirm[0]}</span>
+                                )}
                     </div>
 
                     <div className="mb-3">
@@ -98,9 +106,12 @@ const SignUp: React.FC = () =>{
                         // onChange={data => handleEmail(data.target.value)} 
                         required
                         placeholder="example@test.com"
-                        className="form-control"
+                        className={`form-control ${errorSignUp && errorSignUp.email && 'is-invalid'}`}
                         />
                     </div>
+                    {errorSignUp && errorSignUp.email && (
+                                <span className="text-danger">{errorSignUp.email[0]}</span>
+                                )}
                     </div>
 
                     <div className="d-grid py-2 text-center">

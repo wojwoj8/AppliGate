@@ -73,21 +73,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             
             console.log('Something went wrong while logging in the user!');
           }
-        } catch (err: unknown) {
-          // console.log(err);
+        } catch (err) {
+          
           if (axios.isAxiosError(err)) {
-            if(err.response?.status === 500){
-              console.log(err)
-              setErrorLogIn({error: 'Something went wrong'})
+            // console.log(err)
+            if(err.code === "ERR_NETWORK"){
+    
+              setErrorLogIn({error:'Something went wrong while signing up the user!' })
+              console.log(errorLogIn)
             }
             else{
+              // console.log(err)
               setErrorLogIn(err.response?.data)
-              console.log(err.response)
-              console.log(errorLogIn)
+              // console.log(errorSignUp)
             }
             
           }
-          console.log('An error occurred while logging in the user!');
+          console.log('An error occurred while signing up the user!');
         }
       };
       let logoutUser = (e?: React.FormEvent<HTMLFormElement>) => {

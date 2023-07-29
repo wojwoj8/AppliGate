@@ -3,7 +3,8 @@ import axios, { AxiosError } from 'axios';
 import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
 import AuthContext from '../utils/AuthProvider';
-import { resolveTripleslashReference } from 'typescript';
+import ProfileContact from './profileComponents/ProfileContact';
+import ProfilePersonal from './profileComponents/ProfilePersonal';
 
 interface ProfileData{
     first_name: string;

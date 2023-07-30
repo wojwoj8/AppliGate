@@ -30,6 +30,7 @@ urlpatterns = [
     path('register/', views.SignupView.as_view()),
     path('index/', views.IndexView.as_view()),
     path('profile/', views.ProfileView.as_view()),
+    path('profile/expirience', views.ProfileExpirienceView.as_view()),
 
     #Authentication
     path('api/', include('app.api.urls'))

@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios, { AxiosError } from 'axios';
 import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
-import AuthContext from '../../utils/AuthProvider';
 import { ProfileData } from '../Profile';
 import { ErrorResponse } from '../Profile';
 
@@ -92,14 +90,13 @@ const ProfilePersonal: React.FC<ProfilePersonalProps> = ({
                                     <input type='text' name='last_name' className={`form-control ${err && err.last_name && ' is-invalid'}`} placeholder='Smith' value={personal?.last_name ?? ''} onChange={handleInputChange}></input>
                                     {renderFieldError('last_name', err)}
                                 </div>
-                            </div>
-                            <div className='row'>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='current_position' className="form-label">Current Position:</label>
                                     <input type='text' name='current_position' className={`form-control ${err && err.current_position && ' is-invalid'}`} value={personal?.current_position ?? ''} onChange={handleInputChange}></input>
                                     {renderFieldError('current_position', err)}
                                 </div>
                             </div>
+   
                             <div className='row'>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='date_of_birth' className="form-label">Date of Birth:</label>

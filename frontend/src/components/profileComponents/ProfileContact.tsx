@@ -15,10 +15,13 @@ interface ProfileContactProps{
     setErr: React.Dispatch<React.SetStateAction<ErrorResponse | undefined>>;
     setEditContact: React.Dispatch<React.SetStateAction<boolean>>;
     editContact: boolean;
+    renderFieldError: (field: string, error: ErrorResponse | undefined) => React.ReactNode;
 }
 
 
-const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, setEditContact, setErr, handleInputChange, getProfileData, editProfileData, err}) =>{
+const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, setEditContact, 
+    setErr, handleInputChange, getProfileData, editProfileData, err,
+    renderFieldError}) =>{
 
 
     const editContactData = () =>{
@@ -71,16 +74,12 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                                             type='text' name='email' className={`form-control ${err && err.email && ' is-invalid'}`} 
                                             placeholder='example@email.com' value={contact?.email} onChange={handleInputChange}>
                                         </input>
-                                        {err && err.email && (
-                                        <span className="text-danger">{err.email[0]}</span>
-                                        )}
+                                        {renderFieldError('email', err)}
                                     </div>
                                     <div className='mb-3 col-4'>
                                         <label htmlFor='phone_number' className="form-label">Phone Number:</label>
                                         <input type='text' name='phone_number' className={`form-control ${err && err.phone_number && ' is-invalid'}`} placeholder='+123456789' value={contact?.phone_number} onChange={handleInputChange}></input>
-                                        {err && err.phone_number && (
-                                        <span className="text-danger">{err.phone_number[0]}</span>
-                                        )}
+                                        {renderFieldError('phone_number', err)}
                                     </div>
                                 </div>
                             

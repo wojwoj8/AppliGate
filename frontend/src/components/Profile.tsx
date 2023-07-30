@@ -87,7 +87,17 @@ const Profile: React.FC = () =>{
     }
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
-        const newValue = name === 'date_of_birth' ? new Date(value) : value;
+
+        const newValue = name === 'date_of_birth' ? (() => {
+            const date = new Date(value);
+            const isValidDate = !isNaN(date.getTime()) && date.getFullYear() >= 1 && date.getFullYear() <= 2100;
+        
+            if (isValidDate) {
+              return date;
+            } else {
+              return profile?.date_of_birth || null;
+            }
+          })() : value;
         // console.log(name)
         setProfile((prevProfile) => ({
           ...prevProfile!,
@@ -121,6 +131,7 @@ const Profile: React.FC = () =>{
                 setErr={setErr}
                 setEditContact={setEditContact}
                 editContact={editContact}
+                renderFieldError={renderFieldError}
             />
         </div>
     )

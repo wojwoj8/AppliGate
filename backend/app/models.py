@@ -12,7 +12,7 @@ class User(AbstractUser):
     phone_number = PhoneNumberField(default=None, null=True, blank=True)
     current_position = models.CharField(max_length=100, default=None, null=True, blank=True)
 
-class UserExpirience(models.Model):
+class UserExperience(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     position = models.CharField(max_length=100, null=True, blank=True)
     localization = models.CharField(max_length=100, null=True, blank=True)

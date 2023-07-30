@@ -3,71 +3,71 @@ import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
 import { ProfileData } from '../Profile';
 import { ErrorResponse } from '../Profile';
-import { ExpirienceData } from '../Profile';
+import { ExperienceData } from '../Profile';
 
-interface ProfileExpirienceProps {
-    expirience: ExpirienceData | null;
+interface ProfileExperienceProps {
+    experience: ExperienceData[];
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    editExpirienceData: () => void;
-    getExpirienceData: () => void;
+    editExperienceData: () => void;
+    getExperienceData: () => void;
     err: ErrorResponse | undefined;
     setErr: React.Dispatch<React.SetStateAction<ErrorResponse | undefined>>;
-    setEditExpirience: React.Dispatch<React.SetStateAction<boolean>>;
-    editExpirience: boolean;
+    setEditExperience: React.Dispatch<React.SetStateAction<boolean>>;
+    editExperience: boolean;
     renderFieldError: (field: string, error: ErrorResponse | undefined) => React.ReactNode;
-    sendExpirienceData: () => void;
+    sendExperienceData: () => void;
 
 }
 
-const ProfileExpirience: React.FC<ProfileExpirienceProps> = ({
-    expirience, handleInputChange, editExpirience, getExpirienceData,
-    err, setErr, setEditExpirience, editExpirienceData,
-    renderFieldError, sendExpirienceData,
+const ProfileExperience: React.FC<ProfileExperienceProps> = ({
+    experience, handleInputChange, editExperience, getExperienceData,
+    err, setErr, setEditExperience, editExperienceData,
+    renderFieldError, sendExperienceData,
 }) =>{
 
-    const editExpirienceButton = () =>{
-        setEditExpirience(!editExpirience);
-        if(editExpirience === true){
-            getExpirienceData();
+    const editExperienceButton = () =>{
+        setEditExperience(!editExperience);
+        if(editExperience === true){
+            getExperienceData();
         }
         
     }
-    const cancelEditExpirience = () =>{
-        setEditExpirience(false);
+    const cancelEditExperience = () =>{
+        setEditExperience(false);
         setErr({})
-        getExpirienceData();
+        getExperienceData();
     }
 
     const saveEdit = async () =>{
-        await editExpirienceData()
+        await editExperienceData()
         // setEditPersonal(false);
     }
-    const saveExpirience = async () =>{
-        await sendExpirienceData();
+    const saveExperience = async () =>{
+        await sendExperienceData();
     }
     return(
         <div className="container ">
             <div className='border border-1 border-danger'>
                 <div className="container">
                     <div className='text-center bg-info-subtle row'>
-                        <p className='fs-4 fw-semibold text-info col'>Expirience</p>
+                        <p className='fs-4 fw-semibold text-info col'>Experience</p>
                         <div className='col-auto'>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={editExpirienceButton}>
-                                Add expirience
+                            <button className='btn btn btn-outline-secondary btn-sm' onClick={editExperienceButton}>
+                                Add experience
                             </button>
                         </div>
                     </div>
-                {!editExpirience && 
+                {!editExperience && 
                     <div className='text-center row'>
                         <div className='col-auto col-md-8 col-sm-6 text-start'>
                             <h2 className='mb-1 text-primary fs-1'>
-                                {expirience?.position || ''} {expirience?.localization || ''}
+                                {experience?.position || ''} {experience?.localization || ''}
                             </h2>
                             <p>
-                                {expirience?.company || ''}
+                                {experience?.company || ''}
                             </p>
                             <p>
-                                {expirience?.responsibilities || ''}
+                                {experience?.responsibilities || ''}
                                 {/* {personal?.date_of_birth ? personal.date_of_birth.toLocaleDateString() : 'Birth'} {personal?.country || 'Country'}, {personal?.city || 'City'} */}
                             </p>
                         </div>
@@ -75,23 +75,23 @@ const ProfileExpirience: React.FC<ProfileExpirienceProps> = ({
                     </div>
                 }
                     
-                {editExpirience &&  
+                {editExperience &&  
                     <div className="container">
                         <form>
                             <div className='row'>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='position' className="form-label">Position:</label>
-                                    <input type='text' name='position' className={`form-control ${err && err.position && ' is-invalid'}`} value={expirience?.position ?? ''} onChange={handleInputChange}></input>
+                                    <input type='text' name='position' className={`form-control ${err && err.position && ' is-invalid'}`} value={experience?.position ?? ''} onChange={handleInputChange}></input>
                                     {renderFieldError('position', err)}
                                 </div>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='localization' className="form-label">Localization:</label>
-                                    <input type='text' name='localization' className={`form-control ${err && err.localization && ' is-invalid'}`} value={expirience?.localization ?? ''} onChange={handleInputChange}></input>
+                                    <input type='text' name='localization' className={`form-control ${err && err.localization && ' is-invalid'}`} value={experience?.localization ?? ''} onChange={handleInputChange}></input>
                                     {renderFieldError('localization', err)}
                                 </div>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='company' className="form-label">Company:</label>
-                                    <input type='text' name='company' className={`form-control ${err && err.company && ' is-invalid'}`} value={expirience?.company ?? ''} onChange={handleInputChange}></input>
+                                    <input type='text' name='company' className={`form-control ${err && err.company && ' is-invalid'}`} value={experience?.company ?? ''} onChange={handleInputChange}></input>
                                     {renderFieldError('company', err)}
                                 </div>
                             </div>
@@ -99,7 +99,7 @@ const ProfileExpirience: React.FC<ProfileExpirienceProps> = ({
                             <div className='row'>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='responsibilities' className="form-label">Responsibilities:</label>
-                                    <input type='text' name='responsibilities' className={`form-control ${err && err.responsibilities && ' is-invalid'}`} value={expirience?.responsibilities ?? ''} onChange={handleInputChange}></input>
+                                    <input type='text' name='responsibilities' className={`form-control ${err && err.responsibilities && ' is-invalid'}`} value={experience?.responsibilities ?? ''} onChange={handleInputChange}></input>
                                     {renderFieldError('responsibilities', err)}
                                 </div>
                                 {/* <div className='mb-3 col-4'>
@@ -115,8 +115,8 @@ const ProfileExpirience: React.FC<ProfileExpirienceProps> = ({
                             
                         </form>
                         <div className='text-center'>
-                            <button className='btn btn-secondary' onClick={cancelEditExpirience}>Cancel</button>
-                            <button className='btn btn-primary' onClick={saveExpirience}>Save</button>
+                            <button className='btn btn-secondary' onClick={cancelEditExperience}>Cancel</button>
+                            <button className='btn btn-primary' onClick={saveExperience}>Save</button>
                         </div>
                     </div>
                     
@@ -126,4 +126,5 @@ const ProfileExpirience: React.FC<ProfileExpirienceProps> = ({
         </div>
     )
 }
-export default ProfileExpirience
+
+export default ProfileExperience

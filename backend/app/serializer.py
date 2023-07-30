@@ -1,6 +1,6 @@
 #for translating data to JSON
 from rest_framework import serializers
-from .models import User, UserExpirience
+from .models import User, UserExperience
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,8 +16,8 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ['current_position', 'first_name', 'last_name', 'date_of_birth', 'country', 'city', 'email','phone_number']
 
-class UserExpirienceSerializer(serializers.ModelSerializer):
+class UserExperienceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserExpirience
+        model = UserExperience
         fields = ['position', 'localization', 'company', 'from_date', 'to_date', 'responsibilities']
         # exclude = ('user',)

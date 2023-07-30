@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import AuthContext from '../utils/AuthProvider';
 import ProfileContact from './profileComponents/ProfileContact';
 import ProfilePersonal from './profileComponents/ProfilePersonal';
-import ProfileExpirience from './profileComponents/ProfileExpirience';
+import ProfileExperience from './profileComponents/ProfileExperience';
 
 export interface ProfileData{
     first_name: string;
@@ -16,7 +16,7 @@ export interface ProfileData{
     current_position: string;
 }
 
-export interface ExpirienceData{
+export interface ExperienceData{
     position: string;
     localization: string;
     from_date: Date;
@@ -31,13 +31,13 @@ export interface ErrorResponse{
 
 const Profile: React.FC = () =>{
     const [profile, setProfile] = useState<ProfileData | null>(null);
-    const [expirience, setExpirience] = useState<ExpirienceData | null>(null);
+    const [experience, setExperience] = useState<ExperienceData[]>([]);
     const [err, setErr] = useState<ErrorResponse| undefined>(undefined)
     const { authTokens, logoutUser } = useContext(AuthContext);
 
     const [editPersonal, setEditPersonal] = useState(false);
     const [editContact, setEditContact] = useState(false);
-    const [editExpirience, setEditExpirience] = useState(false);
+    const [editExperience, setEditExperience] = useState(false);
 
 
     const renderFieldError = (field: string, error : ErrorResponse | undefined) => {
@@ -96,7 +96,7 @@ const Profile: React.FC = () =>{
     }
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement>,
-        data: 'profile' | 'expirience') => {
+        data: 'profile' | 'experience') => {
         const { name, value } = event.target;
 
         const newValue = name === 'date_of_birth' ? (() => {
@@ -116,9 +116,9 @@ const Profile: React.FC = () =>{
                 ...prevProfile!,
                 [name]: newValue,
               }));
-        } else if (data === 'expirience'){
-            setExpirience((prevExpirience) => ({
-                ...prevExpirience!,
+        } else if (data === 'experience'){
+            setExperience((prevExperience) => ({
+                ...prevExperience!,
                 [name]: newValue,
               }));
         }
@@ -128,15 +128,16 @@ const Profile: React.FC = () =>{
     
     // EXPIRIENCE
 
-    const getExpirienceData = async () =>{
+    const getExperienceData = async () =>{
         try{
-            const response = await axios.get('/profile/expirience', {
+            const response = await axios.get('/profile/experience', {
                 headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
                 },
               });
-            setExpirience(response.data)
+            const updatedExperience = [...experience, response.data];
+            setExperience(updatedExperience)
             // console.log(profile)
             const data = response.data;
             // if (data.date_of_birth) {
@@ -156,15 +157,15 @@ const Profile: React.FC = () =>{
         }
     }
 
-    const sendExpirienceData = async () =>{
+    const sendExperienceData = async () =>{
         try{
-            const response = await axios.post('/profile/expirience', expirience,  {
+            const response = await axios.post('/profile/experience', experience,  {
                 headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
                 },
               });
-            setEditExpirience(false)
+            setEditExperience(false)
 
             setErr({})
         }catch (error: any) {
@@ -178,15 +179,15 @@ const Profile: React.FC = () =>{
 
 
 
-    const editExpirienceData = async () =>{
+    const editExperienceData = async () =>{
         try{
-            const response = await axios.put('/profile/expirience', expirience,  {
+            const response = await axios.put('/profile/experience', experience,  {
                 headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
                 },
               });
-            setEditExpirience(false)
+            setEditExperience(false)
 
             setErr({})
         }catch (error: any) {
@@ -202,7 +203,7 @@ const Profile: React.FC = () =>{
 
     useEffect(() =>{
         getProfileData();
-        getExpirienceData();
+        getExperienceData();
     }, [])
     return(
         <div className="container ">
@@ -228,17 +229,17 @@ const Profile: React.FC = () =>{
                 editContact={editContact}
                 renderFieldError={renderFieldError}
             />
-            <ProfileExpirience
-                expirience={expirience}
-                handleInputChange={(event) => handleInputChange(event, 'expirience')}
-                editExpirience={editExpirience}
-                setEditExpirience={setEditExpirience}
-                editExpirienceData={editExpirienceData}
-                getExpirienceData={getExpirienceData}
+            <ProfileExperience
+                experience={experience}
+                handleInputChange={(event) => handleInputChange(event, 'experience')}
+                editExperience={editExperience}
+                setEditExperience={setEditExperience}
+                editExperienceData={editExperienceData}
+                getExperienceData={getExperienceData}
                 err={err}
                 setErr={setErr}
                 renderFieldError={renderFieldError}
-                sendExpirienceData={sendExpirienceData}
+                sendExperienceData={sendExperienceData}
             />
         </div>
     )

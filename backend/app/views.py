@@ -1,6 +1,6 @@
 from rest_framework import viewsets, status, generics, mixins, authentication, permissions
-from .models import User, UserExpirience
-from .serializer import UserSerializer, ProfileSerializer, UserExpirienceSerializer
+from .models import User, UserExperience
+from .serializer import UserSerializer, ProfileSerializer, UserExperienceSerializer
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
 
@@ -73,18 +73,18 @@ class ProfileView(
         return Response(serializer_class.errors, status=400)
     
 
-class ProfileExpirienceView(
+class ProfileExperienceView(
     generics.GenericAPIView,
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin):
     permission_classes = [IsAuthenticated]
-    queryset = UserExpirience.objects.all()
-    serializer_class = UserExpirienceSerializer
+    queryset = UserExperience.objects.all()
+    serializer_class = UserExperienceSerializer
 
     def get(self, request, *args, **kwargs):
         user = self.request.user
-        queryset = UserExpirience.objects.filter(user=user)
+        queryset = UserExperience.objects.filter(user=user)
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
@@ -94,11 +94,11 @@ class ProfileExpirienceView(
         serializer.is_valid(raise_exception=True)
         serializer.save(user=user)
         print(request.data)
-        return Response({"created": "Expirience added successfully"}, status=200)
+        return Response({"created": "Experience added successfully"}, status=200)
     
     def put(self, request, *args, **kwargs):
         user = request.user
-        serializer_class = UserExpirienceSerializer(user, data=request.data)
+        serializer_class = UserExperienceSerializer(user, data=request.data)
 
         # Handle date format
         # date = request.data['date_of_birth']

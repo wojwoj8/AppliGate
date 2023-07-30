@@ -4,7 +4,7 @@ import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
 import AuthContext from '../../utils/AuthProvider';
 import { ProfileData } from '../Profile';
-
+import { ErrorResponse } from '../Profile';
 
 interface ProfileContactProps{
     contact: ProfileData | null;
@@ -17,11 +17,6 @@ interface ProfileContactProps{
     editContact: boolean;
 }
 
-
-interface ErrorResponse{
-
-    [key: string]: string[];
-}
 
 const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, setEditContact, setErr, handleInputChange, getProfileData, editProfileData, err}) =>{
 
@@ -72,7 +67,10 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                                     <div className='mb-3 col-4'>
                                     
                                         <label htmlFor='email' className="form-label">Email:</label>
-                                        <input type='text' name='email' className={`form-control ${err && err.email && ' is-invalid'}`} placeholder='example@email.com' value={contact?.email} onChange={handleInputChange}></input>
+                                        <input 
+                                            type='text' name='email' className={`form-control ${err && err.email && ' is-invalid'}`} 
+                                            placeholder='example@email.com' value={contact?.email} onChange={handleInputChange}>
+                                        </input>
                                         {err && err.email && (
                                         <span className="text-danger">{err.email[0]}</span>
                                         )}

@@ -61,6 +61,8 @@ class ProfileView(
     def put(self, request, *args, **kwargs):
         user = request.user
         serializer_class = ProfileSerializer(user, data=request.data)
+
+        # Handle date format
         date = request.data['date_of_birth']
         date_object = datetime.fromisoformat(date[:-1])  # Remove the "Z" at the end
         request.data['date_of_birth'] = date_object.strftime('%Y-%m-%d')

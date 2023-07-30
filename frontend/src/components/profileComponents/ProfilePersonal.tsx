@@ -4,6 +4,7 @@ import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
 import AuthContext from '../../utils/AuthProvider';
 import { ProfileData } from '../Profile';
+import { ErrorResponse } from '../Profile';
 
 interface ProfilePersonalProps {
     personal: ProfileData | null;
@@ -14,16 +15,16 @@ interface ProfilePersonalProps {
     setErr: React.Dispatch<React.SetStateAction<ErrorResponse | undefined>>;
     setEditPersonal: React.Dispatch<React.SetStateAction<boolean>>;
     editPersonal: boolean;
+    renderFieldError: (field: string, error: ErrorResponse | undefined) => React.ReactNode;
   }
 
-interface ErrorResponse{
-
-    [key: string]: string[];
-}
 
 
-const ProfilePersonal: React.FC<ProfilePersonalProps> = ({ personal, setEditPersonal, editPersonal, err, setErr, handleInputChange, getProfileData, editProfileData}) => {
-    
+const ProfilePersonal: React.FC<ProfilePersonalProps> = ({ 
+    personal, setEditPersonal, editPersonal, err, setErr, 
+    handleInputChange, getProfileData, editProfileData,
+    renderFieldError}) => {
+
 
     // const { authTokens, logoutUser } = useContext(AuthContext);
 
@@ -42,7 +43,7 @@ const ProfilePersonal: React.FC<ProfilePersonalProps> = ({ personal, setEditPers
 
     const saveEdit = async () =>{
         await editProfileData()
-        setEditPersonal(false);
+        // setEditPersonal(false);
     }
 
     return(
@@ -67,6 +68,9 @@ const ProfilePersonal: React.FC<ProfilePersonalProps> = ({ personal, setEditPers
                                 {personal?.first_name || 'Name'} {personal?.last_name || 'Surname'}
                             </h2>
                             <p>
+                                {personal?.current_position}
+                            </p>
+                            <p>
                                 {personal?.date_of_birth ? personal.date_of_birth.toLocaleDateString() : 'Birth'} {personal?.country || 'Country'}, {personal?.city || 'City'}
                             </p>
                         </div>
@@ -80,28 +84,40 @@ const ProfilePersonal: React.FC<ProfilePersonalProps> = ({ personal, setEditPers
                             <div className='row'>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='first_name' className="form-label">First name:</label>
-                                    <input type='text' name='first_name' className="form-control" placeholder='John' value={personal?.first_name} onChange={handleInputChange}></input>
+                                    <input type='text' name='first_name' className={`form-control ${err && err.first_name && ' is-invalid'}`} placeholder='John' value={personal?.first_name ?? ''} onChange={handleInputChange}></input>
+                                    {renderFieldError('first_name', err)}
                                 </div>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='last_name' className="form-label">Last name:</label>
-                                    <input type='text' name='last_name' className="form-control" placeholder='Smith' value={personal?.last_name} onChange={handleInputChange}></input>
+                                    <input type='text' name='last_name' className={`form-control ${err && err.last_name && ' is-invalid'}`} placeholder='Smith' value={personal?.last_name ?? ''} onChange={handleInputChange}></input>
+                                    {renderFieldError('last_name', err)}
+                                </div>
+                            </div>
+                            <div className='row'>
+                                <div className='mb-3 col-4'>
+                                    <label htmlFor='current_position' className="form-label">Current Position:</label>
+                                    <input type='text' name='current_position' className={`form-control ${err && err.current_position && ' is-invalid'}`} value={personal?.current_position ?? ''} onChange={handleInputChange}></input>
+                                    {renderFieldError('current_position', err)}
                                 </div>
                             </div>
                             <div className='row'>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='date_of_birth' className="form-label">Date of Birth:</label>
-                                    <input type='date' name='date_of_birth' className="form-control" 
+                                    <input type='date' name='date_of_birth' className={`form-control ${err && err.date_of_birth && ' is-invalid'}`} 
                                         value={personal?.date_of_birth ? personal.date_of_birth.toISOString().slice(0, 10) : ''}
                                         onChange={handleInputChange}>  
                                     </input>
+                                    {renderFieldError('date_of_birth', err)}
                                 </div>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='country' className="form-label">Country:</label>
-                                    <input type='text' name='country' className="form-control" placeholder='Poland' value={personal?.country} onChange={handleInputChange}></input>
+                                    <input type='text' name='country' className={`form-control ${err && err.country && ' is-invalid'}`} placeholder='Poland' value={personal?.country ?? ''} onChange={handleInputChange}></input>
+                                    {renderFieldError('country', err)}
                                 </div>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='city' className="form-label">City:</label>
-                                    <input type='text' name='city' className="form-control" placeholder='Radom' value={personal?.city} onChange={handleInputChange}></input>
+                                    <input type='text' name='city' className={`form-control ${err && err.city && ' is-invalid'}`} placeholder='Radom' value={personal?.city ?? ''} onChange={handleInputChange}></input>
+                                    {renderFieldError('city', err)}
                                 </div>
                             </div>
                             

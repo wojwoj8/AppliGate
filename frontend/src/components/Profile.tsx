@@ -14,9 +14,10 @@ export interface ProfileData{
     city: string;
     email: string;
     phone_number: string;
+    current_position: string;
 }
 
-interface ErrorResponse{
+export interface ErrorResponse{
 
     [key: string]: string[];
 }
@@ -29,6 +30,14 @@ const Profile: React.FC = () =>{
     const [editPersonal, setEditPersonal] = useState(false);
     const [editContact, setEditContact] = useState(false);
 
+
+    const renderFieldError = (field: string, error : ErrorResponse | undefined) => {
+        if (error && error[field]) {
+            return <span className="text-danger">{error[field][0]}</span>;
+        }
+        return null;
+    };
+
     const getProfileData = async () =>{
         try{
             const response = await axios.get('/profile/', {
@@ -38,7 +47,7 @@ const Profile: React.FC = () =>{
                 },
               });
             setProfile(response.data)
-            console.log(profile)
+            // console.log(profile)
             const data = response.data;
             if (data.date_of_birth) {
                 data.date_of_birth = new Date(data.date_of_birth);
@@ -86,6 +95,7 @@ const Profile: React.FC = () =>{
         }));
       };
 
+    
     useEffect(() =>{
         getProfileData();
     }, [])
@@ -100,6 +110,7 @@ const Profile: React.FC = () =>{
                 setErr={setErr}
                 setEditPersonal={setEditPersonal}
                 editPersonal={editPersonal}
+                renderFieldError={renderFieldError}
             />
             <ProfileContact
                 contact={profile}

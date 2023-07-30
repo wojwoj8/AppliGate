@@ -10,3 +10,4 @@ class User(AbstractUser):
     country = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     phone_number = PhoneNumberField(default=None, null=True, blank=True)
+    current_position = models.CharField(max_length=100, default=None, null=True, blank=True)

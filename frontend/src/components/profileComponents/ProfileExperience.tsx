@@ -7,7 +7,8 @@ import { ExperienceData } from '../Profile';
 
 interface ProfileExperienceProps {
     experience: ExperienceData[];
-    handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    setExperience: React.Dispatch<React.SetStateAction<ExperienceData[]>>;
+    
     editExperienceData: () => void;
     getExperienceData: () => void;
     err: ErrorResponse | undefined;
@@ -20,7 +21,7 @@ interface ProfileExperienceProps {
 }
 
 const ProfileExperience: React.FC<ProfileExperienceProps> = ({
-    experience, handleInputChange, editExperience, getExperienceData,
+    experience, setExperience, editExperience, getExperienceData,
     err, setErr, setEditExperience, editExperienceData,
     renderFieldError, sendExperienceData,
 }) =>{
@@ -42,9 +43,32 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
         await editExperienceData()
         // setEditPersonal(false);
     }
-    const saveExperience = async () =>{
+    const saveExperience = async (index: number) =>{
         await sendExperienceData();
     }
+
+    const handleExperienceInputChange = (
+        index: number,
+        event: React.ChangeEvent<HTMLInputElement>,
+        
+      ) => {
+        const { name, value } = event.target;
+      
+        // Create an object with the new property and value
+        const updatedProperty = {
+          [name]: value,
+        };
+      
+        setExperience((prevExperience) => {
+          const updatedExperiences = [...prevExperience];
+          updatedExperiences[index] = {
+            ...updatedExperiences[index],
+            ...updatedProperty, // Spread the new property and value into the existing object
+          };
+          return updatedExperiences; // Return the updated state
+        });
+      };
+      console.log(experience)
     return(
         <div className="container ">
             <div className='border border-1 border-danger'>
@@ -57,70 +81,92 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             </button>
                         </div>
                     </div>
-                {!editExperience && 
-                    <div className='text-center row'>
+               
+                {experience.map((experience, index) => (
+                    <div key={index} className='text-center row'>
+                        {/* {!editExperience && ( */}
                         <div className='col-auto col-md-8 col-sm-6 text-start'>
                             <h2 className='mb-1 text-primary fs-1'>
-                                {experience?.position || ''} {experience?.localization || ''}
+                            {experience?.position || ''} {experience?.localization || ''}
                             </h2>
-                            <p>
-                                {experience?.company || ''}
-                            </p>
-                            <p>
-                                {experience?.responsibilities || ''}
-                                {/* {personal?.date_of_birth ? personal.date_of_birth.toLocaleDateString() : 'Birth'} {personal?.country || 'Country'}, {personal?.city || 'City'} */}
-                            </p>
+                            <p>{experience?.company || ''}</p>
+                            <p>{experience?.responsibilities || ''}</p>
                         </div>
-                        
-                    </div>
-                }
-                    
-                {editExperience &&  
-                    <div className="container">
-                        <form>
+                        {/* )} */}
+
+                        {editExperience && (
+                        <div className='container'>
+                            <form>
                             <div className='row'>
                                 <div className='mb-3 col-4'>
-                                    <label htmlFor='position' className="form-label">Position:</label>
-                                    <input type='text' name='position' className={`form-control ${err && err.position && ' is-invalid'}`} value={experience?.position ?? ''} onChange={handleInputChange}></input>
-                                    {renderFieldError('position', err)}
+                                <label htmlFor={`position_${index}`} className='form-label'>
+                                    Position:
+                                </label>
+                                <input
+                                    type='text'
+                                    name={`position_${index}`}
+                                    className={`form-control ${err && err.position && ' is-invalid'}`}
+                                    value={experience?.position || ''}
+                                    onChange={(e) => handleExperienceInputChange(index, e)}
+                                />
+                                {renderFieldError(`position_${index}`, err)}
                                 </div>
                                 <div className='mb-3 col-4'>
-                                    <label htmlFor='localization' className="form-label">Localization:</label>
-                                    <input type='text' name='localization' className={`form-control ${err && err.localization && ' is-invalid'}`} value={experience?.localization ?? ''} onChange={handleInputChange}></input>
-                                    {renderFieldError('localization', err)}
+                                <label htmlFor={`localization_${index}`} className='form-label'>
+                                    Localization:
+                                </label>
+                                <input
+                                    type='text'
+                                    name={`localization_${index}`}
+                                    className={`form-control ${err && err.localization && ' is-invalid'}`}
+                                    value={experience?.localization || ''}
+                                    onChange={(e) => handleExperienceInputChange(index, e)}
+                                />
+                                {renderFieldError(`localization_${index}`, err)}
                                 </div>
                                 <div className='mb-3 col-4'>
-                                    <label htmlFor='company' className="form-label">Company:</label>
-                                    <input type='text' name='company' className={`form-control ${err && err.company && ' is-invalid'}`} value={experience?.company ?? ''} onChange={handleInputChange}></input>
-                                    {renderFieldError('company', err)}
+                                <label htmlFor={`company_${index}`} className='form-label'>
+                                    Company:
+                                </label>
+                                <input
+                                    type='text'
+                                    name={`company_${index}`}
+                                    className={`form-control ${err && err.company && ' is-invalid'}`}
+                                    value={experience?.company || ''}
+                                    onChange={(e) => handleExperienceInputChange(index, e)}
+                                />
+                                {renderFieldError(`company_${index}`, err)}
                                 </div>
                             </div>
-   
+
                             <div className='row'>
                                 <div className='mb-3 col-4'>
-                                    <label htmlFor='responsibilities' className="form-label">Responsibilities:</label>
-                                    <input type='text' name='responsibilities' className={`form-control ${err && err.responsibilities && ' is-invalid'}`} value={experience?.responsibilities ?? ''} onChange={handleInputChange}></input>
-                                    {renderFieldError('responsibilities', err)}
+                                <label htmlFor={`responsibilities_${index}`} className='form-label'>
+                                    Responsibilities:
+                                </label>
+                                <input
+                                    type='text'
+                                    name={`responsibilities_${index}`}
+                                    className={`form-control ${err && err.responsibilities && ' is-invalid'}`}
+                                    value={experience?.responsibilities || ''}
+                                    onChange={(e) => handleExperienceInputChange(index, e)}
+                                />
+                                {renderFieldError(`responsibilities_${index}`, err)}
                                 </div>
-                                {/* <div className='mb-3 col-4'>
-                                    <label htmlFor='date_of_birth' className="form-label">Date of Birth:</label>
-                                    <input type='date' name='date_of_birth' className={`form-control ${err && err.date_of_birth && ' is-invalid'}`} 
-                                        value={personal?.date_of_birth ? personal.date_of_birth.toISOString().slice(0, 10) : ''}
-                                        onChange={handleInputChange}>  
-                                    </input>
-                                    {renderFieldError('date_of_birth', err)}
-                                </div> */}
-                                
                             </div>
-                            
-                        </form>
-                        <div className='text-center'>
-                            <button className='btn btn-secondary' onClick={cancelEditExperience}>Cancel</button>
-                            <button className='btn btn-primary' onClick={saveExperience}>Save</button>
+                            </form>
+                            <div className='text-center'>
+                            <button className='btn btn-secondary' onClick={cancelEditExperience}>
+                                Cancel
+                            </button>
+                            <button className='btn btn-primary' onClick={() => saveExperience(index)}>
+                                Save
+                            </button>
+                            </div>
                         </div>
+                        )}
                     </div>
-                    
-                }
+                    ))}
             </div>
         </div>
         </div>

@@ -96,66 +96,63 @@ const Profile: React.FC = () =>{
     }
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement>,
-        data: 'profile' | 'experience') => {
+      ) => {
         const { name, value } = event.target;
-
+      
         const newValue = name === 'date_of_birth' ? (() => {
-            const date = new Date(value);
-            const isValidDate = !isNaN(date.getTime()) && date.getFullYear() >= 1 && date.getFullYear() <= 2100;
-        
-            if (isValidDate) {
-              return date;
-            } else {
-              return profile?.date_of_birth || null;
-            }
-          })() : value;
-        // console.log(name)
-        if (data === 'profile'){
-            setProfile((prevProfile) => ({
-                // ! means not null or undefined
-                ...prevProfile!,
-                [name]: newValue,
-              }));
-        } else if (data === 'experience'){
-            setExperience((prevExperience) => ({
-                ...prevExperience!,
-                [name]: newValue,
-              }));
-        }
+          const date = new Date(value);
+          const isValidDate = !isNaN(date.getTime()) && date.getFullYear() >= 1 && date.getFullYear() <= 2100;
+      
+          if (isValidDate) {
+            return date;
+          } else {
+            return profile?.date_of_birth || null;
+          }
+        })() : value;
+      
+
+        setProfile((prevProfile) => ({
+        ...prevProfile!,
+        [name]: newValue,
+        }));
+    
+  
         
       };
 
     
     // EXPIRIENCE
 
-    const getExperienceData = async () =>{
-        try{
-            const response = await axios.get('/profile/experience', {
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: 'Bearer ' + String(authTokens.access),
-                },
-              });
-            const updatedExperience = [...experience, response.data];
-            setExperience(updatedExperience)
-            // console.log(profile)
-            const data = response.data;
-            // if (data.date_of_birth) {
-            //     data.date_of_birth = new Date(data.date_of_birth);
-            // }
-            if(response.status === 200){
-                console.log(data)
-            }
-        }catch(error: any){
-            if (error.response && error.response.status === 401) {
-                // Unauthorized - Logout the user
-                logoutUser();
-              } else {
-                // Handle other errors here
-                console.error('Error fetching profile:', error);
-              }
+
+    
+    const getExperienceData = async () => {
+        try {
+          const response = await axios.get('/profile/experience', {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + String(authTokens.access),
+            },
+          });
+      
+          const data = response.data;
+          // if (data.date_of_birth) {
+          //     data.date_of_birth = new Date(data.date_of_birth);
+          // }
+      
+          if (response.status === 200) {
+            setExperience(data); // Update the experience state directly with the API response
+            console.log(data);
+          }
+        } catch (error: any) {
+          if (error.response && error.response.status === 401) {
+            // Unauthorized - Logout the user
+            logoutUser();
+          } else {
+            // Handle other errors here
+            console.error('Error fetching profile:', error);
+          }
         }
-    }
+      };
 
     const sendExperienceData = async () =>{
         try{
@@ -209,7 +206,7 @@ const Profile: React.FC = () =>{
         <div className="container ">
             <ProfilePersonal 
                 personal={profile}
-                handleInputChange={(event) => handleInputChange(event, 'profile')}
+                handleInputChange={handleInputChange}
                 editProfileData={editProfileData}
                 getProfileData={getProfileData}
                 err={err}
@@ -220,7 +217,7 @@ const Profile: React.FC = () =>{
             />
             <ProfileContact
                 contact={profile}
-                handleInputChange={(event) => handleInputChange(event, 'profile')}
+                handleInputChange={handleInputChange}
                 editProfileData={editProfileData}
                 getProfileData={getProfileData}
                 err={err}
@@ -231,7 +228,8 @@ const Profile: React.FC = () =>{
             />
             <ProfileExperience
                 experience={experience}
-                handleInputChange={(event) => handleInputChange(event, 'experience')}
+                setExperience={setExperience}
+                
                 editExperience={editExperience}
                 setEditExperience={setEditExperience}
                 editExperienceData={editExperienceData}

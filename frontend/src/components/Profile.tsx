@@ -32,6 +32,7 @@ export interface ErrorResponse{
 const Profile: React.FC = () =>{
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [experience, setExperience] = useState<ExperienceData[]>([]);
+    const [singleExperience, setSingleExperience] = useState<ExperienceData | null>(null);
     const [err, setErr] = useState<ErrorResponse| undefined>(undefined)
     const { authTokens, logoutUser } = useContext(AuthContext);
 
@@ -156,7 +157,7 @@ const Profile: React.FC = () =>{
 
     const sendExperienceData = async () =>{
         try{
-            const response = await axios.post('/profile/experience', experience,  {
+            const response = await axios.post('/profile/experience', singleExperience,  {
                 headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
@@ -165,6 +166,7 @@ const Profile: React.FC = () =>{
             setEditExperience(false)
 
             setErr({})
+            getExperienceData()
         }catch (error: any) {
             const axiosError = error as AxiosError<ErrorResponse>;
             if (axiosError.response?.data) {
@@ -238,6 +240,8 @@ const Profile: React.FC = () =>{
                 setErr={setErr}
                 renderFieldError={renderFieldError}
                 sendExperienceData={sendExperienceData}
+                singleExperience={singleExperience}
+                setSingleExperience={setSingleExperience}
             />
         </div>
     )

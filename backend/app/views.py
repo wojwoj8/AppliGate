@@ -98,13 +98,16 @@ class ProfileExperienceView(
     
     def put(self, request, *args, **kwargs):
         user = request.user
-        serializer_class = UserExperienceSerializer(user, data=request.data)
-
+        item_id = request.data['id']
+        queryset = UserExperience.objects.get(user=user, id=item_id)
+        serializer_class = UserExperienceSerializer(queryset, data=request.data)
+        # 
+        # print(serializer_class)
         # Handle date format
         # date = request.data['date_of_birth']
         # date_object = datetime.fromisoformat(date[:-1])  # Remove the "Z" at the end
         # request.data['date_of_birth'] = date_object.strftime('%Y-%m-%d')
-        print(request.data)
+        # print(request.data)
         if serializer_class.is_valid():
             serializer_class.save()
             return Response(serializer_class.data)

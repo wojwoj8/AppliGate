@@ -10,8 +10,7 @@ interface ProfileExperienceProps {
     singleExperience: ExperienceData | null;
     setSingleExperience: React.Dispatch<React.SetStateAction<ExperienceData | null>>;
     setExperience: React.Dispatch<React.SetStateAction<ExperienceData[]>>;
-    
-    editExperienceData: () => void;
+    editExperienceData: (index: number) => Promise<void>;
     getExperienceData: () => void;
     err: ErrorResponse | undefined;
     setErr: React.Dispatch<React.SetStateAction<ErrorResponse | undefined>>;
@@ -19,6 +18,8 @@ interface ProfileExperienceProps {
     editExperience: boolean;
     renderFieldError: (field: string, error: ErrorResponse | undefined) => React.ReactNode;
     sendExperienceData: () => void;
+    editMultipleExperiences: boolean[];
+    setEditMultipleExperiences: React.Dispatch<React.SetStateAction<boolean[]>>;
 
 }
 
@@ -26,7 +27,28 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     experience, setExperience, editExperience, getExperienceData,
     err, setErr, setEditExperience, editExperienceData,
     renderFieldError, sendExperienceData,singleExperience, setSingleExperience,
+    editMultipleExperiences, setEditMultipleExperiences
 }) =>{
+
+    
+
+    const editMultipleExperiencesButton = (index: number) => {
+        setEditMultipleExperiences((prevEditExperiences) => {
+          const newEditExperiences = [...prevEditExperiences];
+          newEditExperiences[index] = !prevEditExperiences[index];
+          return newEditExperiences;
+        });
+    }
+
+    
+    const cancelEditMultipleExperiences = (index: number) => {
+        setEditMultipleExperiences((prevEditExperiences) => {
+          const newEditExperiences = [...prevEditExperiences];
+          newEditExperiences[index] = false;
+          return newEditExperiences;
+        });
+        getExperienceData();
+      };
 
     const editExperienceButton = () =>{
         setEditExperience(!editExperience);
@@ -42,7 +64,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     }
 
     const saveEdit = async (index: number) =>{
-        await editExperienceData()
+        await editExperienceData(index)
         // setEditPersonal(false);
     }
     const saveExperience = async () =>{
@@ -176,9 +198,14 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             </div>
                         </div>
                         )}
-                {/* {experience.map((experience, index) => (
+                {experience.map((experience, index) => (
                     <div key={index} className='text-center row'>
-                        {!editExperience && (
+                        <div className='col-auto'>
+                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleExperiencesButton(index)}>
+                                <Icon path={mdiPencil} size={1} />
+                            </button>
+                        </div>
+                        {!editMultipleExperiences[index] && (
                         <div className='col-auto col-md-8 col-sm-6 text-start'>
                             <h2 className='mb-1 text-primary fs-1'>
                             {experience?.position || ''} {experience?.localization || ''}
@@ -188,7 +215,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                         </div>
                         )}
 
-                        {editExperience && (
+                        {editMultipleExperiences[index] && (
                         <div className='container'>
                             <form>
                             <div className='row'>
@@ -250,17 +277,17 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             </div>
                             </form>
                             <div className='text-center'>
-                            <button className='btn btn-secondary' onClick={cancelEditExperience}>
+                            <button className='btn btn-secondary' onClick={() => cancelEditMultipleExperiences(index)}>
                                 Cancel
                             </button>
-                            <button className='btn btn-primary' onClick={() => saveExperience(index)}>
+                            <button className='btn btn-primary' onClick={() => saveEdit(index)}>
                                 Save
                             </button>
                             </div>
                         </div>
                         )}
                     </div>
-                    ))} */}
+                    ))}
             </div>
         </div>
         </div>

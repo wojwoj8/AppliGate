@@ -19,5 +19,5 @@ class ProfileSerializer(serializers.ModelSerializer):
 class UserExperienceSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserExperience
-        fields = ['position', 'localization', 'company', 'from_date', 'to_date', 'responsibilities']
+        fields = ['id', 'position', 'localization', 'company', 'from_date', 'to_date', 'responsibilities']
         # exclude = ('user',)

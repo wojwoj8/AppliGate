@@ -39,6 +39,7 @@ const Profile: React.FC = () =>{
     const [editPersonal, setEditPersonal] = useState(false);
     const [editContact, setEditContact] = useState(false);
     const [editExperience, setEditExperience] = useState(false);
+    const [editMultipleExperiences, setEditMultipleExperiences] = useState<boolean[]>([]);
 
 
     const renderFieldError = (field: string, error : ErrorResponse | undefined) => {
@@ -178,15 +179,21 @@ const Profile: React.FC = () =>{
 
 
 
-    const editExperienceData = async () =>{
+    const editExperienceData = async (index: number) =>{
+        console.log(index)
         try{
-            const response = await axios.put('/profile/experience', experience,  {
+            const response = await axios.put('/profile/experience', experience[index],  {
                 headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
                 },
               });
-            setEditExperience(false)
+              setEditMultipleExperiences((prevEditExperiences) => {
+                const newEditExperiences = [...prevEditExperiences];
+                newEditExperiences[index] = false;
+                return newEditExperiences;
+              });
+              getExperienceData();
 
             setErr({})
         }catch (error: any) {
@@ -231,7 +238,6 @@ const Profile: React.FC = () =>{
             <ProfileExperience
                 experience={experience}
                 setExperience={setExperience}
-                
                 editExperience={editExperience}
                 setEditExperience={setEditExperience}
                 editExperienceData={editExperienceData}
@@ -242,6 +248,11 @@ const Profile: React.FC = () =>{
                 sendExperienceData={sendExperienceData}
                 singleExperience={singleExperience}
                 setSingleExperience={setSingleExperience}
+                editMultipleExperiences={editMultipleExperiences}
+                setEditMultipleExperiences={setEditMultipleExperiences}
+
+
+
             />
         </div>
     )

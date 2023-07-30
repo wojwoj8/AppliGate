@@ -51,24 +51,30 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
         index: number,
         event: React.ChangeEvent<HTMLInputElement>,
         
-      ) => {
-        const { name, value } = event.target;
-      
+    ) => {
+        let { name, value } = event.target;
+        name = name.substring(0, name.lastIndexOf('_'));
+        console.log(value)
         // Create an object with the new property and value
         const updatedProperty = {
-          [name]: value,
+        [name]: value,
         };
-      
+    
         setExperience((prevExperience) => {
-          const updatedExperiences = [...prevExperience];
-          updatedExperiences[index] = {
+        const updatedExperiences = [...prevExperience];
+        // console.log(updatedExperiences)
+        // console.log(...prevExperience)
+        // console.log(updatedExperiences[index])
+        console.log(updatedProperty)
+        updatedExperiences[index] = {
             ...updatedExperiences[index],
             ...updatedProperty, // Spread the new property and value into the existing object
-          };
-          return updatedExperiences; // Return the updated state
+        };
+        console.log(typeof(updatedExperiences))
+        return updatedExperiences; // Return the updated state
         });
-      };
-      console.log(experience)
+    };
+    //   console.log(typeof(experience))
     return(
         <div className="container ">
             <div className='border border-1 border-danger'>
@@ -84,7 +90,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                
                 {experience.map((experience, index) => (
                     <div key={index} className='text-center row'>
-                        {/* {!editExperience && ( */}
+                        {!editExperience && (
                         <div className='col-auto col-md-8 col-sm-6 text-start'>
                             <h2 className='mb-1 text-primary fs-1'>
                             {experience?.position || ''} {experience?.localization || ''}
@@ -92,7 +98,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             <p>{experience?.company || ''}</p>
                             <p>{experience?.responsibilities || ''}</p>
                         </div>
-                        {/* )} */}
+                        )}
 
                         {editExperience && (
                         <div className='container'>

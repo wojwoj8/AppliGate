@@ -40,6 +40,7 @@ const Profile: React.FC = () =>{
     const [editContact, setEditContact] = useState(false);
     const [editExperience, setEditExperience] = useState(false);
     const [editMultipleExperiences, setEditMultipleExperiences] = useState<boolean[]>([]);
+    const [multipleErrors, setMultipleErrors] = useState<ErrorResponse[]>([])
 
 
     const renderFieldError = (field: string, error : ErrorResponse | undefined) => {
@@ -200,6 +201,13 @@ const Profile: React.FC = () =>{
         }catch (error: any) {
             const axiosError = error as AxiosError<ErrorResponse>;
             if (axiosError.response?.data) {
+                const keys = Object.keys(axiosError.response?.data)
+                keys.forEach((key) => {
+                    const newKey = key + `_${index}`;
+                    axiosError.response!.data[newKey] = axiosError.response!.data[key];
+                    delete axiosError.response!.data[key];
+                });
+                console.log(axiosError.response?.data)
               setErr(axiosError.response.data);
             }
             console.log(error);

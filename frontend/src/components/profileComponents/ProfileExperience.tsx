@@ -47,7 +47,9 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
           newEditExperiences[index] = false;
           return newEditExperiences;
         });
+        setErr({})
         await getExperienceData();
+
       };
 
     const editExperienceButton = () =>{
@@ -60,7 +62,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     const cancelEditExperience = async () =>{
         setEditExperience(false);
         setErr({})
-        await getExperienceData();
+        // await getExperienceData();
         setSingleExperience(null)
     }
 
@@ -95,7 +97,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     ) => {
         let { name, value } = event.target;
         name = name.substring(0, name.lastIndexOf('_'));
-        console.log(value)
+        // console.log(value)
         // Create an object with the new property and value
         const updatedProperty = {
         [name]: value,
@@ -106,12 +108,12 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
         // console.log(updatedExperiences)
         // console.log(...prevExperience)
         // console.log(updatedExperiences[index])
-        console.log(updatedProperty)
+        // console.log(updatedProperty)
         updatedExperiences[index] = {
             ...updatedExperiences[index],
             ...updatedProperty, // Spread the new property and value into the existing object
         };
-        console.log(typeof(updatedExperiences))
+        // console.log(typeof(updatedExperiences))
         return updatedExperiences; // Return the updated state
         });
     };
@@ -226,6 +228,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                         )}
                 {experience.map((experience, index) => (
                     <div key={index} className='text-center row'>
+                        {index >= 1 && <hr className="border border-primary border-3 my-1"></hr>}
                         <div className='col-auto'>
                             <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleExperiencesButton(index)}>
                                 <Icon path={mdiPencil} size={1} />
@@ -258,7 +261,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 <input
                                     type='text'
                                     name={`position_${index}`}
-                                    className={`form-control ${err && err.position && ' is-invalid'}`}
+                                    className={`form-control ${err && err.hasOwnProperty(`position_${index}`) && ' is-invalid'}`}
                                     value={experience?.position || ''}
                                     onChange={(e) => handleExperienceInputChange(index, e)}
                                 />
@@ -271,7 +274,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 <input
                                     type='text'
                                     name={`localization_${index}`}
-                                    className={`form-control ${err && err.localization && ' is-invalid'}`}
+                                    className={`form-control ${err && err.hasOwnProperty(`localization_${index}`) && ' is-invalid'}`}
                                     value={experience?.localization || ''}
                                     onChange={(e) => handleExperienceInputChange(index, e)}
                                 />
@@ -284,10 +287,12 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 <input
                                     type='text'
                                     name={`company_${index}`}
-                                    className={`form-control ${err && err.company && ' is-invalid'}`}
+                                    className={`form-control ${err && err.hasOwnProperty(`company_${index}`) && ' is-invalid'}`}
                                     value={experience?.company || ''}
                                     onChange={(e) => handleExperienceInputChange(index, e)}
                                 />
+                                
+                                
                                 {renderFieldError(`company_${index}`, err)}
                                 </div>
                             </div>
@@ -299,7 +304,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                     <input 
                                         type="month" 
                                         name={`from_date_${index}`}
-                                        className={`form-control ${err && err.from_date && ' is-invalid'}`}
+                                        className={`form-control ${err && err.hasOwnProperty(`from_date_${index}`) && ' is-invalid'}`}
                                         value={experience?.from_date || ''}
                                         onChange={(e) => handleExperienceInputChange(index, e)}
                                     />
@@ -311,7 +316,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                     <input 
                                         type="month" 
                                         name={`to_date_${index}`}
-                                        className={`form-control ${err && err.to_date && ' is-invalid'}`}
+                                        className={`form-control ${err && err.hasOwnProperty(`to_date_${index}`) && ' is-invalid'}`}
                                         value={experience?.to_date || ''}
                                         onChange={(e) => handleExperienceInputChange(index, e)}
                                     />
@@ -325,7 +330,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 <input
                                     type='text'
                                     name={`responsibilities_${index}`}
-                                    className={`form-control ${err && err.responsibilities && ' is-invalid'}`}
+                                    className={`form-control ${err && err.hasOwnProperty(`responsibilities_${index}`)  && 'is-invalid'}`}
                                     value={experience?.responsibilities || ''}
                                     onChange={(e) => handleExperienceInputChange(index, e)}
                                 />
@@ -345,7 +350,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                         </div>
                         
                         )}
-                        <hr className="border border-primary border-3 my-1"></hr>
+                        
                     </div>
                     ))}
             </div>

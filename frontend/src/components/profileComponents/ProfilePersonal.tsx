@@ -123,7 +123,9 @@ const ProfilePersonal: React.FC<ProfilePersonalProps> = ({
                             <button className='btn btn-secondary' onClick={cancelEditProfile}>Cancel</button>
                             <button className='btn btn-primary' onClick={saveEdit}>Save</button>
                         </div>
+                        
                     </div>
+                    
                     
                 }
             </div>

@@ -41,13 +41,13 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     }
 
     
-    const cancelEditMultipleExperiences = (index: number) => {
+    const cancelEditMultipleExperiences = async (index: number) => {
         setEditMultipleExperiences((prevEditExperiences) => {
           const newEditExperiences = [...prevEditExperiences];
           newEditExperiences[index] = false;
           return newEditExperiences;
         });
-        getExperienceData();
+        await getExperienceData();
       };
 
     const editExperienceButton = () =>{
@@ -57,10 +57,11 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
         }
         
     }
-    const cancelEditExperience = () =>{
+    const cancelEditExperience = async () =>{
         setEditExperience(false);
         setErr({})
-        getExperienceData();
+        await getExperienceData();
+        setSingleExperience(null)
     }
 
     const saveEdit = async (index: number) =>{
@@ -171,7 +172,32 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 {renderFieldError(`company`, err)}
                                 </div>
                             </div>
-
+                            <div className='row'>
+                                <div className='mb-3 col-4'>
+                                    <label htmlFor={`from_date`} className='form-label'>
+                                        From:
+                                    </label>
+                                    <input 
+                                        type="month" 
+                                        name={`from_date`}
+                                        className={`form-control ${err && err.from_date && ' is-invalid'}`}
+                                        value={singleExperience?.from_date || ''}
+                                        onChange={handleSingleInputChange}
+                                    />
+                                </div>
+                                <div className='mb-3 col-4'>
+                                    <label htmlFor={`to_date`} className='form-label'>
+                                        From:
+                                    </label>
+                                    <input 
+                                        type="month" 
+                                        name={`to_date`}
+                                        className={`form-control ${err && err.to_date && ' is-invalid'}`}
+                                        value={singleExperience?.to_date || ''}
+                                        onChange={handleSingleInputChange}
+                                    />
+                                </div>
+                            </div>
                             <div className='row'>
                                 <div className='mb-3 col-4'>
                                 <label htmlFor={`responsibilities`} className='form-label'>
@@ -211,10 +237,16 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             {experience?.position || ''} {experience?.localization || ''}
                             </h2>
                             <p>{experience?.company || ''}</p>
+                            {experience?.from_date && !experience?.to_date && <p>From: {experience?.from_date}</p>} 
+                            {experience?.from_date && experience?.to_date && <p>From: {experience?.from_date} to: {experience?.to_date}</p>} 
+                            {!experience?.from_date && experience?.to_date && <p>To: {experience?.to_date}</p>}    
+                            {/* <p>From: {experience?.from_date || ''} to: {experience?.to_date || ''}</p> */}
                             <p>{experience?.responsibilities || ''}</p>
+                            
                         </div>
+                        
                         )}
-
+                        
                         {editMultipleExperiences[index] && (
                         <div className='container'>
                             <form>
@@ -259,7 +291,32 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 {renderFieldError(`company_${index}`, err)}
                                 </div>
                             </div>
-
+                            <div className='row'>
+                                <div className='mb-3 col-4'>
+                                    <label htmlFor={`from_date_${index}`} className='form-label'>
+                                        From:
+                                    </label>
+                                    <input 
+                                        type="month" 
+                                        name={`from_date_${index}`}
+                                        className={`form-control ${err && err.from_date && ' is-invalid'}`}
+                                        value={experience?.from_date || ''}
+                                        onChange={(e) => handleExperienceInputChange(index, e)}
+                                    />
+                                </div>
+                                <div className='mb-3 col-4'>
+                                    <label htmlFor={`to_date_${index}`} className='form-label'>
+                                        To:
+                                    </label>
+                                    <input 
+                                        type="month" 
+                                        name={`to_date_${index}`}
+                                        className={`form-control ${err && err.to_date && ' is-invalid'}`}
+                                        value={experience?.to_date || ''}
+                                        onChange={(e) => handleExperienceInputChange(index, e)}
+                                    />
+                                </div>
+                            </div>
                             <div className='row'>
                                 <div className='mb-3 col-4'>
                                 <label htmlFor={`responsibilities_${index}`} className='form-label'>
@@ -284,8 +341,11 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 Save
                             </button>
                             </div>
+                            
                         </div>
+                        
                         )}
+                        <hr className="border border-primary border-3 my-1"></hr>
                     </div>
                     ))}
             </div>

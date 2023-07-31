@@ -19,8 +19,8 @@ export interface ProfileData{
 export interface ExperienceData{
     position: string;
     localization: string;
-    from_date: Date;
-    to_date: Date;
+    from_date: string;
+    to_date: string;
     company: string;
     responsibilities: string;
 }
@@ -168,6 +168,7 @@ const Profile: React.FC = () =>{
 
             setErr({})
             getExperienceData()
+            setSingleExperience(null)
         }catch (error: any) {
             const axiosError = error as AxiosError<ErrorResponse>;
             if (axiosError.response?.data) {

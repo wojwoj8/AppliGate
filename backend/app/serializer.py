@@ -1,6 +1,7 @@
 #for translating data to JSON
 from rest_framework import serializers
 from .models import User, UserExperience
+from datetime import datetime
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,8 +17,27 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ['current_position', 'first_name', 'last_name', 'date_of_birth', 'country', 'city', 'email','phone_number']
 
+class MonthYearDateField(serializers.Field):
+    def to_internal_value(self, value):
+        if value is '':
+            
+            return None
+        try:
+            # Parse "YYYY-MM" formatted date string and add day component as 1
+            return datetime.strptime(value + "-01", "%Y-%m-%d").date()
+        except ValueError:
+            raise serializers.ValidationError("Invalid date format. Use 'YYYY-MM'.")
+
+    def to_representation(self, value):
+        # Convert date object to "YYYY-MM" formatted string without the day component
+        if value is '':
+            return None
+        return value.strftime("%Y-%m")
+
 class UserExperienceSerializer(serializers.ModelSerializer):
+    from_date = MonthYearDateField(allow_null=True, required=False)
+    to_date = MonthYearDateField(allow_null=True, required=False)
+
     class Meta:
         model = UserExperience
         fields = ['id', 'position', 'localization', 'company', 'from_date', 'to_date', 'responsibilities']
-        # exclude = ('user',)

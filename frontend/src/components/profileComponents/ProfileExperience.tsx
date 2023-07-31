@@ -4,6 +4,7 @@ import { mdiPencil } from '@mdi/js';
 import { ProfileData } from '../Profile';
 import { ErrorResponse } from '../Profile';
 import { ExperienceData } from '../Profile';
+import { MultipleErrorResponse } from '../Profile';
 
 interface ProfileExperienceProps {
     experience: ExperienceData[];
@@ -20,16 +21,19 @@ interface ProfileExperienceProps {
     sendExperienceData: () => void;
     editMultipleExperiences: boolean[];
     setEditMultipleExperiences: React.Dispatch<React.SetStateAction<boolean[]>>;
-    multipleErrors: ErrorResponse[];
-    setMultipleErrors: React.Dispatch<React.SetStateAction<ErrorResponse[]>>;
-
+    multipleErrors: MultipleErrorResponse;
+    setMultipleErrors: React.Dispatch<React.SetStateAction<MultipleErrorResponse>>;
+    removeMultipleErrors: (key: string, index: number) => void;
+    handleMultipleErrors: (key: string, index: number, errorData: ErrorResponse) => void;
+    renderFieldErrorMultiple: (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => React.ReactNode;
 }
 
 const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     experience, setExperience, editExperience, getExperienceData,
     err, setErr, setEditExperience, editExperienceData,
     renderFieldError, sendExperienceData,singleExperience, setSingleExperience,
-    editMultipleExperiences, setEditMultipleExperiences
+    editMultipleExperiences, setEditMultipleExperiences, multipleErrors, setMultipleErrors,
+    removeMultipleErrors, handleMultipleErrors, renderFieldErrorMultiple
 }) =>{
 
     
@@ -49,7 +53,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
           newEditExperiences[index] = false;
           return newEditExperiences;
         });
-        setErr({})
+        removeMultipleErrors('experience', index)
         await getExperienceData();
 
       };
@@ -255,91 +259,91 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                         {editMultipleExperiences[index] && (
                         <div className='container'>
                             <form>
-                            <div className='row'>
-                                <div className='mb-3 col-4'>
-                                <label htmlFor={`position_${index}`} className='form-label'>
-                                    Position:
-                                </label>
-                                <input
-                                    type='text'
-                                    name={`position_${index}`}
-                                    className={`form-control ${err && err.hasOwnProperty(`position_${index}`) && ' is-invalid'}`}
-                                    value={experience?.position || ''}
-                                    onChange={(e) => handleExperienceInputChange(index, e)}
-                                />
-                                {renderFieldError(`position_${index}`, err)}
+                                <div className='row'>
+                                    <div className='mb-3 col-4'>
+                                    <label htmlFor={`position_${index}`} className='form-label'>
+                                        Position:
+                                    </label>
+                                    <input
+                                        type='text'
+                                        name={`position_${index}`}
+                                        className={`form-control${renderFieldErrorMultiple('experience', index, `position_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
+                                        value={experience?.position || ''}
+                                        onChange={(e) => handleExperienceInputChange(index, e)}
+                                    />
+                                    {renderFieldErrorMultiple('experience', index, `position_${index}`, multipleErrors)}
+                                    </div>
+                                    <div className='mb-3 col-4'>
+                                    <label htmlFor={`localization_${index}`} className='form-label'>
+                                        Localization:
+                                    </label>
+                                    <input
+                                        type='text'
+                                        name={`localization_${index}`}
+                                        className={`form-control${renderFieldErrorMultiple('experience', index, `localization_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
+                                        value={experience?.localization || ''}
+                                        onChange={(e) => handleExperienceInputChange(index, e)}
+                                    />
+                                    {renderFieldErrorMultiple('experience', index, `localization_${index}`, multipleErrors)}
+                                    </div>
+                                    <div className='mb-3 col-4'>
+                                    <label htmlFor={`company_${index}`} className='form-label'>
+                                        Company:
+                                    </label>
+                                    <input
+                                        type='text'
+                                        name={`company_${index}`}
+                                        className={`form-control${renderFieldErrorMultiple('experience', index, `company_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
+                                        value={experience?.company || ''}
+                                        onChange={(e) => handleExperienceInputChange(index, e)}
+                                    />
+                                    {renderFieldErrorMultiple('experience', index, `company_${index}`, multipleErrors)}
+                                    </div>
                                 </div>
-                                <div className='mb-3 col-4'>
-                                <label htmlFor={`localization_${index}`} className='form-label'>
-                                    Localization:
-                                </label>
-                                <input
-                                    type='text'
-                                    name={`localization_${index}`}
-                                    className={`form-control ${err && err.hasOwnProperty(`localization_${index}`) && ' is-invalid'}`}
-                                    value={experience?.localization || ''}
-                                    onChange={(e) => handleExperienceInputChange(index, e)}
-                                />
-                                {renderFieldError(`localization_${index}`, err)}
-                                </div>
-                                <div className='mb-3 col-4'>
-                                <label htmlFor={`company_${index}`} className='form-label'>
-                                    Company:
-                                </label>
-                                <input
-                                    type='text'
-                                    name={`company_${index}`}
-                                    className={`form-control ${err && err.hasOwnProperty(`company_${index}`) && ' is-invalid'}`}
-                                    value={experience?.company || ''}
-                                    onChange={(e) => handleExperienceInputChange(index, e)}
-                                />
-                                
-                                
-                                {renderFieldError(`company_${index}`, err)}
-                                </div>
-                            </div>
-                            <div className='row'>
-                                <div className='mb-3 col-4'>
+                                <div className='row'>
+                                    <div className='mb-3 col-4'>
                                     <label htmlFor={`from_date_${index}`} className='form-label'>
                                         From:
                                     </label>
-                                    <input 
-                                        type="month" 
+                                    <input
+                                        type='month'
                                         name={`from_date_${index}`}
-                                        className={`form-control ${err && err.hasOwnProperty(`from_date_${index}`) && ' is-invalid'}`}
+                                        className={`form-control${renderFieldErrorMultiple('experience', index, `from_date_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={experience?.from_date || ''}
                                         onChange={(e) => handleExperienceInputChange(index, e)}
                                     />
-                                </div>
-                                <div className='mb-3 col-4'>
+                                    {renderFieldErrorMultiple('experience', index, `from_date_${index}`, multipleErrors)}
+                                    </div>
+                                    <div className='mb-3 col-4'>
                                     <label htmlFor={`to_date_${index}`} className='form-label'>
                                         To:
                                     </label>
-                                    <input 
-                                        type="month" 
+                                    <input
+                                        type='month'
                                         name={`to_date_${index}`}
-                                        className={`form-control ${err && err.hasOwnProperty(`to_date_${index}`) && ' is-invalid'}`}
+                                        className={`form-control${renderFieldErrorMultiple('experience', index, `to_date_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={experience?.to_date || ''}
                                         onChange={(e) => handleExperienceInputChange(index, e)}
                                     />
+                                    {renderFieldErrorMultiple('experience', index, `to_date_${index}`, multipleErrors)}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='row'>
-                                <div className='mb-3 col-4'>
-                                <label htmlFor={`responsibilities_${index}`} className='form-label'>
-                                    Responsibilities:
-                                </label>
-                                <input
-                                    type='text'
-                                    name={`responsibilities_${index}`}
-                                    className={`form-control ${err && err.hasOwnProperty(`responsibilities_${index}`)  && 'is-invalid'}`}
-                                    value={experience?.responsibilities || ''}
-                                    onChange={(e) => handleExperienceInputChange(index, e)}
-                                />
-                                {renderFieldError(`responsibilities_${index}`, err)}
+                                <div className='row'>
+                                    <div className='mb-3 col-4'>
+                                    <label htmlFor={`responsibilities_${index}`} className='form-label'>
+                                        Responsibilities:
+                                    </label>
+                                    <input
+                                        type='text'
+                                        name={`responsibilities_${index}`}
+                                        className={`form-control${renderFieldErrorMultiple('experience', index, `responsibilities_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
+                                        value={experience?.responsibilities || ''}
+                                        onChange={(e) => handleExperienceInputChange(index, e)}
+                                    />
+                                    {renderFieldErrorMultiple('experience', index, `responsibilities_${index}`, multipleErrors)}
+                                    </div>
                                 </div>
-                            </div>
-                            </form>
+                                </form>
                             <div className='text-center'>
                             <button className='btn btn-secondary' onClick={() => cancelEditMultipleExperiences(index)}>
                                 Cancel

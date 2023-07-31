@@ -28,6 +28,18 @@ export interface ErrorResponse{
 
     [key: string]: string[];
 }
+export interface MultipleErrorResponse {
+  [key: string]: {
+    [key: number]: {
+      [key: string]: string[];
+    };
+  };
+}
+
+const initialMultipleErrors: MultipleErrorResponse = {
+  contact: {},
+  experience: {}
+};
 
 const Profile: React.FC = () =>{
     const [profile, setProfile] = useState<ProfileData | null>(null);
@@ -40,7 +52,7 @@ const Profile: React.FC = () =>{
     const [editContact, setEditContact] = useState(false);
     const [editExperience, setEditExperience] = useState(false);
     const [editMultipleExperiences, setEditMultipleExperiences] = useState<boolean[]>([]);
-    const [multipleErrors, setMultipleErrors] = useState<ErrorResponse[]>([])
+    const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
 
 
     const renderFieldError = (field: string, error : ErrorResponse | undefined) => {
@@ -48,6 +60,22 @@ const Profile: React.FC = () =>{
             return <span className="text-danger">{error[field][0]}</span>;
         }
         return null;
+    };
+
+    const renderFieldErrorMultiple = (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => {
+      if (error && error[field] && typeof error[field][index] === "object" && error[field][index].hasOwnProperty(errorKey)) {
+        const messages = error[field][index][errorKey];
+        return (
+          <div>
+            {messages.map((message, i) => (
+              <span key={i} className="text-danger">
+                {message}
+              </span>
+            ))}
+          </div>
+        );
+      }
+      return null;
     };
 
     // PERSONAL/CONTACT
@@ -198,8 +226,9 @@ const Profile: React.FC = () =>{
               });
               getExperienceData();
 
-            setErr({})
+              removeMultipleErrors('experience', index)
         }catch (error: any) {
+            removeMultipleErrors('experience', index)
             const axiosError = error as AxiosError<ErrorResponse>;
             if (axiosError.response?.data) {
                 const keys = Object.keys(axiosError.response?.data)
@@ -209,13 +238,35 @@ const Profile: React.FC = () =>{
                     delete axiosError.response!.data[key];
                 });
                 console.log(axiosError.response?.data)
-              setErr(axiosError.response.data);
+                handleMultipleErrors('experience', index, axiosError.response?.data)
+              // setErr(axiosError.response.data);
             }
             console.log(error);
           }
     }
 
+    const handleMultipleErrors = (key: string, index: number, errorData: ErrorResponse) => {
+      setMultipleErrors((prevState) => ({
+        ...prevState,
+        [key]: {
+          ...(prevState[key] || {}),
+          [index]: {
+            ...(prevState[key]?.[index] || {}),
+            ...errorData
+          }
+        }
+      }));
+    };
 
+    const removeMultipleErrors = (key: string, index: number) => {
+      setMultipleErrors((prevState) => ({
+        ...prevState,
+        [key]: {
+          ...(prevState[key] || {}),
+          [index]: {}
+        }
+      }));
+    };
 
     useEffect(() =>{
         getProfileData();
@@ -262,6 +313,9 @@ const Profile: React.FC = () =>{
                 setEditMultipleExperiences={setEditMultipleExperiences}
                 multipleErrors={multipleErrors}
                 setMultipleErrors={setMultipleErrors}
+                handleMultipleErrors={handleMultipleErrors}
+                removeMultipleErrors={removeMultipleErrors}
+                renderFieldErrorMultiple={renderFieldErrorMultiple}
 
             />
         </div>

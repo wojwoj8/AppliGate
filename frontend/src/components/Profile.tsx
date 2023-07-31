@@ -50,6 +50,7 @@ const Profile: React.FC = () =>{
         return null;
     };
 
+    // PERSONAL/CONTACT
     const getProfileData = async () =>{
         try{
             const response = await axios.get('/profile/', {
@@ -259,8 +260,8 @@ const Profile: React.FC = () =>{
                 setSingleExperience={setSingleExperience}
                 editMultipleExperiences={editMultipleExperiences}
                 setEditMultipleExperiences={setEditMultipleExperiences}
-
-
+                multipleErrors={multipleErrors}
+                setMultipleErrors={setMultipleErrors}
 
             />
         </div>

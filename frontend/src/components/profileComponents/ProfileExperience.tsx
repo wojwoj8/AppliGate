@@ -20,6 +20,8 @@ interface ProfileExperienceProps {
     sendExperienceData: () => void;
     editMultipleExperiences: boolean[];
     setEditMultipleExperiences: React.Dispatch<React.SetStateAction<boolean[]>>;
+    multipleErrors: ErrorResponse[];
+    setMultipleErrors: React.Dispatch<React.SetStateAction<ErrorResponse[]>>;
 
 }
 
@@ -123,7 +125,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
             <div className='border border-1 border-danger'>
                 <div className="container">
                     <div className='text-center bg-info-subtle row'>
-                        <p className='fs-4 fw-semibold text-info col'>Experience</p>
+                        <p className='fs-4 fw-semibold text-info col'>Work Experience</p>
                         <div className='col-auto'>
                             <button className='btn btn btn-outline-secondary btn-sm' onClick={editExperienceButton}>
                                 Add experience

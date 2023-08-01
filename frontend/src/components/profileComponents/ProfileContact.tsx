@@ -1,10 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
-import axios, { AxiosError } from 'axios';
+import React from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
-import AuthContext from '../../utils/AuthProvider';
 import { ProfileData } from '../Profile';
-import { ErrorResponse } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
 
 interface ProfileContactProps{
@@ -12,15 +9,10 @@ interface ProfileContactProps{
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     editProfileData: () => void;
     getProfileData: () => void;
-    
-    
     setEditContact: React.Dispatch<React.SetStateAction<boolean>>;
     editContact: boolean;
-    
     multipleErrors: MultipleErrorResponse;
-    
     removeMultipleErrors: (key: string, index: number) => void;
-    
     renderFieldErrorMultiple: (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => React.ReactNode;
 }
 
@@ -32,6 +24,7 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
     const editContactData = () =>{
         setEditContact(!editContact);
         if(editContact === true){
+            removeMultipleErrors('profile', 0)
             getProfileData();
         }
     }

@@ -24,6 +24,7 @@ export interface ExperienceData{
     company: string;
     responsibilities: string;
 }
+// for axios errors
 export interface ErrorResponse{
 
     [key: string]: string[];
@@ -45,7 +46,6 @@ const Profile: React.FC = () =>{
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [experience, setExperience] = useState<ExperienceData[]>([]);
     const [singleExperience, setSingleExperience] = useState<ExperienceData | null>(null);
-    const [err, setErr] = useState<ErrorResponse| undefined>(undefined)
     const { authTokens, logoutUser } = useContext(AuthContext);
 
     const [editPersonal, setEditPersonal] = useState(false);
@@ -53,14 +53,6 @@ const Profile: React.FC = () =>{
     const [editExperience, setEditExperience] = useState(false);
     const [editMultipleExperiences, setEditMultipleExperiences] = useState<boolean[]>([]);
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
-
-
-    const renderFieldError = (field: string, error : ErrorResponse | undefined) => {
-        if (error && error[field]) {
-            return <span className="text-danger">{error[field][0]}</span>;
-        }
-        return null;
-    };
 
     const renderFieldErrorMultiple = (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => {
       if (error && error[field] && typeof error[field][index] === "object" && error[field][index].hasOwnProperty(errorKey)) {
@@ -197,13 +189,14 @@ const Profile: React.FC = () =>{
               });
             setEditExperience(false)
 
-            removeMultipleErrors('profile', 0)
+            removeMultipleErrors('addexperience', 0)
             getExperienceData()
             setSingleExperience(null)
         }catch (error: any) {
+            removeMultipleErrors('addexperience', 0)
             const axiosError = error as AxiosError<ErrorResponse>;
             if (axiosError.response?.data) {
-              setErr(axiosError.response.data);
+              handleMultipleErrors('addexperience', 0, axiosError.response?.data)
             }
             console.log(error);
           }
@@ -280,25 +273,20 @@ const Profile: React.FC = () =>{
                 handleInputChange={handleInputChange}
                 editProfileData={editProfileData}
                 getProfileData={getProfileData}
-                err={err}
-                setErr={setErr}
                 setEditPersonal={setEditPersonal}
                 editPersonal={editPersonal}
-                renderFieldError={renderFieldError}
+                multipleErrors={multipleErrors}                                             
+                removeMultipleErrors={removeMultipleErrors}
+                renderFieldErrorMultiple={renderFieldErrorMultiple}
             />
             <ProfileContact
                 contact={profile}
                 handleInputChange={handleInputChange}
                 editProfileData={editProfileData}
                 getProfileData={getProfileData}
-
-
                 setEditContact={setEditContact}
-                editContact={editContact}
-           
-                multipleErrors={multipleErrors}
-              
-                
+                editContact={editContact}     
+                multipleErrors={multipleErrors}                                             
                 removeMultipleErrors={removeMultipleErrors}
                 renderFieldErrorMultiple={renderFieldErrorMultiple}
 
@@ -310,17 +298,12 @@ const Profile: React.FC = () =>{
                 setEditExperience={setEditExperience}
                 editExperienceData={editExperienceData}
                 getExperienceData={getExperienceData}
-                err={err}
-                setErr={setErr}
-                renderFieldError={renderFieldError}
                 sendExperienceData={sendExperienceData}
                 singleExperience={singleExperience}
                 setSingleExperience={setSingleExperience}
                 editMultipleExperiences={editMultipleExperiences}
                 setEditMultipleExperiences={setEditMultipleExperiences}
                 multipleErrors={multipleErrors}
-                setMultipleErrors={setMultipleErrors}
-                handleMultipleErrors={handleMultipleErrors}
                 removeMultipleErrors={removeMultipleErrors}
                 renderFieldErrorMultiple={renderFieldErrorMultiple}
 

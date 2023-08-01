@@ -1,27 +1,27 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
 import { ProfileData } from '../Profile';
-import { ErrorResponse } from '../Profile';
+import { MultipleErrorResponse } from '../Profile';
 
 interface ProfilePersonalProps {
     personal: ProfileData | null;
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     editProfileData: () => void;
     getProfileData: () => void;
-    err: ErrorResponse | undefined;
-    setErr: React.Dispatch<React.SetStateAction<ErrorResponse | undefined>>;
     setEditPersonal: React.Dispatch<React.SetStateAction<boolean>>;
     editPersonal: boolean;
-    renderFieldError: (field: string, error: ErrorResponse | undefined) => React.ReactNode;
+    multipleErrors: MultipleErrorResponse;
+    removeMultipleErrors: (key: string, index: number) => void;
+    renderFieldErrorMultiple: (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => React.ReactNode;
   }
 
 
 
 const ProfilePersonal: React.FC<ProfilePersonalProps> = ({ 
-    personal, setEditPersonal, editPersonal, err, setErr, 
+    personal, setEditPersonal, editPersonal,
     handleInputChange, getProfileData, editProfileData,
-    renderFieldError}) => {
+    multipleErrors, removeMultipleErrors, renderFieldErrorMultiple}) => {
 
 
     // const { authTokens, logoutUser } = useContext(AuthContext);
@@ -29,13 +29,14 @@ const ProfilePersonal: React.FC<ProfilePersonalProps> = ({
     const editProfile = () =>{
         setEditPersonal(!editPersonal);
         if(editPersonal === true){
+            removeMultipleErrors('profile', 0)
             getProfileData();
         }
         
     }
     const cancelEditProfile = () =>{
         setEditPersonal(false);
-        setErr({})
+        removeMultipleErrors('profile', 0)
         getProfileData();
     }
 
@@ -82,39 +83,65 @@ const ProfilePersonal: React.FC<ProfilePersonalProps> = ({
                             <div className='row'>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='first_name' className="form-label">First name:</label>
-                                    <input type='text' name='first_name' className={`form-control ${err && err.first_name && ' is-invalid'}`} placeholder='John' value={personal?.first_name ?? ''} onChange={handleInputChange}></input>
-                                    {renderFieldError('first_name', err)}
+                                    <input 
+                                        type='text' name='first_name' 
+                                        className={`form-control${renderFieldErrorMultiple('profile', 0, `first_name`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                        placeholder='John' value={personal?.first_name ?? ''} 
+                                        onChange={handleInputChange}>
+                                    </input>
+                                    {renderFieldErrorMultiple('profile', 0, `first_name`, multipleErrors)}
                                 </div>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='last_name' className="form-label">Last name:</label>
-                                    <input type='text' name='last_name' className={`form-control ${err && err.last_name && ' is-invalid'}`} placeholder='Smith' value={personal?.last_name ?? ''} onChange={handleInputChange}></input>
-                                    {renderFieldError('last_name', err)}
+                                    <input 
+                                        type='text' name='last_name' 
+                                        className={`form-control${renderFieldErrorMultiple('profile', 0, `last_name`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                        placeholder='Smith' value={personal?.last_name ?? ''} 
+                                        onChange={handleInputChange}>
+                                    </input>
+                                    {renderFieldErrorMultiple('profile', 0, `last_name`, multipleErrors)}
                                 </div>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='current_position' className="form-label">Current Position:</label>
-                                    <input type='text' name='current_position' className={`form-control ${err && err.current_position && ' is-invalid'}`} value={personal?.current_position ?? ''} onChange={handleInputChange}></input>
-                                    {renderFieldError('current_position', err)}
+                                    <input 
+                                        type='text' name='current_position' 
+                                        className={`form-control${renderFieldErrorMultiple('profile', 0, `current_position`, multipleErrors) ? ' is-invalid' : ''}`}  
+                                        value={personal?.current_position ?? ''} onChange={handleInputChange}>                                      
+                                    </input>
+                                    {renderFieldErrorMultiple('profile', 0, `current_position`, multipleErrors)}
                                 </div>
                             </div>
    
                             <div className='row'>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='date_of_birth' className="form-label">Date of Birth:</label>
-                                    <input type='date' name='date_of_birth' className={`form-control ${err && err.date_of_birth && ' is-invalid'}`} 
+                                    <input 
+                                        type='date' name='date_of_birth' 
+                                        className={`form-control${renderFieldErrorMultiple('profile', 0, `date_of_birth`, multipleErrors) ? ' is-invalid' : ''}`} 
                                         value={personal?.date_of_birth ? personal.date_of_birth.toISOString().slice(0, 10) : ''}
                                         onChange={handleInputChange}>  
                                     </input>
-                                    {renderFieldError('date_of_birth', err)}
+                                    {renderFieldErrorMultiple('profile', 0, `date_of_birth`, multipleErrors)}
                                 </div>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='country' className="form-label">Country:</label>
-                                    <input type='text' name='country' className={`form-control ${err && err.country && ' is-invalid'}`} placeholder='Poland' value={personal?.country ?? ''} onChange={handleInputChange}></input>
-                                    {renderFieldError('country', err)}
+                                    <input 
+                                        type='text' name='country' 
+                                        className={`form-control${renderFieldErrorMultiple('profile', 0, `country`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                        placeholder='Poland' value={personal?.country ?? ''} 
+                                        onChange={handleInputChange}>
+                                    </input>
+                                    {renderFieldErrorMultiple('profile', 0, `country`, multipleErrors)}
                                 </div>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='city' className="form-label">City:</label>
-                                    <input type='text' name='city' className={`form-control ${err && err.city && ' is-invalid'}`} placeholder='Radom' value={personal?.city ?? ''} onChange={handleInputChange}></input>
-                                    {renderFieldError('city', err)}
+                                    <input 
+                                        type='text' name='city' 
+                                        className={`form-control${renderFieldErrorMultiple('profile', 0, `city`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                        placeholder='Radom' value={personal?.city ?? ''} 
+                                        onChange={handleInputChange}>                     
+                                    </input>
+                                    {renderFieldErrorMultiple('profile', 0, `city`, multipleErrors)}
                                 </div>
                             </div>
                             

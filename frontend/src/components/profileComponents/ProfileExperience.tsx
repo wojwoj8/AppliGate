@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
-import { ProfileData } from '../Profile';
-import { ErrorResponse } from '../Profile';
 import { ExperienceData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
 
@@ -13,27 +11,21 @@ interface ProfileExperienceProps {
     setExperience: React.Dispatch<React.SetStateAction<ExperienceData[]>>;
     editExperienceData: (index: number) => Promise<void>;
     getExperienceData: () => void;
-    err: ErrorResponse | undefined;
-    setErr: React.Dispatch<React.SetStateAction<ErrorResponse | undefined>>;
     setEditExperience: React.Dispatch<React.SetStateAction<boolean>>;
     editExperience: boolean;
-    renderFieldError: (field: string, error: ErrorResponse | undefined) => React.ReactNode;
     sendExperienceData: () => void;
     editMultipleExperiences: boolean[];
     setEditMultipleExperiences: React.Dispatch<React.SetStateAction<boolean[]>>;
     multipleErrors: MultipleErrorResponse;
-    setMultipleErrors: React.Dispatch<React.SetStateAction<MultipleErrorResponse>>;
     removeMultipleErrors: (key: string, index: number) => void;
-    handleMultipleErrors: (key: string, index: number, errorData: ErrorResponse) => void;
     renderFieldErrorMultiple: (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => React.ReactNode;
 }
 
 const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     experience, setExperience, editExperience, getExperienceData,
-    err, setErr, setEditExperience, editExperienceData,
-    renderFieldError, sendExperienceData,singleExperience, setSingleExperience,
-    editMultipleExperiences, setEditMultipleExperiences, multipleErrors, setMultipleErrors,
-    removeMultipleErrors, handleMultipleErrors, renderFieldErrorMultiple
+    setEditExperience, editExperienceData, sendExperienceData,singleExperience, setSingleExperience,
+    editMultipleExperiences, setEditMultipleExperiences, multipleErrors,
+    removeMultipleErrors, renderFieldErrorMultiple
 }) =>{
 
     
@@ -61,13 +53,14 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     const editExperienceButton = () =>{
         setEditExperience(!editExperience);
         if(editExperience === true){
+            removeMultipleErrors('addexperience', 0)
             getExperienceData();
         }
         
     }
     const cancelEditExperience = async () =>{
         setEditExperience(false);
-        setErr({})
+        removeMultipleErrors('addexperience', 0)
         // await getExperienceData();
         setSingleExperience(null)
     }
@@ -147,11 +140,11 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 <input
                                     type='text'
                                     name={`position`}
-                                    className={`form-control ${err && err.position && ' is-invalid'}`}
+                                    className={`form-control${renderFieldErrorMultiple('addexperience', 0, `position`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleExperience?.position || ''}
                                     onChange={handleSingleInputChange}
                                 />
-                                {renderFieldError(`position`, err)}
+                                {renderFieldErrorMultiple('addexperience', 0, `position`, multipleErrors)}
                                 </div>
                                 <div className='mb-3 col-4'>
                                 <label htmlFor={`localization`} className='form-label'>
@@ -160,11 +153,11 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 <input
                                     type='text'
                                     name={`localization`}
-                                    className={`form-control ${err && err.localization && ' is-invalid'}`}
+                                    className={`form-control${renderFieldErrorMultiple('addexperience', 0, `localization`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleExperience?.localization || ''}
                                     onChange={handleSingleInputChange}
                                 />
-                                {renderFieldError(`localization`, err)}
+                                {renderFieldErrorMultiple('addexperience', 0, `localization`, multipleErrors)}
                                 </div>
                                 <div className='mb-3 col-4'>
                                 <label htmlFor={`company`} className='form-label'>
@@ -173,11 +166,11 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 <input
                                     type='text'
                                     name={`company`}
-                                    className={`form-control ${err && err.company && ' is-invalid'}`}
+                                    className={`form-control${renderFieldErrorMultiple('addexperience', 0, `company`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleExperience?.company || ''}
                                     onChange={handleSingleInputChange}
                                 />
-                                {renderFieldError(`company`, err)}
+                                {renderFieldErrorMultiple('addexperience', 0, `company`, multipleErrors)}
                                 </div>
                             </div>
                             <div className='row'>
@@ -188,10 +181,11 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                     <input 
                                         type="month" 
                                         name={`from_date`}
-                                        className={`form-control ${err && err.from_date && ' is-invalid'}`}
+                                        className={`form-control${renderFieldErrorMultiple('addexperience', 0, `from_date`, multipleErrors) ? ' is-invalid' : ''}`} 
                                         value={singleExperience?.from_date || ''}
-                                        onChange={handleSingleInputChange}
+                                        onChange={handleSingleInputChange}                     
                                     />
+                                    {renderFieldErrorMultiple('addexperience', 0, `from_date`, multipleErrors)}
                                 </div>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor={`to_date`} className='form-label'>
@@ -200,10 +194,11 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                     <input 
                                         type="month" 
                                         name={`to_date`}
-                                        className={`form-control ${err && err.to_date && ' is-invalid'}`}
+                                        className={`form-control${renderFieldErrorMultiple('addexperience', 0, `to_date`, multipleErrors) ? ' is-invalid' : ''}`} 
                                         value={singleExperience?.to_date || ''}
                                         onChange={handleSingleInputChange}
                                     />
+                                    {renderFieldErrorMultiple('addexperience', 0, `to_date`, multipleErrors)}
                                 </div>
                             </div>
                             <div className='row'>
@@ -214,11 +209,11 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 <input
                                     type='text'
                                     name={`responsibilities`}
-                                    className={`form-control ${err && err.responsibilities && ' is-invalid'}`}
+                                    className={`form-control${renderFieldErrorMultiple('addexperience', 0, `responsibilities`, multipleErrors) ? ' is-invalid' : ''}`}
                                     value={singleExperience?.responsibilities || ''}
                                     onChange={handleSingleInputChange}
                                 />
-                                {renderFieldError(`responsibilities`, err)}
+                                {renderFieldErrorMultiple('addexperience', 0, `responsibilities`, multipleErrors)}
                                 </div>
                             </div>
                             </form>

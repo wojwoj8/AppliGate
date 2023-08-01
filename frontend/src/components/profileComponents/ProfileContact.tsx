@@ -3,12 +3,17 @@ import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
 import { ProfileData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
+import { GetDataFunction } from '../Profile';
 
 interface ProfileContactProps{
     contact: ProfileData | null;
+    setContact: React.Dispatch<React.SetStateAction<ProfileData | null>>;
+    getData: (
+        setData: GetDataFunction,
+        endpoint: string
+        ) => void;
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     editProfileData: () => void;
-    getProfileData: () => void;
     setEditContact: React.Dispatch<React.SetStateAction<boolean>>;
     editContact: boolean;
     multipleErrors: MultipleErrorResponse;
@@ -18,20 +23,21 @@ interface ProfileContactProps{
 
 
 const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, setEditContact, 
-  handleInputChange, getProfileData, editProfileData, multipleErrors, removeMultipleErrors, renderFieldErrorMultiple}) =>{
+  handleInputChange, getData, editProfileData, multipleErrors, removeMultipleErrors, 
+  renderFieldErrorMultiple, setContact}) =>{
 
 
     const editContactData = () =>{
         setEditContact(!editContact);
         if(editContact === true){
-            removeMultipleErrors('profile', 0)
-            getProfileData();
+            removeMultipleErrors('/profile/', 0)
+            getData(setContact, '/profile/');
         }
     }
     const cancelEditContact = () =>{
         setEditContact(false);
-        removeMultipleErrors('profile', 0)
-        getProfileData();
+        removeMultipleErrors('/profile/', 0)
+        getData(setContact, '/profile/');
     }
 
     const saveEdit = async () =>{

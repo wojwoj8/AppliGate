@@ -3,6 +3,7 @@ import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
 import { ExperienceData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
+import { GetDataFunction } from '../Profile';
 
 interface ProfileExperienceProps {
     experience: ExperienceData[];
@@ -10,7 +11,10 @@ interface ProfileExperienceProps {
     setSingleExperience: React.Dispatch<React.SetStateAction<ExperienceData | null>>;
     setExperience: React.Dispatch<React.SetStateAction<ExperienceData[]>>;
     editExperienceData: (index: number) => Promise<void>;
-    getExperienceData: () => void;
+    getData: (
+        setData: GetDataFunction,
+        endpoint: string
+        ) => void;
     setEditExperience: React.Dispatch<React.SetStateAction<boolean>>;
     editExperience: boolean;
     sendExperienceData: () => void;
@@ -23,7 +27,7 @@ interface ProfileExperienceProps {
 }
 
 const ProfileExperience: React.FC<ProfileExperienceProps> = ({
-    experience, setExperience, editExperience, getExperienceData,
+    experience, setExperience, editExperience, getData,
     setEditExperience, editExperienceData, sendExperienceData,singleExperience, setSingleExperience,
     editMultipleExperiences, setEditMultipleExperiences, multipleErrors,
     removeMultipleErrors, renderFieldErrorMultiple, deleteExperienceData
@@ -47,7 +51,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
           return newEditExperiences;
         });
         removeMultipleErrors('experience', index)
-        await getExperienceData();
+        await getData(setExperience, '/profile/experience');
 
       };
 
@@ -55,7 +59,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
         setEditExperience(!editExperience);
         if(editExperience === true){
             removeMultipleErrors('addexperience', 0)
-            getExperienceData();
+            getData(setExperience, '/profile/experience');
         }
         
     }

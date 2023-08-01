@@ -40,7 +40,7 @@ class MonthYearDateField(serializers.Field):
     def to_internal_value(self, value):
         print(value)
         if value is "":
-            raise serializers.ValidationError("from_date cannot be empty.")
+            raise serializers.ValidationError("Field cannot be empty.")
         try:
             # Parse "YYYY-MM" formatted date string and add day component as 1
             return datetime.strptime(value + "-01", "%Y-%m-%d").date()

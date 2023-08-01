@@ -38,6 +38,12 @@ export interface MultipleErrorResponse {
   };
 }
 
+//UNIVERSAL GET ACCEPTABLE SET FUNCTIONS
+export type GetDataFunction = 
+  React.Dispatch<React.SetStateAction<ProfileData | null>> 
+  | React.Dispatch<React.SetStateAction<ExperienceData[]>> 
+  | undefined;
+
 const initialMultipleErrors: MultipleErrorResponse = {
   profile: {},
   experience: {}
@@ -72,22 +78,25 @@ const Profile: React.FC = () =>{
     };
 
     // PERSONAL/CONTACT
-    const getProfileData = async () =>{
+    const getData = async (
+      setData: GetDataFunction,
+      endpoint: string
+    ) => {
         try{
-            const response = await axios.get('/profile/', {
+            const response = await axios.get(`${endpoint}`, {
                 headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
                 },
               });
-            setProfile(response.data)
-            // console.log(profile)
+            if (setData) {
+                setData(response.data);
+              }
             const data = response.data;
             if (data.date_of_birth) {
                 data.date_of_birth = new Date(data.date_of_birth);
             }
             if(response.status === 200){
-                // console.log(data)
             }
         }catch(error: any){
             if (error.response && error.response.status === 401) {
@@ -146,39 +155,7 @@ const Profile: React.FC = () =>{
         
       };
 
-    
     // EXPIRIENCE
-
-
-    
-    const getExperienceData = async () => {
-        try {
-          const response = await axios.get('/profile/experience', {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: 'Bearer ' + String(authTokens.access),
-            },
-          });
-      
-          const data = response.data;
-          // if (data.date_of_birth) {
-          //     data.date_of_birth = new Date(data.date_of_birth);
-          // }
-      
-          if (response.status === 200) {
-            setExperience(data); // Update the experience state directly with the API response
-            console.log(data);
-          }
-        } catch (error: any) {
-          if (error.response && error.response.status === 401) {
-            // Unauthorized - Logout the user
-            logoutUser();
-          } else {
-            // Handle other errors here
-            console.error('Error fetching profile:', error);
-          }
-        }
-      };
 
     const sendExperienceData = async () =>{
         try{
@@ -191,7 +168,7 @@ const Profile: React.FC = () =>{
             setEditExperience(false)
 
             removeMultipleErrors('addexperience', 0)
-            getExperienceData()
+            getData(setExperience, '/profile/experience');
             setSingleExperience(null)
         }catch (error: any) {
             removeMultipleErrors('addexperience', 0)
@@ -219,7 +196,7 @@ const Profile: React.FC = () =>{
                 newEditExperiences[index] = false;
                 return newEditExperiences;
               });
-              getExperienceData();
+              getData(setExperience, '/profile/experience');
 
               removeMultipleErrors('experience', index)
         }catch (error: any) {
@@ -255,7 +232,7 @@ const Profile: React.FC = () =>{
               newEditExperiences[id] = false;
               return newEditExperiences;
             });
-            getExperienceData();
+            getData(setExperience, '/profile/experience');
 
             // removeMultipleErrors('experience', index)
       }catch (error: any) {
@@ -301,16 +278,17 @@ const Profile: React.FC = () =>{
     };
 
     useEffect(() =>{
-        getProfileData();
-        getExperienceData();
+        getData(setProfile, 'profile');
+        getData(setExperience, '/profile/experience');
     }, [])
     return(
         <div className="container ">
             <ProfilePersonal 
                 personal={profile}
+                setPersonal={setProfile}
                 handleInputChange={handleInputChange}
                 editProfileData={editProfileData}
-                getProfileData={getProfileData}
+                getData={getData}
                 setEditPersonal={setEditPersonal}
                 editPersonal={editPersonal}
                 multipleErrors={multipleErrors}                                             
@@ -319,9 +297,10 @@ const Profile: React.FC = () =>{
             />
             <ProfileContact
                 contact={profile}
+                setContact={setProfile}
                 handleInputChange={handleInputChange}
                 editProfileData={editProfileData}
-                getProfileData={getProfileData}
+                getData={getData}
                 setEditContact={setEditContact}
                 editContact={editContact}     
                 multipleErrors={multipleErrors}                                             
@@ -335,7 +314,7 @@ const Profile: React.FC = () =>{
                 editExperience={editExperience}
                 setEditExperience={setEditExperience}
                 editExperienceData={editExperienceData}
-                getExperienceData={getExperienceData}
+                getData={getData}
                 sendExperienceData={sendExperienceData}
                 singleExperience={singleExperience}
                 setSingleExperience={setSingleExperience}

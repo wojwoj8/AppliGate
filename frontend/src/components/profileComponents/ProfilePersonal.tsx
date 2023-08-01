@@ -3,12 +3,17 @@ import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
 import { ProfileData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
+import { GetDataFunction } from '../Profile';
 
 interface ProfilePersonalProps {
     personal: ProfileData | null;
+    setPersonal: React.Dispatch<React.SetStateAction<ProfileData | null>>;
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     editProfileData: () => void;
-    getProfileData: () => void;
+    getData: (
+        setData: GetDataFunction,
+        endpoint: string
+        ) => void;
     setEditPersonal: React.Dispatch<React.SetStateAction<boolean>>;
     editPersonal: boolean;
     multipleErrors: MultipleErrorResponse;
@@ -20,8 +25,9 @@ interface ProfilePersonalProps {
 
 const ProfilePersonal: React.FC<ProfilePersonalProps> = ({ 
     personal, setEditPersonal, editPersonal,
-    handleInputChange, getProfileData, editProfileData,
-    multipleErrors, removeMultipleErrors, renderFieldErrorMultiple}) => {
+    handleInputChange, getData, editProfileData,
+    multipleErrors, removeMultipleErrors, renderFieldErrorMultiple,
+setPersonal}) => {
 
 
     // const { authTokens, logoutUser } = useContext(AuthContext);
@@ -29,15 +35,15 @@ const ProfilePersonal: React.FC<ProfilePersonalProps> = ({
     const editProfile = () =>{
         setEditPersonal(!editPersonal);
         if(editPersonal === true){
-            removeMultipleErrors('profile', 0)
-            getProfileData();
+            removeMultipleErrors('/profile/', 0)
+            getData(setPersonal, '/profile/');
         }
         
     }
     const cancelEditProfile = () =>{
         setEditPersonal(false);
-        removeMultipleErrors('profile', 0)
-        getProfileData();
+        removeMultipleErrors('/profile/', 0)
+        getData(setPersonal, '/profile/');
     }
 
     const saveEdit = async () =>{

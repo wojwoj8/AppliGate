@@ -19,13 +19,14 @@ interface ProfileExperienceProps {
     multipleErrors: MultipleErrorResponse;
     removeMultipleErrors: (key: string, index: number) => void;
     renderFieldErrorMultiple: (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => React.ReactNode;
+    deleteExperienceData: (index: number) => Promise<void>;
 }
 
 const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     experience, setExperience, editExperience, getExperienceData,
     setEditExperience, editExperienceData, sendExperienceData,singleExperience, setSingleExperience,
     editMultipleExperiences, setEditMultipleExperiences, multipleErrors,
-    removeMultipleErrors, renderFieldErrorMultiple
+    removeMultipleErrors, renderFieldErrorMultiple, deleteExperienceData
 }) =>{
 
     
@@ -74,7 +75,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     }
 
     const handleSingleInputChange = (
-        event: React.ChangeEvent<HTMLInputElement>,
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
       ) => {
         const { name, value } = event.target;
       
@@ -91,7 +92,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
       };
     const handleExperienceInputChange = (
         index: number,
-        event: React.ChangeEvent<HTMLInputElement>,
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         
     ) => {
         let { name, value } = event.target;
@@ -206,8 +207,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 <label htmlFor={`responsibilities`} className='form-label'>
                                     Responsibilities:
                                 </label>
-                                <input
-                                    type='text'
+                                <textarea
                                     name={`responsibilities`}
                                     className={`form-control${renderFieldErrorMultiple('addexperience', 0, `responsibilities`, multipleErrors) ? ' is-invalid' : ''}`}
                                     value={singleExperience?.responsibilities || ''}
@@ -234,6 +234,10 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleExperiencesButton(index)}>
                                 <Icon path={mdiPencil} size={1} />
                             </button>
+                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => deleteExperienceData(experience.id)}>
+                                Delete
+                            </button>
+                            
                         </div>
                         {!editMultipleExperiences[index] && (
                         <div className='col-auto col-md-8 col-sm-6 text-start'>
@@ -245,7 +249,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             {experience?.from_date && experience?.to_date && <p>From: {experience?.from_date} to: {experience?.to_date}</p>} 
                             {!experience?.from_date && experience?.to_date && <p>To: {experience?.to_date}</p>}    
                             {/* <p>From: {experience?.from_date || ''} to: {experience?.to_date || ''}</p> */}
-                            <p>{experience?.responsibilities || ''}</p>
+                            <p style={{ whiteSpace: 'pre-wrap' }}>{experience?.responsibilities || ''}</p>
                             
                         </div>
                         
@@ -328,8 +332,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                     <label htmlFor={`responsibilities_${index}`} className='form-label'>
                                         Responsibilities:
                                     </label>
-                                    <input
-                                        type='text'
+                                    <textarea
                                         name={`responsibilities_${index}`}
                                         className={`form-control${renderFieldErrorMultiple('experience', index, `responsibilities_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={experience?.responsibilities || ''}

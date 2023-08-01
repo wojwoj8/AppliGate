@@ -31,6 +31,7 @@ urlpatterns = [
     path('index/', views.IndexView.as_view()),
     path('profile/', views.ProfileView.as_view()),
     path('profile/experience', views.ProfileExperienceView.as_view()),
+    path('profile/experience/<int:pk>', views.ProfileExperienceView.as_view()),
 
     #Authentication
     path('api/', include('app.api.urls'))

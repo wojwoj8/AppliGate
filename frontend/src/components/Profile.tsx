@@ -23,6 +23,7 @@ export interface ExperienceData{
     to_date: string;
     company: string;
     responsibilities: string;
+    id: number;
 }
 // for axios errors
 export interface ErrorResponse{
@@ -239,6 +240,43 @@ const Profile: React.FC = () =>{
           }
     }
 
+
+    const deleteExperienceData = async (id: number) =>{
+      console.log(id)
+      try{
+          const response = await axios.delete(`/profile/experience/${id}`, {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + String(authTokens.access),
+              },
+            });
+            setEditMultipleExperiences((prevEditExperiences) => {
+              const newEditExperiences = [...prevEditExperiences];
+              newEditExperiences[id] = false;
+              return newEditExperiences;
+            });
+            getExperienceData();
+
+            // removeMultipleErrors('experience', index)
+      }catch (error: any) {
+          // removeMultipleErrors('experience', index)
+          const axiosError = error as AxiosError<ErrorResponse>;
+          // if (axiosError.response?.data) {
+          //     const keys = Object.keys(axiosError.response?.data)
+          //     keys.forEach((key) => {
+          //         const newKey = key + `_${index}`;
+          //         axiosError.response!.data[newKey] = axiosError.response!.data[key];
+          //         delete axiosError.response!.data[key];
+          //     });
+          //     console.log(axiosError.response?.data)
+          //     // handleMultipleErrors('experience', index, axiosError.response?.data)
+          //   // setErr(axiosError.response.data);
+          // }
+          // console.log(error);
+        }
+  }
+
+
     const handleMultipleErrors = (key: string, index: number, errorData: ErrorResponse) => {
       setMultipleErrors((prevState) => ({
         ...prevState,
@@ -306,6 +344,7 @@ const Profile: React.FC = () =>{
                 multipleErrors={multipleErrors}
                 removeMultipleErrors={removeMultipleErrors}
                 renderFieldErrorMultiple={renderFieldErrorMultiple}
+                deleteExperienceData={deleteExperienceData}
 
             />
         </div>

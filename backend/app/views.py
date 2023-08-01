@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status, generics, mixins, authentication, permissions
+from rest_framework import viewsets, views, status, generics, mixins, authentication, permissions
 from .models import User, UserExperience
 from .serializer import UserSerializer, ProfileSerializer, UserExperienceSerializer
 from rest_framework.response import Response
@@ -77,7 +77,8 @@ class ProfileExperienceView(
     generics.GenericAPIView,
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
-    mixins.UpdateModelMixin):
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,):
     permission_classes = [IsAuthenticated]
     queryset = UserExperience.objects.all()
     serializer_class = UserExperienceSerializer
@@ -108,3 +109,13 @@ class ProfileExperienceView(
             serializer_class.save()
             return Response(serializer_class.data)
         return Response(serializer_class.errors, status=400)
+    
+    def delete(self, request, pk):
+        user = request.user
+        try:
+            experience = UserExperience.objects.get(user=user, id=pk)
+            experience.delete()
+            return Response({"deleted": "Experience deleted successfully"}, status=200)
+        except UserExperience.DoesNotExist:
+            return Response({"error": "Experience not found"}, status=status.HTTP_404_NOT_FOUND)
+    

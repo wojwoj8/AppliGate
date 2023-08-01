@@ -14,9 +14,9 @@ class User(AbstractUser):
 
 class UserExperience(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    position = models.CharField(max_length=100, null=True, blank=True)
+    position = models.CharField(max_length=100, null=False, blank=False, default=None)
     localization = models.CharField(max_length=100, null=True, blank=True)
     company = models.CharField(max_length=100, null=True, blank=True)
-    from_date = models.DateField(null=True, blank=True)
+    from_date = models.DateField(null=False, blank=False, default=None)
     to_date = models.DateField(null=True, blank=True)
     responsibilities= models.CharField(max_length=1500, null=True, blank=True)

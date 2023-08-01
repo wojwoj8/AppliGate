@@ -39,7 +39,7 @@ export interface MultipleErrorResponse {
 }
 
 const initialMultipleErrors: MultipleErrorResponse = {
-  contact: {},
+  profile: {},
   experience: {}
 };
 

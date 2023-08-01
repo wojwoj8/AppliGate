@@ -117,11 +117,12 @@ const Profile: React.FC = () =>{
               });
             setEditPersonal(false)
             setEditContact(false)
-            setErr({})
+            removeMultipleErrors('profile', 0)
         }catch (error: any) {
+            removeMultipleErrors('profile', 0)
             const axiosError = error as AxiosError<ErrorResponse>;
             if (axiosError.response?.data) {
-              setErr(axiosError.response.data);
+              handleMultipleErrors('profile', 0, axiosError.response?.data)
             }
             console.log(error);
           }
@@ -196,7 +197,7 @@ const Profile: React.FC = () =>{
               });
             setEditExperience(false)
 
-            setErr({})
+            removeMultipleErrors('profile', 0)
             getExperienceData()
             setSingleExperience(null)
         }catch (error: any) {
@@ -290,11 +291,17 @@ const Profile: React.FC = () =>{
                 handleInputChange={handleInputChange}
                 editProfileData={editProfileData}
                 getProfileData={getProfileData}
-                err={err}
-                setErr={setErr}
+
+
                 setEditContact={setEditContact}
                 editContact={editContact}
-                renderFieldError={renderFieldError}
+           
+                multipleErrors={multipleErrors}
+              
+                
+                removeMultipleErrors={removeMultipleErrors}
+                renderFieldErrorMultiple={renderFieldErrorMultiple}
+
             />
             <ProfileExperience
                 experience={experience}

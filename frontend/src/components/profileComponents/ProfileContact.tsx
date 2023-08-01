@@ -5,23 +5,28 @@ import { mdiPencil } from '@mdi/js';
 import AuthContext from '../../utils/AuthProvider';
 import { ProfileData } from '../Profile';
 import { ErrorResponse } from '../Profile';
+import { MultipleErrorResponse } from '../Profile';
 
 interface ProfileContactProps{
     contact: ProfileData | null;
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     editProfileData: () => void;
     getProfileData: () => void;
-    err: ErrorResponse | undefined;
-    setErr: React.Dispatch<React.SetStateAction<ErrorResponse | undefined>>;
+    
+    
     setEditContact: React.Dispatch<React.SetStateAction<boolean>>;
     editContact: boolean;
-    renderFieldError: (field: string, error: ErrorResponse | undefined) => React.ReactNode;
+    
+    multipleErrors: MultipleErrorResponse;
+    
+    removeMultipleErrors: (key: string, index: number) => void;
+    
+    renderFieldErrorMultiple: (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => React.ReactNode;
 }
 
 
 const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, setEditContact, 
-    setErr, handleInputChange, getProfileData, editProfileData, err,
-    renderFieldError}) =>{
+  handleInputChange, getProfileData, editProfileData, multipleErrors, removeMultipleErrors, renderFieldErrorMultiple}) =>{
 
 
     const editContactData = () =>{
@@ -32,7 +37,7 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
     }
     const cancelEditContact = () =>{
         setEditContact(false);
-        setErr({})
+        removeMultipleErrors('profile', 0)
         getProfileData();
     }
 
@@ -71,15 +76,16 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                                     
                                         <label htmlFor='email' className="form-label">Email:</label>
                                         <input 
-                                            type='text' name='email' className={`form-control ${err && err.email && ' is-invalid'}`} 
+                                            type='text' name='email' className={`form-control${renderFieldErrorMultiple('profile', 0, `email`, multipleErrors) ? ' is-invalid' : ''}`} 
                                             placeholder='example@email.com' value={contact?.email} onChange={handleInputChange}>
                                         </input>
-                                        {renderFieldError('email', err)}
+                                        {renderFieldErrorMultiple('profile', 0, `email`, multipleErrors)}
                                     </div>
                                     <div className='mb-3 col-4'>
                                         <label htmlFor='phone_number' className="form-label">Phone Number:</label>
-                                        <input type='text' name='phone_number' className={`form-control ${err && err.phone_number && ' is-invalid'}`} placeholder='+123456789' value={contact?.phone_number} onChange={handleInputChange}></input>
-                                        {renderFieldError('phone_number', err)}
+                                        <input type='text' name='phone_number' className={`form-control${renderFieldErrorMultiple('profile', 0, `phone_number`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                        placeholder='+123456789' value={contact?.phone_number} onChange={handleInputChange}></input>
+                                        {renderFieldErrorMultiple('profile', 0, `phone_number`, multipleErrors)}
                                     </div>
                                 </div>
                             

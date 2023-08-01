@@ -11,7 +11,7 @@ export interface ProfileData{
     date_of_birth: Date;
     country: string;
     city: string;
-    email: string;
+    contact_email: string;
     phone_number: string;
     current_position: string;
 }

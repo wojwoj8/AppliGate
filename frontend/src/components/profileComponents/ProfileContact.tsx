@@ -53,7 +53,7 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                 <div className='text-center'>
                     <div className='d-flex justify-content-evenly'>
                         <p>
-                            <b>Email:</b> {contact?.email || ''}
+                            <b>Email:</b> {contact?.contact_email || ''}
                         </p>
                         <p>
                             <b>Phone Number: </b> {contact?.phone_number || ''}
@@ -67,12 +67,12 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                                 <div className='row'>
                                     <div className='mb-3 col-4'>
                                     
-                                        <label htmlFor='email' className="form-label">Email:</label>
+                                        <label htmlFor='contact_email' className="form-label">Email:</label>
                                         <input 
-                                            type='text' name='email' className={`form-control${renderFieldErrorMultiple('profile', 0, `email`, multipleErrors) ? ' is-invalid' : ''}`} 
-                                            placeholder='example@email.com' value={contact?.email} onChange={handleInputChange}>
+                                            type='text' name='contact_email' className={`form-control${renderFieldErrorMultiple('profile', 0, `contact_email`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                            placeholder='example@email.com' value={contact?.contact_email} onChange={handleInputChange}>
                                         </input>
-                                        {renderFieldErrorMultiple('profile', 0, `email`, multipleErrors)}
+                                        {renderFieldErrorMultiple('profile', 0, `contact_email`, multipleErrors)}
                                     </div>
                                     <div className='mb-3 col-4'>
                                         <label htmlFor='phone_number' className="form-label">Phone Number:</label>

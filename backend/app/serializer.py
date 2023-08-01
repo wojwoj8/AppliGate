@@ -1,27 +1,46 @@
-#for translating data to JSON
+# for translating data to JSON
 from rest_framework import serializers
 from .models import User, UserExperience
 from datetime import datetime
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'password', 'email', 'date_of_birth', 'first_name', 'last_name']
+        fields = [
+            "username",
+            "password",
+            "email",
+            "date_of_birth",
+            "first_name",
+            "last_name",
+        ]
         # read_only_fields = ["id"]
         extra_kwargs = {
-            'password': {'write_only': True},
+            "password": {"write_only": True},
         }
-        
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['current_position', 'first_name', 'last_name', 'date_of_birth', 'country', 'city', 'email','phone_number']
+        fields = [
+            "current_position",
+            "first_name",
+            "last_name",
+            "date_of_birth",
+            "country",
+            "city",
+            "contact_email",
+            "phone_number",
+        ]
+
 
 class MonthYearDateField(serializers.Field):
     def to_internal_value(self, value):
-        if value is '':
-            
-            return None
+        print(value)
+        if value is "":
+            raise serializers.ValidationError("from_date cannot be empty.")
         try:
             # Parse "YYYY-MM" formatted date string and add day component as 1
             return datetime.strptime(value + "-01", "%Y-%m-%d").date()
@@ -30,14 +49,23 @@ class MonthYearDateField(serializers.Field):
 
     def to_representation(self, value):
         # Convert date object to "YYYY-MM" formatted string without the day component
-        if value is '':
+        if value is "":
             return None
         return value.strftime("%Y-%m")
 
+
 class UserExperienceSerializer(serializers.ModelSerializer):
-    from_date = MonthYearDateField(allow_null=True, required=False)
+    from_date = MonthYearDateField(required=True)
     to_date = MonthYearDateField(allow_null=True, required=False)
 
     class Meta:
         model = UserExperience
-        fields = ['id', 'position', 'localization', 'company', 'from_date', 'to_date', 'responsibilities']
+        fields = [
+            "id",
+            "position",
+            "localization",
+            "company",
+            "from_date",
+            "to_date",
+            "responsibilities",
+        ]

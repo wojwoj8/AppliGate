@@ -1,13 +1,13 @@
 import React from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
-import { ProfileData } from '../Profile';
+import { ContactData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
 
 interface ProfileContactProps{
-    contact: ProfileData | null;
-    setContact: React.Dispatch<React.SetStateAction<ProfileData | null>>;
+    contact: ContactData | null;
+    setContact: React.Dispatch<React.SetStateAction<ContactData | null>>;
     getData: (
         setData: GetDataFunction,
         endpoint: string
@@ -30,14 +30,14 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
     const editContactData = () =>{
         setEditContact(!editContact);
         if(editContact === true){
-            removeMultipleErrors('/profile/', 0)
-            getData(setContact, '/profile/');
+            removeMultipleErrors('/profile/contact', 0)
+            getData(setContact, '/profile/contact');
         }
     }
     const cancelEditContact = () =>{
         setEditContact(false);
-        removeMultipleErrors('/profile/', 0)
-        getData(setContact, '/profile/');
+        removeMultipleErrors('/profile/contact', 0)
+        getData(setContact, '/profile/contact');
     }
 
     const saveEdit = async () =>{

@@ -11,11 +11,12 @@ export interface ProfileData{
     date_of_birth: Date;
     country: string;
     city: string;
-    contact_email: string;
-    phone_number: string;
     current_position: string;
 }
-
+export interface ContactData{
+  contact_email: string;
+  phone_number: string;
+}
 export interface ExperienceData{
     position: string;
     localization: string;
@@ -40,9 +41,10 @@ export interface MultipleErrorResponse {
 
 //UNIVERSAL GET ACCEPTABLE SET FUNCTIONS
 export type GetDataFunction = 
-  React.Dispatch<React.SetStateAction<ProfileData | null>> 
-  | React.Dispatch<React.SetStateAction<ExperienceData[]>> 
-  | undefined;
+  React.Dispatch<React.SetStateAction<ProfileData | null>> |
+  React.Dispatch<React.SetStateAction<ContactData | null>> |
+  React.Dispatch<React.SetStateAction<ExperienceData[]>> |
+  undefined;
 
 const initialMultipleErrors: MultipleErrorResponse = {
   profile: {},
@@ -51,6 +53,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
 
 const Profile: React.FC = () =>{
     const [profile, setProfile] = useState<ProfileData | null>(null);
+    const [contact, setContact] = useState<ContactData| null>(null);
     const [experience, setExperience] = useState<ExperienceData[]>([]);
     const [singleExperience, setSingleExperience] = useState<ExperienceData | null>(null);
     const { authTokens, logoutUser } = useContext(AuthContext);
@@ -77,7 +80,8 @@ const Profile: React.FC = () =>{
       return null;
     };
 
-    // PERSONAL/CONTACT
+   
+
     const getData = async (
       setData: GetDataFunction,
       endpoint: string
@@ -109,6 +113,7 @@ const Profile: React.FC = () =>{
         }
     }
 
+     // PERSONAL/CONTACT
     const editProfileData = async () =>{
         try{
             const response = await axios.put('/profile/', profile,  {
@@ -278,7 +283,8 @@ const Profile: React.FC = () =>{
     };
 
     useEffect(() =>{
-        getData(setProfile, 'profile');
+        getData(setProfile, '/profile/');
+        getData(setContact, '/profile/contact');
         getData(setExperience, '/profile/experience');
     }, [])
     return(
@@ -296,8 +302,8 @@ const Profile: React.FC = () =>{
                 renderFieldErrorMultiple={renderFieldErrorMultiple}
             />
             <ProfileContact
-                contact={profile}
-                setContact={setProfile}
+                contact={contact}
+                setContact={setContact}
                 handleInputChange={handleInputChange}
                 editProfileData={editProfileData}
                 getData={getData}

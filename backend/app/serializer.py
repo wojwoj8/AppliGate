@@ -31,6 +31,13 @@ class ProfileSerializer(serializers.ModelSerializer):
             "date_of_birth",
             "country",
             "city",
+        ]
+
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
             "contact_email",
             "phone_number",
         ]

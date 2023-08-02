@@ -155,35 +155,6 @@ const Profile: React.FC = () =>{
   }
 
 ///////////////////////////////////////
-     // PERSONAL/CONTACT
-
-    const handleInputChange = (
-        event: React.ChangeEvent<HTMLInputElement>,
-        // setData: GetDataFunction,
-      ) => {
-        const { name, value } = event.target;
-      
-        const newValue = name === 'date_of_birth' ? (() => {
-          const date = new Date(value);
-          const isValidDate = !isNaN(date.getTime()) && date.getFullYear() >= 1 && date.getFullYear() <= 2100;
-      
-          if (isValidDate) {
-            return date;
-          } else {
-            return profile?.date_of_birth || null;
-          }
-        })() : value;
-      
-
-        setProfile((prevProfile) => ({
-        ...prevProfile!,
-        [name]: newValue,
-        }));
-    
-  
-        
-      };
-
     // EXPIRIENCE
 
     const sendExperienceData = async () =>{
@@ -316,7 +287,6 @@ const Profile: React.FC = () =>{
             <ProfilePersonal 
                 personal={profile}
                 setPersonal={setProfile}
-                handleInputChange={handleInputChange}
                 editData={editData}
                 getData={getData}
                 setEditPersonal={setEditPersonal}
@@ -328,7 +298,7 @@ const Profile: React.FC = () =>{
             <ProfileContact
                 contact={contact}
                 setContact={setContact}
-                handleInputChange={handleInputChange}
+
                 editData={editData}
                 getData={getData}
                 setEditContact={setEditContact}

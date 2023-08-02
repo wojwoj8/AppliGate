@@ -9,7 +9,7 @@ import { EditDataFunction } from '../Profile';
 interface ProfilePersonalProps {
     personal: ProfileData | null;
     setPersonal: React.Dispatch<React.SetStateAction<ProfileData | null>>;
-    handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    // handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     editData: (state: EditDataFunction, 
         editField: React.Dispatch<React.SetStateAction<boolean>>, 
         endpoint: string, errorField: string, index?: number
@@ -28,12 +28,34 @@ interface ProfilePersonalProps {
 
 
 const ProfilePersonal: React.FC<ProfilePersonalProps> = ({ 
-    personal, setEditPersonal, editPersonal,
-    handleInputChange, getData, editData,
+    personal, setEditPersonal, editPersonal, getData, editData,
     multipleErrors, removeMultipleErrors, renderFieldErrorMultiple,
 setPersonal}) => {
 
+    const handleInputChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+        // setData: GetDataFunction,
+      ) => {
+        const { name, value } = event.target;
+      
+        const newValue = name === 'date_of_birth' ? (() => {
+          const date = new Date(value);
+          const isValidDate = !isNaN(date.getTime()) && date.getFullYear() >= 1 && date.getFullYear() <= 2100;
+      
+          if (isValidDate) {
+            return date;
+          } else {
+            return personal?.date_of_birth || null;
+          }
+        })() : value;
+      
 
+        setPersonal((prevProfile) => ({
+        ...prevProfile!,
+        [name]: newValue,
+        }));
+
+      };
     // const { authTokens, logoutUser } = useContext(AuthContext);
 
     const editProfile = () =>{

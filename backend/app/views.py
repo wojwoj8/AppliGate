@@ -122,15 +122,19 @@ class ProfileExperienceView(
 
     def post(self, request, *args, **kwargs):
         user = request.user
+        if request.data is None:
+            serializer = self.serializer_class(data={})
+        else:
+            serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=user)
 
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(user=user)
-        # print(request.data)
-        return Response({"created": "Experience added successfully"}, status=200)
+            return Response({"created": "Experience added successfully"}, status=200)
+        return Response(serializer.errors, status=400)
 
     def put(self, request, *args, **kwargs):
         user = request.user
+        print(request.data)
         item_id = request.data["id"]
         queryset = UserExperience.objects.get(user=user, id=item_id)
 

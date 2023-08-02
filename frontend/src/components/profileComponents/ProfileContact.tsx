@@ -4,6 +4,7 @@ import { mdiPencil } from '@mdi/js';
 import { ContactData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
+import { EditDataFunction } from '../Profile';
 
 interface ProfileContactProps{
     contact: ContactData | null;
@@ -13,7 +14,10 @@ interface ProfileContactProps{
         endpoint: string
         ) => void;
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    editProfileData: () => void;
+    editData: (state: EditDataFunction, 
+        editField: React.Dispatch<React.SetStateAction<boolean>>, 
+        endpoint: string, errorField: string, index?: number
+        ) => Promise<void>;
     setEditContact: React.Dispatch<React.SetStateAction<boolean>>;
     editContact: boolean;
     multipleErrors: MultipleErrorResponse;
@@ -23,7 +27,7 @@ interface ProfileContactProps{
 
 
 const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, setEditContact, 
-  handleInputChange, getData, editProfileData, multipleErrors, removeMultipleErrors, 
+  handleInputChange, getData, editData, multipleErrors, removeMultipleErrors, 
   renderFieldErrorMultiple, setContact}) =>{
 
 
@@ -41,7 +45,7 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
     }
 
     const saveEdit = async () =>{
-        await editProfileData()
+        await editData(contact, setEditContact, '/profile/contact', 'contact')
         // setContactEditing(false);
     }
     return(
@@ -78,13 +82,13 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                                             type='text' name='contact_email' className={`form-control${renderFieldErrorMultiple('profile', 0, `contact_email`, multipleErrors) ? ' is-invalid' : ''}`} 
                                             placeholder='example@email.com' value={contact?.contact_email} onChange={handleInputChange}>
                                         </input>
-                                        {renderFieldErrorMultiple('profile', 0, `contact_email`, multipleErrors)}
+                                        {renderFieldErrorMultiple('contact', 0, `contact_email`, multipleErrors)}
                                     </div>
                                     <div className='mb-3 col-4'>
                                         <label htmlFor='phone_number' className="form-label">Phone Number:</label>
                                         <input type='text' name='phone_number' className={`form-control${renderFieldErrorMultiple('profile', 0, `phone_number`, multipleErrors) ? ' is-invalid' : ''}`} 
                                         placeholder='+123456789' value={contact?.phone_number} onChange={handleInputChange}></input>
-                                        {renderFieldErrorMultiple('profile', 0, `phone_number`, multipleErrors)}
+                                        {renderFieldErrorMultiple('contact', 0, `phone_number`, multipleErrors)}
                                     </div>
                                 </div>
                             

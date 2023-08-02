@@ -45,9 +45,9 @@ class ContactSerializer(serializers.ModelSerializer):
 
 class MonthYearDateField(serializers.Field):
     def to_internal_value(self, value):
-        print(value)
-        if value is "":
-            raise serializers.ValidationError("Field cannot be empty.")
+        # print(value)
+        if value == "":
+            raise serializers.ValidationError("This field may not be blank.")
         try:
             # Parse "YYYY-MM" formatted date string and add day component as 1
             return datetime.strptime(value + "-01", "%Y-%m-%d").date()
@@ -56,7 +56,7 @@ class MonthYearDateField(serializers.Field):
 
     def to_representation(self, value):
         # Convert date object to "YYYY-MM" formatted string without the day component
-        if value is "":
+        if value == "":
             return None
         return value.strftime("%Y-%m")
 

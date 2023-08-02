@@ -4,12 +4,16 @@ import { mdiPencil } from '@mdi/js';
 import { ProfileData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
+import { EditDataFunction } from '../Profile';
 
 interface ProfilePersonalProps {
     personal: ProfileData | null;
     setPersonal: React.Dispatch<React.SetStateAction<ProfileData | null>>;
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    editProfileData: () => void;
+    editData: (state: EditDataFunction, 
+        editField: React.Dispatch<React.SetStateAction<boolean>>, 
+        endpoint: string, errorField: string, index?: number
+        ) => Promise<void>;
     getData: (
         setData: GetDataFunction,
         endpoint: string
@@ -25,7 +29,7 @@ interface ProfilePersonalProps {
 
 const ProfilePersonal: React.FC<ProfilePersonalProps> = ({ 
     personal, setEditPersonal, editPersonal,
-    handleInputChange, getData, editProfileData,
+    handleInputChange, getData, editData,
     multipleErrors, removeMultipleErrors, renderFieldErrorMultiple,
 setPersonal}) => {
 
@@ -47,7 +51,7 @@ setPersonal}) => {
     }
 
     const saveEdit = async () =>{
-        await editProfileData()
+        await editData(personal, setEditPersonal, '/profile/', 'profile')
         // setEditPersonal(false);
     }
 

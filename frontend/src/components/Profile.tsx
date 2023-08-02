@@ -39,12 +39,25 @@ export interface MultipleErrorResponse {
   };
 }
 
-//UNIVERSAL GET ACCEPTABLE SET FUNCTIONS
+//UNIVERSAL GET SETSTATES
 export type GetDataFunction = 
   React.Dispatch<React.SetStateAction<ProfileData | null>> |
   React.Dispatch<React.SetStateAction<ContactData | null>> |
   React.Dispatch<React.SetStateAction<ExperienceData[]>> |
   undefined;
+
+//UNIVERSAL PUT STATES
+export type EditDataFunction = 
+  ProfileData | null |
+  ContactData | null |
+  ExperienceData | null |
+  ExperienceData[] |
+  undefined;
+
+//
+
+
+
 
 const initialMultipleErrors: MultipleErrorResponse = {
   profile: {},
@@ -84,7 +97,8 @@ const Profile: React.FC = () =>{
 
     const getData = async (
       setData: GetDataFunction,
-      endpoint: string
+      endpoint: string,
+
     ) => {
         try{
             const response = await axios.get(`${endpoint}`, {
@@ -112,30 +126,40 @@ const Profile: React.FC = () =>{
               }
         }
     }
+//////////////////////////////////////////////////////////////
+    const editData = async (
+      state: EditDataFunction,
+      editField: React.Dispatch<React.SetStateAction<boolean>>,
+      endpoint: string,
+      errorField: string,
+      index: number = 0,
 
-     // PERSONAL/CONTACT
-    const editProfileData = async () =>{
-        try{
-            const response = await axios.put('/profile/', profile,  {
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: 'Bearer ' + String(authTokens.access),
-                },
-              });
-            setEditPersonal(false)
-            setEditContact(false)
-            removeMultipleErrors('profile', 0)
-        }catch (error: any) {
-            removeMultipleErrors('profile', 0)
-            const axiosError = error as AxiosError<ErrorResponse>;
-            if (axiosError.response?.data) {
-              handleMultipleErrors('profile', 0, axiosError.response?.data)
-            }
-            console.log(error);
+    ) =>{
+      try{
+          const response = await axios.put(`${endpoint}`, state,  {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + String(authTokens.access),
+              },
+            });
+          editField(false)
+          removeMultipleErrors(`${errorField}`, index)
+      }catch (error: any) {
+          removeMultipleErrors(`${errorField}`, index)
+          const axiosError = error as AxiosError<ErrorResponse>;
+          if (axiosError.response?.data) {
+            handleMultipleErrors(`${errorField}`, index, axiosError.response?.data)
           }
-    }
+          console.log(error);
+        }
+  }
+
+///////////////////////////////////////
+     // PERSONAL/CONTACT
+
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement>,
+        // setData: GetDataFunction,
       ) => {
         const { name, value } = event.target;
       
@@ -293,7 +317,7 @@ const Profile: React.FC = () =>{
                 personal={profile}
                 setPersonal={setProfile}
                 handleInputChange={handleInputChange}
-                editProfileData={editProfileData}
+                editData={editData}
                 getData={getData}
                 setEditPersonal={setEditPersonal}
                 editPersonal={editPersonal}
@@ -305,7 +329,7 @@ const Profile: React.FC = () =>{
                 contact={contact}
                 setContact={setContact}
                 handleInputChange={handleInputChange}
-                editProfileData={editProfileData}
+                editData={editData}
                 getData={getData}
                 setEditContact={setEditContact}
                 editContact={editContact}     
@@ -322,6 +346,7 @@ const Profile: React.FC = () =>{
                 editExperienceData={editExperienceData}
                 getData={getData}
                 sendExperienceData={sendExperienceData}
+                // editData={editData}
                 singleExperience={singleExperience}
                 setSingleExperience={setSingleExperience}
                 editMultipleExperiences={editMultipleExperiences}

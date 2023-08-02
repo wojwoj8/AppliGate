@@ -5,6 +5,7 @@ import { ExperienceData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
 
+
 interface ProfileExperienceProps {
     experience: ExperienceData[];
     singleExperience: ExperienceData | null;
@@ -59,6 +60,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
         setEditExperience(!editExperience);
         if(editExperience === true){
             removeMultipleErrors('addexperience', 0)
+            setSingleExperience(null)
             getData(setExperience, '/profile/experience');
         }
         

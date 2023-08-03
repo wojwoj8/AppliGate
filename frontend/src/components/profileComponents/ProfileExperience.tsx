@@ -5,6 +5,7 @@ import { ExperienceData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
+import { EditMultipleDataFunction } from '../Profile';
 
 
 interface ProfileExperienceProps {
@@ -12,7 +13,14 @@ interface ProfileExperienceProps {
     singleExperience: ExperienceData | null;
     setSingleExperience: React.Dispatch<React.SetStateAction<ExperienceData | null>>;
     setExperience: React.Dispatch<React.SetStateAction<ExperienceData[]>>;
-    editExperienceData: (index: number) => Promise<void>;
+    editMultipleData: (
+        state: EditMultipleDataFunction, 
+        editField: React.Dispatch<React.SetStateAction<boolean[]>>, 
+        setData: GetDataFunction, 
+        endpoint: string, 
+        errorField: string, 
+        index: number
+        ) => Promise<void>
     getData: (
         setData: GetDataFunction,
         endpoint: string
@@ -33,14 +41,19 @@ interface ProfileExperienceProps {
     multipleErrors: MultipleErrorResponse;
     removeMultipleErrors: (key: string, index: number) => void;
     renderFieldErrorMultiple: (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => React.ReactNode;
-    deleteExperienceData: (index: number) => Promise<void>;
+    deleteData: (
+        editField: React.Dispatch<React.SetStateAction<boolean[]>>, 
+        setData: GetDataFunction, 
+        endpoint: string, 
+        id: number
+        ) => Promise<void>;
 }
 
 const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     experience, setExperience, editExperience, getData,
-    setEditExperience, editExperienceData, sendExperienceData,singleExperience, setSingleExperience,
+    setEditExperience, editMultipleData, sendExperienceData,singleExperience, setSingleExperience,
     editMultipleExperiences, setEditMultipleExperiences, multipleErrors,
-    removeMultipleErrors, renderFieldErrorMultiple, deleteExperienceData
+    removeMultipleErrors, renderFieldErrorMultiple, deleteData
 }) =>{
 
     
@@ -82,7 +95,8 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     }
 
     const saveEdit = async (index: number) =>{
-        await editExperienceData(index)
+        editMultipleData(experience, setEditMultipleExperiences, setExperience, 
+            '/profile/experience', 'experience', index)
         // setEditPersonal(false);
     }
 
@@ -90,9 +104,13 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
         setSingleExperience(null);
       };
 
-    const saveExperience = () =>{
+    const saveExperience = () => {
         sendExperienceData(singleExperience, setEditExperience, setExperience, 
             resetExperience, '/profile/experience', 'addexperience');
+    }
+
+    const deleteExperience = (id: number) => {
+        deleteData(setEditMultipleExperiences, setExperience, '/profile/experience', id);
     }
 
     const handleSingleInputChange = (
@@ -255,10 +273,9 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleExperiencesButton(index)}>
                                 <Icon path={mdiPencil} size={1} />
                             </button>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => deleteExperienceData(experience.id)}>
+                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => deleteExperience(experience.id)}>
                                 Delete
                             </button>
-                            
                         </div>
                         {!editMultipleExperiences[index] && (
                         <div className='col-auto col-md-8 col-sm-6 text-start'>

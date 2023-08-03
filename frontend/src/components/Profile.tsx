@@ -55,6 +55,8 @@ export type EditDataFunction =
   ExperienceData[] |
   undefined;
 
+export type EditMultipleDataFunction = ExperienceData[];
+
 const initialMultipleErrors: MultipleErrorResponse = {
   profile: {},
   experience: {}
@@ -190,58 +192,72 @@ const Profile: React.FC = () =>{
     }
 
 
-
-    const editExperienceData = async (index: number) =>{
-        console.log(index)
-        try{
-            const response = await axios.put('/profile/experience', experience[index],  {
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: 'Bearer ' + String(authTokens.access),
-                },
-              });
-              setEditMultipleExperiences((prevEditExperiences) => {
-                const newEditExperiences = [...prevEditExperiences];
-                newEditExperiences[index] = false;
-                return newEditExperiences;
-              });
-              getData(setExperience, '/profile/experience');
-
-              removeMultipleErrors('experience', index)
-        }catch (error: any) {
-            removeMultipleErrors('experience', index)
-            const axiosError = error as AxiosError<ErrorResponse>;
-            if (axiosError.response?.data) {
-                const keys = Object.keys(axiosError.response?.data)
-                keys.forEach((key) => {
-                    const newKey = key + `_${index}`;
-                    axiosError.response!.data[newKey] = axiosError.response!.data[key];
-                    delete axiosError.response!.data[key];
-                });
-                console.log(axiosError.response?.data)
-                handleMultipleErrors('experience', index, axiosError.response?.data)
-              // setErr(axiosError.response.data);
-            }
-            console.log(error);
-          }
-    }
-
-
-    const deleteExperienceData = async (id: number) =>{
-      console.log(id)
+    const editMultipleData = async (
+        state: EditMultipleDataFunction,
+        editField: React.Dispatch<React.SetStateAction<boolean[]>>,
+        setData: GetDataFunction,
+        endpoint: string,
+        errorField: string,
+        index: number
+      ) =>{
+      console.log(index)
       try{
-          const response = await axios.delete(`/profile/experience/${id}`, {
+          const response = await axios.put(`${endpoint}`, state[index],  {
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + String(authTokens.access),
               },
             });
-            setEditMultipleExperiences((prevEditExperiences) => {
+            
+            editField((prevEdit) => {
+              const newEdit = [...prevEdit];
+              newEdit[index] = false;
+              return newEdit;
+              
+            });
+            getData(setData, `${endpoint}`);
+
+            removeMultipleErrors(`${errorField}`, index)
+      }catch (error: any) {
+        removeMultipleErrors(`${errorField}`, index)
+          const axiosError = error as AxiosError<ErrorResponse>;
+          if (axiosError.response?.data) {
+              const keys = Object.keys(axiosError.response?.data)
+              keys.forEach((key) => {
+                  const newKey = key + `_${index}`;
+                  axiosError.response!.data[newKey] = axiosError.response!.data[key];
+                  delete axiosError.response!.data[key];
+              });
+              console.log(axiosError.response?.data)
+              handleMultipleErrors(`${errorField}`, index, axiosError.response?.data)
+            // setErr(axiosError.response.data);
+          }
+          console.log(error);
+        }
+  }
+
+
+    const deleteData = async (
+        editField: React.Dispatch<React.SetStateAction<boolean[]>>,
+        setData: GetDataFunction,
+        endpoint: string,
+        // errorField: string,
+        id: number
+      ) =>{
+      console.log(id)
+      try{
+          const response = await axios.delete(`${endpoint}/${id}`, {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + String(authTokens.access),
+              },
+            });
+            editField((prevEditExperiences) => {
               const newEditExperiences = [...prevEditExperiences];
               newEditExperiences[id] = false;
               return newEditExperiences;
             });
-            getData(setExperience, '/profile/experience');
+            getData(setData, `${endpoint}`);
 
             // removeMultipleErrors('experience', index)
       }catch (error: any) {
@@ -307,7 +323,6 @@ const Profile: React.FC = () =>{
             <ProfileContact
                 contact={contact}
                 setContact={setContact}
-
                 editData={editData}
                 getData={getData}
                 setEditContact={setEditContact}
@@ -322,10 +337,9 @@ const Profile: React.FC = () =>{
                 setExperience={setExperience}
                 editExperience={editExperience}
                 setEditExperience={setEditExperience}
-                editExperienceData={editExperienceData}
+                editMultipleData={editMultipleData}
                 getData={getData}
                 sendExperienceData={sendExperienceData}
-                // editData={editData}
                 singleExperience={singleExperience}
                 setSingleExperience={setSingleExperience}
                 editMultipleExperiences={editMultipleExperiences}
@@ -333,7 +347,7 @@ const Profile: React.FC = () =>{
                 multipleErrors={multipleErrors}
                 removeMultipleErrors={removeMultipleErrors}
                 renderFieldErrorMultiple={renderFieldErrorMultiple}
-                deleteExperienceData={deleteExperienceData}
+                deleteData={deleteData}
 
             />
         </div>

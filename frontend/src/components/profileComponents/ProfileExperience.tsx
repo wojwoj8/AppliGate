@@ -4,6 +4,7 @@ import { mdiPencil } from '@mdi/js';
 import { ExperienceData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
+import { EditDataFunction } from '../Profile';
 
 
 interface ProfileExperienceProps {
@@ -18,7 +19,15 @@ interface ProfileExperienceProps {
         ) => void;
     setEditExperience: React.Dispatch<React.SetStateAction<boolean>>;
     editExperience: boolean;
-    sendExperienceData: () => void;
+    sendExperienceData:(
+        state: EditDataFunction, 
+        editField: React.Dispatch<React.SetStateAction<boolean>>, 
+        setData: GetDataFunction, 
+        cleanState: (() => void),
+        endpoint: string, 
+        errorField: string, 
+        index?: number
+        ) => Promise<void>
     editMultipleExperiences: boolean[];
     setEditMultipleExperiences: React.Dispatch<React.SetStateAction<boolean[]>>;
     multipleErrors: MultipleErrorResponse;
@@ -76,8 +85,14 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
         await editExperienceData(index)
         // setEditPersonal(false);
     }
-    const saveExperience = async () =>{
-        await sendExperienceData();
+
+    const resetExperience = () => {
+        setSingleExperience(null);
+      };
+
+    const saveExperience = () =>{
+        sendExperienceData(singleExperience, setEditExperience, setExperience, 
+            resetExperience, '/profile/experience', 'addexperience');
     }
 
     const handleSingleInputChange = (

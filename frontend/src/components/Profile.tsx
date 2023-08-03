@@ -43,6 +43,7 @@ export interface MultipleErrorResponse {
 export type GetDataFunction = 
   React.Dispatch<React.SetStateAction<ProfileData | null>> |
   React.Dispatch<React.SetStateAction<ContactData | null>> |
+  React.Dispatch<React.SetStateAction<ExperienceData | null>> |
   React.Dispatch<React.SetStateAction<ExperienceData[]>> |
   undefined;
 
@@ -53,11 +54,6 @@ export type EditDataFunction =
   ExperienceData | null |
   ExperienceData[] |
   undefined;
-
-//
-
-
-
 
 const initialMultipleErrors: MultipleErrorResponse = {
   profile: {},
@@ -77,8 +73,13 @@ const Profile: React.FC = () =>{
     const [editMultipleExperiences, setEditMultipleExperiences] = useState<boolean[]>([]);
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
 
-    const renderFieldErrorMultiple = (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => {
-      if (error && error[field] && typeof error[field][index] === "object" && error[field][index].hasOwnProperty(errorKey)) {
+    const renderFieldErrorMultiple = (
+      field: string, 
+      index: number, 
+      errorKey: string, 
+      error: MultipleErrorResponse | undefined) => {
+      if (error && error[field] && typeof error[field][index] === "object" && 
+      error[field][index].hasOwnProperty(errorKey)) {
         const messages = error[field][index][errorKey];
         return (
           <div>
@@ -157,24 +158,32 @@ const Profile: React.FC = () =>{
 ///////////////////////////////////////
     // EXPIRIENCE
 
-    const sendExperienceData = async () =>{
+    const sendExperienceData = async (
+      state: EditDataFunction,
+      editField: React.Dispatch<React.SetStateAction<boolean>>,
+      setData: GetDataFunction,
+      cleanState: (() => void) | null = null,
+      endpoint: string,
+      errorField: string,
+      index: number = 0,
+    ) =>{
         try{
-            const response = await axios.post('/profile/experience', singleExperience,  {
+            const response = await axios.post(`${endpoint}`, state,  {
                 headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
                 },
               });
-            setEditExperience(false)
+              editField(false)
 
-            removeMultipleErrors('addexperience', 0)
-            getData(setExperience, '/profile/experience');
-            setSingleExperience(null)
+            removeMultipleErrors(`${errorField}`, index)
+            getData(setData, `${endpoint}`);
+            if (cleanState) cleanState()
         }catch (error: any) {
-            removeMultipleErrors('addexperience', 0)
+          removeMultipleErrors(`${errorField}`, index)
             const axiosError = error as AxiosError<ErrorResponse>;
             if (axiosError.response?.data) {
-              handleMultipleErrors('addexperience', 0, axiosError.response?.data)
+              handleMultipleErrors(`${errorField}`, index, axiosError.response?.data)
             }
             console.log(error);
           }

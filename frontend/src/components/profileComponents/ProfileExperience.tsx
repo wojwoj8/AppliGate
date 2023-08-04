@@ -24,7 +24,8 @@ interface ProfileExperienceProps {
         ) => Promise<void>
     getData: (
         setData: GetDataFunction,
-        endpoint: string
+        endpoint: string,
+        id?: number | undefined
         ) => void;
     setEditExperience: React.Dispatch<React.SetStateAction<boolean>>;
     editExperience: boolean;
@@ -59,16 +60,21 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
 
     
 
-    const editMultipleExperiencesButton = (index: number) => {
+    const editMultipleExperiencesButton = async (index: number, id?: number) => {
+        if (editMultipleExperiences[index] === true){
+           await cancelEditMultipleExperiences(index, id)
+           return
+        }
         setEditMultipleExperiences((prevEditExperiences) => {
           const newEditExperiences = [...prevEditExperiences];
           newEditExperiences[index] = !prevEditExperiences[index];
           return newEditExperiences;
         });
+        
     }
 
     
-    const cancelEditMultipleExperiences = async (index: number) => {
+    const cancelEditMultipleExperiences = async (index: number, id?: number) => {
         setEditMultipleExperiences((prevEditExperiences) => {
           const newEditExperiences = [...prevEditExperiences];
           newEditExperiences[index] = false;
@@ -272,7 +278,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                     <div key={index} className='text-center row'>
                         {index >= 1 && <hr className="border border-primary border-3 my-1"></hr>}
                         <div className='col-auto'>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleExperiencesButton(index)}>
+                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleExperiencesButton(index, experience.id)}>
                                 <Icon path={mdiPencil} size={1} />
                             </button>
                             <button className='btn btn btn-outline-secondary btn-sm' onClick={() => deleteExperience(experience.id)}>
@@ -383,7 +389,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 </div>
                                 </form>
                             <div className='text-center'>
-                            <button className='btn btn-secondary' onClick={() => cancelEditMultipleExperiences(index)}>
+                            <button className='btn btn-secondary' onClick={() => cancelEditMultipleExperiences(index, experience.id)}>
                                 Cancel
                             </button>
                             <button className='btn btn-primary' onClick={() => saveEdit(index, experience.id)}>

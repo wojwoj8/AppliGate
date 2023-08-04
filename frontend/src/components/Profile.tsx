@@ -106,10 +106,14 @@ const Profile: React.FC = () =>{
     const getData = async (
       setData: GetDataFunction,
       endpoint: string,
-
+      id?: number,
     ) => {
+      let path = `${endpoint}`
+      if (id){  
+        path = `${endpoint}/${id}`
+      }
         try{
-            const response = await axios.get(`${endpoint}`, {
+            const response = await axios.get(path, {
                 headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
@@ -206,9 +210,12 @@ const Profile: React.FC = () =>{
         index: number,
         id?: number
       ) =>{
-      console.log(index)
+        let path = `${endpoint}`
+        if (id){  
+          path = `${endpoint}/${id}`
+        }
       try{
-          const response = await axios.put(`${endpoint}/${id}`, state[index],  {
+          const response = await axios.put(path, state[index],  {
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + String(authTokens.access),

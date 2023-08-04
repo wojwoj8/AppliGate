@@ -113,14 +113,17 @@ class ProfileExperienceView(
     permission_classes = [IsAuthenticated]
     queryset = UserExperience.objects.all()
     serializer_class = UserExperienceSerializer
-    lookup_field = "id"
 
     def get(self, request, *args, **kwargs):
         user = self.request.user
         print(args, kwargs)
         pk = kwargs.get("pk")
-        queryset = UserExperience.objects.filter(user=user)
-        serializer = self.serializer_class(queryset, many=True)
+        if pk is None:
+            queryset = UserExperience.objects.filter(user=user)
+            serializer = self.serializer_class(queryset, many=True)
+        else:
+            queryset = UserExperience.objects.filter(user=user, id=pk)
+            serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):

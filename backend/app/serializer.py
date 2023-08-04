@@ -76,3 +76,20 @@ class UserExperienceSerializer(serializers.ModelSerializer):
             "to_date",
             "responsibilities",
         ]
+
+
+class UserEducationSerializer(serializers.ModelSerializer):
+    from_date = MonthYearDateField(required=True)
+    to_date = MonthYearDateField(allow_null=True, required=False)
+
+    class Meta:
+        model = UserExperience
+        fields = [
+            "id",
+            "school",
+            "educational_level",
+            "major",
+            "specialization",
+            "from_date",
+            "to_date",
+        ]

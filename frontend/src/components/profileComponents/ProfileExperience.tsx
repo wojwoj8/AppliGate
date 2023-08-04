@@ -19,7 +19,8 @@ interface ProfileExperienceProps {
         setData: GetDataFunction, 
         endpoint: string, 
         errorField: string, 
-        index: number
+        index: number,
+        id: number | undefined
         ) => Promise<void>
     getData: (
         setData: GetDataFunction,
@@ -94,9 +95,10 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
         setSingleExperience(null)
     }
 
-    const saveEdit = async (index: number) =>{
+    const saveEdit = async (index: number, id?: number) =>{
+
         editMultipleData(experience, setEditMultipleExperiences, setExperience, 
-            '/profile/experience', 'experience', index)
+            '/profile/experience', 'experience', index, id)
         // setEditPersonal(false);
     }
 
@@ -384,7 +386,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             <button className='btn btn-secondary' onClick={() => cancelEditMultipleExperiences(index)}>
                                 Cancel
                             </button>
-                            <button className='btn btn-primary' onClick={() => saveEdit(index)}>
+                            <button className='btn btn-primary' onClick={() => saveEdit(index, experience.id)}>
                                 Save
                             </button>
                             </div>

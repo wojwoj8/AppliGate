@@ -26,6 +26,10 @@ export interface ExperienceData{
     responsibilities: string;
     id: number;
 }
+
+export interface EducationData{
+
+}
 // for axios errors
 export interface ErrorResponse{
 
@@ -66,6 +70,7 @@ const Profile: React.FC = () =>{
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [contact, setContact] = useState<ContactData| null>(null);
     const [experience, setExperience] = useState<ExperienceData[]>([]);
+    const [edudation, setEducation] = useState<EducationData[]>([]);
     const [singleExperience, setSingleExperience] = useState<ExperienceData | null>(null);
     const { authTokens, logoutUser } = useContext(AuthContext);
 
@@ -198,11 +203,12 @@ const Profile: React.FC = () =>{
         setData: GetDataFunction,
         endpoint: string,
         errorField: string,
-        index: number
+        index: number,
+        id?: number
       ) =>{
       console.log(index)
       try{
-          const response = await axios.put(`${endpoint}`, state[index],  {
+          const response = await axios.put(`${endpoint}/${id}`, state[index],  {
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + String(authTokens.access),

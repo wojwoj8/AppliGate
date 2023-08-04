@@ -113,9 +113,12 @@ class ProfileExperienceView(
     permission_classes = [IsAuthenticated]
     queryset = UserExperience.objects.all()
     serializer_class = UserExperienceSerializer
+    lookup_field = "id"
 
     def get(self, request, *args, **kwargs):
         user = self.request.user
+        print(args, kwargs)
+        pk = kwargs.get("pk")
         queryset = UserExperience.objects.filter(user=user)
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
@@ -133,8 +136,9 @@ class ProfileExperienceView(
         return Response(serializer.errors, status=400)
 
     def put(self, request, *args, **kwargs):
+        print(args, kwargs)
         user = request.user
-        print(request.data)
+        # print(request.data)
         item_id = request.data["id"]
         queryset = UserExperience.objects.get(user=user, id=item_id)
 

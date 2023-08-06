@@ -25,3 +25,13 @@ class UserExperience(models.Model):
     from_date = models.DateField(null=False, blank=False, default=None)
     to_date = models.DateField(null=True, blank=True)
     responsibilities = models.CharField(max_length=1500, null=True, blank=True)
+
+
+class UserEducation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    school = models.CharField(max_length=100, blank=False)
+    educational_level = models.CharField(max_length=100, blank=False)
+    major = models.CharField(max_length=100, blank=False)
+    specialization = models.CharField(max_length=100, blank=False)
+    from_date = models.DateField(null=False, blank=False, default=None)
+    to_date = models.DateField(null=True, blank=True)

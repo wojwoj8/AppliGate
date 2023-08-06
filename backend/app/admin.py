@@ -1,11 +1,13 @@
 from django.contrib import admin
-from .models import User, UserExperience
+from .models import User, UserExperience, UserEducation
 from django.contrib.auth.admin import UserAdmin
+
 
 # Register your models here.
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'username', 'password', 'email')
+    list_display = ("id", "username", "password", "email")
+
 
 admin.site.register(User, UserAdmin)
 admin.site.register(UserExperience)
-
+admin.site.register(UserEducation)

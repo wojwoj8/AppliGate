@@ -4,27 +4,41 @@ import AuthContext from '../utils/AuthProvider';
 import ProfileContact from './profileComponents/ProfileContact';
 import ProfilePersonal from './profileComponents/ProfilePersonal';
 import ProfileExperience from './profileComponents/ProfileExperience';
+import ProfileEducation from './profileComponents/ProfileEducation';
 
 export interface ProfileData{
-    first_name: string;
-    last_name: string;
-    date_of_birth: Date;
-    country: string;
-    city: string;
-    current_position: string;
+  first_name: string;
+  last_name: string;
+  date_of_birth: Date;
+  country: string;
+  city: string;
+  current_position: string;
 }
+
 export interface ContactData{
   contact_email: string;
   phone_number: string;
 }
+
 export interface ExperienceData{
-    position: string;
-    localization: string;
-    from_date: string;
-    to_date: string;
-    company: string;
-    responsibilities: string;
-    id: number;
+  position: string;
+  localization: string;
+  from_date: string;
+  to_date: string;
+  company: string;
+  responsibilities: string;
+  id: number;
+}
+
+export interface EducationData{
+  id: number;
+  school: string;
+  educational_level: string;
+  major: string;
+  specialization: string;
+  from_date: string;
+  to_date: string;
+
 }
 // for axios errors
 export interface ErrorResponse{
@@ -45,6 +59,8 @@ export type GetDataFunction =
   React.Dispatch<React.SetStateAction<ContactData | null>> |
   React.Dispatch<React.SetStateAction<ExperienceData | null>> |
   React.Dispatch<React.SetStateAction<ExperienceData[]>> |
+  React.Dispatch<React.SetStateAction<EducationData | null>> |
+  React.Dispatch<React.SetStateAction<EducationData[]>> |
   undefined;
 
 //UNIVERSAL PUT STATES
@@ -53,9 +69,14 @@ export type EditDataFunction =
   ContactData | null |
   ExperienceData | null |
   ExperienceData[] |
+  EducationData | null |
+  EducationData[] |
   undefined;
 
-export type EditMultipleDataFunction = ExperienceData[];
+export type EditMultipleDataFunction = 
+  ExperienceData[] |
+  EducationData[]
+  ;
 
 const initialMultipleErrors: MultipleErrorResponse = {
   profile: {},
@@ -66,13 +87,20 @@ const Profile: React.FC = () =>{
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [contact, setContact] = useState<ContactData| null>(null);
     const [experience, setExperience] = useState<ExperienceData[]>([]);
+    const [education, setEducation] = useState<EducationData[]>([]);
+
     const [singleExperience, setSingleExperience] = useState<ExperienceData | null>(null);
+    const [singleEducation, setSingleEducation] = useState<EducationData | null>(null);
+
     const { authTokens, logoutUser } = useContext(AuthContext);
 
     const [editPersonal, setEditPersonal] = useState(false);
     const [editContact, setEditContact] = useState(false);
     const [editExperience, setEditExperience] = useState(false);
     const [editMultipleExperiences, setEditMultipleExperiences] = useState<boolean[]>([]);
+    const [editEducation, setEditEducation] = useState(false);
+    const [editMultipleEducations, setEditMultipleEducations] = useState<boolean[]>([]);
+    
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
 
     const renderFieldErrorMultiple = (
@@ -97,14 +125,18 @@ const Profile: React.FC = () =>{
     };
 
    
-
+    //single getData
     const getData = async (
       setData: GetDataFunction,
       endpoint: string,
-
+      id?: number,
     ) => {
+      let path = `${endpoint}`
+      if (id){  
+        path = `${endpoint}/${id}`
+      }
         try{
-            const response = await axios.get(`${endpoint}`, {
+            const response = await axios.get(path, {
                 headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
@@ -160,7 +192,7 @@ const Profile: React.FC = () =>{
 ///////////////////////////////////////
     // EXPIRIENCE
 
-    const sendExperienceData = async (
+    const sendMultipleData = async (
       state: EditDataFunction,
       editField: React.Dispatch<React.SetStateAction<boolean>>,
       setData: GetDataFunction,
@@ -198,11 +230,15 @@ const Profile: React.FC = () =>{
         setData: GetDataFunction,
         endpoint: string,
         errorField: string,
-        index: number
+        index: number,
+        id?: number
       ) =>{
-      console.log(index)
+        let path = `${endpoint}`
+        if (id){  
+          path = `${endpoint}/${id}`
+        }
       try{
-          const response = await axios.put(`${endpoint}`, state[index],  {
+          const response = await axios.put(path, state[index],  {
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + String(authTokens.access),
@@ -306,6 +342,7 @@ const Profile: React.FC = () =>{
         getData(setProfile, '/profile/');
         getData(setContact, '/profile/contact');
         getData(setExperience, '/profile/experience');
+        getData(setEducation, '/profile/education');
     }, [])
     return(
         <div className="container ">
@@ -339,7 +376,7 @@ const Profile: React.FC = () =>{
                 setEditExperience={setEditExperience}
                 editMultipleData={editMultipleData}
                 getData={getData}
-                sendExperienceData={sendExperienceData}
+                sendMultipleData={sendMultipleData}
                 singleExperience={singleExperience}
                 setSingleExperience={setSingleExperience}
                 editMultipleExperiences={editMultipleExperiences}
@@ -348,6 +385,25 @@ const Profile: React.FC = () =>{
                 removeMultipleErrors={removeMultipleErrors}
                 renderFieldErrorMultiple={renderFieldErrorMultiple}
                 deleteData={deleteData}
+            />
+            <ProfileEducation
+                education={education}
+                setEducation={setEducation}
+                editEducation={editEducation}
+                editMultipleData={editMultipleData}
+                editMultipleEducations={editMultipleEducations}
+                getData={getData}
+                sendMultipleData={sendMultipleData}
+                setEditMultipleEducations={setEditMultipleEducations}
+                setSingleEducation={setSingleEducation}
+                setEditEducation={setEditEducation}
+                singleEducation={singleEducation}
+                multipleErrors={multipleErrors}
+                removeMultipleErrors={removeMultipleErrors}
+                renderFieldErrorMultiple={renderFieldErrorMultiple}
+                deleteData={deleteData}
+                
+
 
             />
         </div>

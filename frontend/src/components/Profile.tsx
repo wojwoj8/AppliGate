@@ -5,6 +5,7 @@ import ProfileContact from './profileComponents/ProfileContact';
 import ProfilePersonal from './profileComponents/ProfilePersonal';
 import ProfileExperience from './profileComponents/ProfileExperience';
 import ProfileEducation from './profileComponents/ProfileEducation';
+import ProfileCourse from './profileComponents/ProfileCourse';
 
 export interface ProfileData{
   first_name: string;
@@ -40,6 +41,14 @@ export interface EducationData{
   to_date: string;
 
 }
+
+export interface CourseData{
+  id: number;
+  course_name: string;
+  organizer: string;
+  certificate_link: string;
+  finish_date: string;
+}
 // for axios errors
 export interface ErrorResponse{
 
@@ -61,6 +70,8 @@ export type GetDataFunction =
   React.Dispatch<React.SetStateAction<ExperienceData[]>> |
   React.Dispatch<React.SetStateAction<EducationData | null>> |
   React.Dispatch<React.SetStateAction<EducationData[]>> |
+  React.Dispatch<React.SetStateAction<CourseData[]>> |
+  React.Dispatch<React.SetStateAction<CourseData | null>> |
   undefined;
 
 //UNIVERSAL PUT STATES
@@ -71,11 +82,14 @@ export type EditDataFunction =
   ExperienceData[] |
   EducationData | null |
   EducationData[] |
+  CourseData | null |
+  CourseData[] |
   undefined;
 
 export type EditMultipleDataFunction = 
   ExperienceData[] |
-  EducationData[]
+  EducationData[] |
+  CourseData[]
   ;
 
 const initialMultipleErrors: MultipleErrorResponse = {
@@ -88,7 +102,9 @@ const Profile: React.FC = () =>{
     const [contact, setContact] = useState<ContactData| null>(null);
     const [experience, setExperience] = useState<ExperienceData[]>([]);
     const [education, setEducation] = useState<EducationData[]>([]);
+    const [course, setCourse] = useState<CourseData[]>([]);
 
+    const [singleCourse, setSingleCourse] = useState<CourseData | null>(null);
     const [singleExperience, setSingleExperience] = useState<ExperienceData | null>(null);
     const [singleEducation, setSingleEducation] = useState<EducationData | null>(null);
 
@@ -100,6 +116,8 @@ const Profile: React.FC = () =>{
     const [editMultipleExperiences, setEditMultipleExperiences] = useState<boolean[]>([]);
     const [editEducation, setEditEducation] = useState(false);
     const [editMultipleEducations, setEditMultipleEducations] = useState<boolean[]>([]);
+    const [editCourse, setEditCourse] = useState(false);
+    const [editMultipleCourses, setEditMultipleCourses] = useState<boolean[]>([]);
     
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
 
@@ -343,6 +361,7 @@ const Profile: React.FC = () =>{
         getData(setContact, '/profile/contact');
         getData(setExperience, '/profile/experience');
         getData(setEducation, '/profile/education');
+        getData(setCourse, '/profile/course');
     }, [])
     return(
         <div className="container ">
@@ -402,9 +421,23 @@ const Profile: React.FC = () =>{
                 removeMultipleErrors={removeMultipleErrors}
                 renderFieldErrorMultiple={renderFieldErrorMultiple}
                 deleteData={deleteData}
-                
-
-
+            />
+                <ProfileCourse
+                course={course}
+                setCourse={setCourse}
+                editCourse={editCourse}
+                editMultipleData={editMultipleData}
+                editMultipleCourses={editMultipleCourses}
+                getData={getData}
+                sendMultipleData={sendMultipleData}
+                setEditMultipleCourses={setEditMultipleCourses}
+                setSingleCourse={setSingleCourse}
+                setEditCourse={setEditCourse}
+                singleCourse={singleCourse}
+                multipleErrors={multipleErrors}
+                removeMultipleErrors={removeMultipleErrors}
+                renderFieldErrorMultiple={renderFieldErrorMultiple}
+                deleteData={deleteData}
             />
         </div>
     )

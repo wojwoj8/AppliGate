@@ -1,6 +1,6 @@
 # for translating data to JSON
 from rest_framework import serializers
-from .models import User, UserExperience, UserEducation
+from .models import User, UserExperience, UserEducation, UserCourse
 from datetime import datetime
 
 
@@ -92,4 +92,18 @@ class UserEducationSerializer(serializers.ModelSerializer):
             "specialization",
             "from_date",
             "to_date",
+        ]
+
+
+class UserCourseSerializer(serializers.ModelSerializer):
+    finish_date = MonthYearDateField(allow_null=True, required=False)
+
+    class Meta:
+        model = UserCourse
+        fields = [
+            "id",
+            "course_name",
+            "organizer",
+            "certificate_link",
+            "finish_date",
         ]

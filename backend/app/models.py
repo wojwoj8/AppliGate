@@ -35,3 +35,11 @@ class UserEducation(models.Model):
     specialization = models.CharField(max_length=100, null=True, blank=True)
     from_date = models.DateField(null=False, blank=False, default=None)
     to_date = models.DateField(null=True, blank=True)
+
+
+class UserCourse(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course_name = models.CharField(max_length=100, blank=False)
+    organizer = models.CharField(max_length=100, blank=False)
+    certificate_link = models.CharField(max_length=250, null=True, blank=True)
+    finish_date = models.DateField(null=True, blank=True)

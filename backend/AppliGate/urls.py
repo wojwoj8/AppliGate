@@ -35,6 +35,8 @@ urlpatterns = [
     path("profile/experience/<int:pk>", views.ProfileExperienceView.as_view()),
     path("profile/education", views.ProfileEducationView.as_view()),
     path("profile/education/<int:pk>", views.ProfileEducationView.as_view()),
+    path("profile/course", views.ProfileCourseView.as_view()),
+    path("profile/course/<int:pk>", views.ProfileCourseView.as_view()),
     # Authentication
     path("api/", include("app.api.urls")),
 ]

@@ -29,7 +29,7 @@ interface ProfileExperienceProps {
         ) => void;
     setEditExperience: React.Dispatch<React.SetStateAction<boolean>>;
     editExperience: boolean;
-    sendExperienceData:(
+    sendMultipleData:(
         state: EditDataFunction, 
         editField: React.Dispatch<React.SetStateAction<boolean>>, 
         setData: GetDataFunction, 
@@ -53,7 +53,7 @@ interface ProfileExperienceProps {
 
 const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     experience, setExperience, editExperience, getData,
-    setEditExperience, editMultipleData, sendExperienceData,singleExperience, setSingleExperience,
+    setEditExperience, editMultipleData, sendMultipleData,singleExperience, setSingleExperience,
     editMultipleExperiences, setEditMultipleExperiences, multipleErrors,
     removeMultipleErrors, renderFieldErrorMultiple, deleteData
 }) =>{
@@ -113,7 +113,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
       };
 
     const saveExperience = () => {
-        sendExperienceData(singleExperience, setEditExperience, setExperience, 
+        sendMultipleData(singleExperience, setEditExperience, setExperience, 
             resetExperience, '/profile/experience', 'addexperience');
     }
 
@@ -237,7 +237,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 </div>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor={`to_date`} className='form-label'>
-                                        From:
+                                        To:
                                     </label>
                                     <input 
                                         type="month" 

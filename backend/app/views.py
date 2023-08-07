@@ -62,47 +62,46 @@ class IndexView(generics.GenericAPIView):
     #         return self.retrieve(request, *args, **kwargs)
 
 
-class ProfileView(generics.GenericAPIView, mixins.UpdateModelMixin):
+class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
     permission_classes = [IsAuthenticated]
-    queryset = User.objects.all()
+    serializer_class = None  # Subclasses must set this
+
+    def process_date(self, date_string):
+        try:
+            date_object = datetime.fromisoformat(date_string[:-1])
+            return date_object.strftime("%Y-%m-%d")
+        except ValueError:
+            return None
 
     def get(self, request, *args, **kwargs):
         user = request.user
-        serializer_class = ProfileSerializer(user, many=False)
-        return Response(serializer_class.data)
+        serializer = self.serializer_class(user, many=False)
+        print(serializer.data)
+        return Response(serializer.data)
 
     def put(self, request, *args, **kwargs):
         user = request.user
-        serializer_class = ProfileSerializer(user, data=request.data)
+        serializer = self.serializer_class(user, data=request.data)
 
-        # Handle date format
-        date = request.data["date_of_birth"]
-        date_object = datetime.fromisoformat(date[:-1])  # Remove the "Z" at the end
-        request.data["date_of_birth"] = date_object.strftime("%Y-%m-%d")
-        print(request.data)
-        if serializer_class.is_valid():
-            serializer_class.save()
-            return Response(serializer_class.data)
-        return Response(serializer_class.errors, status=400)
+        if "date_of_birth" in request.data:
+            request.data["date_of_birth"] = self.process_date(
+                request.data["date_of_birth"]
+            )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProfileContactView(generics.GenericAPIView, mixins.UpdateModelMixin):
-    permission_classes = [IsAuthenticated]
+class ProfileView(BaseProfileUpdateView):
+    serializer_class = ProfileSerializer
     queryset = User.objects.all()
 
-    def get(self, request, *args, **kwargs):
-        user = request.user
-        serializer_class = ContactSerializer(user, many=False)
-        return Response(serializer_class.data)
 
-    def put(self, request, *args, **kwargs):
-        user = request.user
-        serializer_class = ContactSerializer(user, data=request.data)
-
-        if serializer_class.is_valid():
-            serializer_class.save()
-            return Response(serializer_class.data)
-        return Response(serializer_class.errors, status=400)
+class ProfileContactView(BaseProfileUpdateView):
+    serializer_class = ContactSerializer
+    queryset = User.objects.all()
 
 
 class BaseProfileView(
@@ -113,7 +112,7 @@ class BaseProfileView(
     mixins.DestroyModelMixin,
 ):
     permission_classes = [IsAuthenticated]
-    serializer_class = None  # Subclasses must set this
+    serializer_class = None
 
     def get_queryset(self):
         user = self.request.user

@@ -105,7 +105,7 @@ class ProfileContactView(generics.GenericAPIView, mixins.UpdateModelMixin):
         return Response(serializer_class.errors, status=400)
 
 
-class ProfileExperienceView(
+class BaseProfileView(
     generics.GenericAPIView,
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
@@ -113,176 +113,80 @@ class ProfileExperienceView(
     mixins.DestroyModelMixin,
 ):
     permission_classes = [IsAuthenticated]
-    queryset = UserExperience.objects.all()
-    serializer_class = UserExperienceSerializer
+    serializer_class = None  # Subclasses must set this
+
+    def get_queryset(self):
+        user = self.request.user
+        pk = self.kwargs.get("pk")
+        if pk is None:
+            return self.queryset.filter(user=user)
+        return self.queryset.filter(user=user, id=pk)
 
     def get(self, request, *args, **kwargs):
-        user = self.request.user
-        print(args, kwargs)
-        pk = kwargs.get("pk")
-        if pk is None:
-            queryset = UserExperience.objects.filter(user=user)
-            serializer = self.serializer_class(queryset, many=True)
-        else:
-            queryset = UserExperience.objects.filter(user=user, id=pk)
-            serializer = self.serializer_class(queryset, many=True)
+        queryset = self.get_queryset()
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
-        user = request.user
+        serializer = self.serializer_class(data=request.data)
         if request.data is None:
             serializer = self.serializer_class(data={})
         else:
             serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=user)
-
-            return Response({"created": "Experience added successfully"}, status=200)
+            serializer.save(user=request.user)
+            return Response(
+                {
+                    "created": f"{self.serializer_class.Meta.model.__name__} added successfully"
+                },
+                status=200,
+            )
         return Response(serializer.errors, status=400)
 
     def put(self, request, *args, **kwargs):
-        print(args, kwargs)
-        user = request.user
-        # print(request.data)
-        item_id = request.data["id"]
-        queryset = UserExperience.objects.get(user=user, id=item_id)
-
-        serializer_class = UserExperienceSerializer(queryset, data=request.data)
-
-        if serializer_class.is_valid():
-            serializer_class.save()
-            return Response(serializer_class.data)
-        return Response(serializer_class.errors, status=400)
-
-    def delete(self, request, pk):
-        user = request.user
+        item_id = request.data.get("id")
         try:
-            experience = UserExperience.objects.get(user=user, id=pk)
-            experience.delete()
-            return Response({"deleted": "Experience deleted successfully"}, status=200)
-        except UserExperience.DoesNotExist:
+            instance = self.queryset.get(id=item_id)
+        except self.serializer_class.Meta.model.DoesNotExist:
             return Response(
-                {"error": "Experience not found"}, status=status.HTTP_404_NOT_FOUND
+                {"error": f"{self.serializer_class.Meta.model.__name__} not found"},
+                status=status.HTTP_404_NOT_FOUND,
             )
 
+        serializer = self.serializer_class(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
 
-class ProfileEducationView(
-    generics.GenericAPIView,
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.DestroyModelMixin,
-):
-    permission_classes = [IsAuthenticated]
+    def delete(self, request, pk):
+        try:
+            instance = self.queryset.get(id=pk)
+        except self.serializer_class.Meta.model.DoesNotExist:
+            return Response(
+                {"error": f"{self.serializer_class.Meta.model.__name__} not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        instance.delete()
+        return Response(
+            {
+                "deleted": f"{self.serializer_class.Meta.model.__name__} deleted successfully"
+            },
+            status=200,
+        )
+
+
+class ProfileEducationView(BaseProfileView):
     queryset = UserEducation.objects.all()
     serializer_class = UserEducationSerializer
 
-    def get(self, request, *args, **kwargs):
-        user = self.request.user
-        print(args, kwargs)
-        pk = kwargs.get("pk")
-        if pk is None:
-            queryset = UserEducation.objects.filter(user=user)
-            serializer = self.serializer_class(queryset, many=True)
-        else:
-            queryset = UserEducation.objects.filter(user=user, id=pk)
-            serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data)
 
-    def post(self, request, *args, **kwargs):
-        user = request.user
-        if request.data is None:
-            serializer = self.serializer_class(data={})
-        else:
-            serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=user)
-
-            return Response({"created": "Education added successfully"}, status=200)
-        return Response(serializer.errors, status=400)
-
-    def put(self, request, *args, **kwargs):
-        print(args, kwargs)
-        user = request.user
-        # print(request.data)
-        item_id = request.data["id"]
-        queryset = UserEducation.objects.get(user=user, id=item_id)
-
-        serializer_class = UserEducationSerializer(queryset, data=request.data)
-
-        if serializer_class.is_valid():
-            serializer_class.save()
-            return Response(serializer_class.data)
-        return Response(serializer_class.errors, status=400)
-
-    def delete(self, request, pk):
-        user = request.user
-        try:
-            experience = UserEducation.objects.get(user=user, id=pk)
-            experience.delete()
-            return Response({"deleted": "Education deleted successfully"}, status=200)
-        except UserEducation.DoesNotExist:
-            return Response(
-                {"error": "Education not found"}, status=status.HTTP_404_NOT_FOUND
-            )
-
-
-class ProfileCourseView(
-    generics.GenericAPIView,
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.DestroyModelMixin,
-):
-    permission_classes = [IsAuthenticated]
+class ProfileCourseView(BaseProfileView):
     queryset = UserCourse.objects.all()
     serializer_class = UserCourseSerializer
 
-    def get(self, request, *args, **kwargs):
-        user = self.request.user
-        print(args, kwargs)
-        pk = kwargs.get("pk")
-        if pk is None:
-            queryset = UserCourse.objects.filter(user=user)
-            serializer = self.serializer_class(queryset, many=True)
-        else:
-            queryset = UserCourse.objects.filter(user=user, id=pk)
-            serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data)
 
-    def post(self, request, *args, **kwargs):
-        user = request.user
-        if request.data is None:
-            serializer = self.serializer_class(data={})
-        else:
-            serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=user)
-
-            return Response({"created": "Course added successfully"}, status=200)
-        return Response(serializer.errors, status=400)
-
-    def put(self, request, *args, **kwargs):
-        print(args, kwargs)
-        user = request.user
-        # print(request.data)
-        item_id = request.data["id"]
-        queryset = UserCourse.objects.get(user=user, id=item_id)
-
-        serializer_class = UserCourseSerializer(queryset, data=request.data)
-
-        if serializer_class.is_valid():
-            serializer_class.save()
-            return Response(serializer_class.data)
-        return Response(serializer_class.errors, status=400)
-
-    def delete(self, request, pk):
-        user = request.user
-        try:
-            experience = UserCourse.objects.get(user=user, id=pk)
-            experience.delete()
-            return Response({"deleted": "Course deleted successfully"}, status=200)
-        except UserCourse.DoesNotExist:
-            return Response(
-                {"error": "Course not found"}, status=status.HTTP_404_NOT_FOUND
-            )
+class ProfileExperienceView(BaseProfileView):
+    queryset = UserExperience.objects.all()
+    serializer_class = UserExperienceSerializer

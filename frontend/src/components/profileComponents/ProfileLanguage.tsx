@@ -251,7 +251,7 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                                     </div>
                                     <div className='mb-3 col-4'>
                                     <label htmlFor={`language_level_${index}`} className='form-label'>
-                                       Organizer:
+                                       Language:
                                     </label>
                                     <input
                                         type='text'

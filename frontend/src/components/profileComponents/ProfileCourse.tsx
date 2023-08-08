@@ -253,7 +253,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                         <div className='col-auto col-md-8 col-sm-6 text-start'>
                             
                             {course?.course_name && course?.certificate_link ? (
-                                <p><a href={course?.certificate_link}>{course?.course_name}</a></p>
+                                <p><a target='_blank' href={course?.certificate_link} rel="noreferrer">{course?.course_name}</a></p>
                             ) : (
                                 <p>{course?.course_name}</p>
                             )} 

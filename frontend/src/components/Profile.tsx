@@ -18,6 +18,7 @@ export interface ProfileData{
   country: string;
   city: string;
   current_position: string;
+  about_me: string;
 }
 
 export interface ContactData{
@@ -97,6 +98,8 @@ export type GetDataFunction =
   React.Dispatch<React.SetStateAction<LanguageData | null>> |
   React.Dispatch<React.SetStateAction<LinkData[]>> |
   React.Dispatch<React.SetStateAction<LinkData | null>> |
+  React.Dispatch<React.SetStateAction<SkillData[]>> |
+  React.Dispatch<React.SetStateAction<SkillData | null>> |
   undefined;
 
 //UNIVERSAL PUT STATES
@@ -113,6 +116,8 @@ export type EditDataFunction =
   LanguageData | null |
   LinkData[] |
   LinkData | null |
+  SkillData[] |
+  SkillData | null |
   undefined;
 
 export type EditMultipleDataFunction = 
@@ -120,7 +125,8 @@ export type EditMultipleDataFunction =
   EducationData[] |
   CourseData[] |
   LanguageData[] |
-  LinkData[]
+  LinkData[] |
+  SkillData[] 
   ;
 
 const initialMultipleErrors: MultipleErrorResponse = {
@@ -136,12 +142,14 @@ const Profile: React.FC = () =>{
     const [course, setCourse] = useState<CourseData[]>([]);
     const [language, setLanguage] = useState<LanguageData[]>([]);
     const [link, setLink] = useState<LinkData[]>([]);
+    const [skill, setSkill] = useState<SkillData[]>([]);
 
     const [singleCourse, setSingleCourse] = useState<CourseData | null>(null);
     const [singleExperience, setSingleExperience] = useState<ExperienceData | null>(null);
     const [singleEducation, setSingleEducation] = useState<EducationData | null>(null);
     const [singleLanguage, setSingleLanguage] = useState<LanguageData | null>(null);
     const [singleLink, setSingleLink] = useState<LinkData | null>(null);
+    const [singleSkill, setSingleSkill] = useState<SkillData | null>(null);
 
     const { authTokens, logoutUser } = useContext(AuthContext);
 
@@ -158,6 +166,8 @@ const Profile: React.FC = () =>{
 
     const [editLink, setEditLink] = useState(false);
     const [editMultipleLinks, setEditMultipleLinks] = useState<boolean[]>([]);
+
+    const [editSkill, setEditSkill] = useState(false);
     
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
 
@@ -332,7 +342,7 @@ const Profile: React.FC = () =>{
 
 
     const deleteData = async (
-        editField: React.Dispatch<React.SetStateAction<boolean[]>>,
+        editField: React.Dispatch<React.SetStateAction<boolean[]>> | undefined,
         setData: GetDataFunction,
         endpoint: string,
         // errorField: string,
@@ -346,11 +356,13 @@ const Profile: React.FC = () =>{
                 Authorization: 'Bearer ' + String(authTokens.access),
               },
             });
+            if (editField){
             editField((prevEditExperiences) => {
               const newEditExperiences = [...prevEditExperiences];
               newEditExperiences[id] = false;
               return newEditExperiences;
             });
+          }
             getData(setData, `${endpoint}`);
 
             // removeMultipleErrors('experience', index)
@@ -404,7 +416,7 @@ const Profile: React.FC = () =>{
         getData(setCourse, '/profile/course');
         getData(setLanguage, '/profile/language');
         getData(setLink, '/profile/link');
-        // getData(setSkill, '/profile/skill');
+        getData(setSkill, '/profile/skill');
         // getData(setCourse, '/profile/about');
     }, [])
     return(
@@ -467,42 +479,58 @@ const Profile: React.FC = () =>{
                 deleteData={deleteData}
             />
                 <ProfileCourse
-                course={course}
-                setCourse={setCourse}
-                editCourse={editCourse}
-                editMultipleData={editMultipleData}
-                editMultipleCourses={editMultipleCourses}
-                getData={getData}
-                sendMultipleData={sendMultipleData}
-                setEditMultipleCourses={setEditMultipleCourses}
-                setSingleCourse={setSingleCourse}
-                setEditCourse={setEditCourse}
-                singleCourse={singleCourse}
-                multipleErrors={multipleErrors}
-                removeMultipleErrors={removeMultipleErrors}
-                renderFieldErrorMultiple={renderFieldErrorMultiple}
-                deleteData={deleteData}
+                  course={course}
+                  setCourse={setCourse}
+                  editCourse={editCourse}
+                  editMultipleData={editMultipleData}
+                  editMultipleCourses={editMultipleCourses}
+                  getData={getData}
+                  sendMultipleData={sendMultipleData}
+                  setEditMultipleCourses={setEditMultipleCourses}
+                  setSingleCourse={setSingleCourse}
+                  setEditCourse={setEditCourse}
+                  singleCourse={singleCourse}
+                  multipleErrors={multipleErrors}
+                  removeMultipleErrors={removeMultipleErrors}
+                  renderFieldErrorMultiple={renderFieldErrorMultiple}
+                  deleteData={deleteData}
             />
 
                 <ProfileLanguage
-                language={language}
-                setLanguage={setLanguage}
-                editLanguage={editLanguage}
-                editMultipleData={editMultipleData}
-                editMultipleLanguages={editMultipleLanguages}
-                getData={getData}
-                sendMultipleData={sendMultipleData}
-                setEditMultipleLanguages={setEditMultipleLanguages}
-                setSingleLanguage={setSingleLanguage}
-                setEditLanguage={setEditLanguage}
-                singleLanguage={singleLanguage}
-                multipleErrors={multipleErrors}
-                removeMultipleErrors={removeMultipleErrors}
-                renderFieldErrorMultiple={renderFieldErrorMultiple}
-                deleteData={deleteData}
+                  language={language}
+                  setLanguage={setLanguage}
+                  editLanguage={editLanguage}
+                  editMultipleData={editMultipleData}
+                  editMultipleLanguages={editMultipleLanguages}
+                  getData={getData}
+                  sendMultipleData={sendMultipleData}
+                  setEditMultipleLanguages={setEditMultipleLanguages}
+                  setSingleLanguage={setSingleLanguage}
+                  setEditLanguage={setEditLanguage}
+                  singleLanguage={singleLanguage}
+                  multipleErrors={multipleErrors}
+                  removeMultipleErrors={removeMultipleErrors}
+                  renderFieldErrorMultiple={renderFieldErrorMultiple}
+                  deleteData={deleteData}
             />
-            <ProfileSkill/>
+            <ProfileSkill
+              skill={skill}
+              setSkill={setSkill}
+              editSkill={editSkill}
+              editMultipleData={editMultipleData}
+              getData={getData}
+              sendMultipleData={sendMultipleData}
+              setSingleSkill={setSingleSkill}
+              setEditSkill={setEditSkill}
+              singleSkill={singleSkill}
+              multipleErrors={multipleErrors}
+              removeMultipleErrors={removeMultipleErrors}
+              renderFieldErrorMultiple={renderFieldErrorMultiple}
+              deleteData={deleteData}
+            />
+
             <ProfileAbout/>
+
             <ProfileLink
                 link={link}
                 setLink={setLink}

@@ -7,7 +7,15 @@ from rest_framework import (
     authentication,
     permissions,
 )
-from .models import User, UserExperience, UserEducation, UserCourse
+from .models import (
+    User,
+    UserExperience,
+    UserEducation,
+    UserCourse,
+    UserSkill,
+    UserLanguage,
+    UserLink,
+)
 from .serializer import (
     UserSerializer,
     ProfileSerializer,
@@ -15,6 +23,9 @@ from .serializer import (
     UserEducationSerializer,
     ContactSerializer,
     UserCourseSerializer,
+    UserSkillSerializer,
+    UserLanguageSerializer,
+    UserLinkSerializer,
 )
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
@@ -189,3 +200,18 @@ class ProfileCourseView(BaseProfileView):
 class ProfileExperienceView(BaseProfileView):
     queryset = UserExperience.objects.all()
     serializer_class = UserExperienceSerializer
+
+
+class ProfileLanguageView(BaseProfileView):
+    queryset = UserLanguage.objects.all()
+    serializer_class = UserLanguageSerializer
+
+
+class ProfileSkillView(BaseProfileView):
+    queryset = UserSkill.objects.all()
+    serializer_class = UserSkillSerializer
+
+
+class ProfileLinkView(BaseProfileView):
+    queryset = UserLink.objects.all()
+    serializer_class = UserLinkSerializer

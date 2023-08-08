@@ -6,6 +6,10 @@ import ProfilePersonal from './profileComponents/ProfilePersonal';
 import ProfileExperience from './profileComponents/ProfileExperience';
 import ProfileEducation from './profileComponents/ProfileEducation';
 import ProfileCourse from './profileComponents/ProfileCourse';
+import ProfileAbout from './profileComponents/ProfileAbout';
+import ProfileLanguage from './profileComponents/ProfileLanguage';
+import ProfileLink from './profileComponents/ProfileLink';
+import ProfileSkill from './profileComponents/ProfileSkill';
 
 export interface ProfileData{
   first_name: string;

@@ -1,6 +1,14 @@
 # for translating data to JSON
 from rest_framework import serializers
-from .models import User, UserExperience, UserEducation, UserCourse
+from .models import (
+    User,
+    UserExperience,
+    UserEducation,
+    UserCourse,
+    UserSkill,
+    UserLanguage,
+    UserLink,
+)
 from datetime import datetime
 
 
@@ -107,3 +115,21 @@ class UserCourseSerializer(serializers.ModelSerializer):
             "certificate_link",
             "finish_date",
         ]
+
+
+class UserSkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserSkill
+        fields = ["id", "skill"]
+
+
+class UserLanguageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserLanguage
+        fields = ["id", "language", "language_level"]
+
+
+class UserLinkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserLink
+        fields = ["id", "link_name", "link"]

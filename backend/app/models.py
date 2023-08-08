@@ -15,6 +15,7 @@ class User(AbstractUser):
     current_position = models.CharField(
         max_length=100, default=None, null=True, blank=True
     )
+    about_me = models.CharField(max_length=500, null=True, blank=True)
 
 
 class UserExperience(models.Model):
@@ -43,3 +44,20 @@ class UserCourse(models.Model):
     organizer = models.CharField(max_length=100, blank=False)
     certificate_link = models.CharField(max_length=250, null=True, blank=True)
     finish_date = models.DateField(null=True, blank=True)
+
+
+class UserSkill(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    skill = models.CharField(max_length=100, blank=False)
+
+
+class UserLanguage(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    language = models.CharField(max_length=50, blank=False)
+    language_level = models.CharField(max_length=30, blank=False)
+
+
+class UserLink(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    link_name = models.CharField(max_length=50, blank=False)
+    link = models.CharField(max_length=250, blank=False)

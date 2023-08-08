@@ -29,6 +29,7 @@ urlpatterns = [
     # set endpoints
     path("register/", views.SignupView.as_view()),
     path("index/", views.IndexView.as_view()),
+    # Profile for user
     path("profile/", views.ProfileView.as_view()),
     path("profile/contact", views.ProfileContactView.as_view()),
     path("profile/experience", views.ProfileExperienceView.as_view()),
@@ -37,6 +38,12 @@ urlpatterns = [
     path("profile/education/<int:pk>", views.ProfileEducationView.as_view()),
     path("profile/course", views.ProfileCourseView.as_view()),
     path("profile/course/<int:pk>", views.ProfileCourseView.as_view()),
+    path("profile/language", views.ProfileLanguageView.as_view()),
+    path("profile/language/<int:pk>", views.ProfileLanguageView.as_view()),
+    path("profile/skill", views.ProfileSkillView.as_view()),
+    path("profile/skill/<int:pk>", views.ProfileSkillView.as_view()),
+    path("profile/link", views.ProfileLinkView.as_view()),
+    path("profile/link/<int:pk>", views.ProfileLinkView.as_view()),
     # Authentication
     path("api/", include("app.api.urls")),
 ]

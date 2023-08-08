@@ -396,8 +396,8 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                         
                     </div>
                     ))}
+                </div>
             </div>
-        </div>
         </div>
     )
 }

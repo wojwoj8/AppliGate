@@ -53,6 +53,23 @@ export interface CourseData{
   certificate_link: string;
   finish_date: string;
 }
+
+export interface LanguageData{
+  id: number;
+  language: string;
+  language_level: string;
+}
+
+export interface SkillData{
+  id: number;
+  skill: string;
+}
+
+export interface LinkData{
+  id: number;
+  link_name: string;
+  link: string;
+}
 // for axios errors
 export interface ErrorResponse{
 
@@ -76,6 +93,8 @@ export type GetDataFunction =
   React.Dispatch<React.SetStateAction<EducationData[]>> |
   React.Dispatch<React.SetStateAction<CourseData[]>> |
   React.Dispatch<React.SetStateAction<CourseData | null>> |
+  React.Dispatch<React.SetStateAction<LanguageData[]>> |
+  React.Dispatch<React.SetStateAction<LanguageData | null>> |
   undefined;
 
 //UNIVERSAL PUT STATES
@@ -88,12 +107,15 @@ export type EditDataFunction =
   EducationData[] |
   CourseData | null |
   CourseData[] |
+  LanguageData[] |
+  LanguageData | null |
   undefined;
 
 export type EditMultipleDataFunction = 
   ExperienceData[] |
   EducationData[] |
-  CourseData[]
+  CourseData[] |
+  LanguageData[]
   ;
 
 const initialMultipleErrors: MultipleErrorResponse = {
@@ -107,10 +129,12 @@ const Profile: React.FC = () =>{
     const [experience, setExperience] = useState<ExperienceData[]>([]);
     const [education, setEducation] = useState<EducationData[]>([]);
     const [course, setCourse] = useState<CourseData[]>([]);
+    const [language, setLanguage] = useState<LanguageData[]>([]);
 
     const [singleCourse, setSingleCourse] = useState<CourseData | null>(null);
     const [singleExperience, setSingleExperience] = useState<ExperienceData | null>(null);
     const [singleEducation, setSingleEducation] = useState<EducationData | null>(null);
+    const [singleLanguage, setSingleLanguage] = useState<LanguageData | null>(null);
 
     const { authTokens, logoutUser } = useContext(AuthContext);
 
@@ -122,6 +146,9 @@ const Profile: React.FC = () =>{
     const [editMultipleEducations, setEditMultipleEducations] = useState<boolean[]>([]);
     const [editCourse, setEditCourse] = useState(false);
     const [editMultipleCourses, setEditMultipleCourses] = useState<boolean[]>([]);
+
+    const [editLanguage, setEditLanguage] = useState(false);
+    const [editMultipleLanguages, setEditMultipleLanguages] = useState<boolean[]>([]);
     
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
 
@@ -443,6 +470,27 @@ const Profile: React.FC = () =>{
                 renderFieldErrorMultiple={renderFieldErrorMultiple}
                 deleteData={deleteData}
             />
+
+                <ProfileLanguage
+                language={language}
+                setLanguage={setLanguage}
+                editLanguage={editLanguage}
+                editMultipleData={editMultipleData}
+                editMultipleLanguages={editMultipleLanguages}
+                getData={getData}
+                sendMultipleData={sendMultipleData}
+                setEditMultipleLanguages={setEditMultipleLanguages}
+                setSingleLanguage={setSingleLanguage}
+                setEditLanguage={setEditLanguage}
+                singleLanguage={singleLanguage}
+                multipleErrors={multipleErrors}
+                removeMultipleErrors={removeMultipleErrors}
+                renderFieldErrorMultiple={renderFieldErrorMultiple}
+                deleteData={deleteData}
+            />
+            <ProfileSkill/>
+            <ProfileAbout/>
+            <ProfileLink/>
         </div>
     )
 }

@@ -61,7 +61,7 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
         }
     
         const saveEdit = async () =>{
-            await editData(about, setEditAbout, '/profile/about', 'profile')
+            await editData(about, setEditAbout, '/profile/about', 'about')
             // setEditAbout(false);
         }
 
@@ -96,7 +96,7 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
                                         value={about?.about_me || ''} 
                                         onChange={handleInputChange}>
                                     </textarea>
-                                    {renderFieldErrorMultiple('about', 0, `about_me`, multipleErrors) ? ' is-invalid' : ''}
+                                    {renderFieldErrorMultiple('about', 0, `about_me`, multipleErrors)}
                                 </div>
                             </div>
                         </form>

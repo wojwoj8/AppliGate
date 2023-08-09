@@ -18,6 +18,9 @@ export interface ProfileData{
   country: string;
   city: string;
   current_position: string;
+}
+
+export interface AboutData{
   about_me: string;
 }
 
@@ -100,6 +103,7 @@ export type GetDataFunction =
   React.Dispatch<React.SetStateAction<LinkData | null>> |
   React.Dispatch<React.SetStateAction<SkillData[]>> |
   React.Dispatch<React.SetStateAction<SkillData | null>> |
+  React.Dispatch<React.SetStateAction<AboutData | null>> |
   undefined;
 
 //UNIVERSAL PUT STATES
@@ -118,6 +122,7 @@ export type EditDataFunction =
   LinkData | null |
   SkillData[] |
   SkillData | null |
+  AboutData | null |
   undefined;
 
 export type EditMultipleDataFunction = 
@@ -143,6 +148,7 @@ const Profile: React.FC = () =>{
     const [language, setLanguage] = useState<LanguageData[]>([]);
     const [link, setLink] = useState<LinkData[]>([]);
     const [skill, setSkill] = useState<SkillData[]>([]);
+    const [about, setAbout] = useState<AboutData | null>(null);
 
     const [singleCourse, setSingleCourse] = useState<CourseData | null>(null);
     const [singleExperience, setSingleExperience] = useState<ExperienceData | null>(null);
@@ -150,6 +156,7 @@ const Profile: React.FC = () =>{
     const [singleLanguage, setSingleLanguage] = useState<LanguageData | null>(null);
     const [singleLink, setSingleLink] = useState<LinkData | null>(null);
     const [singleSkill, setSingleSkill] = useState<SkillData | null>(null);
+    
 
     const { authTokens, logoutUser } = useContext(AuthContext);
 
@@ -163,10 +170,9 @@ const Profile: React.FC = () =>{
     const [editMultipleCourses, setEditMultipleCourses] = useState<boolean[]>([]);
     const [editLanguage, setEditLanguage] = useState(false);
     const [editMultipleLanguages, setEditMultipleLanguages] = useState<boolean[]>([]);
-
     const [editLink, setEditLink] = useState(false);
     const [editMultipleLinks, setEditMultipleLinks] = useState<boolean[]>([]);
-
+    const [editAbout, setEditAbout] = useState(false);
     const [editSkill, setEditSkill] = useState(false);
     
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
@@ -417,7 +423,7 @@ const Profile: React.FC = () =>{
         getData(setLanguage, '/profile/language');
         getData(setLink, '/profile/link');
         getData(setSkill, '/profile/skill');
-        // getData(setCourse, '/profile/about');
+        getData(setAbout, '/profile/about');
     }, [])
     return(
         <div className="container ">
@@ -529,7 +535,17 @@ const Profile: React.FC = () =>{
               deleteData={deleteData}
             />
 
-            <ProfileAbout/>
+            <ProfileAbout
+              about={about}
+              setAbout={setAbout}
+              editData={editData}
+              getData={getData}
+              setEditAbout={setEditAbout}
+              editAbout={editAbout}
+              multipleErrors={multipleErrors}                                             
+              removeMultipleErrors={removeMultipleErrors}
+              renderFieldErrorMultiple={renderFieldErrorMultiple}
+            />
 
             <ProfileLink
                 link={link}

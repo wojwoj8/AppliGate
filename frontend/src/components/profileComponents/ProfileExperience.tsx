@@ -125,16 +125,11 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
       ) => {
         const { name, value } = event.target;
-      
-        
-      
 
         setSingleExperience((prevExperience) => ({
         ...prevExperience!,
         [name]: value,
         }));
-    
-  
         
       };
     const handleExperienceInputChange = (

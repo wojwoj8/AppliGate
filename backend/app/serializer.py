@@ -134,3 +134,9 @@ class UserLinkSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserLink
         fields = ["id", "link_name", "link"]
+
+
+class UserAboutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["about_me"]

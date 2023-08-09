@@ -56,24 +56,7 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
     removeMultipleErrors, renderFieldErrorMultiple, deleteData
 }) =>{
 
-    
 
-
-    const editSkillButton = () =>{
-        setEditSkill(!editSkill);
-        if(editSkill === true){
-            removeMultipleErrors('addskill', 0)
-            setSingleSkill(null)
-            getData(setSkill, '/profile/skill');
-        }
-        
-    }
-    const cancelEditSkill = async () =>{
-        setEditSkill(false);
-        removeMultipleErrors('addskill', 0)
-        // await getSkillData();
-        setSingleSkill(null)
-    }
 
     const resetSkill = () => {
         setSingleSkill(null);
@@ -105,28 +88,7 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
   
         
       };
-    const handleSkillInputChange = (
-        index: number,
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-        
-    ) => {
-        let { name, value } = event.target;
-        name = name.substring(0, name.lastIndexOf('_'));
-        // console.log(value)
-        // Create an object with the new property and value
-        const updatedProperty = {
-        [name]: value,
-        };
-    
-        setSkill((prevSkill) => {
-        const updatedSkills = [...prevSkill];
-        updatedSkills[index] = {
-            ...updatedSkills[index],
-            ...updatedProperty, 
-        };
-        return updatedSkills;
-        });
-    };
+
     return(
         <div className="container ">
             <div className='border border-1 border-danger'>

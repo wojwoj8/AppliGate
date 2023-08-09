@@ -26,6 +26,7 @@ from .serializer import (
     UserSkillSerializer,
     UserLanguageSerializer,
     UserLinkSerializer,
+    UserAboutSerializer,
 )
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
@@ -87,7 +88,6 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
     def get(self, request, *args, **kwargs):
         user = request.user
         serializer = self.serializer_class(user, many=False)
-        print(serializer.data)
         return Response(serializer.data)
 
     def put(self, request, *args, **kwargs):
@@ -112,6 +112,11 @@ class ProfileView(BaseProfileUpdateView):
 
 class ProfileContactView(BaseProfileUpdateView):
     serializer_class = ContactSerializer
+    queryset = User.objects.all()
+
+
+class ProfileAboutView(BaseProfileUpdateView):
+    serializer_class = UserAboutSerializer
     queryset = User.objects.all()
 
 

@@ -56,7 +56,7 @@ setPersonal}) => {
         }));
 
       };
-    // const { authTokens, logoutUser } = useContext(AuthContext);
+
 
     const editProfile = () =>{
         setEditPersonal(!editPersonal);

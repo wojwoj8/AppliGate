@@ -168,6 +168,15 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                             </button>
                         </div>
                     </div>
+                    {!language[0] && !editLanguage &&
+                    <div className='container'> 
+                        <p className='text-secondary my-4'>
+                        Your language skills show you can 
+                        connect and collaborate across different cultures, which is a big plus for potential employers.
+                        </p>
+                    </div>
+                    
+                    }
                     {editLanguage && (
                         <div className='container'>
                             <form>

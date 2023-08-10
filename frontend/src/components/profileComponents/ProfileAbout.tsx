@@ -70,17 +70,25 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
             <div className='border border-1 border-danger'>
                 <div className="container">
                     <div className='text-center bg-info-subtle row'>
-                        <p className='fs-4 fw-semibold text-info col'>About Me</p>
+                        <p className='fs-4 fw-semibold text-info col'>Hobby</p>
                         <div className='col-auto'>
                             <button className='btn btn btn-outline-secondary btn-sm' onClick={editAboutSection}>
                                 Edit
                             </button>
                         </div>
                     </div>
+                    {!about?.about_me && !editAbout &&
+                    <div className='container'> 
+                        <p className='text-secondary my-4'>
+                        Show your passion, hobby to your future employers.
+                        </p>
+                    </div>
+                    
+                    }
                     <div className='text-center row'>
                     {!editAbout && 
                         <div className='col-auto col-md-8 col-sm-6 text-start'>
-                            {about && <p>{about?.about_me}</p>}
+                            {about?.about_me && <p>{about?.about_me}</p>}
                         </div>
                 }
                    </div> 
@@ -89,7 +97,7 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
                         <form>
                             <div className='row'>
                                 <div className='mb-3 col-4'>
-                                    <label htmlFor='about_me' className="form-label">About me:</label>
+                                    <label htmlFor='about_me' className="form-label">Hobby:</label>
                                     <textarea
                                         name='about_me' 
                                         className={`form-control${renderFieldErrorMultiple('about', 0, `about_me`, multipleErrors) ? ' is-invalid' : ''}`} 

@@ -255,6 +255,10 @@ const Profile: React.FC = () =>{
           editField(false)
           removeMultipleErrors(`${errorField}`, index)
       }catch (error: any) {
+        if (error.response && error.response.status === 401) {
+          // Unauthorized - Logout the user
+          logoutUser();
+        }
           removeMultipleErrors(`${errorField}`, index)
           const axiosError = error as AxiosError<ErrorResponse>;
           if (axiosError.response?.data) {
@@ -289,6 +293,10 @@ const Profile: React.FC = () =>{
             getData(setData, `${endpoint}`);
             if (cleanState) cleanState()
         }catch (error: any) {
+          if (error.response && error.response.status === 401) {
+            // Unauthorized - Logout the user
+            logoutUser();
+          }
           removeMultipleErrors(`${errorField}`, index)
             const axiosError = error as AxiosError<ErrorResponse>;
             if (axiosError.response?.data) {
@@ -330,6 +338,10 @@ const Profile: React.FC = () =>{
 
             removeMultipleErrors(`${errorField}`, index)
       }catch (error: any) {
+        if (error.response && error.response.status === 401) {
+          // Unauthorized - Logout the user
+          logoutUser();
+        }
         removeMultipleErrors(`${errorField}`, index)
           const axiosError = error as AxiosError<ErrorResponse>;
           if (axiosError.response?.data) {
@@ -374,6 +386,10 @@ const Profile: React.FC = () =>{
 
             // removeMultipleErrors('experience', index)
       }catch (error: any) {
+        if (error.response && error.response.status === 401) {
+          // Unauthorized - Logout the user
+          logoutUser();
+        }
           // removeMultipleErrors('experience', index)
           const axiosError = error as AxiosError<ErrorResponse>;
           // if (axiosError.response?.data) {
@@ -424,6 +440,7 @@ const Profile: React.FC = () =>{
         getData(setLanguage, '/profile/language');
         getData(setSkill, '/profile/skill');
         getData(setAbout, '/profile/about');
+        getData(setLink, '/profile/link');
     }, [])
     return(
         <div className="container ">

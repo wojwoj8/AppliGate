@@ -169,6 +169,17 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                             </button>
                         </div>
                     </div>
+                    {!education[0] && !editEducation &&
+                    <div className='container'> 
+                        <p className='text-secondary my-4'>
+                        Your education is a powerful tool that can open doors to exciting possibilities. 
+                        Here, you can showcase your academic journey, think of it as adding important 
+                        pieces to your professional puzzle. By sharing your educational background, you're increasing your 
+                        chances of discovering the perfect job fit.
+                        </p>
+                    </div>
+                    
+                    }
                     {editEducation && (
                         <div className='container'>
                             <form>

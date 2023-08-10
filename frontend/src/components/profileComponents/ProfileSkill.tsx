@@ -102,6 +102,7 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
                             <div className='container'>
                                 <div className='mb-3'>
                                     <div className='row align-items-end'>
+                                    <p>Enter your skills <b>one at a time</b> by approving with the "Add" button:</p>
                                         <div className='col'>
                                             <label htmlFor={`skill`} className='form-label'>
                                                 Skill:
@@ -112,6 +113,7 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
                                                 className={`form-control${renderFieldErrorMultiple('addskill', 0, `skill`, multipleErrors) ? ' is-invalid' : ''}`} 
                                                 value={singleSkill?.skill || ''}
                                                 onChange={handleSingleInputChange}
+                                                placeholder='TypeScript'
                                             />
                                         </div>
                                         <div className='col align-items'>

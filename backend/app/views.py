@@ -217,3 +217,8 @@ class ProfileLanguageView(BaseProfileView):
 class ProfileSkillView(BaseProfileView):
     queryset = UserSkill.objects.all()
     serializer_class = UserSkillSerializer
+
+
+class ProfileLinkView(BaseProfileView):
+    queryset = UserLink.objects.all()
+    serializer_class = UserLinkSerializer

@@ -168,6 +168,18 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                             </button>
                         </div>
                     </div>
+                    {!course[0] && !editCourse &&
+                    <div className='container'> 
+                        <p className='text-secondary my-4'>
+                        Think of this section as your toolbox for success. Here, you can list all the courses you've taken, 
+                        training you've undergone, and certificates you've earned. Just like adding tools to your toolkit, 
+                        these details enhance your value to potential employers. The more you share, the more you showcase 
+                        your dedication to learning and your readiness to tackle new challenges. So, fill it up and let your 
+                        expertise shine!
+                        </p>
+                    </div>
+                    
+                    }
                     {editCourse && (
                         <div className='container'>
                             <form>

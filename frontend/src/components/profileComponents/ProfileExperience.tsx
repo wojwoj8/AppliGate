@@ -172,6 +172,16 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             </button>
                         </div>
                     </div>
+                    {!experience[0] && !editExperience &&
+                    <div className='container'> 
+                        <p className='text-secondary my-4'>
+                        This is your chance to shine! Tell us about your work experience! The more you share here, the better 
+                        your chances of finding a job that's just right for you. Think of it as painting a picture 
+                        of your career journey to help employers see how awesome you are.
+                        </p>
+                    </div>
+                    
+                    }
                     {editExperience && (
                         <div className='container'>
                             <form>

@@ -92,16 +92,18 @@ setPersonal}) => {
                     </div>
                 {!editPersonal && 
                     <div className='text-center row'>
-                        <div className='col-auto col-md-8 col-sm-6 text-start'>
+                        <div className='col'>
                             <h2 className='mb-1 text-primary fs-1'>
                                 {personal?.first_name || 'Name'} {personal?.last_name || 'Surname'}
                             </h2>
                             <p>
                                 {personal?.current_position}
                             </p>
-                            <p>
-                                {personal?.date_of_birth} {personal?.country}, {personal?.city}
-                            </p>
+                            <div className='d-flex justify-content-evenly'>
+                                <p>{personal?.date_of_birth}</p>
+                                <p>{personal?.country}</p>
+                                <p>{personal?.city}</p>
+                            </div>
                         </div>
                         
                     </div>

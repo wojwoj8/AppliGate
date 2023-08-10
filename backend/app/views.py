@@ -95,10 +95,10 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
         user = request.user
         serializer = self.serializer_class(user, data=request.data)
 
-        if "date_of_birth" in request.data:
-            request.data["date_of_birth"] = self.process_date(
-                request.data["date_of_birth"]
-            )
+        # if "date_of_birth" in request.data:
+        #     request.data["date_of_birth"] = self.process_date(
+        #         request.data["date_of_birth"]
+        #     )
 
         if serializer.is_valid():
             serializer.save()
@@ -217,4 +217,3 @@ class ProfileLanguageView(BaseProfileView):
 class ProfileSkillView(BaseProfileView):
     queryset = UserSkill.objects.all()
     serializer_class = UserSkillSerializer
-

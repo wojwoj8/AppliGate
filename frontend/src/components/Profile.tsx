@@ -10,11 +10,12 @@ import ProfileAbout from './profileComponents/ProfileAbout';
 import ProfileLanguage from './profileComponents/ProfileLanguage';
 import ProfileLink from './profileComponents/ProfileLink';
 import ProfileSkill from './profileComponents/ProfileSkill';
+import ProfilePreview from './profileComponents/ProfilePreview';
 
 export interface ProfileData{
   first_name: string;
   last_name: string;
-  date_of_birth: Date;
+  date_of_birth: string;
   country: string;
   city: string;
   current_position: string;
@@ -220,9 +221,9 @@ const Profile: React.FC = () =>{
                 setData(response.data);
               }
             const data = response.data;
-            if (data.date_of_birth) {
-                data.date_of_birth = new Date(data.date_of_birth);
-            }
+            // if (data.date_of_birth) {
+            //     data.date_of_birth = new Date(data.date_of_birth);
+            // }
             if(response.status === 200){
             }
         }catch(error: any){

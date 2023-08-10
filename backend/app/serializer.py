@@ -29,7 +29,28 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
 
+class DateSerializer(serializers.Field):
+    def to_internal_value(self, value):
+        print(value)
+        if self.field_name == "date_of_birth" and value == "":
+            # raise serializers.ValidationError("This field may not be blank.")
+            return None
+        elif value == "":
+            return None
+        try:
+            return datetime.strptime(value, "%Y-%m-%d").date()
+        except ValueError:
+            raise serializers.ValidationError("Invalid date format. Use 'YYYY-MM-DD'.")
+
+    def to_representation(self, value):
+        if value == "":
+            return None
+        return value.strftime("%Y-%m-%d")
+
+
 class ProfileSerializer(serializers.ModelSerializer):
+    date_of_birth = DateSerializer(allow_null=True, required=False)
+
     class Meta:
         model = User
         fields = [
@@ -54,8 +75,12 @@ class ContactSerializer(serializers.ModelSerializer):
 class MonthYearDateField(serializers.Field):
     def to_internal_value(self, value):
         # print(value)
-        if value == "":
+        # if value == "":
+        #     raise serializers.ValidationError("This field may not be blank.")
+        if self.field_name == "from_date" and value == "":
             raise serializers.ValidationError("This field may not be blank.")
+        elif value == "":
+            return None
         try:
             # Parse "YYYY-MM" formatted date string and add day component as 1
             return datetime.strptime(value + "-01", "%Y-%m-%d").date()

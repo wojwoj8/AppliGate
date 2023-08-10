@@ -38,21 +38,21 @@ setPersonal}) => {
       ) => {
         const { name, value } = event.target;
       
-        const newValue = name === 'date_of_birth' ? (() => {
-          const date = new Date(value);
-          const isValidDate = !isNaN(date.getTime()) && date.getFullYear() >= 1 && date.getFullYear() <= 2100;
+        // const newValue = name === 'date_of_birth' ? (() => {
+        //   const date = new Date(value);
+        //   const isValidDate = !isNaN(date.getTime()) && date.getFullYear() >= 1 && date.getFullYear() <= 2100;
       
-          if (isValidDate) {
-            return date;
-          } else {
-            return personal?.date_of_birth || null;
-          }
-        })() : value;
+        //   if (isValidDate) {
+        //     return date;
+        //   } else {
+        //     return personal?.date_of_birth || null;
+        //   }
+        // })() : value;
       
 
         setPersonal((prevProfile) => ({
         ...prevProfile!,
-        [name]: newValue,
+        [name]: value,
         }));
 
       };
@@ -61,14 +61,14 @@ setPersonal}) => {
     const editProfile = () =>{
         setEditPersonal(!editPersonal);
         if(editPersonal === true){
-            removeMultipleErrors('/profile/', 0)
+            removeMultipleErrors('profile', 0)
             getData(setPersonal, '/profile/');
         }
         
     }
     const cancelEditProfile = () =>{
         setEditPersonal(false);
-        removeMultipleErrors('/profile/', 0)
+        removeMultipleErrors('profile', 0)
         getData(setPersonal, '/profile/');
     }
 
@@ -100,7 +100,7 @@ setPersonal}) => {
                                 {personal?.current_position}
                             </p>
                             <p>
-                                {personal?.date_of_birth ? personal.date_of_birth.toLocaleDateString() : 'Birth'} {personal?.country || 'Country'}, {personal?.city || 'City'}
+                                {personal?.date_of_birth} {personal?.country}, {personal?.city}
                             </p>
                         </div>
                         
@@ -144,11 +144,11 @@ setPersonal}) => {
    
                             <div className='row'>
                                 <div className='mb-3 col-4'>
-                                    <label htmlFor='date_of_birth' className="form-label">Date of Birth:</label>
+                                    <label htmlFor='date_of_birth' className="form-label">Birthdate:</label>
                                     <input 
                                         type='date' name='date_of_birth' 
                                         className={`form-control${renderFieldErrorMultiple('profile', 0, `date_of_birth`, multipleErrors) ? ' is-invalid' : ''}`} 
-                                        value={personal?.date_of_birth ? personal.date_of_birth.toISOString().slice(0, 10) : ''}
+                                        value={personal?.date_of_birth ?? ''}
                                         onChange={handleInputChange}>  
                                     </input>
                                     {renderFieldErrorMultiple('profile', 0, `date_of_birth`, multipleErrors)}

@@ -196,6 +196,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addexperience', 0, `position`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleExperience?.position || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='Position'
                                 />
                                 {renderFieldErrorMultiple('addexperience', 0, `position`, multipleErrors)}
                                 </div>
@@ -209,6 +210,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addexperience', 0, `localization`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleExperience?.localization || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='Localization'
                                 />
                                 {renderFieldErrorMultiple('addexperience', 0, `localization`, multipleErrors)}
                                 </div>
@@ -222,6 +224,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addexperience', 0, `company`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleExperience?.company || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='Company'
                                 />
                                 {renderFieldErrorMultiple('addexperience', 0, `company`, multipleErrors)}
                                 </div>
@@ -236,7 +239,8 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                         name={`from_date`}
                                         className={`form-control${renderFieldErrorMultiple('addexperience', 0, `from_date`, multipleErrors) ? ' is-invalid' : ''}`} 
                                         value={singleExperience?.from_date || ''}
-                                        onChange={handleSingleInputChange}                     
+                                        onChange={handleSingleInputChange}
+                                                             
                                     />
                                     {renderFieldErrorMultiple('addexperience', 0, `from_date`, multipleErrors)}
                                 </div>
@@ -264,6 +268,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addexperience', 0, `responsibilities`, multipleErrors) ? ' is-invalid' : ''}`}
                                     value={singleExperience?.responsibilities || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='Responsibilities'
                                 />
                                 {renderFieldErrorMultiple('addexperience', 0, `responsibilities`, multipleErrors)}
                                 </div>
@@ -320,6 +325,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('experience', index, `position_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={experience?.position || ''}
                                         onChange={(e) => handleExperienceInputChange(index, e)}
+                                        placeholder='Position'
                                     />
                                     {renderFieldErrorMultiple('experience', index, `position_${index}`, multipleErrors)}
                                     </div>
@@ -333,6 +339,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('experience', index, `localization_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={experience?.localization || ''}
                                         onChange={(e) => handleExperienceInputChange(index, e)}
+                                        placeholder='Localization'
                                     />
                                     {renderFieldErrorMultiple('experience', index, `localization_${index}`, multipleErrors)}
                                     </div>
@@ -346,6 +353,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('experience', index, `company_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={experience?.company || ''}
                                         onChange={(e) => handleExperienceInputChange(index, e)}
+                                        placeholder='Company'
                                     />
                                     {renderFieldErrorMultiple('experience', index, `company_${index}`, multipleErrors)}
                                     </div>
@@ -388,6 +396,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('experience', index, `responsibilities_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={experience?.responsibilities || ''}
                                         onChange={(e) => handleExperienceInputChange(index, e)}
+                                        placeholder='Responsibilities'
                                     />
                                     {renderFieldErrorMultiple('experience', index, `responsibilities_${index}`, multipleErrors)}
                                     </div>

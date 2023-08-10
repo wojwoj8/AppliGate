@@ -191,6 +191,7 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addlanguage', 0, `language`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleLanguage?.language || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='Language'
                                 />
                                 {renderFieldErrorMultiple('addlanguage', 0, `language`, multipleErrors)}
                                 </div>
@@ -204,6 +205,7 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addlanguage', 0, `language_level`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleLanguage?.language_level || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='Language Level'
                                 />
                                 {renderFieldErrorMultiple('addlanguage', 0, `language_level`, multipleErrors)}
                                 </div>
@@ -255,6 +257,7 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('language', index, `language_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={language?.language || ''}
                                         onChange={(e) => handleLanguageInputChange(index, e)}
+                                        placeholder='Language'
                                     />
                                     {renderFieldErrorMultiple('language', index, `language_${index}`, multipleErrors)}
                                     </div>
@@ -268,6 +271,7 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('language', index, `language_level_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={language?.language_level || ''}
                                         onChange={(e) => handleLanguageInputChange(index, e)}
+                                        placeholder='Language Level'
                                     />
                                     {renderFieldErrorMultiple('language', index, `language_level_${index}`, multipleErrors)}
                                     </div>

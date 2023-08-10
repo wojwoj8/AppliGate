@@ -367,7 +367,7 @@ const Profile: React.FC = () =>{
         // errorField: string,
         id: number
       ) =>{
-      console.log(id)
+      // console.log(id)
       try{
           const response = await axios.delete(`${endpoint}/${id}`, {
               headers: {

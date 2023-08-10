@@ -194,6 +194,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addcourse', 0, `course_name`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleCourse?.course_name || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='Name'
                                 />
                                 {renderFieldErrorMultiple('addcourse', 0, `course_name`, multipleErrors)}
                                 </div>
@@ -207,6 +208,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addcourse', 0, `organizer`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleCourse?.organizer || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='Organizer'
                                 />
                                 {renderFieldErrorMultiple('addcourse', 0, `organizer`, multipleErrors)}
                                 </div>
@@ -220,6 +222,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addcourse', 0, `certificate_link`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleCourse?.certificate_link || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='Link'
                                 />
                                 {renderFieldErrorMultiple('addcourse', 0, `certificate_link`, multipleErrors)}
                                 </div>
@@ -290,6 +293,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('course', index, `course_name_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={course?.course_name || ''}
                                         onChange={(e) => handleCourseInputChange(index, e)}
+                                        placeholder='Name'
                                     />
                                     {renderFieldErrorMultiple('course', index, `course_name_${index}`, multipleErrors)}
                                     </div>
@@ -303,6 +307,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('course', index, `organizer_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={course?.organizer || ''}
                                         onChange={(e) => handleCourseInputChange(index, e)}
+                                        placeholder='Organizer'
                                     />
                                     {renderFieldErrorMultiple('course', index, `organizer_${index}`, multipleErrors)}
                                     </div>
@@ -316,6 +321,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('course', index, `certificate_link_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={course?.certificate_link || ''}
                                         onChange={(e) => handleCourseInputChange(index, e)}
+                                        placeholder='Link'
                                     />
                                     {renderFieldErrorMultiple('course', index, `certificate_link_${index}`, multipleErrors)}
                                     </div>

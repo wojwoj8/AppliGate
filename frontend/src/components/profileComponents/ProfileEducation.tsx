@@ -186,7 +186,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                             <div className='row'>
                                 <div className='mb-3 col-4'>
                                 <label htmlFor={`school`} className='form-label'>
-                                    School:
+                                    School Name:
                                 </label>
                                 <input
                                     type='text'
@@ -194,6 +194,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addeducation', 0, `school`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleEducation?.school || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='School Name'
                                 />
                                 {renderFieldErrorMultiple('addeducation', 0, `school`, multipleErrors)}
                                 </div>
@@ -207,6 +208,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addeducation', 0, `educational_level`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleEducation?.educational_level || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='Educational Level'
                                 />
                                 {renderFieldErrorMultiple('addeducation', 0, `educational_level`, multipleErrors)}
                                 </div>
@@ -220,6 +222,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addeducation', 0, `major`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleEducation?.major || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='Major'
                                 />
                                 {renderFieldErrorMultiple('addeducation', 0, `major`, multipleErrors)}
                                 </div>
@@ -263,6 +266,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addeducation', 0, `specialization`, multipleErrors) ? ' is-invalid' : ''}`}
                                     value={singleEducation?.specialization || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='Specialization'
                                 />
                                 {renderFieldErrorMultiple('addeducation', 0, `specialization`, multipleErrors)}
                                 </div>
@@ -311,7 +315,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                 <div className='row'>
                                     <div className='mb-3 col-4'>
                                     <label htmlFor={`school_${index}`} className='form-label'>
-                                        Position:
+                                        School Name:
                                     </label>
                                     <input
                                         type='text'
@@ -319,12 +323,13 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('education', index, `school_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={education?.school || ''}
                                         onChange={(e) => handleEducationInputChange(index, e)}
+                                        placeholder='School Name'
                                     />
                                     {renderFieldErrorMultiple('education', index, `school_${index}`, multipleErrors)}
                                     </div>
                                     <div className='mb-3 col-4'>
                                     <label htmlFor={`educational_level_${index}`} className='form-label'>
-                                        Localization:
+                                        Educational Level:
                                     </label>
                                     <input
                                         type='text'
@@ -332,12 +337,13 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('education', index, `educational_level_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={education?.educational_level || ''}
                                         onChange={(e) => handleEducationInputChange(index, e)}
+                                        placeholder='Educational Level'
                                     />
                                     {renderFieldErrorMultiple('education', index, `educational_level_${index}`, multipleErrors)}
                                     </div>
                                     <div className='mb-3 col-4'>
                                     <label htmlFor={`major_${index}`} className='form-label'>
-                                        Company:
+                                        Major:
                                     </label>
                                     <input
                                         type='text'
@@ -345,6 +351,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('education', index, `major_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={education?.major || ''}
                                         onChange={(e) => handleEducationInputChange(index, e)}
+                                        placeholder='Major'
                                     />
                                     {renderFieldErrorMultiple('education', index, `major_${index}`, multipleErrors)}
                                     </div>
@@ -380,13 +387,15 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                 <div className='row'>
                                     <div className='mb-3 col-4'>
                                     <label htmlFor={`specialization_${index}`} className='form-label'>
-                                        Responsibilities:
+                                        Specialization:
                                     </label>
-                                    <textarea
+                                    <input
+                                        type='text'
                                         name={`specialization_${index}`}
                                         className={`form-control${renderFieldErrorMultiple('education', index, `specialization_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={education?.specialization || ''}
                                         onChange={(e) => handleEducationInputChange(index, e)}
+                                        placeholder='Specialization'
                                     />
                                     {renderFieldErrorMultiple('education', index, `specialization_${index}`, multipleErrors)}
                                     </div>

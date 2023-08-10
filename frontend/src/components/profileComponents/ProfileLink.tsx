@@ -191,6 +191,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addlink', 0, `link_name`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleLink?.link_name || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='Github'
                                 />
                                 {renderFieldErrorMultiple('addlink', 0, `link_name`, multipleErrors)}
                                 </div>
@@ -204,6 +205,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                                     className={`form-control${renderFieldErrorMultiple('addlink', 0, `link`, multipleErrors) ? ' is-invalid' : ''}`} 
                                     value={singleLink?.link || ''}
                                     onChange={handleSingleInputChange}
+                                    placeholder='https://github.com/wojwoj8/AppliGate'
                                 />
                                 {renderFieldErrorMultiple('addlink', 0, `link`, multipleErrors)}
                                 </div>
@@ -257,6 +259,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('link', index, `link_name_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={link?.link_name || ''}
                                         onChange={(e) => handleLinkInputChange(index, e)}
+                                        placeholder='Github'
                                     />
                                     {renderFieldErrorMultiple('link', index, `link_name_${index}`, multipleErrors)}
                                     </div>
@@ -270,6 +273,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('link', index, `link_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={link?.link || ''}
                                         onChange={(e) => handleLinkInputChange(index, e)}
+                                        placeholder='https://github.com/wojwoj8/AppliGate'
                                     />
                                     {renderFieldErrorMultiple('link', index, `link_${index}`, multipleErrors)}
                                     </div>

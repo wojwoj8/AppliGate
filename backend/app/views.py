@@ -88,6 +88,7 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
     def get(self, request, *args, **kwargs):
         user = request.user
         serializer = self.serializer_class(user, many=False)
+        print(serializer.data)
         return Response(serializer.data)
 
     def put(self, request, *args, **kwargs):
@@ -140,6 +141,7 @@ class BaseProfileView(
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
+
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
@@ -216,7 +218,3 @@ class ProfileSkillView(BaseProfileView):
     queryset = UserSkill.objects.all()
     serializer_class = UserSkillSerializer
 
-
-class ProfileLinkView(BaseProfileView):
-    queryset = UserLink.objects.all()
-    serializer_class = UserLinkSerializer

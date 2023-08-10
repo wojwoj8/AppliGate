@@ -421,7 +421,6 @@ const Profile: React.FC = () =>{
         getData(setEducation, '/profile/education');
         getData(setCourse, '/profile/course');
         getData(setLanguage, '/profile/language');
-        getData(setLink, '/profile/link');
         getData(setSkill, '/profile/skill');
         getData(setAbout, '/profile/about');
     }, [])

@@ -42,8 +42,6 @@ urlpatterns = [
     path("profile/language/<int:pk>", views.ProfileLanguageView.as_view()),
     path("profile/skill", views.ProfileSkillView.as_view()),
     path("profile/skill/<int:pk>", views.ProfileSkillView.as_view()),
-    path("profile/link", views.ProfileLinkView.as_view()),
-    path("profile/link/<int:pk>", views.ProfileLinkView.as_view()),
     path("profile/about", views.ProfileAboutView.as_view()),
     # Authentication
     path("api/", include("app.api.urls")),

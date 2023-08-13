@@ -6,6 +6,7 @@ import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import { EditMultipleDataFunction } from '../Profile';
+import ProfileDeleteModal from './ProfileDeleteModal';
 
 interface ProfileCourseProps {
     course: CourseData[];
@@ -260,9 +261,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                             <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleCoursesButton(index, course.id)}>
                                 <Icon path={mdiPencil} size={1} />
                             </button>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => deleteCourse(course.id)}>
-                                Delete
-                            </button>
+                            <ProfileDeleteModal id={`${course.course_name}_${course.id}`} onDelete={() => deleteCourse(course.id)} />
                         </div>
                         {!editMultipleCourses[index] && (
                         <div className='col-auto col-md-8 col-sm-6 text-start'>

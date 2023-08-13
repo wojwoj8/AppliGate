@@ -6,6 +6,7 @@ import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import { EditMultipleDataFunction } from '../Profile';
+import ProfileDeleteModal from './ProfileDeleteModal';
 
 interface ProfileLinkProps {
     link: LinkData[];
@@ -230,9 +231,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                             <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleLinksButton(index, link.id)}>
                                 <Icon path={mdiPencil} size={1} />
                             </button>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => deleteLink(link.id)}>
-                                Delete
-                            </button>
+                            <ProfileDeleteModal id={`${link.link_name}_${link.id}`} onDelete={() => deleteLink(link.id)} />
                         </div>
                         {!editMultipleLinks[index] && (
                         <div className='col-auto col-md-8 col-sm-6 text-start'>

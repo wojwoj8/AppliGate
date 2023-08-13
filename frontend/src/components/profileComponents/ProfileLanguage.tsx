@@ -6,6 +6,7 @@ import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import { EditMultipleDataFunction } from '../Profile';
+import ProfileDeleteModal from './ProfileDeleteModal';
 
 interface ProfileLanguageProps {
     language: LanguageData[];
@@ -229,9 +230,7 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                             <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleLanguagesButton(index, language.id)}>
                                 <Icon path={mdiPencil} size={1} />
                             </button>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => deleteLanguage(language.id)}>
-                                Delete
-                            </button>
+                            <ProfileDeleteModal id={`${language.language}_${language.id}`} onDelete={() => deleteLanguage(language.id)} />
                         </div>
                         {!editMultipleLanguages[index] && (
                         <div className='col-auto col-md-8 col-sm-6 text-start'>

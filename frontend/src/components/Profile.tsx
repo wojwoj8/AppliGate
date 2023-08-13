@@ -445,7 +445,7 @@ const Profile: React.FC = () =>{
         getData(setLink, '/profile/link');
     }, [])
     return(
-        <div className="container ">
+        <div className="container shadow-lg rounded-2 my-2">
             <ProfilePersonal 
                 personal={profile}
                 setPersonal={setProfile}

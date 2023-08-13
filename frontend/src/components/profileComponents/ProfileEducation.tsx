@@ -7,6 +7,7 @@ import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import { EditMultipleDataFunction } from '../Profile';
 import ProfileDeleteModal from './ProfileDeleteModal';
+import { mdiPlus } from '@mdi/js';
 
 interface ProfileEducationProps {
     education: EducationData[];
@@ -158,23 +159,21 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
         });
     };
     return(
-        <div className="container ">
-            <div className='border border-1 border-danger'>
-                <div className="container">
-                    <div className='text-center bg-info-subtle row'>
-                        <p className='fs-4 fw-semibold text-info col'>Education</p>
-                        <div className='col-auto'>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={editEducationButton}>
-                                Add education
-                            </button>
+        <div>
+            
+                
+            <div className='bg-dark row'>
+                <p className='fs-3 fw-semibold text-white col mb-1'>Education</p>
+                    <div className='col-auto'>
+                        <div className='profile-svgs d-flex my-1' onClick={editEducationButton}>
+                                <Icon className='text-white' path={mdiPlus} size={1.25} />
+                            </div>
                         </div>
                     </div>
                     {!education[0] && !editEducation &&
                     <div className='container'> 
                         <p className='text-secondary my-4'>
-                        Your education is a powerful tool that can open doors to exciting possibilities. 
-                        Here, you can showcase your academic journey, think of it as adding important 
-                        pieces to your professional puzzle. By sharing your educational background, you're increasing your 
+                        By sharing your educational background, you're increasing your 
                         chances of discovering the perfect job fit.
                         </p>
                     </div>
@@ -183,7 +182,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                     {editEducation && (
                         <div className='container'>
                             <form>
-                            <div className='row'>
+                            <div className='row my-2'>
                                 <div className='mb-3 col-4'>
                                 <label htmlFor={`school`} className='form-label'>
                                     School Name:
@@ -310,7 +309,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                         {editMultipleEducations[index] && (
                         <div className='container'>
                             <form>
-                                <div className='row'>
+                                <div className='row my-2'>
                                     <div className='mb-3 col-4'>
                                     <label htmlFor={`school_${index}`} className='form-label'>
                                         School Name:
@@ -414,8 +413,9 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                         
                     </div>
                     ))}
-                </div>
-            </div>
+                
+            
+            <hr></hr>
         </div>
     )
 }

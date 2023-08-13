@@ -79,21 +79,20 @@ setPersonal}) => {
 
 
     return(
-        <div className="container ">
-            <div className='border border-1 border-danger'>
-                <div className="container">
-                    <div className='text-center bg-info-subtle row'>
-                        <p className='fs-4 fw-semibold text-info col'>Personal Data</p>
+        <div>
+                  
+                    <div className='bg-dark row rounded-top-2 '>
+                        <p className='fs-3 fw-semibold text-white col mb-1'>Personal Data</p>
                         <div className='col-auto'>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={editProfile}>
-                                <Icon path={mdiPencil} size={1} />
-                            </button>
+                            <div className='profile-svgs d-flex my-1' onClick={editProfile}>
+                                <Icon className='text-white' path={mdiPencil} size={1.25} />
+                            </div>
                         </div>
                     </div>
                 {!editPersonal && 
                     <div className='text-center row'>
                         <div className='col'>
-                            <h2 className='mb-1 text-primary fs-1'>
+                            <h2 className='mb-1 fs-1' style={{color:'#B388EB'}}>
                                 {personal?.first_name || 'Name'} {personal?.last_name || 'Surname'}
                             </h2>
                             <p>
@@ -110,9 +109,9 @@ setPersonal}) => {
                 }
                     
                 {editPersonal &&  
-                    <div className="container">
+                    <div className="container my-2">
                         <form>
-                            <div className='row'>
+                            <div className='row my-2'>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='first_name' className="form-label">First name:</label>
                                     <input 
@@ -187,9 +186,10 @@ setPersonal}) => {
                     
                     
                 }
-            </div>
+            
+                
+            <hr></hr>
         </div>
-    </div>
 )
 }
 

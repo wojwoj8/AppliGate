@@ -60,14 +60,14 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
         // setContactEditing(false);
     }
     return(
-        <div className="container ">
-            <div className='container border border-1 border-danger-subtle'>
-                <div className='text-center bg-info-subtle row'>
-                    <p className='fs-4 fw-semibold text-info col'>Contact Data</p>
+        <div>
+            
+            <div className='bg-dark row'>
+                <p className='fs-3 fw-semibold text-white col mb-1'>Contact Data</p>
                     <div className='col-auto'>
-                        <button className='btn btn btn-outline-secondary btn-sm' onClick={editContactData}>
-                            <Icon path={mdiPencil} size={1} />
-                        </button>
+                        <div className='profile-svgs d-flex my-1' onClick={editContactData}>
+                            <Icon className='text-white' path={mdiPencil} size={1.25} />
+                        </div>
                     </div>
                 </div>
                 {!editContact &&
@@ -85,7 +85,7 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                 {editContact &&  
                         <div className="container">
                             <form>
-                                <div className='row'>
+                                <div className='row my-2'>
                                     <div className='mb-3 col-4'>
                                     
                                         <label htmlFor='contact_email' className="form-label">Email:</label>
@@ -112,8 +112,8 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                         </div>
                         
                     }
-        </div>
-
+        
+                <hr></hr>
         </div>
     )
 }

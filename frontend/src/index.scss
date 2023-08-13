@@ -8,13 +8,25 @@ $primary: #10B981;
 }
 
 .profile-skill{
-    border: 1px solid $secondary;
+
     svg{
-        margin-left: 0.2rem;
+        margin-left: 0.5rem;
+        fill:white;
     }
     svg:hover{
         fill: red;
         cursor: pointer;
     }
         
+}
+
+.profile-svgs{
+
+    svg:{
+
+    }
+    svg:hover{
+        fill: $secondary;
+        cursor: pointer;
+    }
 }

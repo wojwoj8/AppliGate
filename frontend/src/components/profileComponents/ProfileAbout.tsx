@@ -7,6 +7,7 @@ import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import { AboutData } from '../Profile';
 
+
 interface ProfileAboutProps {
     about: AboutData | null;
     setAbout: React.Dispatch<React.SetStateAction<AboutData | null>>;
@@ -66,15 +67,15 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
         }
 
     return(
-        <div className="container ">
-            <div className='border border-1 border-danger'>
-                <div className="container">
-                    <div className='text-center bg-info-subtle row'>
-                        <p className='fs-4 fw-semibold text-info col'>Hobby</p>
+        <div>
+            
+                
+                <div className='bg-dark row '>
+                        <p className='fs-3 fw-semibold text-white col mb-1'>Hobby</p>
                         <div className='col-auto'>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={editAboutSection}>
-                                Edit
-                            </button>
+                            <div className='profile-svgs d-flex my-1' onClick={editAboutSection}>
+                                <Icon className='text-white' path={mdiPencil} size={1.25} />
+                            </div>
                         </div>
                     </div>
                     {!about?.about_me && !editAbout &&
@@ -95,7 +96,7 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
                 {editAbout &&  
                     <div className="container">
                         <form>
-                            <div className='row'>
+                            <div className='row my-2'>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor='about_me' className="form-label">Hobby:</label>
                                     <textarea
@@ -117,8 +118,9 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
                     
                     
                 }
-                </div>
-            </div>
+                
+            
+            <hr></hr>
         </div>
     )
 }

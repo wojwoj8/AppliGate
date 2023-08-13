@@ -7,6 +7,7 @@ import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import { EditMultipleDataFunction } from '../Profile';
 import ProfileDeleteModal from './ProfileDeleteModal';
+import { mdiPlus } from '@mdi/js';
 
 interface ProfileLinkProps {
     link: LinkData[];
@@ -158,15 +159,15 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
         });
     };
     return(
-        <div className="container ">
-            <div className='border border-1 border-danger'>
-                <div className="container">
-                    <div className='text-center bg-info-subtle row'>
-                        <p className='fs-4 fw-semibold text-info col'>Links</p>
+        <div className='pb-1'>
+            
+                
+                <div className='bg-dark row '>
+                        <p className='fs-3 fw-semibold text-white col mb-1'>Links</p>
                         <div className='col-auto'>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={editLinkButton}>
-                                Add
-                            </button>
+                            <div className='profile-svgs d-flex my-1' onClick={editLinkButton}>
+                                <Icon className='text-white' path={mdiPencil} size={1.25} />
+                            </div>
                         </div>
                     </div>
                     {!link[0] && !editLink &&
@@ -181,7 +182,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                     {editLink && (
                         <div className='container'>
                             <form>
-                            <div className='row'>
+                            <div className='row my-2'>
                             <div className='mb-3 col-4'>
                                 <label htmlFor={`link_name`} className='form-label'>
                                     Name:
@@ -247,7 +248,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                         {editMultipleLinks[index] && (
                         <div className='container'>
                             <form>
-                                <div className='row'>
+                                <div className='row my-2'>
                                 <div className='mb-3 col-4'>
                                     <label htmlFor={`link_name_${index}`} className='form-label'>
                                        Name:
@@ -295,8 +296,8 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                         
                     </div>
                     ))}
-            </div>
-        </div>
+            
+        
         </div>
     )
 }

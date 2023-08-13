@@ -7,6 +7,7 @@ import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import { EditMultipleDataFunction } from '../Profile';
 import ProfileDeleteModal from './ProfileDeleteModal';
+import { mdiPlus } from '@mdi/js';
 
 
 interface ProfileExperienceProps {
@@ -161,23 +162,22 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     };
     //   console.log(typeof(experience))
     return(
-        <div className="container ">
-            <div className='border border-1 border-danger'>
-                <div className="container">
-                    <div className='text-center bg-info-subtle row'>
-                        <p className='fs-4 fw-semibold text-info col'>Work Experience</p>
-                        <div className='col-auto'>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={editExperienceButton}>
-                                Add experience
-                            </button>
+        <div>
+            
+                
+            <div className='bg-dark row'>
+                <p className='fs-3 fw-semibold text-white col mb-1'>Work Experience</p>
+                    <div className='col-auto'>
+                        <div className='profile-svgs d-flex my-1' onClick={editExperienceButton}>
+                                <Icon className='text-white' path={mdiPlus} size={1.25} />
+                            </div>
                         </div>
                     </div>
                     {!experience[0] && !editExperience &&
                     <div className='container'> 
                         <p className='text-secondary my-4'>
-                        This is your chance to shine! Tell us about your work experience! The more you share here, the better 
-                        your chances of finding a job that's just right for you. Think of it as painting a picture 
-                        of your career journey to help employers see how awesome you are.
+                        Tell us about your work experience! The more you share here, the better 
+                        your chances of finding a job that's just right for you.
                         </p>
                     </div>
                     
@@ -185,7 +185,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                     {editExperience && (
                         <div className='container'>
                             <form>
-                            <div className='row'>
+                            <div className='row my-2'>
                                 <div className='mb-3 col-4'>
                                 <label htmlFor={`position`} className='form-label'>
                                     Position:
@@ -317,7 +317,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                         {editMultipleExperiences[index] && (
                         <div className='container'>
                             <form>
-                                <div className='row'>
+                                <div className='row my-2'>
                                     <div className='mb-3 col-4'>
                                     <label htmlFor={`position_${index}`} className='form-label'>
                                         Position:
@@ -420,8 +420,8 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                         
                     </div>
                     ))}
-            </div>
-        </div>
+            <hr></hr>
+        
         </div>
     )
 }

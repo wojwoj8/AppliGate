@@ -90,12 +90,12 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
       };
 
     return(
-        <div className="container ">
-            <div className='border border-1 border-danger'>
-                <div className="container">
-                    <div className='text-center bg-info-subtle row'>
-                        <p className='fs-4 fw-semibold text-info col'>Skills</p>
-                    </div>
+        <div>
+            
+                
+                <div className='bg-dark row'>
+                    <p className='fs-3 fw-semibold text-white col mb-1'>Skills</p>       
+                </div>
                    
                     <div className='row flex'>
                         <form>
@@ -136,19 +136,20 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
                                         {/* <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleSkillsButton(index, skill.id)}>
                                             <Icon path={mdiPencil} size={1} />
                                         </button> */}
-                                        <div className='profile-skill'>
-                                        {skill?.skill || ''}
+                                        <div className='profile-skill border border-1 text-white bg-dark rounded-2 p-1 d-flex align-items-center'>
+                                            <p className='mb-0 '>{skill?.skill || ''}
                                         {/* <button type="button" className="btn-close" >
                                         </button> */}
-                                        <svg height="0.75rem" width="0.75rem" version="1.1" id="Capa_1"  
-                                            viewBox="0 0 460.775 460.775" onClick={() => deleteSkill(skill.id)}>
-                                        <path d="M285.08,230.397L456.218,59.27c6.076-6.077,6.076-15.911,0-21.986L423.511,4.565c-2.913-2.911-6.866-4.55-10.992-4.55
-                                            c-4.127,0-8.08,1.639-10.993,4.55l-171.138,171.14L59.25,4.565c-2.913-2.911-6.866-4.55-10.993-4.55
-                                            c-4.126,0-8.08,1.639-10.992,4.55L4.558,37.284c-6.077,6.075-6.077,15.909,0,21.986l171.138,171.128L4.575,401.505
-                                            c-6.074,6.077-6.074,15.911,0,21.986l32.709,32.719c2.911,2.911,6.865,4.55,10.992,4.55c4.127,0,8.08-1.639,10.994-4.55
-                                            l171.117-171.12l171.118,171.12c2.913,2.911,6.866,4.55,10.993,4.55c4.128,0,8.081-1.639,10.992-4.55l32.709-32.719
-                                            c6.074-6.075,6.074-15.909,0-21.986L285.08,230.397z"/>
-                                        </svg>
+                                                <svg height="0.75rem" width="0.75rem" version="1.1" id="Capa_1"  
+                                                    viewBox="0 0 460.775 460.775" className='mb-1' onClick={() => deleteSkill(skill.id)}>
+                                                <path d="M285.08,230.397L456.218,59.27c6.076-6.077,6.076-15.911,0-21.986L423.511,4.565c-2.913-2.911-6.866-4.55-10.992-4.55
+                                                    c-4.127,0-8.08,1.639-10.993,4.55l-171.138,171.14L59.25,4.565c-2.913-2.911-6.866-4.55-10.993-4.55
+                                                    c-4.126,0-8.08,1.639-10.992,4.55L4.558,37.284c-6.077,6.075-6.077,15.909,0,21.986l171.138,171.128L4.575,401.505
+                                                    c-6.074,6.077-6.074,15.911,0,21.986l32.709,32.719c2.911,2.911,6.865,4.55,10.992,4.55c4.127,0,8.08-1.639,10.994-4.55
+                                                    l171.117-171.12l171.118,171.12c2.913,2.911,6.866,4.55,10.993,4.55c4.128,0,8.081-1.639,10.992-4.55l32.709-32.719
+                                                    c6.074-6.075,6.074-15.909,0-21.986L285.08,230.397z"/>
+                                                </svg>
+                                            </p>
                                         </div>
                                         
                                     
@@ -167,8 +168,9 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
                                 ))}
                         </div>
                     </div>
-                </div>
-            </div>
+                
+            
+            <hr></hr>
         </div>
     )
 }

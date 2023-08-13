@@ -7,6 +7,7 @@ import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import { EditMultipleDataFunction } from '../Profile';
 import ProfileDeleteModal from './ProfileDeleteModal';
+import { mdiPlus } from '@mdi/js';
 
 interface ProfileCourseProps {
     course: CourseData[];
@@ -158,25 +159,22 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
         });
     };
     return(
-        <div className="container ">
-            <div className='border border-1 border-danger'>
-                <div className="container">
-                    <div className='text-center bg-info-subtle row'>
-                        <p className='fs-4 fw-semibold text-info col'>Courses, training, certificates</p>
-                        <div className='col-auto'>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={editCourseButton}>
-                                Add
-                            </button>
+        <div>
+            
+                
+            <div className='bg-dark row'>
+                <p className='fs-3 fw-semibold text-white col mb-1'>Courses, training, certificates</p>
+                    <div className='col-auto'>
+                        <div className='profile-svgs d-flex my-1' onClick={editCourseButton}>
+                                <Icon className='text-white' path={mdiPlus} size={1.25} />
+                            </div>
                         </div>
                     </div>
                     {!course[0] && !editCourse &&
                     <div className='container'> 
                         <p className='text-secondary my-4'>
-                        Think of this section as your toolbox for success. Here, you can list all the courses you've taken, 
-                        training you've undergone, and certificates you've earned. Just like adding tools to your toolkit, 
-                        these details enhance your value to potential employers. The more you share, the more you showcase 
-                        your dedication to learning and your readiness to tackle new challenges. So, fill it up and let your 
-                        expertise shine!
+                        Here, you can list all the courses you've taken, 
+                        training you've undergone, and certificates you've earned.
                         </p>
                     </div>
                     
@@ -184,7 +182,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                     {editCourse && (
                         <div className='container'>
                             <form>
-                            <div className='row'>
+                            <div className='row my-2'>
                                 <div className='mb-3 col-4'>
                                 <label htmlFor={`course_name`} className='form-label'>
                                     Name:
@@ -281,7 +279,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                         {editMultipleCourses[index] && (
                         <div className='container'>
                             <form>
-                                <div className='row'>
+                                <div className='row my-2'>
                                     <div className='mb-3 col-4'>
                                     <label htmlFor={`course_name_${index}`} className='form-label'>
                                         Name:
@@ -357,8 +355,9 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                         
                     </div>
                     ))}
-            </div>
-        </div>
+            
+        
+        <hr></hr>
         </div>
     )
 }

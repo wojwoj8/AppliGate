@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
 import { ExperienceData } from '../Profile';
@@ -6,6 +6,7 @@ import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import { EditMultipleDataFunction } from '../Profile';
+import ProfileDeleteModal from './ProfileDeleteModal';
 
 
 interface ProfileExperienceProps {
@@ -58,7 +59,6 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     removeMultipleErrors, renderFieldErrorMultiple, deleteData
 }) =>{
 
-    
 
     const editMultipleExperiencesButton = async (index: number, id?: number) => {
         if (editMultipleExperiences[index] === true){
@@ -291,9 +291,12 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleExperiencesButton(index, experience.id)}>
                                 <Icon path={mdiPencil} size={1} />
                             </button>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => deleteExperience(experience.id)}>
+                            {/* <button className='btn btn btn-outline-secondary btn-sm' onClick={() => deleteExperience(experience.id)}>
                                 Delete
-                            </button>
+                            </button> */}
+
+                            <ProfileDeleteModal id={`${experience.position}_${experience.id}`} onDelete={() => deleteExperience(experience.id)} />
+                            
                         </div>
                         {!editMultipleExperiences[index] && (
                         <div className='col-auto col-md-8 col-sm-6 text-start'>

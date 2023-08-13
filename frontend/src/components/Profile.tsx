@@ -11,6 +11,7 @@ import ProfileLanguage from './profileComponents/ProfileLanguage';
 import ProfileLink from './profileComponents/ProfileLink';
 import ProfileSkill from './profileComponents/ProfileSkill';
 import ProfilePreview from './profileComponents/ProfilePreview';
+import ProfileDeleteModal from './profileComponents/ProfileDeleteModal';
 
 export interface ProfileData{
   first_name: string;
@@ -237,6 +238,7 @@ const Profile: React.FC = () =>{
         }
     }
 //////////////////////////////////////////////////////////////
+
     const editData = async (
       state: EditDataFunction,
       editField: React.Dispatch<React.SetStateAction<boolean>>,
@@ -359,7 +361,7 @@ const Profile: React.FC = () =>{
         }
   }
 
-
+  
     const deleteData = async (
         editField: React.Dispatch<React.SetStateAction<boolean[]>> | undefined,
         setData: GetDataFunction,

@@ -1,4 +1,6 @@
 import React from 'react';
+import Icon from '@mdi/react';
+import { mdiDelete } from '@mdi/js'
 
 interface ProfileDeleteModalProps {
   id: string;
@@ -9,9 +11,9 @@ const ProfileDeleteModal: React.FC<ProfileDeleteModalProps> = ({ id, onDelete })
      const sanitizedId = id.replace(/\s+/g, '-').toLowerCase();
   return (
     <>
-      <button type="button" className="btn btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target={`#${sanitizedId}`}>
-        Delete
-      </button>
+      <div className="profile-svgs" data-bs-toggle="modal" data-bs-target={`#${sanitizedId}`}>
+        <Icon path={mdiDelete} size={1} />
+      </div>
 
       <div className="modal fade" id={sanitizedId} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby={`${sanitizedId}Label`} aria-hidden="true">
         <div className="modal-dialog">

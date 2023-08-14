@@ -284,26 +284,28 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                 {education.map((education, index) => (
                     <div key={index} className='text-center row'>
                         {index >= 1 && <hr className="border border-primary border-3 my-1"></hr>}
-                        <div className='col-auto'>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleEducationsButton(index, education.id)}>
-                                <Icon path={mdiPencil} size={1} />
-                            </button>
+                        
+                        {!editMultipleEducations[index] && (
+                        <>
+                            <div className='col text-start'>
+                                <h2 className='mb-1 text-primary fs-1'>
+                                {education?.school || ''} {education?.educational_level || ''}
+                                </h2>
+                                <p>{education?.major || ''}</p>
+                                {education?.from_date && !education?.to_date && <p>From: {education?.from_date}</p>} 
+                                {education?.from_date && education?.to_date && <p>From: {education?.from_date} to: {education?.to_date}</p>} 
+                                {!education?.from_date && education?.to_date && <p>To: {education?.to_date}</p>}    
+                                {/* <p>From: {education?.from_date || ''} to: {education?.to_date || ''}</p> */}
+                                <p style={{ whiteSpace: 'pre-wrap' }}>{education?.specialization || ''}</p>
+                                
+                            </div>
+                            <div className='col-auto'>
+                            <div className='profile-svgs d-flex my-1' onClick={() => editMultipleEducationsButton(index, education.id)}>
+                                <Icon className='text-black' path={mdiPencil} size={1} />
+                            </div>
                             <ProfileDeleteModal id={`${education.school}_${education.id}`} onDelete={() => deleteEducation(education.id)} />
                         </div>
-                        {!editMultipleEducations[index] && (
-                        <div className='col-auto col-md-8 col-sm-6 text-start'>
-                            <h2 className='mb-1 text-primary fs-1'>
-                            {education?.school || ''} {education?.educational_level || ''}
-                            </h2>
-                            <p>{education?.major || ''}</p>
-                            {education?.from_date && !education?.to_date && <p>From: {education?.from_date}</p>} 
-                            {education?.from_date && education?.to_date && <p>From: {education?.from_date} to: {education?.to_date}</p>} 
-                            {!education?.from_date && education?.to_date && <p>To: {education?.to_date}</p>}    
-                            {/* <p>From: {education?.from_date || ''} to: {education?.to_date || ''}</p> */}
-                            <p style={{ whiteSpace: 'pre-wrap' }}>{education?.specialization || ''}</p>
-                            
-                        </div>
-                        
+                        </>
                         )}
                         
                         {editMultipleEducations[index] && (

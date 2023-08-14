@@ -255,25 +255,29 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                 {course.map((course, index) => (
                     <div key={index} className='text-center row'>
                         {index >= 1 && <hr className="border border-primary border-3 my-1"></hr>}
-                        <div className='col-auto'>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleCoursesButton(index, course.id)}>
+                        
+                        {!editMultipleCourses[index] && (
+                        <>
+                            <div className='col text-start'>
+                                <div className='d-flex gap-4'>
+                                    <p>{course?.finish_date}</p>
+                                    {course?.course_name && course?.certificate_link ? (
+                                        <p><a target='_blank' href={course?.certificate_link} rel="noreferrer">{course?.course_name}</a></p>
+                                    ) : (
+                                        <p>{course?.course_name}</p>
+                                    )} 
+                                </div>
+                                <p>{course?.organizer || ''}</p>
+
+                                
+                            </div>
+                            <div className='col-auto'>
+                            <div className='profile-svgs d-flex my-1' onClick={() => editMultipleCoursesButton(index, course.id)}>
                                 <Icon path={mdiPencil} size={1} />
-                            </button>
+                            </div>
                             <ProfileDeleteModal id={`${course.course_name}_${course.id}`} onDelete={() => deleteCourse(course.id)} />
                         </div>
-                        {!editMultipleCourses[index] && (
-                        <div className='col-auto col-md-8 col-sm-6 text-start'>
-                            
-                            {course?.course_name && course?.certificate_link ? (
-                                <p><a target='_blank' href={course?.certificate_link} rel="noreferrer">{course?.course_name}</a></p>
-                            ) : (
-                                <p>{course?.course_name}</p>
-                            )} 
-                            <p>{course?.organizer || ''}</p>
-
-                            <p>{course?.finish_date}</p>
-                        </div>
-                        
+                        </>
                         )}
                         
                         {editMultipleCourses[index] && (

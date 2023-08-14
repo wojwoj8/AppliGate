@@ -7,7 +7,7 @@ import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import { EditMultipleDataFunction } from '../Profile';
 import ProfileDeleteModal from './ProfileDeleteModal';
-import { mdiPlus } from '@mdi/js';
+
 
 interface ProfileLinkProps {
     link: LinkData[];
@@ -228,20 +228,20 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                 {link.map((link, index) => (
                     <div key={index} className='text-center row'>
                         {index >= 1 && <hr className="border border-primary border-3 my-1"></hr>}
-                        <div className='col-auto'>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleLinksButton(index, link.id)}>
+                        
+                        {!editMultipleLinks[index] && (
+                        <>
+                            <div className='col text-start d-flex'>
+                                <p className='col'>{link?.link_name || ''}</p>
+                                <a className='col' href={link?.link} target='_blank' rel="noreferrer"><p>{link?.link || ''}</p></a>                           
+                            </div>
+                            <div className='col-auto'>
+                            <div className='profile-svgs d-flex my-1' onClick={() => editMultipleLinksButton(index, link.id)}>
                                 <Icon path={mdiPencil} size={1} />
-                            </button>
+                            </div>
                             <ProfileDeleteModal id={`${link.link_name}_${link.id}`} onDelete={() => deleteLink(link.id)} />
                         </div>
-                        {!editMultipleLinks[index] && (
-                        <div className='col-auto col-md-8 col-sm-6 text-start'>
-                            
-                            <p>{link?.link_name || ''}</p>
-                            <a href={link?.link} target='_blank' rel="noreferrer"><p>{link?.link || ''}</p></a>
-                            
-
-                        </div>
+                        </>
                         
                         )}
                         

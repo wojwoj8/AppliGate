@@ -10,6 +10,7 @@ import ProfileDeleteModal from './ProfileDeleteModal';
 import { mdiPlus } from '@mdi/js';
 
 
+
 interface ProfileExperienceProps {
     experience: ExperienceData[];
     singleExperience: ExperienceData | null;
@@ -287,31 +288,35 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                 {experience.map((experience, index) => (
                     <div key={index} className='text-center row'>
                         {index >= 1 && <hr className="border border-primary border-3 my-1"></hr>}
-                        <div className='col-auto'>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleExperiencesButton(index, experience.id)}>
-                                <Icon path={mdiPencil} size={1} />
-                            </button>
-                            {/* <button className='btn btn btn-outline-secondary btn-sm' onClick={() => deleteExperience(experience.id)}>
-                                Delete
-                            </button> */}
-
-                            <ProfileDeleteModal id={`${experience.position}_${experience.id}`} onDelete={() => deleteExperience(experience.id)} />
-                            
-                        </div>
+                       
                         {!editMultipleExperiences[index] && (
-                        <div className='col-auto col-md-8 col-sm-6 text-start'>
-                            <h2 className='mb-1 text-primary fs-1'>
-                            {experience?.position || ''} {experience?.localization || ''}
-                            </h2>
-                            <p>{experience?.company || ''}</p>
-                            {experience?.from_date && !experience?.to_date && <p>From: {experience?.from_date}</p>} 
-                            {experience?.from_date && experience?.to_date && <p>From: {experience?.from_date} to: {experience?.to_date}</p>} 
-                            {!experience?.from_date && experience?.to_date && <p>To: {experience?.to_date}</p>}    
-                            {/* <p>From: {experience?.from_date || ''} to: {experience?.to_date || ''}</p> */}
-                            <p style={{ whiteSpace: 'pre-wrap' }}>{experience?.responsibilities || ''}</p>
+                        <>
+                            <div className='col text-start'>
+                                <h2 className='mb-1 text-primary fs-1'>
+                                {experience?.position || ''} {experience?.localization || ''}
+                                </h2>
+                                <p>{experience?.company || ''}</p>
+                                {experience?.from_date && !experience?.to_date && <p>From: {experience?.from_date}</p>} 
+                                {experience?.from_date && experience?.to_date && <p>From: {experience?.from_date} to: {experience?.to_date}</p>} 
+                                {!experience?.from_date && experience?.to_date && <p>To: {experience?.to_date}</p>}    
+                                {/* <p>From: {experience?.from_date || ''} to: {experience?.to_date || ''}</p> */}
+                                <p style={{ whiteSpace: 'pre-wrap' }}>{experience?.responsibilities || ''}</p>
+                                
+                                
+                            </div>
+                                <div className='col-auto'>
+                                <div className='profile-svgs d-flex my-1' onClick={() => editMultipleExperiencesButton(index, experience.id)}>
+                                    <Icon className='text-black' path={mdiPencil} size={1} />
+                                </div>
+                                <ProfileDeleteModal id={`${experience.position}_${experience.id}`} onDelete={() => deleteExperience(experience.id)} />
+                                {/* <button className='btn btn btn-outline-secondary btn-sm' onClick={() => deleteExperience(experience.id)}>
+                                    Delete
+                                </button> */}
+
+                                
                             
-                        </div>
-                        
+                            </div>
+                        </>
                         )}
                         
                         {editMultipleExperiences[index] && (

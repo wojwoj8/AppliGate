@@ -227,20 +227,22 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                 {language.map((language, index) => (
                     <div key={index} className='text-center row'>
                         {index >= 1 && <hr className="border border-primary border-3 my-1"></hr>}
-                        <div className='col-auto'>
-                            <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleLanguagesButton(index, language.id)}>
+                        
+                        {!editMultipleLanguages[index] && (
+                        <>
+                            <div className='col text-start d-flex gap-2'>
+
+                                <p>{language?.language || ''}</p>
+                                <p> - {language?.language_level || ''}</p>
+
+                            </div>
+                            <div className='col-auto'>
+                            <div className='profile-svgs d-flex my-1' onClick={() => editMultipleLanguagesButton(index, language.id)}>
                                 <Icon path={mdiPencil} size={1} />
-                            </button>
+                            </div>
                             <ProfileDeleteModal id={`${language.language}_${language.id}`} onDelete={() => deleteLanguage(language.id)} />
                         </div>
-                        {!editMultipleLanguages[index] && (
-                        <div className='col-auto col-md-8 col-sm-6 text-start'>
-
-                            <p>{language?.language || ''}</p>
-                            <p>{language?.language_level || ''}</p>
-
-                        </div>
-                        
+                        </>
                         )}
                         
                         {editMultipleLanguages[index] && (

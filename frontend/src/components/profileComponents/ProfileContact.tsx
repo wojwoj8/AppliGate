@@ -72,7 +72,7 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                 </div>
                 {!editContact &&
                 <div className='text-center'>
-                    <div className='d-flex justify-content-evenly'>
+                    <div className='d-flex flex-column flex-sm-row justify-content-evenly'>
                         <p>
                             <b>Email:</b> {contact?.contact_email || ''}
                         </p>
@@ -86,7 +86,7 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                         <div className="container">
                             <form>
                                 <div className='row my-2'>
-                                    <div className='mb-3 col-4'>
+                                    <div className='mb-3 col-md-6'>
                                     
                                         <label htmlFor='contact_email' className="form-label">Email:</label>
                                         <input 
@@ -95,7 +95,7 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                                         </input>
                                         {renderFieldErrorMultiple('contact', 0, `contact_email`, multipleErrors)}
                                     </div>
-                                    <div className='mb-3 col-4'>
+                                    <div className='mb-3 col-md-6'>
                                         <label htmlFor='phone_number' className="form-label">Phone Number:</label>
                                         <input type='text' name='phone_number' className={`form-control${renderFieldErrorMultiple('contact', 0, `phone_number`, multipleErrors) ? ' is-invalid' : ''}`} 
                                         placeholder='+123456789' value={contact?.phone_number} onChange={handleInputChange}></input>
@@ -113,7 +113,7 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                         
                     }
         
-                <hr></hr>
+                
         </div>
     )
 }

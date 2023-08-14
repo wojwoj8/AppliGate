@@ -225,15 +225,15 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                         </div>
                         )}
                 {language.map((language, index) => (
-                    <div key={index} className='text-center row'>
+                    <div key={index} className='text-center row align-items-center'>
                         {index >= 1 && <hr className="border border-primary border-3 my-1"></hr>}
                         
                         {!editMultipleLanguages[index] && (
                         <>
                             <div className='col text-start d-flex gap-2'>
 
-                                <p>{language?.language || ''}</p>
-                                <p> - {language?.language_level || ''}</p>
+                                <p>{language?.language || ''} -</p>
+                                <p>{language?.language_level || ''}</p>
 
                             </div>
                             <div className='col-auto'>
@@ -296,7 +296,6 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                     </div>
                     ))}
             
-        <hr></hr>
         </div>
     )
 }

@@ -259,7 +259,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                         {!editMultipleCourses[index] && (
                         <>
                             <div className='col text-start'>
-                                <div className='d-flex gap-4'>
+                                <div className='d-lg-flex d-sm-block gap-4 align-items-center'>
                                     <p>{course?.finish_date}</p>
                                     {course?.course_name && course?.certificate_link ? (
                                         <p><a target='_blank' href={course?.certificate_link} rel="noreferrer">{course?.course_name}</a></p>
@@ -361,7 +361,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                     ))}
             
         
-        <hr></hr>
+
         </div>
     )
 }

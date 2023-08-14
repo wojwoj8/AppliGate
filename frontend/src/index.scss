@@ -6,7 +6,9 @@ $primary: #10B981;
     font-size: 4.5rem !important;
     font-weight: 200;
 }
-
+html{
+    min-width: 310px;
+}
 .profile-skill{
 
     svg{

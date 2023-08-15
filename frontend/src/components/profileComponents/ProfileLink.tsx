@@ -1,5 +1,6 @@
 import React from 'react';
 import Icon from '@mdi/react';
+import { mdiPlus } from '@mdi/js';
 import { mdiPencil } from '@mdi/js';
 import { LinkData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
@@ -162,11 +163,11 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
         <div className='pb-1'>
             
                 
-                <div className='bg-dark row '>
+                <div className='bg-dark row mb-1 '>
                         <p className='fs-3 fw-semibold text-white col mb-1'>Links</p>
                         <div className='col-auto'>
                             <div className='profile-svgs d-flex my-1' onClick={editLinkButton}>
-                                <Icon className='text-white' path={mdiPencil} size={1.25} />
+                                <Icon className='text-white' path={mdiPlus} size={1.25} />
                             </div>
                         </div>
                     </div>
@@ -180,10 +181,10 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                     
                     }
                     {editLink && (
-                        <div className='container'>
+                        <div className=''>
                             <form>
                             <div className='row my-2'>
-                            <div className='mb-3 col-4'>
+                            <div className='mb-3 col-md-6'>
                                 <label htmlFor={`link_name`} className='form-label'>
                                     Name:
                                 </label>
@@ -197,7 +198,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                                 />
                                 {renderFieldErrorMultiple('addlink', 0, `link_name`, multipleErrors)}
                                 </div>
-                                <div className='mb-3 col-4'>
+                                <div className='mb-3 col-md-6'>
                                 <label htmlFor={`link`} className='form-label'>
                                     Link:
                                 </label>
@@ -223,17 +224,20 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                                 Save
                             </button>
                             </div>
+                            {link && link[0] && <hr className="border border-primary border-3 my-1"></hr>}
                         </div>
                         )}
                 {link.map((link, index) => (
-                    <div key={index} className='text-center row'>
-                        {index >= 1 && <hr className="border border-primary border-3 my-1"></hr>}
+                    <div key={index} className='row'>
+                        {index >= 1 && <div className="container"><hr className="border border-primary border-3 my-1"></hr></div>}
                         
                         {!editMultipleLinks[index] && (
                         <>
                             <div className='col text-start d-flex'>
-                                <p className='col'>{link?.link_name || ''}</p>
-                                <a className='col' href={link?.link} target='_blank' rel="noreferrer"><p>{link?.link || ''}</p></a>                           
+                                <div className='col-md-6'>
+                                    <p className='fw-medium'>{link?.link_name || ''}: </p>
+                                    <a className='fw-medium' href={link?.link} target='_blank' rel="noreferrer"><p>{link?.link || ''}</p></a>  
+                                </div>                                                        
                             </div>
                             <div className='col-auto'>
                             <div className='profile-svgs d-flex my-1' onClick={() => editMultipleLinksButton(index, link.id)}>
@@ -249,7 +253,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                         <div className='container'>
                             <form>
                                 <div className='row my-2'>
-                                <div className='mb-3 col-4'>
+                                <div className='mb-3 col-md-6'>
                                     <label htmlFor={`link_name_${index}`} className='form-label'>
                                        Name:
                                     </label>
@@ -263,7 +267,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                                     />
                                     {renderFieldErrorMultiple('link', index, `link_name_${index}`, multipleErrors)}
                                     </div>
-                                    <div className='mb-3 col-4'>
+                                    <div className='mb-3 col-md-6'>
                                     <label htmlFor={`link_${index}`} className='form-label'>
                                         Link:
                                     </label>

@@ -162,7 +162,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
         <div>
             
                 
-            <div className='bg-dark row'>
+            <div className='bg-dark row mb-1'>
                 <p className='fs-3 fw-semibold text-white col mb-1'>Education</p>
                     <div className='col-auto'>
                         <div className='profile-svgs d-flex my-1' onClick={editEducationButton}>
@@ -180,7 +180,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                     
                     }
                     {editEducation && (
-                        <div className='container'>
+                        <div className=''>
                             <form>
                             <div className='row my-2'>
                                 <div className='mb-3 col-md-6'>
@@ -281,7 +281,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                         </div>
                         )}
                 {education.map((education, index) => (
-                    <div key={index} className='text-center row'>
+                    <div key={index} className='row'>
                         {index >= 1 && <div className="container"><hr className="border border-primary border-3 my-1"></hr></div>}
                         
                         {!editMultipleEducations[index] && (
@@ -296,8 +296,9 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                     {!education?.from_date && education?.to_date && <p>To: {education?.to_date}</p>}  
                                 </div>
                                 <div className='col-md-6'>
-                                    <p><i><b>{education?.major || ''}</b>, {education?.specialization || ''}</i></p>
-                                    <p></p>
+                                <span className='fw-bold'>{education?.major || ''}</span> 
+                                        {education?.major && education?.specialization ? <span>, </span> : null}
+                                        <span className='fst-italic'>{education?.specialization || ''}</span>
                                     <p> {education?.educational_level || ''}</p>
                                 </div>
                             </div>

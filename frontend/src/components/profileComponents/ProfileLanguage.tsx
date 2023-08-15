@@ -162,7 +162,7 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
         <div>
             
                 
-            <div className='bg-dark row'>
+            <div className='bg-dark row mb-1'>
                 <p className='fs-3 fw-semibold text-white col mb-1'>Languages</p>
                     <div className='col-auto'>
                         <div className='profile-svgs d-flex my-1' onClick={editLanguageButton}>
@@ -180,10 +180,10 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                     
                     }
                     {editLanguage && (
-                        <div className='container'>
+                        <div className=''>
                             <form>
                             <div className='row my-2'>
-                                <div className='mb-3 col-4'>
+                                <div className='mb-3 col-md-6'>
                                 <label htmlFor={`language`} className='form-label'>
                                     Language:
                                 </label>
@@ -197,7 +197,7 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                                 />
                                 {renderFieldErrorMultiple('addlanguage', 0, `language`, multipleErrors)}
                                 </div>
-                                <div className='mb-3 col-4'>
+                                <div className='mb-3 col-md-6'>
                                 <label htmlFor={`language_level`} className='form-label'>
                                     Level:
                                 </label>
@@ -222,11 +222,12 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                                 Save
                             </button>
                             </div>
+                            {language && language[0] && <hr className="border border-primary border-3 my-1"></hr>}
                         </div>
                         )}
                 {language.map((language, index) => (
-                    <div key={index} className='text-center row align-items-center'>
-                        {index >= 1 && <hr className="border border-primary border-3 my-1"></hr>}
+                    <div key={index} className='row align-items-center'>
+                        {index >= 1 && <div className="container"><hr className="border border-primary border-3 my-1"></hr></div>}
                         
                         {!editMultipleLanguages[index] && (
                         <>
@@ -246,12 +247,12 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                         )}
                         
                         {editMultipleLanguages[index] && (
-                        <div className='container'>
+                        <div className=''>
                             <form>
                                 <div className='row my-2'>
-                                    <div className='mb-3 col-4'>
+                                    <div className='mb-3 col-md-6'>
                                     <label htmlFor={`language_${index}`} className='form-label'>
-                                        Name:
+                                        Language:
                                     </label>
                                     <input
                                         type='text'
@@ -263,7 +264,7 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                                     />
                                     {renderFieldErrorMultiple('language', index, `language_${index}`, multipleErrors)}
                                     </div>
-                                    <div className='mb-3 col-4'>
+                                    <div className='mb-3 col-md-6'>
                                     <label htmlFor={`language_level_${index}`} className='form-label'>
                                        Language:
                                     </label>

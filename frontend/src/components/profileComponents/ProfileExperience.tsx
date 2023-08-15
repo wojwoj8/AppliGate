@@ -166,7 +166,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
         <div>
             
                 
-            <div className='bg-dark row'>
+            <div className='bg-dark row mb-1'>
                 <p className='fs-3 fw-semibold text-white col mb-1'>Work Experience</p>
                     <div className='col-auto'>
                         <div className='profile-svgs d-flex my-1' onClick={editExperienceButton}>
@@ -294,20 +294,26 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             {!editMultipleExperiences[index] && (
                             <>
                                 <div className='col row text-start'>
-                                    <div className='col-md-6'>
+                                    <div className='col-md-6 mb-1'>
                                         <h2 className='mb-1 text-primary fs-3'>
                                         {experience?.position || ''}
                                         </h2>
                                         {experience?.from_date && !experience?.to_date && <p>From: {experience?.from_date}</p>} 
-                                        {experience?.from_date && experience?.to_date && <p>{experience?.from_date} - {experience?.to_date}</p>} 
+                                        {experience?.from_date && experience?.to_date && <p className=''>{experience?.from_date} - {experience?.to_date}</p>} 
                                         {!experience?.from_date && experience?.to_date && <p>To: {experience?.to_date}</p>}    
                                     </div>
                                     <div className='col-md-6'>
-                                        <p><i><b>{experience?.company || ''}</b>, {experience?.localization || ''}</i></p>
+                                        <span className='fw-bold'>{experience?.company || ''}</span> 
+                                        {experience?.company && experience?.localization ? <span>, </span> : null}
+                                        <span className='fst-italic'>{experience?.localization || ''}</span>
                                         
                                         {/* <p>From: {experience?.from_date || ''} to: {experience?.to_date || ''}</p> */}
-                                        <p>Responsibilites:</p>
-                                        <p className='ms-4' style={{ whiteSpace: 'pre-wrap' }}>{experience?.responsibilities || ''}</p>
+                                        {experience?.responsibilities && 
+                                        <div className='mt-2'>
+                                            <p>Responsibilites:</p>
+                                            <p className='ms-4' style={{ whiteSpace: 'pre-wrap' }}>{experience?.responsibilities || ''}</p>
+                                        </div>
+                                        }
                                     </div>
                                     
                                     

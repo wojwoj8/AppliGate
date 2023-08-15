@@ -81,7 +81,7 @@ setPersonal}) => {
     return(
         <div>
                   
-                    <div className='bg-dark row rounded-top-2 '>
+                    <div className='bg-dark row mb-1 rounded-top-2 '>
                         <p className='fs-3 fw-semibold text-white col mb-1'>Personal Data</p>
                         <div className='col-auto'>
                             <div className='profile-svgs d-flex my-1' onClick={editProfile}>
@@ -105,8 +105,8 @@ setPersonal}) => {
                                         <p className='mb-2 mb-md-0'>
                                             <b className='residence-label'>Place of residence: </b>
                                             <span className='d-inline-flex'>
-                                                {personal?.country && personal?.city ? (
-                                                    <span className='d-inline'>{personal?.country},&nbsp;</span>
+                                                {personal?.country ? (
+                                                    <span className='d-inline'>{personal?.country}{personal?.city ? <>,&nbsp;</> : ' '}</span>
                                                 ) : null}
                                                 {personal?.city ? (
                                                     <span className='d-inline'>{personal?.city}</span>

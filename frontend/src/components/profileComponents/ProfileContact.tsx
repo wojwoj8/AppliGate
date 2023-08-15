@@ -62,7 +62,7 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
     return(
         <div>
             
-            <div className='bg-dark row'>
+            <div className='bg-dark row mb-1'>
                 <p className='fs-3 fw-semibold text-white col mb-1'>Contact Data</p>
                     <div className='col-auto'>
                         <div className='profile-svgs d-flex my-1' onClick={editContactData}>

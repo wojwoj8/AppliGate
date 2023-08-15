@@ -162,7 +162,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
         <div>
             
                 
-            <div className='bg-dark row'>
+            <div className='bg-dark row mb-1 mb-1'>
                 <p className='fs-3 fw-semibold text-white col mb-1'>Courses, training, certificates</p>
                     <div className='col-auto'>
                         <div className='profile-svgs d-flex my-1' onClick={editCourseButton}>
@@ -180,10 +180,10 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                     
                     }
                     {editCourse && (
-                        <div className='container'>
+                        <div className=''>
                             <form>
                             <div className='row my-2'>
-                                <div className='mb-3 col-4'>
+                                <div className='mb-3 col-md-6'>
                                 <label htmlFor={`course_name`} className='form-label'>
                                     Name:
                                 </label>
@@ -197,37 +197,23 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                 />
                                 {renderFieldErrorMultiple('addcourse', 0, `course_name`, multipleErrors)}
                                 </div>
-                                <div className='mb-3 col-4'>
-                                <label htmlFor={`organizer`} className='form-label'>
-                                    Organizer:
-                                </label>
-                                <input
-                                    type='text'
-                                    name={`organizer`}
-                                    className={`form-control${renderFieldErrorMultiple('addcourse', 0, `organizer`, multipleErrors) ? ' is-invalid' : ''}`} 
-                                    value={singleCourse?.organizer || ''}
-                                    onChange={handleSingleInputChange}
-                                    placeholder='Organizer'
-                                />
-                                {renderFieldErrorMultiple('addcourse', 0, `organizer`, multipleErrors)}
-                                </div>
-                                <div className='mb-3 col-4'>
-                                <label htmlFor={`certificate_link`} className='form-label'>
-                                    Link:
-                                </label>
-                                <input
-                                    type='text'
-                                    name={`certificate_link`}
-                                    className={`form-control${renderFieldErrorMultiple('addcourse', 0, `certificate_link`, multipleErrors) ? ' is-invalid' : ''}`} 
-                                    value={singleCourse?.certificate_link || ''}
-                                    onChange={handleSingleInputChange}
-                                    placeholder='Link'
-                                />
-                                {renderFieldErrorMultiple('addcourse', 0, `certificate_link`, multipleErrors)}
+                                    <div className='mb-3 col-md-6'>
+                                    <label htmlFor={`organizer`} className='form-label'>
+                                        Organizer:
+                                    </label>
+                                    <input
+                                        type='text'
+                                        name={`organizer`}
+                                        className={`form-control${renderFieldErrorMultiple('addcourse', 0, `organizer`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                        value={singleCourse?.organizer || ''}
+                                        onChange={handleSingleInputChange}
+                                        placeholder='Organizer'
+                                    />
+                                    {renderFieldErrorMultiple('addcourse', 0, `organizer`, multipleErrors)}
                                 </div>
                             </div>
                             <div className='row'>
-                                <div className='mb-3 col-4'>
+                                <div className='mb-3 col-md-6'>
                                     <label htmlFor={`finish_date`} className='form-label'>
                                         Finish:
                                     </label>
@@ -240,6 +226,20 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                     />
                                     {renderFieldErrorMultiple('addcourse', 0, `finish_date`, multipleErrors)}
                                 </div>
+                                <div className='mb-3 col-md-6'>
+                                    <label htmlFor={`certificate_link`} className='form-label'>
+                                        Link:
+                                    </label>
+                                    <input
+                                        type='text'
+                                        name={`certificate_link`}
+                                        className={`form-control${renderFieldErrorMultiple('addcourse', 0, `certificate_link`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                        value={singleCourse?.certificate_link || ''}
+                                        onChange={handleSingleInputChange}
+                                        placeholder='Link'
+                                    />
+                                    {renderFieldErrorMultiple('addcourse', 0, `certificate_link`, multipleErrors)}
+                                </div>
                             </div>
                             </form>
                             <div className='text-center'>
@@ -250,24 +250,30 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                 Save
                             </button>
                             </div>
+                            {course && course[0] && <hr className="border border-primary border-3 my-1"></hr>}
                         </div>
                         )}
                 {course.map((course, index) => (
-                    <div key={index} className='text-center row'>
-                        {index >= 1 && <hr className="border border-primary border-3 my-1"></hr>}
+                    <div key={index} className='row'>
+                        {index >= 1 && <div className="container"><hr className="border border-primary border-3 my-1"></hr></div>}
                         
                         {!editMultipleCourses[index] && (
                         <>
-                            <div className='col text-start'>
-                                <div className='d-lg-flex d-sm-block gap-4 align-items-center'>
-                                    <p>{course?.finish_date}</p>
+                            <div className='col text-start row'>
+                                
+                                <div className='d-sm-flex gap-4 align-items-center col-md-2'>
+                                    <p className='fw-bold'>{course?.finish_date}</p>
+                                </div>
+                                <div className='col-md-6'>
+                                    <span className='fw-bold'>{course?.organizer || ''}:</span>
                                     {course?.course_name && course?.certificate_link ? (
-                                        <p><a target='_blank' href={course?.certificate_link} rel="noreferrer">{course?.course_name}</a></p>
+                                        <p className='fw-medium'><a target='_blank' href={course?.certificate_link} rel="noreferrer">{course?.course_name}</a></p>
                                     ) : (
                                         <p>{course?.course_name}</p>
-                                    )} 
-                                </div>
-                                <p>{course?.organizer || ''}</p>
+                                    )}
+                            </div>
+                                
+                                
 
                                 
                             </div>
@@ -284,7 +290,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                         <div className='container'>
                             <form>
                                 <div className='row my-2'>
-                                    <div className='mb-3 col-4'>
+                                    <div className='mb-3 col-md-6'>
                                     <label htmlFor={`course_name_${index}`} className='form-label'>
                                         Name:
                                     </label>
@@ -298,37 +304,23 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                     />
                                     {renderFieldErrorMultiple('course', index, `course_name_${index}`, multipleErrors)}
                                     </div>
-                                    <div className='mb-3 col-4'>
-                                    <label htmlFor={`organizer_${index}`} className='form-label'>
-                                       Organizer:
-                                    </label>
-                                    <input
-                                        type='text'
-                                        name={`organizer_${index}`}
-                                        className={`form-control${renderFieldErrorMultiple('course', index, `organizer_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
-                                        value={course?.organizer || ''}
-                                        onChange={(e) => handleCourseInputChange(index, e)}
-                                        placeholder='Organizer'
-                                    />
-                                    {renderFieldErrorMultiple('course', index, `organizer_${index}`, multipleErrors)}
-                                    </div>
-                                    <div className='mb-3 col-4'>
-                                    <label htmlFor={`certificate_link_${index}`} className='form-label'>
-                                        Link:
-                                    </label>
-                                    <input
-                                        type='text'
-                                        name={`certificate_link_${index}`}
-                                        className={`form-control${renderFieldErrorMultiple('course', index, `certificate_link_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
-                                        value={course?.certificate_link || ''}
-                                        onChange={(e) => handleCourseInputChange(index, e)}
-                                        placeholder='Link'
-                                    />
-                                    {renderFieldErrorMultiple('course', index, `certificate_link_${index}`, multipleErrors)}
+                                    <div className='mb-3 col-md-6'>
+                                        <label htmlFor={`organizer_${index}`} className='form-label'>
+                                        Organizer:
+                                        </label>
+                                        <input
+                                            type='text'
+                                            name={`organizer_${index}`}
+                                            className={`form-control${renderFieldErrorMultiple('course', index, `organizer_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
+                                            value={course?.organizer || ''}
+                                            onChange={(e) => handleCourseInputChange(index, e)}
+                                            placeholder='Organizer'
+                                        />
+                                        {renderFieldErrorMultiple('course', index, `organizer_${index}`, multipleErrors)}
                                     </div>
                                 </div>
                                 <div className='row'>
-                                    <div className='mb-3 col-4'>
+                                    <div className='mb-3 col-md-6'>
                                     <label htmlFor={`finish_date_${index}`} className='form-label'>
                                         Finish:
                                     </label>
@@ -341,7 +333,20 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                     />
                                     {renderFieldErrorMultiple('course', index, `finish_date_${index}`, multipleErrors)}
                                     </div>
-                                   
+                                    <div className='mb-3 col-md-6'>
+                                        <label htmlFor={`certificate_link_${index}`} className='form-label'>
+                                            Link:
+                                        </label>
+                                        <input
+                                            type='text'
+                                            name={`certificate_link_${index}`}
+                                            className={`form-control${renderFieldErrorMultiple('course', index, `certificate_link_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
+                                            value={course?.certificate_link || ''}
+                                            onChange={(e) => handleCourseInputChange(index, e)}
+                                            placeholder='Link'
+                                        />
+                                        {renderFieldErrorMultiple('course', index, `certificate_link_${index}`, multipleErrors)}
+                                        </div>
                                 </div>
                                 </form>
                             <div className='text-center'>

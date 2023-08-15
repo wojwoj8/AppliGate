@@ -93,13 +93,13 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
         <div>
             
                 
-                <div className='bg-dark row'>
+                <div className='bg-dark row mb-1'>
                     <p className='fs-3 fw-semibold text-white col mb-1'>Skills</p>       
                 </div>
                    
                     <div className='row flex'>
                         <form>
-                            <div className='container'>
+                            <div className=''>
                                 <div className='mb-3'>
                                     <div className='row align-items-end'>
                                     <p>Enter your skills <b>one at a time</b> by approving with the "Add" button.</p>
@@ -127,7 +127,7 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
                             </div>
                         </form>
                     </div>
-                    <div className='container'>
+                    <div className=''>
                         <div className='row flex mb-3'>
                             {skill.map((skill, index) => (
                                 <div key={index} className='col-auto'>
@@ -169,8 +169,6 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
                         </div>
                     </div>
                 
-            
-            <hr></hr>
         </div>
     )
 }

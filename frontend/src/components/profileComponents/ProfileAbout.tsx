@@ -70,7 +70,7 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
         <div>
             
                 
-                <div className='bg-dark row '>
+                <div className='bg-dark row mb-1 '>
                         <p className='fs-3 fw-semibold text-white col mb-1'>Hobby</p>
                         <div className='col-auto'>
                             <div className='profile-svgs d-flex my-1' onClick={editAboutSection}>
@@ -94,10 +94,10 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
                 }
                    </div> 
                 {editAbout &&  
-                    <div className="container">
+                    <div className="">
                         <form>
                             <div className='row my-2'>
-                                <div className='mb-3 col-4'>
+                                <div className='mb-3 col'>
                                     <label htmlFor='about_me' className="form-label">Hobby:</label>
                                     <textarea
                                         name='about_me' 
@@ -119,8 +119,6 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
                     
                 }
                 
-            
-            <hr></hr>
         </div>
     )
 }

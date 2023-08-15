@@ -102,7 +102,7 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
                             <div className='container'>
                                 <div className='mb-3'>
                                     <div className='row align-items-end'>
-                                    <p>Enter your skills <b>one at a time</b> by approving with the "Add" button:</p>
+                                    <p>Enter your skills <b>one at a time</b> by approving with the "Add" button.</p>
                                         <div className='col'>
                                             <label htmlFor={`skill`} className='form-label'>
                                                 Skill:

@@ -184,7 +184,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                     
                     }
                     {editExperience && (
-                        <div className='container'>
+                        <div className=''>
                             <form>
                             <div className='row my-2'>
                                 <div className='mb-3 col-md-6'>
@@ -283,26 +283,32 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 Save
                             </button>
                             </div>
-                            {experience && experience[1] && <hr className="border border-primary border-3 my-1"></hr>}
+                            {experience && experience[0] && <hr className="border border-primary border-3 my-1"></hr>}
                         </div>
                         )}
                 {experience.map((experience, index) => (
-                    <div className='container'>
-                        <div key={index} className='row'>
-                            {index >= 1 && <hr className="border border-primary border-3 my-1"></hr>}
-                        
+                    <div key={index} className=''>
+                        <div className='row'>
+                            {index >= 1 && <div className="container"><hr className="border border-primary border-3 my-1"></hr></div>}
+                            
                             {!editMultipleExperiences[index] && (
                             <>
-                                <div className='col text-start'>
-                                    <h2 className='mb-1 text-primary fs-1'>
-                                    {experience?.position || ''} {experience?.localization || ''}
-                                    </h2>
-                                    <p>{experience?.company || ''}</p>
-                                    {experience?.from_date && !experience?.to_date && <p>From: {experience?.from_date}</p>} 
-                                    {experience?.from_date && experience?.to_date && <p>From: {experience?.from_date} to: {experience?.to_date}</p>} 
-                                    {!experience?.from_date && experience?.to_date && <p>To: {experience?.to_date}</p>}    
-                                    {/* <p>From: {experience?.from_date || ''} to: {experience?.to_date || ''}</p> */}
-                                    <p style={{ whiteSpace: 'pre-wrap' }}>{experience?.responsibilities || ''}</p>
+                                <div className='col row text-start'>
+                                    <div className='col-md-6'>
+                                        <h2 className='mb-1 text-primary fs-3'>
+                                        {experience?.position || ''}
+                                        </h2>
+                                        {experience?.from_date && !experience?.to_date && <p>From: {experience?.from_date}</p>} 
+                                        {experience?.from_date && experience?.to_date && <p>{experience?.from_date} - {experience?.to_date}</p>} 
+                                        {!experience?.from_date && experience?.to_date && <p>To: {experience?.to_date}</p>}    
+                                    </div>
+                                    <div className='col-md-6'>
+                                        <p><i><b>{experience?.company || ''}</b>, {experience?.localization || ''}</i></p>
+                                        
+                                        {/* <p>From: {experience?.from_date || ''} to: {experience?.to_date || ''}</p> */}
+                                        <p>Responsibilites:</p>
+                                        <p className='ms-4' style={{ whiteSpace: 'pre-wrap' }}>{experience?.responsibilities || ''}</p>
+                                    </div>
                                     
                                     
                                 </div>
@@ -326,7 +332,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             <div className='container'>
                                 <form>
                                     <div className='row my-2'>
-                                        <div className='mb-3 col-6'>
+                                        <div className='mb-3 col-md-6'>
                                         <label htmlFor={`position_${index}`} className='form-label'>
                                             Position:
                                         </label>
@@ -340,7 +346,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                         />
                                         {renderFieldErrorMultiple('experience', index, `position_${index}`, multipleErrors)}
                                         </div>
-                                        <div className='mb-3 col-6'>
+                                        <div className='mb-3 col-md-6'>
                                         <label htmlFor={`localization_${index}`} className='form-label'>
                                             Localization:
                                         </label>
@@ -370,7 +376,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                         </div>
                                     </div>
                                     <div className='row'>
-                                        <div className='mb-3 col-6'>
+                                        <div className='mb-3 col-md-6'>
                                         <label htmlFor={`from_date_${index}`} className='form-label'>
                                             From:
                                         </label>
@@ -383,7 +389,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                         />
                                         {renderFieldErrorMultiple('experience', index, `from_date_${index}`, multipleErrors)}
                                         </div>
-                                        <div className='mb-3 col-6'>
+                                        <div className='mb-3 col-md-6'>
                                         <label htmlFor={`to_date_${index}`} className='form-label'>
                                             To:
                                         </label>

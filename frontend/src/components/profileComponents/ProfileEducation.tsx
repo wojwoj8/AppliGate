@@ -183,7 +183,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                         <div className='container'>
                             <form>
                             <div className='row my-2'>
-                                <div className='mb-3 col-4'>
+                                <div className='mb-3 col-md-6'>
                                 <label htmlFor={`school`} className='form-label'>
                                     School Name:
                                 </label>
@@ -197,7 +197,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                 />
                                 {renderFieldErrorMultiple('addeducation', 0, `school`, multipleErrors)}
                                 </div>
-                                <div className='mb-3 col-4'>
+                                <div className='mb-3 col-md-6'>
                                 <label htmlFor={`educational_level`} className='form-label'>
                                     Educational Level:
                                 </label>
@@ -211,7 +211,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                 />
                                 {renderFieldErrorMultiple('addeducation', 0, `educational_level`, multipleErrors)}
                                 </div>
-                                <div className='mb-3 col-4'>
+                                <div className='mb-3 col-md-6'>
                                 <label htmlFor={`major`} className='form-label'>
                                     Major:
                                 </label>
@@ -225,37 +225,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                 />
                                 {renderFieldErrorMultiple('addeducation', 0, `major`, multipleErrors)}
                                 </div>
-                            </div>
-                            <div className='row'>
-                                <div className='mb-3 col-4'>
-                                    <label htmlFor={`from_date`} className='form-label'>
-                                        From:
-                                    </label>
-                                    <input 
-                                        type="month" 
-                                        name={`from_date`}
-                                        className={`form-control${renderFieldErrorMultiple('addeducation', 0, `from_date`, multipleErrors) ? ' is-invalid' : ''}`} 
-                                        value={singleEducation?.from_date || ''}
-                                        onChange={handleSingleInputChange}                     
-                                    />
-                                    {renderFieldErrorMultiple('addeducation', 0, `from_date`, multipleErrors)}
-                                </div>
-                                <div className='mb-3 col-4'>
-                                    <label htmlFor={`to_date`} className='form-label'>
-                                        To:
-                                    </label>
-                                    <input 
-                                        type="month" 
-                                        name={`to_date`}
-                                        className={`form-control${renderFieldErrorMultiple('addeducation', 0, `to_date`, multipleErrors) ? ' is-invalid' : ''}`} 
-                                        value={singleEducation?.to_date || ''}
-                                        onChange={handleSingleInputChange}
-                                    />
-                                    {renderFieldErrorMultiple('addeducation', 0, `to_date`, multipleErrors)}
-                                </div>
-                            </div>
-                            <div className='row'>
-                                <div className='mb-3 col-4'>
+                                <div className='mb-3 col-md-6'>
                                 <label htmlFor={`specialization`} className='form-label'>
                                     Specialization:
                                 </label>
@@ -270,6 +240,34 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                 {renderFieldErrorMultiple('addeducation', 0, `specialization`, multipleErrors)}
                                 </div>
                             </div>
+                            <div className='row'>
+                                <div className='mb-3 col-md-6'>
+                                    <label htmlFor={`from_date`} className='form-label'>
+                                        From:
+                                    </label>
+                                    <input 
+                                        type="month" 
+                                        name={`from_date`}
+                                        className={`form-control${renderFieldErrorMultiple('addeducation', 0, `from_date`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                        value={singleEducation?.from_date || ''}
+                                        onChange={handleSingleInputChange}                     
+                                    />
+                                    {renderFieldErrorMultiple('addeducation', 0, `from_date`, multipleErrors)}
+                                </div>
+                                <div className='mb-3 col-md-6'>
+                                    <label htmlFor={`to_date`} className='form-label'>
+                                        To:
+                                    </label>
+                                    <input 
+                                        type="month" 
+                                        name={`to_date`}
+                                        className={`form-control${renderFieldErrorMultiple('addeducation', 0, `to_date`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                        value={singleEducation?.to_date || ''}
+                                        onChange={handleSingleInputChange}
+                                    />
+                                    {renderFieldErrorMultiple('addeducation', 0, `to_date`, multipleErrors)}
+                                </div>
+                            </div>
                             </form>
                             <div className='text-center'>
                             <button className='btn btn-secondary' onClick={cancelEditEducation}>
@@ -279,25 +277,29 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                 Save
                             </button>
                             </div>
+                            {education && education[0] && <hr className="border border-primary border-3 my-1"></hr>}
                         </div>
                         )}
                 {education.map((education, index) => (
                     <div key={index} className='text-center row'>
-                        {index >= 1 && <hr className="border border-primary border-3 my-1"></hr>}
+                        {index >= 1 && <div className="container"><hr className="border border-primary border-3 my-1"></hr></div>}
                         
                         {!editMultipleEducations[index] && (
                         <>
-                            <div className='col text-start'>
-                                <h2 className='mb-1 text-primary fs-1'>
-                                {education?.school || ''} {education?.educational_level || ''}
-                                </h2>
-                                <p>{education?.major || ''}</p>
-                                {education?.from_date && !education?.to_date && <p>From: {education?.from_date}</p>} 
-                                {education?.from_date && education?.to_date && <p>From: {education?.from_date} to: {education?.to_date}</p>} 
-                                {!education?.from_date && education?.to_date && <p>To: {education?.to_date}</p>}    
-                                {/* <p>From: {education?.from_date || ''} to: {education?.to_date || ''}</p> */}
-                                <p style={{ whiteSpace: 'pre-wrap' }}>{education?.specialization || ''}</p>
-                                
+                            <div className='col row text-start'>
+                                <div className='col-md-6'>
+                                <h2 className='mb-1 text-primary fs-3'>
+                                    {education?.school || ''}
+                                    </h2>
+                                    {education?.from_date && !education?.to_date && <p>From: {education?.from_date}</p>} 
+                                    {education?.from_date && education?.to_date && <p>{education?.from_date} - {education?.to_date}</p>} 
+                                    {!education?.from_date && education?.to_date && <p>To: {education?.to_date}</p>}  
+                                </div>
+                                <div className='col-md-6'>
+                                    <p><i><b>{education?.major || ''}</b>, {education?.specialization || ''}</i></p>
+                                    <p></p>
+                                    <p> {education?.educational_level || ''}</p>
+                                </div>
                             </div>
                             <div className='col-auto'>
                             <div className='profile-svgs d-flex my-1' onClick={() => editMultipleEducationsButton(index, education.id)}>
@@ -312,7 +314,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                         <div className='container'>
                             <form>
                                 <div className='row my-2'>
-                                    <div className='mb-3 col-4'>
+                                    <div className='mb-3 col-md-6'>
                                     <label htmlFor={`school_${index}`} className='form-label'>
                                         School Name:
                                     </label>
@@ -326,7 +328,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                     />
                                     {renderFieldErrorMultiple('education', index, `school_${index}`, multipleErrors)}
                                     </div>
-                                    <div className='mb-3 col-4'>
+                                    <div className='mb-3 col-md-6'>
                                     <label htmlFor={`educational_level_${index}`} className='form-label'>
                                         Educational Level:
                                     </label>
@@ -340,7 +342,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                     />
                                     {renderFieldErrorMultiple('education', index, `educational_level_${index}`, multipleErrors)}
                                     </div>
-                                    <div className='mb-3 col-4'>
+                                    <div className='mb-3 col-md-6'>
                                     <label htmlFor={`major_${index}`} className='form-label'>
                                         Major:
                                     </label>
@@ -354,37 +356,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                     />
                                     {renderFieldErrorMultiple('education', index, `major_${index}`, multipleErrors)}
                                     </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='mb-3 col-4'>
-                                    <label htmlFor={`from_date_${index}`} className='form-label'>
-                                        From:
-                                    </label>
-                                    <input
-                                        type='month'
-                                        name={`from_date_${index}`}
-                                        className={`form-control${renderFieldErrorMultiple('education', index, `from_date_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
-                                        value={education?.from_date || ''}
-                                        onChange={(e) => handleEducationInputChange(index, e)}
-                                    />
-                                    {renderFieldErrorMultiple('education', index, `from_date_${index}`, multipleErrors)}
-                                    </div>
-                                    <div className='mb-3 col-4'>
-                                    <label htmlFor={`to_date_${index}`} className='form-label'>
-                                        To:
-                                    </label>
-                                    <input
-                                        type='month'
-                                        name={`to_date_${index}`}
-                                        className={`form-control${renderFieldErrorMultiple('education', index, `to_date_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
-                                        value={education?.to_date || ''}
-                                        onChange={(e) => handleEducationInputChange(index, e)}
-                                    />
-                                    {renderFieldErrorMultiple('education', index, `to_date_${index}`, multipleErrors)}
-                                    </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='mb-3 col-4'>
+                                    <div className='mb-3 col-md-6'>
                                     <label htmlFor={`specialization_${index}`} className='form-label'>
                                         Specialization:
                                     </label>
@@ -397,6 +369,34 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                         placeholder='Specialization'
                                     />
                                     {renderFieldErrorMultiple('education', index, `specialization_${index}`, multipleErrors)}
+                                    </div>
+                                </div>
+                                <div className='row'>
+                                    <div className='mb-3 col-md-6'>
+                                    <label htmlFor={`from_date_${index}`} className='form-label'>
+                                        From:
+                                    </label>
+                                    <input
+                                        type='month'
+                                        name={`from_date_${index}`}
+                                        className={`form-control${renderFieldErrorMultiple('education', index, `from_date_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
+                                        value={education?.from_date || ''}
+                                        onChange={(e) => handleEducationInputChange(index, e)}
+                                    />
+                                    {renderFieldErrorMultiple('education', index, `from_date_${index}`, multipleErrors)}
+                                    </div>
+                                    <div className='mb-3 col-md-6'>
+                                    <label htmlFor={`to_date_${index}`} className='form-label'>
+                                        To:
+                                    </label>
+                                    <input
+                                        type='month'
+                                        name={`to_date_${index}`}
+                                        className={`form-control${renderFieldErrorMultiple('education', index, `to_date_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
+                                        value={education?.to_date || ''}
+                                        onChange={(e) => handleEducationInputChange(index, e)}
+                                    />
+                                    {renderFieldErrorMultiple('education', index, `to_date_${index}`, multipleErrors)}
                                     </div>
                                 </div>
                                 </form>
@@ -416,8 +416,6 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                     </div>
                     ))}
                 
-            
-            <hr></hr>
         </div>
     )
 }

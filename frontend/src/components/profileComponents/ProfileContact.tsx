@@ -71,21 +71,21 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                     </div>
                 </div>
                 {!editContact &&
-                <div className='text-center'>
-                    <div className='d-flex flex-column flex-sm-row justify-content-evenly'>
+                <div className='text-sm-center'>
+                    <div className='d-flex flex-column flex-sm-row justify-content-between text-break'>
                         <p>
                             <b>Email:</b> {contact?.contact_email || ''}
                         </p>
-                        <p>
+                        <p className=''>
                             <b>Phone Number: </b> {contact?.phone_number || ''}
                         </p>
                     </div>
                 </div>
                 }
                 {editContact &&  
-                        <div className="container">
+                        <div className="">
                             <form>
-                                <div className='row my-2'>
+                                <div className='row my-2 '>
                                     <div className='mb-3 col-md-6'>
                                     
                                         <label htmlFor='contact_email' className="form-label">Email:</label>

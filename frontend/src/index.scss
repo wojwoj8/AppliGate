@@ -16,7 +16,7 @@ html{
         fill:white;
     }
     svg:hover{
-        fill: red;
+        fill: $danger;
         cursor: pointer;
     }
         
@@ -24,11 +24,14 @@ html{
 
 .profile-svgs{
 
-    svg:{
+    // svg:{
 
-    }
+    // }
     svg:hover{
         fill: $secondary;
         cursor: pointer;
     }
+}
+p{
+    margin-bottom: 0.25rem;
 }

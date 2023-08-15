@@ -90,18 +90,31 @@ setPersonal}) => {
                         </div>
                     </div>
                 {!editPersonal && 
-                    <div className='text-center row'>
+                    <div className='row'>
                         <div className='col'>
-                            <h2 className='mb-1 fs-1' style={{color:'#B388EB'}}>
+                            <h2 className='mb-1 fs-1 text-primary'>
                                 {personal?.first_name || 'Name'} {personal?.last_name || 'Surname'}
                             </h2>
                             <p>
-                                {personal?.current_position}
+                                <b className='fs-5'>{personal?.current_position}</b>
                             </p>
-                            <div className='d-flex flex-column-reverse flex-sm-row justify-content-evenly'>
-                                <p>{personal?.date_of_birth}</p>
-                                <p>{personal?.country}, {personal?.city}</p>
-
+                            <div className='d-flex flex-column flex-md-row justify-content-md-between text-break'>
+                                <p className='mb-2 mb-md-0'><b>Date of birth: </b>{personal?.date_of_birth}</p>
+                                {personal?.country || personal?.city ? (
+                                    <div className='d-flex flex-md-row flex-column'>
+                                        <p className='mb-2 mb-md-0'>
+                                            <b className='residence-label'>Place of residence: </b>
+                                            <span className='d-inline-flex'>
+                                                {personal?.country && personal?.city ? (
+                                                    <span className='d-inline'>{personal?.country},&nbsp;</span>
+                                                ) : null}
+                                                {personal?.city ? (
+                                                    <span className='d-inline'>{personal?.city}</span>
+                                                ) : null}
+                                            </span>
+                                        </p>
+                                    </div>
+                                ) : null}
                             </div>
                         </div>
                         
@@ -109,7 +122,7 @@ setPersonal}) => {
                 }
                     
                 {editPersonal &&  
-                    <div className="container my-2">
+                    <div className="my-2">
                         <form>
                             <div className='row my-2'>
                                 <div className='mb-3 col-md-6'>

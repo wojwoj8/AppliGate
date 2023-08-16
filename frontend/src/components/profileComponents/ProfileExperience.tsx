@@ -176,7 +176,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                     </div>
                     {!experience[0] && !editExperience &&
                     <div className='container'> 
-                        <p className='text-secondary my-4'>
+                        <p className=' my-4'>
                         Tell us about your work experience! The more you share here, the better 
                         your chances of finding a job that's just right for you.
                         </p>

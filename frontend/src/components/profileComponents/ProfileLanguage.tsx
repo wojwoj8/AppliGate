@@ -172,7 +172,7 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                     </div>
                     {!language[0] && !editLanguage &&
                     <div className='container'> 
-                        <p className='text-secondary my-4'>
+                        <p className=' my-4'>
                         Your language skills show you can 
                         connect and collaborate across different cultures, which is a big plus for potential employers.
                         </p>

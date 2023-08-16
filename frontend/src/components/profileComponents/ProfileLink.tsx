@@ -173,7 +173,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                     </div>
                     {!link[0] && !editLink &&
                     <div className='container'> 
-                        <p className='text-secondary my-4'>
+                        <p className=' my-4'>
                             Elevate Your CV: Include your GitHub, LinkedIn, and personal projects to enrich your CV 
                             and showcase your professional achievements.
                         </p>

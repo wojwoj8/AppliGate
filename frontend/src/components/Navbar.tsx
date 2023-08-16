@@ -62,6 +62,9 @@ const Navbar: React.FC = () =>{
                 <li className="nav-item">
                   <Link to='/register' className="nav-link">Sign Up</Link>
                 </li>
+                <li>
+                  <button className="nav-link" onClick={DarkMode}>Toggle Dark Mode</button>
+                </li>
               </ul>
               )}
 

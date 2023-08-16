@@ -80,7 +80,7 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
                     </div>
                     {!about?.about_me && !editAbout &&
                     <div className='container'> 
-                        <p className='text-secondary my-4'>
+                        <p className=' my-4'>
                         Show your passion, hobby to your future employers.
                         </p>
                     </div>

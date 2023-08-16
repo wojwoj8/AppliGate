@@ -172,7 +172,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                     </div>
                     {!education[0] && !editEducation &&
                     <div className='container'> 
-                        <p className='text-secondary my-4'>
+                        <p className=' my-4'>
                         By sharing your educational background, you're increasing your 
                         chances of discovering the perfect job fit.
                         </p>

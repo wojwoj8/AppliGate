@@ -62,9 +62,9 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
     return(
         <div>
             
-            <div className='bg-dark row mb-1'>
+            <div className='bg-black row mb-1'>
                 <p className='fs-3 fw-semibold text-white col mb-1'>Contact Data</p>
-                    <div className='col-auto'>
+                    <div className='col-auto d-flex align-items-center'>
                         <div className='profile-svgs d-flex my-1' onClick={editContactData}>
                             <Icon className='text-white' path={mdiPencil} size={1.25} />
                         </div>

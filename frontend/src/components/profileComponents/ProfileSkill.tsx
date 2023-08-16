@@ -93,7 +93,7 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
         <div>
             
                 
-                <div className='bg-dark row mb-1'>
+                <div className='bg-black row mb-1'>
                     <p className='fs-3 fw-semibold text-white col mb-1'>Skills</p>       
                 </div>
                    
@@ -136,7 +136,7 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
                                         {/* <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleSkillsButton(index, skill.id)}>
                                             <Icon path={mdiPencil} size={1} />
                                         </button> */}
-                                        <div className='profile-skill border border-1 text-white bg-dark rounded-2 p-1 d-flex align-items-center'>
+                                        <div className='profile-skill border border-1 text-white bg-black rounded-2 p-1 d-flex align-items-center'>
                                             <p className='mb-0 '>{skill?.skill || ''}
                                         {/* <button type="button" className="btn-close" >
                                         </button> */}

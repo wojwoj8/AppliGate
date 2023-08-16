@@ -166,9 +166,9 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
         <div>
             
                 
-            <div className='bg-dark row mb-1'>
+            <div className='bg-black row mb-1'>
                 <p className='fs-3 fw-semibold text-white col mb-1'>Work Experience</p>
-                    <div className='col-auto'>
+                    <div className='col-auto d-flex align-items-center'>
                         <div className='profile-svgs d-flex my-1' onClick={editExperienceButton}>
                                 <Icon className='text-white' path={mdiPlus} size={1.25} />
                             </div>
@@ -247,7 +247,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 </div>
                                 <div className='mb-3 col-md-6'>
                                     <label htmlFor={`to_date`} className='form-label'>
-                                        To:
+                                        To: <span className='fw-light'>(if up to now leave blank)</span>
                                     </label>
                                     <input 
                                         type="month" 
@@ -298,16 +298,15 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                         <h2 className='mb-1 text-primary fs-3'>
                                         {experience?.position || ''}
                                         </h2>
-                                        {experience?.from_date && !experience?.to_date && <p>From: {experience?.from_date}</p>} 
+                                        {experience?.from_date && !experience?.to_date && <p>{experience?.from_date} - present</p>} 
                                         {experience?.from_date && experience?.to_date && <p className=''>{experience?.from_date} - {experience?.to_date}</p>} 
-                                        {!experience?.from_date && experience?.to_date && <p>To: {experience?.to_date}</p>}    
+                                        {!experience?.from_date && experience?.to_date && <p>To: <span className='fw-light'>(if up to now leave blank)</span> {experience?.to_date}</p>}    
                                     </div>
                                     <div className='col-md-6'>
                                         <span className='fw-bold'>{experience?.company || ''}</span> 
                                         {experience?.company && experience?.localization ? <span>, </span> : null}
                                         <span className='fst-italic'>{experience?.localization || ''}</span>
                                         
-                                        {/* <p>From: {experience?.from_date || ''} to: {experience?.to_date || ''}</p> */}
                                         {experience?.responsibilities && 
                                         <div className='mt-2'>
                                             <p>Responsibilites:</p>
@@ -320,7 +319,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 </div>
                                     <div className='col-auto'>
                                     <div className='profile-svgs d-flex my-1' onClick={() => editMultipleExperiencesButton(index, experience.id)}>
-                                        <Icon className='text-black' path={mdiPencil} size={1} />
+                                        <Icon className='' path={mdiPencil} size={1} />
                                     </div>
                                     <ProfileDeleteModal id={`${experience.position}_${experience.id}`} onDelete={() => deleteExperience(experience.id)} />
                                     {/* <button className='btn btn btn-outline-secondary btn-sm' onClick={() => deleteExperience(experience.id)}>
@@ -397,7 +396,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                         </div>
                                         <div className='mb-3 col-md-6'>
                                         <label htmlFor={`to_date_${index}`} className='form-label'>
-                                            To:
+                                            To: <span className='fw-light'>(if up to now leave blank)</span>:
                                         </label>
                                         <input
                                             type='month'

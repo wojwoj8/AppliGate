@@ -162,9 +162,9 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
         <div>
             
                 
-            <div className='bg-dark row mb-1 mb-1'>
+            <div className='bg-black row mb-1 mb-1'>
                 <p className='fs-3 fw-semibold text-white col mb-1'>Courses, training, certificates</p>
-                    <div className='col-auto'>
+                    <div className='col-auto d-flex align-items-center'>
                         <div className='profile-svgs d-flex my-1' onClick={editCourseButton}>
                                 <Icon className='text-white' path={mdiPlus} size={1.25} />
                             </div>
@@ -261,7 +261,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                         <>
                             <div className='col text-start row'>
                                 
-                                <div className='d-sm-flex gap-4 align-items-center col-md-2'>
+                                <div className='d-sm-flex gap-4 align-items-center col-md-6'>
                                     <p className='fw-bold'>{course?.finish_date}</p>
                                 </div>
                                 <div className='col-md-6'>

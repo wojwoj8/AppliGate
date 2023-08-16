@@ -162,9 +162,9 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
         <div>
             
                 
-            <div className='bg-dark row mb-1'>
+            <div className='bg-black row mb-1'>
                 <p className='fs-3 fw-semibold text-white col mb-1'>Languages</p>
-                    <div className='col-auto'>
+                    <div className='col-auto d-flex align-items-center'>
                         <div className='profile-svgs d-flex my-1' onClick={editLanguageButton}>
                                 <Icon className='text-white' path={mdiPlus} size={1.25} />
                             </div>

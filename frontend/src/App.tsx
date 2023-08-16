@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate, redirect, HashRouter} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
 import Navbar from './components/Navbar';
@@ -7,8 +7,8 @@ import Index from './components/Index';
 import PrivateRoute from './utils/PrivateRoute';
 import IfNotLoggedIn from './utils/IfLoggedIn';
 import Profile from './components/Profile';
-import axios from 'axios';
 import { AuthProvider } from './utils/AuthProvider';
+import setInitialMode from './utils/InitlializeDarkMode';
 
 // axios.defaults.withCredentials = true; // even for get requests if
 //                                     // demand session authentication
@@ -16,9 +16,10 @@ import { AuthProvider } from './utils/AuthProvider';
 // axios.defaults.xsrfHeaderName = 'x-csrftoken'
 
 function App() {
+  setInitialMode();
   return (
     <BrowserRouter>
-    <div className='min-vh-100'>
+    <div className='pb-2'>
       <AuthProvider>
         <Navbar></Navbar>
         <Routes>
@@ -35,6 +36,7 @@ function App() {
         </Routes>
       </AuthProvider>
     </div>
+    {/* <div className='mt-2'></div> */}
     </BrowserRouter>
     
   );

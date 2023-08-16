@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../utils/AuthProvider";
+import DarkMode from "../utils/DarkMode";
 
 
 const Navbar: React.FC = () =>{
@@ -36,7 +37,18 @@ const Navbar: React.FC = () =>{
                 <li className="nav-item" onClick={logoutUser}>
                   <a className="nav-link" href="/" data-bs-dismiss="offcanvas">Log Out</a>
                 </li>
-     
+                <li>
+                  <button className="nav-link" onClick={DarkMode}>Toggle Dark Mode</button>
+                </li>
+                {/* <li className="nav-item dropdown">
+                  <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Dropdown link
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li><a className="dropdown-item" href="#">Another action</a></li>
+                    <li><a className="dropdown-item" href="#">Something else here</a></li>
+                  </ul>
+                </li> */}
               </ul>
             
               ) : (
@@ -56,7 +68,7 @@ const Navbar: React.FC = () =>{
             </div>
           </div>
         </div>
-        <div className=""></div>
+        
       </nav>
     )
 

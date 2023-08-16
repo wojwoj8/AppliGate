@@ -1,0 +1,87 @@
+$primary: #10B981;
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+
+#light{
+
+    /* redefine theme colors for dark theme */
+    $primary: #10B981;
+    $secondary: #111111;
+    $success: #222222;
+    $dark: #212529;
+    $black: #000;
+   
+    
+    $theme-colors: (
+        "primary": $primary,
+        "secondary": $secondary,
+        "success": $success,
+        "danger": $danger,
+        "info": $indigo,
+        "dark": $dark,
+        "light": $light,
+    );
+
+    /* redefine theme color variables */
+    @each $color, $value in $theme-colors {
+        --#{$variable-prefix}#{$color}: #{$value};
+    }
+
+    /* redefine theme color rgb vars (used for bg- colors) */
+    $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+    @each $color, $value in $theme-colors-rgb {
+        --#{$variable-prefix}#{$color}-rgb: #{$value};
+    }
+
+    //font color
+    $body-color: #eeeeee;
+    //input background, all background
+    // $body-bg: #263C5C;
+    $body-bg: #212529;
+    
+    --#{$variable-prefix}body-color: #{$body-color};
+    --#{$variable-prefix}body-bg: #{$body-bg};
+
+    $input-placeholder-color: rgb(196, 188, 188);  
+    @import "bootstrap";
+}
+
+.profile-huge-font{
+    font-size: 4.5rem !important;
+    font-weight: 200;
+}
+html{
+    min-width: 310px;
+    
+}
+body { min-height: 100vh; }
+
+.profile-skill{
+
+    svg{
+        margin-left: 0.5rem;
+        fill:white;
+    }
+    svg:hover{
+        fill: $danger;
+        cursor: pointer;
+    }
+        
+}
+
+.profile-svgs{
+
+
+    padding-bottom: 0.25rem ;
+
+    svg:hover{
+        fill: $secondary;
+        cursor: pointer;
+    }
+}
+p{
+    margin-bottom: 0.25rem !important;
+}

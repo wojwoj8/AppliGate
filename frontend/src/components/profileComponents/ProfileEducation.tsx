@@ -162,10 +162,10 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
         <div>
             
                 
-            <div className='bg-dark row mb-1'>
-                <p className='fs-3 fw-semibold text-white col mb-1'>Education</p>
-                    <div className='col-auto'>
-                        <div className='profile-svgs d-flex my-1' onClick={editEducationButton}>
+            <div className='bg-black row mb-1'>
+                <p className='fs-3 fw-semibold text-white col'>Education</p>
+                    <div className='col-auto d-flex align-items-center'>
+                        <div className='profile-svgs d-flex' onClick={editEducationButton}>
                                 <Icon className='text-white' path={mdiPlus} size={1.25} />
                             </div>
                         </div>
@@ -256,7 +256,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                 </div>
                                 <div className='mb-3 col-md-6'>
                                     <label htmlFor={`to_date`} className='form-label'>
-                                        To:
+                                        To: <span className='fw-light'>(if up to now leave blank)</span>
                                     </label>
                                     <input 
                                         type="month" 
@@ -291,9 +291,9 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                 <h2 className='mb-1 text-primary fs-3'>
                                     {education?.school || ''}
                                     </h2>
-                                    {education?.from_date && !education?.to_date && <p>From: {education?.from_date}</p>} 
+                                    {education?.from_date && !education?.to_date && <p>{education?.from_date}  - present</p>} 
                                     {education?.from_date && education?.to_date && <p>{education?.from_date} - {education?.to_date}</p>} 
-                                    {!education?.from_date && education?.to_date && <p>To: {education?.to_date}</p>}  
+                                    {!education?.from_date && education?.to_date && <p>To: <span className='fw-light'>(if up to now leave blank)</span> {education?.to_date}</p>}  
                                 </div>
                                 <div className='col-md-6'>
                                 <span className='fw-bold'>{education?.major || ''}</span> 
@@ -304,7 +304,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                             </div>
                             <div className='col-auto'>
                             <div className='profile-svgs d-flex my-1' onClick={() => editMultipleEducationsButton(index, education.id)}>
-                                <Icon className='text-black' path={mdiPencil} size={1} />
+                                <Icon className='' path={mdiPencil} size={1} />
                             </div>
                             <ProfileDeleteModal id={`${education.school}_${education.id}`} onDelete={() => deleteEducation(education.id)} />
                         </div>
@@ -388,7 +388,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                     </div>
                                     <div className='mb-3 col-md-6'>
                                     <label htmlFor={`to_date_${index}`} className='form-label'>
-                                        To:
+                                        To: <span className='fw-light'>(if up to now leave blank)</span>
                                     </label>
                                     <input
                                         type='month'

@@ -163,9 +163,9 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
         <div className='pb-1'>
             
                 
-                <div className='bg-dark row mb-1 '>
+                <div className='bg-black row mb-1 '>
                         <p className='fs-3 fw-semibold text-white col mb-1'>Links</p>
-                        <div className='col-auto'>
+                        <div className='col-auto d-flex align-items-center'>
                             <div className='profile-svgs d-flex my-1' onClick={editLinkButton}>
                                 <Icon className='text-white' path={mdiPlus} size={1.25} />
                             </div>
@@ -234,7 +234,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                         {!editMultipleLinks[index] && (
                         <>
                             <div className='col text-start d-flex'>
-                                <div className='col-md-6'>
+                                <div className='col'>
                                     <p className='fw-medium'>{link?.link_name || ''}: </p>
                                     <a className='fw-medium' href={link?.link} target='_blank' rel="noreferrer"><p>{link?.link || ''}</p></a>  
                                 </div>                                                        

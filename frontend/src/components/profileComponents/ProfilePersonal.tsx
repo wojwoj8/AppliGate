@@ -81,9 +81,9 @@ setPersonal}) => {
     return(
         <div>
                   
-                    <div className='bg-dark row mb-1 rounded-top-2 '>
+                    <div className='bg-black row mb-1 rounded-top-2 '>
                         <p className='fs-3 fw-semibold text-white col mb-1'>Personal Data</p>
-                        <div className='col-auto'>
+                        <div className='col-auto d-flex align-items-center'>
                             <div className='profile-svgs d-flex my-1' onClick={editProfile}>
                                 <Icon className='text-white' path={mdiPencil} size={1.25} />
                             </div>
@@ -99,7 +99,7 @@ setPersonal}) => {
                                 <b className='fs-5'>{personal?.current_position}</b>
                             </p>
                             <div className='d-flex flex-column flex-md-row justify-content-md-between text-break'>
-                                <p className='mb-2 mb-md-0'><b>Date of birth: </b>{personal?.date_of_birth}</p>
+                                {personal?.date_of_birth && <p className='mb-2 mb-md-0'><b>Date of birth: </b>{personal?.date_of_birth}</p>}
                                 {personal?.country || personal?.city ? (
                                     <div className='d-flex flex-md-row flex-column'>
                                         <p className='mb-2 mb-md-0'>

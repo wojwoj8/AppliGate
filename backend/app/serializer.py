@@ -50,6 +50,7 @@ class DateSerializer(serializers.Field):
 
 class ProfileSerializer(serializers.ModelSerializer):
     date_of_birth = DateSerializer(allow_null=True, required=False)
+    profile_image = serializers.ImageField(required=False)
 
     class Meta:
         model = User
@@ -60,6 +61,17 @@ class ProfileSerializer(serializers.ModelSerializer):
             "date_of_birth",
             "country",
             "city",
+            "profile_image",
+        ]
+
+
+class ProfileImageSerializer(serializers.ModelSerializer):
+    profile_image = serializers.ImageField(required=False)
+
+    class Meta:
+        model = User
+        fields = [
+            "profile_image",
         ]
 
 

@@ -19,6 +19,7 @@ from .models import (
 from .serializer import (
     UserSerializer,
     ProfileSerializer,
+    ProfileImageSerializer,
     UserExperienceSerializer,
     UserEducationSerializer,
     ContactSerializer,
@@ -74,6 +75,31 @@ class IndexView(generics.GenericAPIView):
     #         return self.retrieve(request, *args, **kwargs)
 
 
+class ProfileImageUploadView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        user = request.user  # Get the authenticated user
+        profile_image = request.FILES.get("profile_image")
+
+        if profile_image:
+            # Delete the existing profile image if it exists
+            if user.profile_image:
+                user.profile_image.delete()
+
+            user.profile_image = profile_image
+            user.save()
+            return Response(
+                {"message": "Profile image updated"}, status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                {"error": "No image provided"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+
 class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
     permission_classes = [IsAuthenticated]
     serializer_class = None  # Subclasses must set this
@@ -93,14 +119,20 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
 
     def put(self, request, *args, **kwargs):
         user = request.user
+        print(request.data)
         serializer = self.serializer_class(user, data=request.data)
+        profile_image = request.data.get("profile_image")
 
-        # if "date_of_birth" in request.data:
-        #     request.data["date_of_birth"] = self.process_date(
-        #         request.data["date_of_birth"]
-        #     )
+        if profile_image == "/media/defaults/default_profile_image.jpg":
+            print("default image")
+            del request.data["profile_image"]
 
         if serializer.is_valid():
+            # Check if profile_image is provided in the request
+            if "profile_image" in request.FILES:
+                serializer.validated_data["profile_image"] = request.FILES[
+                    "profile_image"
+                ]
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

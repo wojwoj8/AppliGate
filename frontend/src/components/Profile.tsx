@@ -20,6 +20,7 @@ export interface ProfileData{
   country: string;
   city: string;
   current_position: string;
+  profile_image: string;
 }
 
 export interface AboutData{

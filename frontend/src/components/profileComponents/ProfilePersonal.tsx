@@ -1,10 +1,13 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
+import axios from 'axios';
 import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
 import { ProfileData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
+import AuthContext from '../../utils/AuthProvider';
+
 
 interface ProfilePersonalProps {
     personal: ProfileData | null;
@@ -32,24 +35,46 @@ const ProfilePersonal: React.FC<ProfilePersonalProps> = ({
     multipleErrors, removeMultipleErrors, renderFieldErrorMultiple,
 setPersonal}) => {
 
+    
+    const { authTokens } = useContext(AuthContext); // Use the authTokens from AuthContext
+    const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+    
+    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = e.target.files && e.target.files[0];
+        setSelectedImageFile(selectedFile);
+    
+        // Automatically submit the image when a file is selected
+        if (selectedFile) {
+        await submitImage(selectedFile);
+        }
+    };
+    
+    const submitImage = async (file: File) => {
+        const formData = new FormData();
+        formData.append('profile_image', file);
+    
+        try {
+        const response = await axios.put('/profile/uploadImage', formData, {
+            headers: {
+            'Content-Type': 'multipart/form-data', // Use multipart/form-data
+            Authorization: 'Bearer ' + String(authTokens.access),
+            },
+        });
+    
+        console.log('Image uploaded successfully');
+        } catch (error) {
+        console.error('Error uploading image:', error);
+        }
+        getData(setPersonal, '/profile/');
+    };
+    
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement>,
         // setData: GetDataFunction,
       ) => {
         const { name, value } = event.target;
       
-        // const newValue = name === 'date_of_birth' ? (() => {
-        //   const date = new Date(value);
-        //   const isValidDate = !isNaN(date.getTime()) && date.getFullYear() >= 1 && date.getFullYear() <= 2100;
-      
-        //   if (isValidDate) {
-        //     return date;
-        //   } else {
-        //     return personal?.date_of_birth || null;
-        //   }
-        // })() : value;
-      
-
+        
         setPersonal((prevProfile) => ({
         ...prevProfile!,
         [name]: value,
@@ -73,6 +98,10 @@ setPersonal}) => {
     }
 
     const saveEdit = async () =>{
+        // if (personal?.profile_image === '/media/defaults/default_profile_image.jpg') {
+        //     delete personal.profile_image
+        // }
+        
         await editData(personal, setEditPersonal, '/profile/', 'profile')
         // setEditPersonal(false);
     }
@@ -89,8 +118,38 @@ setPersonal}) => {
                             </div>
                         </div>
                     </div>
-                {!editPersonal && 
                     <div className='row'>
+                        
+                            <div className='col-auto'>
+                                <form>
+                                    {/* Date.now() to make that image refresh when changed */}
+                                    <img className='profile-image' src={`${personal?.profile_image}?${Date.now()}`} alt="Profile" />
+                                    <div>
+                                        <div className="mb-1 text-center">
+                                            <input 
+                                            className=''
+                                            id='formFileProfile'
+                                            type='file'
+                                            onChange={handleImageChange}
+                                            />
+                                            {renderFieldErrorMultiple('profile', 0, `profile_image`, multipleErrors)}
+                                            <label 
+                                            htmlFor="formFileProfile" 
+                                            className="form-label mb-0 link-primary" 
+                                            id='profile-imgAdd'
+                                            
+                                            >
+                                                Add
+                                            </label>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        
+                    
+                {!editPersonal && 
+                    <div className='col-auto'>
+                        
                         <div className='col'>
                             <h2 className='mb-1 fs-1 text-primary'>
                                 {personal?.first_name || 'Name'} {personal?.last_name || 'Surname'}
@@ -120,9 +179,10 @@ setPersonal}) => {
                         
                     </div>
                 }
+                
                     
                 {editPersonal &&  
-                    <div className="my-2">
+                    <div className="my-2 col-10">
                         <form>
                             <div className='row my-2'>
                                 <div className='mb-3 col-md-6'>
@@ -191,6 +251,7 @@ setPersonal}) => {
                                 {renderFieldErrorMultiple('profile', 0, `city`, multipleErrors)}
                                 </div>
                             </div>
+                            
                             </form>
                         <div className='text-center'>
                             <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={cancelEditProfile}>Cancel</button>
@@ -201,6 +262,7 @@ setPersonal}) => {
                     
                     
                 }
+                </div>
 
         </div>
 )

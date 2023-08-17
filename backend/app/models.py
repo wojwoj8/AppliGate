@@ -5,6 +5,10 @@ from phonenumber_field.modelfields import PhoneNumberField
 # Create your models here.
 
 
+def profile_image_upload_path(instance, filename):
+    return f"user_profiles/profile_{instance.id}.{filename.split('.')[-1]}"
+
+
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     contact_email = models.EmailField(null=True, blank=True)
@@ -16,6 +20,11 @@ class User(AbstractUser):
         max_length=100, default=None, null=True, blank=True
     )
     about_me = models.CharField(max_length=500, null=True, blank=True)
+    profile_image = models.ImageField(
+        upload_to=profile_image_upload_path,
+        blank=True,
+        default="defaults/default_profile_image.jpg",
+    )
 
 
 class UserExperience(models.Model):
@@ -61,3 +70,6 @@ class UserLink(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     link_name = models.CharField(max_length=50, blank=False)
     link = models.CharField(max_length=250, blank=False)
+
+
+# class Company(AbstractUser):

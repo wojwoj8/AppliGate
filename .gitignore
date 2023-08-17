@@ -5,3 +5,4 @@
 __pycache__
 *.sqlite3
 *.db
+/backend/media/user_profiles

@@ -106,8 +106,8 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                                 
                             </form>
                             <div className='text-center'>
-                                <button className='btn btn-secondary' onClick={cancelEditContact}>Cancel</button>
-                                <button className='btn btn-primary' onClick={saveEdit}>Save</button>
+                                <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={cancelEditContact}>Cancel</button>
+                                <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveEdit}>Save</button>
                             </div>
                         </div>
                         

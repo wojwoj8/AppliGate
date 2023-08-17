@@ -217,12 +217,12 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                             </div>
                             </form>
                             <div className='text-center'>
-                            <button className='btn btn-secondary' onClick={cancelEditLink}>
-                                Cancel
-                            </button>
-                            <button className='btn btn-primary' onClick={saveLink}>
-                                Save
-                            </button>
+                                <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={cancelEditLink}>
+                                    Cancel
+                                </button>
+                                <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveLink}>
+                                    Save
+                                </button>
                             </div>
                             {link && link[0] && <hr className="border border-primary border-3 my-1"></hr>}
                         </div>
@@ -286,12 +286,12 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
 
                                 </form>
                             <div className='text-center'>
-                            <button className='btn btn-secondary' onClick={() => cancelEditMultipleLinks(index, link.id)}>
-                                Cancel
-                            </button>
-                            <button className='btn btn-primary' onClick={() => saveEdit(index, link.id)}>
-                                Save
-                            </button>
+                                <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={() => cancelEditMultipleLinks(index, link.id)}>
+                                    Cancel
+                                </button>
+                                <button className='btn btn-primary' style={{width:'5rem'}} onClick={() => saveEdit(index, link.id)}>
+                                    Save
+                                </button>
                             </div>
                             
                         </div>

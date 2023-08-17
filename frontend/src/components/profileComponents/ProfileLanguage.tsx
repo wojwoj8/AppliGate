@@ -215,10 +215,10 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                             </div>
                             </form>
                             <div className='text-center'>
-                            <button className='btn btn-secondary' onClick={cancelEditLanguage}>
+                            <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={cancelEditLanguage}>
                                 Cancel
                             </button>
-                            <button className='btn btn-primary' onClick={saveLanguage}>
+                            <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveLanguage}>
                                 Save
                             </button>
                             </div>
@@ -282,10 +282,10 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
 
                                 </form>
                             <div className='text-center'>
-                            <button className='btn btn-secondary' onClick={() => cancelEditMultipleLanguages(index, language.id)}>
+                            <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={() => cancelEditMultipleLanguages(index, language.id)}>
                                 Cancel
                             </button>
-                            <button className='btn btn-primary' onClick={() => saveEdit(index, language.id)}>
+                            <button className='btn btn-primary' style={{width:'5rem'}} onClick={() => saveEdit(index, language.id)}>
                                 Save
                             </button>
                             </div>

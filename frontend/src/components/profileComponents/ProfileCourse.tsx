@@ -243,10 +243,10 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                             </div>
                             </form>
                             <div className='text-center'>
-                            <button className='btn btn-secondary' onClick={cancelEditCourse}>
+                            <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={cancelEditCourse}>
                                 Cancel
                             </button>
-                            <button className='btn btn-primary' onClick={saveCourse}>
+                            <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveCourse}>
                                 Save
                             </button>
                             </div>
@@ -350,10 +350,10 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                 </div>
                                 </form>
                             <div className='text-center'>
-                            <button className='btn btn-secondary' onClick={() => cancelEditMultipleCourses(index, course.id)}>
+                            <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={() => cancelEditMultipleCourses(index, course.id)}>
                                 Cancel
                             </button>
-                            <button className='btn btn-primary' onClick={() => saveEdit(index, course.id)}>
+                            <button className='btn btn-primary' style={{width:'5rem'}} onClick={() => saveEdit(index, course.id)}>
                                 Save
                             </button>
                             </div>

@@ -276,10 +276,10 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             </div>
                             </form>
                             <div className='text-center'>
-                            <button className='btn btn-secondary' onClick={cancelEditExperience}>
+                            <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={cancelEditExperience}>
                                 Cancel
                             </button>
-                            <button className='btn btn-primary' onClick={saveExperience}>
+                            <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveExperience}>
                                 Save
                             </button>
                             </div>
@@ -322,9 +322,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                         <Icon className='' path={mdiPencil} size={1} />
                                     </div>
                                     <ProfileDeleteModal id={`${experience.position}_${experience.id}`} onDelete={() => deleteExperience(experience.id)} />
-                                    {/* <button className='btn btn btn-outline-secondary btn-sm' onClick={() => deleteExperience(experience.id)}>
-                                        Delete
-                                    </button> */}
+                                    
 
                                     
                                 
@@ -425,10 +423,10 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                     </div>
                                     </form>
                                 <div className='text-center'>
-                                <button className='btn btn-secondary' onClick={() => cancelEditMultipleExperiences(index, experience.id)}>
+                                <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={() => cancelEditMultipleExperiences(index, experience.id)}>
                                     Cancel
                                 </button>
-                                <button className='btn btn-primary' onClick={() => saveEdit(index, experience.id)}>
+                                <button className='btn btn-primary' style={{width:'5rem'}} onClick={() => saveEdit(index, experience.id)}>
                                     Save
                                 </button>
                                 </div>

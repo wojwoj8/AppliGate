@@ -38,14 +38,22 @@ setPersonal}) => {
     
     const { authTokens } = useContext(AuthContext); // Use the authTokens from AuthContext
     const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
-    
+    const allowedFormats = ['image/jpeg','image/jfif', 'image/jpg', 'image/png'];
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files && e.target.files[0];
         setSelectedImageFile(selectedFile);
     
         // Automatically submit the image when a file is selected
         if (selectedFile) {
-        await submitImage(selectedFile);
+            const maxSize = 500 * 1024; // 500KB in bytes
+            if (selectedFile.size >= maxSize){
+                console.log("File size exceeds 500KB limit.");
+            } else if (!allowedFormats.includes(selectedFile.type)){
+                console.log("Wrong file format.");
+            }
+            else{
+                await submitImage(selectedFile);
+            }
         }
     };
     
@@ -130,6 +138,7 @@ setPersonal}) => {
                                             className=''
                                             id='formFileProfile'
                                             type='file'
+                                            accept=".jpeg, .jpg, .png, .jfif"
                                             onChange={handleImageChange}
                                             />
                                             {renderFieldErrorMultiple('profile', 0, `profile_image`, multipleErrors)}
@@ -148,7 +157,7 @@ setPersonal}) => {
                         
                     
                 {!editPersonal && 
-                    <div className='col-auto'>
+                    <div className='col'>
                         
                         <div className='col'>
                             <h2 className='mb-1 fs-1 text-primary'>

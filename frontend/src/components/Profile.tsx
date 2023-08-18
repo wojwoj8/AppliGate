@@ -12,6 +12,8 @@ import ProfileLink from './profileComponents/ProfileLink';
 import ProfileSkill from './profileComponents/ProfileSkill';
 import ProfilePreview from './profileComponents/ProfilePreview';
 import ProfileDeleteModal from './profileComponents/ProfileDeleteModal';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export interface ProfileData{
   first_name: string;
@@ -179,6 +181,42 @@ const Profile: React.FC = () =>{
     const [editSkill, setEditSkill] = useState(false);
     
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
+
+    // const html2canvas = require('html2canvas');
+    // const jsPDF = require('jspdf');
+
+    const handlePdf = () => {
+      // Set the default window size you want
+      window.innerWidth = 1920; // Example width
+      window.innerHeight = 1080; // Example height
+    
+      const body = document.body; // Get a reference to the body element
+      const input = document.getElementById('page');
+    
+      if (input && body) {
+        if (body.id === 'light') {
+          input.classList.add('bg-dark'); // Add the class 'bg-dark'
+        }
+    
+        // Capture the content with the adjusted window dimensions
+        html2canvas(input, { windowWidth: 1920, windowHeight: 1080, scale: 1.25 })
+          .then((canvas) => {
+            const imgData = canvas.toDataURL('image/jpeg', 1.0);
+    
+            const pdfWidth = canvas.width; // Use canvas width for pdfWidth
+            const pdfHeight = (canvas.height / canvas.width) * pdfWidth;
+    
+            const pdf = new jsPDF('p', 'px', [pdfWidth, pdfHeight]);
+    
+            pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save('download.pdf');
+    
+            if (body.id === 'light') {
+              input.classList.remove('bg-dark'); // Remove the class 'bg-dark'
+            }
+          });
+      }
+    };
 
     const renderFieldErrorMultiple = (
       field: string, 
@@ -445,9 +483,14 @@ const Profile: React.FC = () =>{
         getData(setAbout, '/profile/about');
         getData(setLink, '/profile/link');
     }, [])
+
+   
     return(
+
       <div className='mx-4 my-2'>
-        <div className="container shadow-lg rounded-2">
+        
+        <div className="container shadow-lg rounded-2" id="page">
+        <button onClick={handlePdf}>Download PDF</button>
             <ProfilePersonal 
                 personal={profile}
                 setPersonal={setProfile}

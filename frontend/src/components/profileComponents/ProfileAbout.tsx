@@ -86,7 +86,7 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
                     </div>
                     
                     }
-                    <div className='text-center row'>
+                    <div className='text-center row my-3'>
                     {!editAbout && 
                         <div className='col-auto col-md-8 col-sm-6 text-start'>
                             {about?.about_me && <p>{about?.about_me}</p>}

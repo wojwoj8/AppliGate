@@ -71,7 +71,7 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
                     </div>
                 </div>
                 {!editContact &&
-                <div className='text-sm-center'>
+                <div className='text-sm-center my-3'>
                     <div className='d-flex flex-column flex-sm-row justify-content-between text-break'>
                         <p>
                             <b>Email:</b> {contact?.contact_email || ''}

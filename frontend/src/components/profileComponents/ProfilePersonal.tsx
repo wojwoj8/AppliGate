@@ -7,6 +7,7 @@ import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import AuthContext from '../../utils/AuthProvider';
+import ProfileAlert from './ProfileAlert';
 
 
 interface ProfilePersonalProps {
@@ -39,20 +40,27 @@ setPersonal}) => {
     const { authTokens } = useContext(AuthContext); // Use the authTokens from AuthContext
     const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
     const allowedFormats = ['image/jpeg','image/jfif', 'image/jpg', 'image/png'];
+    const [alertError, setAlertError] = useState('');
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files && e.target.files[0];
         setSelectedImageFile(selectedFile);
-    
+        e.target.value = '';
+        console.log('handle image change')
         // Automatically submit the image when a file is selected
         if (selectedFile) {
+            console.log('file has been selected')
             const maxSize = 500 * 1024; // 500KB in bytes
-            if (selectedFile.size >= maxSize){
-                console.log("File size exceeds 500KB limit.");
-            } else if (!allowedFormats.includes(selectedFile.type)){
-                console.log("Wrong file format.");
-            }
-            else{
-                await submitImage(selectedFile);
+            if (selectedFile.size >= maxSize) {
+              setAlertError("File size exceeds 500KB limit");
+              console.log("File size exceeds 500KB limit.")
+            //   setSelectedImageFile(null);
+            } else if (!allowedFormats.includes(selectedFile.type)) {
+              setAlertError("Wrong file format");
+              console.log("Wrong file format.")
+            //   setSelectedImageFile(null);
+            } else {
+              await submitImage(selectedFile);
+              
             }
         }
     };
@@ -70,10 +78,13 @@ setPersonal}) => {
         });
     
         console.log('Image uploaded successfully');
+        setAlertError('Image uploaded successfully')
         } catch (error) {
+        setAlertError('Something went wrong')
         console.error('Error uploading image:', error);
         }
         getData(setPersonal, '/profile/');
+        setSelectedImageFile(null);
     };
     
     const handleInputChange = (
@@ -117,7 +128,9 @@ setPersonal}) => {
 
     return(
         <div>
-                  
+                {alertError && <ProfileAlert 
+                error={alertError}
+                setError={setAlertError} />}
                     <div className='bg-black row mb-1 rounded-top-2 '>
                         <p className='fs-3 fw-semibold text-white col mb-1'>Personal Data</p>
                         <div className='col-auto d-flex align-items-center'>
@@ -126,9 +139,9 @@ setPersonal}) => {
                             </div>
                         </div>
                     </div>
-                    <div className='row'>
+                    <div className='row justify-content-center'>
                         
-                            <div className='col-auto'>
+                            <div className='col-auto d-flex align-items-center '>
                                 <form>
                                     {/* Date.now() to make that image refresh when changed */}
                                     <img className='profile-image' src={`${personal?.profile_image}?${Date.now()}`} alt="Profile" />
@@ -167,7 +180,7 @@ setPersonal}) => {
                                 <b className='fs-5'>{personal?.current_position}</b>
                             </p>
                             <div className='d-flex flex-column flex-md-row justify-content-md-between text-break'>
-                                {personal?.date_of_birth && <p className='mb-2 mb-md-0'><b>Date of birth: </b>{personal?.date_of_birth}</p>}
+                                {personal?.date_of_birth && <p className='mb-2 mb-md-0'><b>Date of birth: </b><span className='d-inline-flex'>{personal?.date_of_birth}</span></p>}
                                 {personal?.country || personal?.city ? (
                                     <div className='d-flex flex-md-row flex-column'>
                                         <p className='mb-2 mb-md-0'>

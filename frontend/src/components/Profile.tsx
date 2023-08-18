@@ -475,12 +475,12 @@ const Profile: React.FC = () =>{
     useEffect(() => {
       const pageElement = document.getElementById('page');
       if (pageElement) {
-        const buttons = pageElement.querySelectorAll('button, svg, .profile-svgs, .prevHidden');
-        buttons.forEach((button) => {
+        const elements = pageElement.querySelectorAll('button, svg, .profile-svgs, .prevHidden');
+        elements.forEach((element) => {
           if (previewMode) {
-            button.classList.add('d-none');
+            element.classList.add('d-none');
           } else {
-            button.classList.remove('d-none');
+            element.classList.remove('d-none');
           }
         });
       }

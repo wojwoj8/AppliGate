@@ -139,13 +139,13 @@ setPersonal}) => {
                             </div>
                         </div>
                     </div>
-                    <div className='row justify-content-center'>
+                    <div className='row justify-content-center '>
                         
-                            <div className='col-auto d-flex align-items-center '>
-                                <form>
+                            <div className='col-sm-auto row d-flex align-items-center align-items-baseline flex-column'>
+                                <form className='d-flex d-sm-block flex-column-reverse align-items-center justify-content-center'>
                                     {/* Date.now() to make that image refresh when changed */}
-                                    <img className='profile-image mt-2' src={`${personal?.profile_image}?${Date.now()}`} alt="Profile" />
-                                    <div>
+                                    <img className='profile-image my-2' src={`${personal?.profile_image}?${Date.now()}`} alt="Profile" />
+                                    <div className='prevHidden row'>
                                         <div className="mb-1 text-center">
                                             <input 
                                             className=''
@@ -170,16 +170,16 @@ setPersonal}) => {
                         
                     
                 {!editPersonal && 
-                    <div className='col'>
+                    <div className='col d-flex justify-content-center'>
                         
-                        <div className='col'>
-                            <h2 className='mb-1 fs-1 text-primary'>
+                        <div className='text-sm-start text-center col flex-sm-column d-flex flex-column align-items-center align-items-sm-stretch justify-content-center'>
+                            <h2 className='mb-1 fs-1 text-primary '>
                                 {personal?.first_name || 'Name'} {personal?.last_name || 'Surname'}
                             </h2>
                             <p>
                                 <b className='fs-5'>{personal?.current_position}</b>
                             </p>
-                            <div className='d-flex flex-column flex-md-row justify-content-md-between text-break'>
+                            <div className='d-flex flex-column flex-md-row justify-content-md-between text-break my-md-2 my-1 mt-3'>
                                 {personal?.date_of_birth && <p className='mb-2 mb-md-0'><b>Date of birth: </b><span className='d-inline-flex'>{personal?.date_of_birth}</span></p>}
                                 {personal?.country || personal?.city ? (
                                     <div className='d-flex flex-md-row flex-column'>

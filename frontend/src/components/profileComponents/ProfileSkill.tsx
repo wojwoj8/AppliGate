@@ -101,7 +101,7 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
                         <form>
                             <div className=''>
                                 <div className='mb-3'>
-                                    <div className='row align-items-end'>
+                                    <div className='row align-items-end prevHidden'>
                                     <p>Enter your skills <b>one at a time</b> by approving with the "Add" button.</p>
                                         <div className='col'>
                                             <label htmlFor={`skill`} className='form-label'>
@@ -128,9 +128,9 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
                         </form>
                     </div>
                     <div className=''>
-                        <div className='row flex mb-3'>
+                        <div className='row flex mb-3 row-gap-2 column-gap-3 container'>
                             {skill.map((skill, index) => (
-                                <div key={index} className='col-auto'>
+                                <div key={index} className='col-auto p-0'>
                                     
                                     
                                         {/* <button className='btn btn btn-outline-secondary btn-sm' onClick={() => editMultipleSkillsButton(index, skill.id)}>

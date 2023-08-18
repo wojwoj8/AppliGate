@@ -182,8 +182,7 @@ const Profile: React.FC = () =>{
     
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
 
-    // const html2canvas = require('html2canvas');
-    // const jsPDF = require('jspdf');
+    const [previewMode, setPreviewMode] = useState(false);
 
     const handlePdf = () => {
       // Set the default window size you want
@@ -472,6 +471,25 @@ const Profile: React.FC = () =>{
       }));
     };
 
+    // for preview mode
+    useEffect(() => {
+      const pageElement = document.getElementById('page');
+      if (pageElement) {
+        const buttons = pageElement.querySelectorAll('button, svg, .profile-svgs, .prevHidden');
+        buttons.forEach((button) => {
+          if (previewMode) {
+            button.classList.add('d-none');
+          } else {
+            button.classList.remove('d-none');
+          }
+        });
+      }
+    }, [previewMode]);
+
+    const handlePreviewMode = () => {
+      setPreviewMode(!previewMode)
+    }
+
     useEffect(() =>{
         getData(setProfile, '/profile/');
         getData(setContact, '/profile/contact');
@@ -482,15 +500,16 @@ const Profile: React.FC = () =>{
         getData(setSkill, '/profile/skill');
         getData(setAbout, '/profile/about');
         getData(setLink, '/profile/link');
-    }, [])
+    }, [previewMode])
 
    
     return(
 
       <div className='mx-4 my-2'>
-        
-        <div className="container shadow-lg rounded-2" id="page">
         <button onClick={handlePdf}>Download PDF</button>
+        <button onClick={handlePreviewMode}>Preview</button>
+        <div className="container shadow-lg rounded-2" id="page">
+        
             <ProfilePersonal 
                 personal={profile}
                 setPersonal={setProfile}

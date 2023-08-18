@@ -133,7 +133,7 @@ setPersonal}) => {
                 setError={setAlertError} />}
                     <div className='bg-black row mb-1 rounded-top-2 '>
                         <p className='fs-3 fw-semibold text-white col mb-1'>Personal Data</p>
-                        <div className='col-auto d-flex align-items-center'>
+                        <div className='col-auto d-flex align-items-center previewHidden'>
                             <div className='profile-svgs d-flex my-1' onClick={editProfile}>
                                 <Icon className='text-white' path={mdiPencil} size={1.25} />
                             </div>
@@ -144,7 +144,7 @@ setPersonal}) => {
                             <div className='col-auto d-flex align-items-center '>
                                 <form>
                                     {/* Date.now() to make that image refresh when changed */}
-                                    <img className='profile-image' src={`${personal?.profile_image}?${Date.now()}`} alt="Profile" />
+                                    <img className='profile-image mt-2' src={`${personal?.profile_image}?${Date.now()}`} alt="Profile" />
                                     <div>
                                         <div className="mb-1 text-center">
                                             <input 

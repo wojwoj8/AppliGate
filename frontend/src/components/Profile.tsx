@@ -184,11 +184,10 @@ const Profile: React.FC = () =>{
 
     const [previewMode, setPreviewMode] = useState(false);
 
-    const handlePdf = () => {
-      // Set the default window size you want
-      window.innerWidth = 1920; // Example width
-      window.innerHeight = 1080; // Example height
-    
+    const handlePdf = async () => {
+      setPreviewMode(true);
+      await handleHide();
+
       const body = document.body; // Get a reference to the body element
       const input = document.getElementById('page');
     
@@ -196,7 +195,7 @@ const Profile: React.FC = () =>{
         if (body.id === 'light') {
           input.classList.add('bg-dark'); // Add the class 'bg-dark'
         }
-    
+        
         // Capture the content with the adjusted window dimensions
         html2canvas(input, { windowWidth: 1920, windowHeight: 1080, scale: 1.25 })
           .then((canvas) => {
@@ -471,8 +470,7 @@ const Profile: React.FC = () =>{
       }));
     };
 
-    // for preview mode
-    useEffect(() => {
+    const handleHide = async () =>{
       const pageElement = document.getElementById('page');
       if (pageElement) {
         const elements = pageElement.querySelectorAll('button, svg, .profile-svgs, .prevHidden');
@@ -484,6 +482,10 @@ const Profile: React.FC = () =>{
           }
         });
       }
+    }
+    // for preview mode
+    useEffect(() => {
+      handleHide();
     }, [previewMode]);
 
     const handlePreviewMode = () => {

@@ -8,6 +8,8 @@ import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import AuthContext from '../../utils/AuthProvider';
 import ProfileAlert from './ProfileAlert';
+import ProfileDeleteModal from './ProfileDeleteModal';
+import { profile } from 'console';
 
 
 interface ProfilePersonalProps {
@@ -27,20 +29,22 @@ interface ProfilePersonalProps {
     multipleErrors: MultipleErrorResponse;
     removeMultipleErrors: (key: string, index: number) => void;
     renderFieldErrorMultiple: (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => React.ReactNode;
-  }
+    alertError: string;
+    setAlertError: React.Dispatch<React.SetStateAction<string>>
+}
 
 
 
 const ProfilePersonal: React.FC<ProfilePersonalProps> = ({ 
     personal, setEditPersonal, editPersonal, getData, editData,
     multipleErrors, removeMultipleErrors, renderFieldErrorMultiple,
-setPersonal}) => {
+setPersonal, setAlertError, alertError}) => {
 
     
     const { authTokens } = useContext(AuthContext); // Use the authTokens from AuthContext
     const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
-    const allowedFormats = ['image/jpeg','image/jfif', 'image/jpg', 'image/png'];
-    const [alertError, setAlertError] = useState('');
+    const allowedFormats = ['image/jpeg','image/jfif', 'image/jpg', 'image/jpg'];
+    
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files && e.target.files[0];
         setSelectedImageFile(selectedFile);
@@ -86,6 +90,27 @@ setPersonal}) => {
         getData(setPersonal, '/profile/');
         setSelectedImageFile(null);
     };
+
+    const removeImage = async () => {
+  
+        const data = {profile_image: 'default'}
+        console.log('test')
+        try {
+        const response = await axios.put('/profile/uploadImage', data, {
+            headers: {
+            'Content-Type': 'multipart/form-data', // Use multipart/form-data
+            Authorization: 'Bearer ' + String(authTokens.access),
+            },
+        });
+    
+        console.log('Image removed successfully');
+        setAlertError('Image removed successfully')
+        } catch (error) {
+        setAlertError('Something went wrong')
+        console.error('Error removing image:', error);
+        }
+        getData(setPersonal, '/profile/');
+    };
     
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement>,
@@ -128,9 +153,6 @@ setPersonal}) => {
 
     return(
         <div>
-                {alertError && <ProfileAlert 
-                error={alertError}
-                setError={setAlertError} />}
                     <div className='bg-black row mb-1 rounded-top-2 '>
                         <p className='fs-3 fw-semibold text-white col mb-1'>Personal Data</p>
                         <div className='col-auto d-flex align-items-center previewHidden'>
@@ -141,28 +163,34 @@ setPersonal}) => {
                     </div>
                     <div className='row justify-content-center '>
                         
-                            <div className='col-sm-auto row d-flex align-items-center align-items-baseline flex-column'>
+                            <div className={`col-sm-auto row d-flex align-items-center align-items-baseline flex-column ${personal?.profile_image === '/media/defaults/default_profile_image.jpg'
+                        ? ('prevHidden') : ('')}`}>
                                 <form className='d-flex d-sm-block flex-column-reverse align-items-center justify-content-center'>
                                     {/* Date.now() to make that image refresh when changed */}
-                                    <img className='profile-image my-2' src={`${personal?.profile_image}?${Date.now()}`} alt="Profile" />
+                                    <img className='profile-image my-2' src={`${personal?.profile_image}`} alt="Profile" />
                                     <div className='prevHidden row'>
-                                        <div className="mb-1 text-center">
+                                        <div className="mb-1 text-center d-flex justify-content-center">
                                             <input 
                                             className=''
                                             id='formFileProfile'
                                             type='file'
-                                            accept=".jpeg, .jpg, .png, .jfif"
+                                            accept=".jpeg, .jpg, .jpg, .jfif"
                                             onChange={handleImageChange}
                                             />
                                             {renderFieldErrorMultiple('profile', 0, `profile_image`, multipleErrors)}
                                             <label 
                                             htmlFor="formFileProfile" 
-                                            className="form-label mb-0 link-primary" 
+                                            className="form-label mb-0  profile-svgs"
                                             id='profile-imgAdd'
                                             
                                             >
-                                                Add
+                                                <Icon path={mdiPencil} size={1} />
+                                               
                                             </label>
+                                            {personal?.profile_image && personal.profile_image !== '/media/defaults/default_profile_image.jpg' &&
+                                                <ProfileDeleteModal id={`${personal?.profile_image}_${0}`} onDelete={() => removeImage()} />
+                                            }
+                                            
                                         </div>
                                     </div>
                                 </form>

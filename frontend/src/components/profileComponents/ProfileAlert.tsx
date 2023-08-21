@@ -11,7 +11,7 @@ const ProfileAlert: React.FC<Alert> = ({ error, setError }) => {
   
     useEffect(() => {
       if (error) {
-        if (error === 'Image uploaded successfully') {
+        if (error === 'Image uploaded successfully' || error === 'Image removed successfully') {
           setIsSuccess(true);
         }
         setShow(true);
@@ -26,10 +26,10 @@ const ProfileAlert: React.FC<Alert> = ({ error, setError }) => {
     }, [error, setError]);
   
     return (
-      <div>
+      <div className="">
         {show && (
           <div
-            className={`alert ${isSuccess ? 'alert-success' : 'alert-danger'} fade show`}
+            className={`container alert ${isSuccess ? 'alert-success' : 'alert-danger'} fade show`}
             role="alert"
           >
             <strong>{isSuccess ? 'Success!' : 'Error!'}</strong> {error}.

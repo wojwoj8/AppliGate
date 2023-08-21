@@ -64,15 +64,10 @@ class ProfileSerializer(serializers.ModelSerializer):
             "profile_image",
         ]
 
-
-class ProfileImageSerializer(serializers.ModelSerializer):
-    profile_image = serializers.ImageField(required=False)
-
-    class Meta:
-        model = User
-        fields = [
-            "profile_image",
-        ]
+    def to_internal_value(self, data):
+        if "profile_image" not in data or data["profile_image"] is None:
+            data["profile_image"] = "defaults/default_profile_image.jpg"
+        return super().to_internal_value(data)
 
 
 class ContactSerializer(serializers.ModelSerializer):

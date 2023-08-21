@@ -12,6 +12,7 @@ import ProfileLink from './profileComponents/ProfileLink';
 import ProfileSkill from './profileComponents/ProfileSkill';
 import ProfilePreview from './profileComponents/ProfilePreview';
 import ProfileDeleteModal from './profileComponents/ProfileDeleteModal';
+import ProfileAlert from './profileComponents/ProfileAlert';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
@@ -183,6 +184,7 @@ const Profile: React.FC = () =>{
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
 
     const [previewMode, setPreviewMode] = useState(false);
+    const [alertError, setAlertError] = useState('');
 
     const handlePdf = async () => {
       setPreviewMode(true);
@@ -508,8 +510,9 @@ const Profile: React.FC = () =>{
     return(
 
       <div className='mx-4 my-2'>
-        <button onClick={handlePdf}>Download PDF</button>
-        <button onClick={handlePreviewMode}>Preview</button>
+        {alertError && <ProfileAlert 
+                error={alertError}
+                setError={setAlertError} />}
         <div className="container shadow-lg rounded-2" id="page">
         
             <ProfilePersonal 
@@ -522,6 +525,8 @@ const Profile: React.FC = () =>{
                 multipleErrors={multipleErrors}                                             
                 removeMultipleErrors={removeMultipleErrors}
                 renderFieldErrorMultiple={renderFieldErrorMultiple}
+                alertError={alertError}
+                setAlertError={setAlertError}
             />
             <ProfileContact
                 contact={contact}
@@ -649,6 +654,10 @@ const Profile: React.FC = () =>{
                 renderFieldErrorMultiple={renderFieldErrorMultiple}
                 deleteData={deleteData}
             />
+        </div>
+        <div className='d-flex justify-content-center'>
+          <button className='btn btn-outline-primary' onClick={handlePdf}>Download PDF</button>
+          <button className='btn btn-secondary' onClick={handlePreviewMode}>Preview</button>
         </div>
       </div>
     )

@@ -22,7 +22,8 @@ class User(AbstractUser):
     about_me = models.CharField(max_length=500, null=True, blank=True)
     profile_image = models.ImageField(
         upload_to=profile_image_upload_path,
-        blank=True,
+        blank=False,
+        null=True,
         default="defaults/default_profile_image.jpg",
     )
 

@@ -19,7 +19,6 @@ from .models import (
 from .serializer import (
     UserSerializer,
     ProfileSerializer,
-    ProfileImageSerializer,
     UserExperienceSerializer,
     UserEducationSerializer,
     ContactSerializer,
@@ -31,8 +30,8 @@ from .serializer import (
 )
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
-
-
+from django.conf import settings
+from django.core.files.storage import default_storage
 from rest_framework.permissions import IsAuthenticated
 from datetime import datetime
 
@@ -83,10 +82,23 @@ class ProfileImageUploadView(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         user = request.user  # Get the authenticated user
         profile_image = request.FILES.get("profile_image")
+        # print(request.data["profile_image"])
+        # print(profile_image)
+        # print(user.profile_image)
+
+        if request.data["profile_image"] == "default":
+            user.profile_image.delete()
+            user.profile_image = "defaults/default_profile_image.jpg"
+            user.save()
+            return Response(
+                {"message": "Profile image updated"}, status=status.HTTP_200_OK
+            )
 
         if profile_image:
             # Delete the existing profile image if it exists
-            if user.profile_image:
+
+            if user.profile_image != "defaults/default_profile_image.jpg":
+                print(user.profile_image)
                 user.profile_image.delete()
 
             user.profile_image = profile_image

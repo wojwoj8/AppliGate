@@ -21,7 +21,7 @@ const Navbar: React.FC = () =>{
     }
     useEffect(() =>{
       handleCheck();
-    },[DarkMode])
+    },[])
     const authContext = useContext(AuthContext);
     if (!authContext) {
         // Handle the case when context is undefined
@@ -48,10 +48,10 @@ const Navbar: React.FC = () =>{
             {user ? (
               <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li className="nav-item">
-                  <Link to='/' className="nav-link" aria-current="page" data-bs-dismiss="offcanvas">Home</Link>
+                  <Link to='/' className="nav-link" aria-current="page">Home</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to='/profile' className="nav-link" aria-current="page" data-bs-dismiss="offcanvas">Profile</Link>
+                  <Link to='/profile' className="nav-link" aria-current="page">Profile</Link>
                 </li>
                 <li className="nav-item" onClick={logoutUser}>
                   <a className="nav-link" href="/" data-bs-dismiss="offcanvas">Log Out</a>
@@ -87,13 +87,21 @@ const Navbar: React.FC = () =>{
                   <Link to='/' className="nav-link active" aria-current="page">Home</Link>
                 </li> */}
                 <li className="nav-item">
-                  <Link to='/login' className="nav-link" data-bs-dismiss="offcanvas">Log In</Link>
+                  <Link to='/login' className="nav-link">Log In</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to='/register' className="nav-link" data-bs-dismiss="offcanvas">Sign Up</Link>
+                  <Link to='/register' className="nav-link">Sign Up</Link>
                 </li>
-                <li>
-                  <button className="nav-link" onClick={DarkMode}>Toggle Dark Mode</button>
+                <li className="nav-item">
+                  <div className="form-check form-switch form-check-reverse nav-link me-4 text-left d-table">
+                    <input className="form-check-input" type="checkbox" id="flexSwitchCheckCheckedReverse" 
+                    onChange={handleCheck}
+                    checked={check}
+                    
+                    />
+                    
+                    <label className="form-check-label" htmlFor="flexSwitchCheckCheckedReverse">Dark Mode</label>
+                  </div>
                 </li>
               </ul>
               )}

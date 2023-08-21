@@ -209,7 +209,7 @@ const Profile: React.FC = () =>{
             const pdf = new jsPDF('p', 'px', [pdfWidth, pdfHeight]);
     
             pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save('download.pdf');
+            pdf.save('CV.pdf');
     
             if (body.id === 'light') {
               input.classList.remove('bg-dark'); // Remove the class 'bg-dark'
@@ -522,7 +522,9 @@ const Profile: React.FC = () =>{
                 setError={setAlertError} />}
 
         <div className='d-flex justify-content-center container'>
-          <button className='btn btn-secondary w-100 rounded-4 mb-2' onClick={handlePreviewMode}>Preview</button>
+          <button className='btn btn-secondary w-100 rounded-4 mb-2' onClick={handlePreviewMode}>
+            {previewMode ? 'Hide Preview' : 'Show Preview'}
+          </button>
         </div>
         <div className="container shadow-lg rounded-2" id="page">
         

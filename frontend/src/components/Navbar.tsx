@@ -6,12 +6,30 @@ import DarkMode from "../utils/DarkMode";
 
 const Navbar: React.FC = () =>{
     
+    const [check, setCheck] = useState(false);
+    const handleCheck = () => {
+      if (localStorage.getItem('mode') !== 'dark'){
+
+        setCheck(true)
+        DarkMode()
+      } else{
+
+        setCheck(false)
+        DarkMode()
+      }
+      
+    }
+    useEffect(() =>{
+      handleCheck();
+    },[DarkMode])
     const authContext = useContext(AuthContext);
     if (!authContext) {
         // Handle the case when context is undefined
         return null; // or return a loading state, error message, or fallback UI
       }
       const { user, logoutUser } = authContext;
+
+    
 
     return(
       <nav className="navbar navbar-expand-lg bg-body-tertiary bg-primary" data-bs-theme="dark">
@@ -26,19 +44,31 @@ const Navbar: React.FC = () =>{
               <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div className="offcanvas-body">
+            
             {user ? (
               <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li className="nav-item">
-                  <Link to='/' className="nav-link" aria-current="page">Home</Link>
+                  <Link to='/' className="nav-link" aria-current="page" data-bs-dismiss="offcanvas">Home</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to='/profile' className="nav-link" aria-current="page">Profile</Link>
+                  <Link to='/profile' className="nav-link" aria-current="page" data-bs-dismiss="offcanvas">Profile</Link>
                 </li>
                 <li className="nav-item" onClick={logoutUser}>
                   <a className="nav-link" href="/" data-bs-dismiss="offcanvas">Log Out</a>
                 </li>
-                <li>
+                {/* <li>
                   <button className="nav-link" onClick={DarkMode}>Toggle Dark Mode</button>
+                </li> */}
+                <li className="nav-item">
+                  <div className="form-check form-switch form-check-reverse nav-link me-4 text-left d-table">
+                    <input className="form-check-input" type="checkbox" id="flexSwitchCheckCheckedReverse" 
+                    onChange={handleCheck}
+                    checked={check}
+                    
+                    />
+                    
+                    <label className="form-check-label" htmlFor="flexSwitchCheckCheckedReverse">Dark Mode</label>
+                  </div>
                 </li>
                 {/* <li className="nav-item dropdown">
                   <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -50,17 +80,17 @@ const Navbar: React.FC = () =>{
                   </ul>
                 </li> */}
               </ul>
-            
+              
               ) : (
               <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                 {/* <li className="nav-item">
                   <Link to='/' className="nav-link active" aria-current="page">Home</Link>
                 </li> */}
                 <li className="nav-item">
-                  <Link to='/login' className="nav-link" >Log In</Link>
+                  <Link to='/login' className="nav-link" data-bs-dismiss="offcanvas">Log In</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to='/register' className="nav-link">Sign Up</Link>
+                  <Link to='/register' className="nav-link" data-bs-dismiss="offcanvas">Sign Up</Link>
                 </li>
                 <li>
                   <button className="nav-link" onClick={DarkMode}>Toggle Dark Mode</button>

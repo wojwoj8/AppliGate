@@ -491,7 +491,14 @@ const Profile: React.FC = () =>{
     }, [previewMode]);
 
     const handlePreviewMode = () => {
-      setPreviewMode(!previewMode)
+      let forms = document.querySelectorAll('form');
+      if (forms.length > 2){
+        setAlertError('Close all forms in order to show preview')
+      }
+      else{
+        setPreviewMode(!previewMode)
+      }
+      
     }
 
     useEffect(() =>{
@@ -513,6 +520,10 @@ const Profile: React.FC = () =>{
         {alertError && <ProfileAlert 
                 error={alertError}
                 setError={setAlertError} />}
+
+        <div className='d-flex justify-content-center container'>
+          <button className='btn btn-secondary w-100 rounded-4 mb-2' onClick={handlePreviewMode}>Preview</button>
+        </div>
         <div className="container shadow-lg rounded-2" id="page">
         
             <ProfilePersonal 
@@ -655,9 +666,8 @@ const Profile: React.FC = () =>{
                 deleteData={deleteData}
             />
         </div>
-        <div className='d-flex justify-content-center'>
-          <button className='btn btn-outline-primary' onClick={handlePdf}>Download PDF</button>
-          <button className='btn btn-secondary' onClick={handlePreviewMode}>Preview</button>
+        <div className='container'>
+          <button className='btn btn-primary w-100 rounded-4 mt-2' onClick={handlePdf}>Download PDF</button>
         </div>
       </div>
     )

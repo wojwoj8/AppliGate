@@ -2,12 +2,12 @@ const DarkMode = () => {
     const body = document.querySelector('body');
     
     if (body) {
-        if (body.id === 'light') {
+        if (body.id === 'dark') {
           body.id = '';
           localStorage.setItem('mode', '');
         } else {
-          body.id = 'light';
-          localStorage.setItem('mode', 'light');
+          body.id = 'dark';
+          localStorage.setItem('mode', 'dark');
         }
       }
 };

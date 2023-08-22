@@ -26,7 +26,7 @@ const ProfileAlert: React.FC<Alert> = ({ error, setError }) => {
     }, [error, setError]);
   
     return (
-      <div className="">
+      <div className="sticky-top">
         {show && (
           <div
             className={`container alert ${isSuccess ? 'alert-success' : 'alert-danger'} fade show`}

@@ -187,7 +187,10 @@ const Profile: React.FC = () =>{
     const [alertError, setAlertError] = useState('');
 
     const handlePdf = async () => {
-      setPreviewMode(true);
+      if (handlePreviewMode() === false){
+        return;
+      }
+      
       await handleHide();
 
       const body = document.body; // Get a reference to the body element
@@ -493,10 +496,12 @@ const Profile: React.FC = () =>{
     const handlePreviewMode = () => {
       let forms = document.querySelectorAll('form');
       if (forms.length > 2){
-        setAlertError('Close all forms in order to show preview')
+        setAlertError('Close all forms in order to show preview');
+        return false;
       }
       else{
-        setPreviewMode(!previewMode)
+        setPreviewMode(!previewMode);
+        return true;
       }
       
     }

@@ -9,6 +9,7 @@ import IfNotLoggedIn from './utils/IfLoggedIn';
 import Profile from './components/Profile';
 import { AuthProvider } from './utils/AuthProvider';
 import setInitialMode from './utils/InitlializeDarkMode';
+import Footer from './components/Footer';
 
 // axios.defaults.withCredentials = true; // even for get requests if
 //                                     // demand session authentication
@@ -19,9 +20,10 @@ function App() {
   setInitialMode();
   return (
     <BrowserRouter>
-    <div className='pb-2'>
+    
       <AuthProvider>
         <Navbar></Navbar>
+        <div className='pb-2 d-flex flex-column myMain'>
         <Routes>
           {/* default route */}
             <Route path="*" element={<Navigate to="/" replace />} />
@@ -34,8 +36,11 @@ function App() {
             <Route path="/" element={<PrivateRoute><Index/></PrivateRoute>} />
           
         </Routes>
+        </div>
+        <Footer></Footer>
       </AuthProvider>
-    </div>
+   
+    
     {/* <div className='mt-2'></div> */}
     </BrowserRouter>
     

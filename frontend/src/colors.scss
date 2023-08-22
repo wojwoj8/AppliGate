@@ -45,12 +45,15 @@ $form-file-button-hover-bg: $primary;
     
     --#{$variable-prefix}body-color: #{$body-color};
     --#{$variable-prefix}body-bg: #{$body-bg};
-
+    
     //font of that
     $form-file-button-color: $body-color;
     $form-file-button-bg: $dark;
     
     $input-placeholder-color: rgb(196, 188, 188);  
+    .navbar-nav{
+        color: $primary;
+    }
     @import "bootstrap";
 }
 
@@ -103,4 +106,13 @@ p{
 }
 #profile-imgAdd{
     @extend .cursor-pointer;
+}
+nav{
+    height: 58px;
+}
+// footer{
+//     height: 73px;
+// }
+.myMain, #root{
+    min-height: calc(100vh - 140px);
 }

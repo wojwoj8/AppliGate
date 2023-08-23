@@ -48,6 +48,8 @@ urlpatterns = [
     path("profile/link", views.ProfileLinkView.as_view()),
     path("profile/link/<int:pk>", views.ProfileLinkView.as_view()),
     path("profile/about", views.ProfileAboutView.as_view()),
+    path("profile/settings", views.ProfileSettingsView.as_view()),
+    path("profile/settings/<int:pk>", views.ProfileSettingsView.as_view()),
     # Authentication
     path("api/", include("app.api.urls")),
 ]

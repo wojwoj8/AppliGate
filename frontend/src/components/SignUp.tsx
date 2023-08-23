@@ -36,8 +36,6 @@ const SignUp: React.FC = () =>{
 
     return(
         <div className="container">
-            
-            {/* {err && <p className="text-danger text-center ">{err}</p>} */}
             <div className="container">
                 <div className="text-center">   
                     {errorSignUp && errorSignUp.error && (
@@ -56,8 +54,7 @@ const SignUp: React.FC = () =>{
                     <div className="">
                         <input 
                         name="login" 
-                        type="text" 
-                        // onChange={data => handleLogin(data.target.value)} 
+                        type="text"  
                         required
                         placeholder="account1"
                         className={`form-control ${errorSignUp && errorSignUp.username && 'is-invalid'}`} 

@@ -52,6 +52,9 @@ const Navbar: React.FC = () =>{
                 <li className="nav-item">
                   <Link to='/profile' className="nav-link" aria-current="page">Profile</Link>
                 </li>
+                <li className="nav-item">
+                  <Link to='/profileSettings' className="nav-link" aria-current="page">Profile Settings</Link>
+                </li>
                 <li className="nav-item" onClick={logoutUser}>
                   <a className="nav-link" href="/" data-bs-dismiss="offcanvas">Log Out</a>
                 </li>

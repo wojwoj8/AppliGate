@@ -74,6 +74,40 @@ class IndexView(generics.GenericAPIView):
     #         return self.retrieve(request, *args, **kwargs)
 
 
+class ProfileSettingsView(
+    generics.GenericAPIView,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+):
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        serializer = self.serializer_class(user, many=False)
+        return Response(serializer.data)
+
+    def put(self, request, *args, **kwargs):
+        user = request.user
+        instance = self.queryset.get(
+            id=user.id
+        )  # Get the user instance using the user's ID
+        serializer = self.serializer_class(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+        instance = self.queryset.get(
+            id=user.id
+        )  # Get the user instance using the user's ID
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class ProfileImageUploadView(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = ProfileSerializer

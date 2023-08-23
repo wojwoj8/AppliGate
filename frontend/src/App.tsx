@@ -10,6 +10,9 @@ import Profile from './components/Profile';
 import { AuthProvider } from './utils/AuthProvider';
 import setInitialMode from './utils/InitlializeDarkMode';
 import Footer from './components/Footer';
+import ProfileSettings from './components/ProfileSettings';
+import ProfileSettingsPassword from './components/ProfileSettingsPassword';
+import ProfileSettingsUsername from './components/ProfileSettingsUsername';
 
 // axios.defaults.withCredentials = true; // even for get requests if
 //                                     // demand session authentication
@@ -33,6 +36,9 @@ function App() {
 
             {/* PrivateRoute = Accessable if logged in */}
             <Route path="/profile" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>
+            <Route path="/profileSettings" element={<PrivateRoute><ProfileSettings/></PrivateRoute>}></Route>
+            <Route path="/profileSettings/userData" element={<PrivateRoute><ProfileSettingsUsername/></PrivateRoute>}></Route>
+            <Route path="/profileSettings/password" element={<PrivateRoute><ProfileSettingsPassword/></PrivateRoute>}></Route>
             <Route path="/" element={<PrivateRoute><Index/></PrivateRoute>} />
           
         </Routes>

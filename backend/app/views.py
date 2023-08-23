@@ -90,10 +90,10 @@ class ProfileSettingsView(
 
     def put(self, request, *args, **kwargs):
         user = request.user
-        instance = self.queryset.get(
-            id=user.id
-        )  # Get the user instance using the user's ID
-        serializer = self.serializer_class(instance, data=request.data)
+        instance = self.queryset.get(id=user.id)
+        serializer = self.serializer_class(
+            instance, data=request.data, context={"request": request}
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import AuthContext from "../utils/AuthProvider";
+import { ErrorResponse } from "./Profile";
 
 interface ProfileData {
     username: string;
@@ -52,6 +53,11 @@ const ProfileSettingsPassword: React.FC = () =>{
         }));
 
       };
+
+    const handleDisabled = () =>{
+        return password === '';
+
+    }
 
     const getProfile = async () => {
         try {
@@ -153,7 +159,8 @@ const ProfileSettingsPassword: React.FC = () =>{
                 <div className="d-grid py-2 text-center">
                 <button 
                     type="submit" 
-                    className="btn btn-primary btn-block"
+                    className={`btn btn-primary btn-block`}
+                    disabled={handleDisabled()}
                     onClick={changeProfie}
                 >
                     Change Password

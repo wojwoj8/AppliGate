@@ -13,17 +13,30 @@ from datetime import datetime
 
 
 class UserSerializer(serializers.ModelSerializer):
+    current_password = serializers.CharField(write_only=True, required=True)
+
     class Meta:
         model = User
         fields = [
             "username",
-            "password",
             "email",
+            "current_password",
         ]
-        # read_only_fields = ["id"]
         extra_kwargs = {
             "password": {"write_only": True},
         }
+
+    def validate_current_password(self, value):
+        user = self.context["request"].user
+        if not user.check_password(value):
+            raise serializers.ValidationError("Current password is incorrect.")
+        return value
+
+    def update(self, instance, validated_data):
+        validated_data.pop(
+            "current_password"
+        )  # Remove current_password from validated_data
+        return super().update(instance, validated_data)
 
 
 class DateSerializer(serializers.Field):

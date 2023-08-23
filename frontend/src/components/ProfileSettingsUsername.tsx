@@ -1,11 +1,20 @@
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import AuthContext from "../utils/AuthProvider";
+import { AxiosError } from "axios";
+import { ErrorResponse } from "./Profile";
+import { MultipleErrorResponse } from './Profile';
+import ProfileAlert from "./profileComponents/ProfileAlert";
 
 interface ProfileData {
     username: string;
     email: string;
+    current_password: string;
   }
+
+const initialMultipleErrors: MultipleErrorResponse = {
+    userData: {},
+  };
 
 const ProfileSettingsUsername: React.FC = () =>{
 
@@ -14,11 +23,56 @@ const ProfileSettingsUsername: React.FC = () =>{
     const [password, setPassword] = useState('')
     const [confirm, setConfirm] = useState('')
     const [err, setErr] = useState<{ [key: string]: string[] } | null>(null);
-
+    const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
+    const [alertError, setAlertError] = useState('');
+    
     useEffect(() => {
         getProfile()
     },[])
 
+    const renderFieldErrorMultiple = (
+        field: string, 
+        index: number, 
+        errorKey: string, 
+        error: MultipleErrorResponse | undefined) => {
+        if (error && error[field] && typeof error[field][index] === "object" && 
+        error[field][index].hasOwnProperty(errorKey)) {
+          const messages = error[field][index][errorKey];
+          return (
+            <div>
+              {messages.map((message, i) => (
+                <span key={i} className="text-danger">
+                  {message}
+                </span>
+              ))}
+            </div>
+          );
+        }
+        return null;
+      };
+    
+      const handleMultipleErrors = (key: string, index: number, errorData: ErrorResponse) => {
+        setMultipleErrors((prevState) => ({
+          ...prevState,
+          [key]: {
+            ...(prevState[key] || {}),
+            [index]: {
+              ...(prevState[key]?.[index] || {}),
+              ...errorData
+            }
+          }
+        }));
+      };
+  
+      const removeMultipleErrors = (key: string, index: number) => {
+        setMultipleErrors((prevState) => ({
+          ...prevState,
+          [key]: {
+            ...(prevState[key] || {}),
+            [index]: {}
+          }
+        }));
+      };
     const handlePassword = (e:string) =>{
         setPassword(e)
     }
@@ -42,6 +96,12 @@ const ProfileSettingsUsername: React.FC = () =>{
         }));
 
       };
+
+    
+    const handleDisabled = () =>{
+        return profile?.current_password === '' || profile?.current_password === undefined;
+
+    }
 
     const getProfile = async () => {
         try {
@@ -68,7 +128,10 @@ const ProfileSettingsUsername: React.FC = () =>{
         }
       };
 
-    const changeProfie = async () =>{
+    const changeProfile = async (
+        errorField: string,
+        index: number = 0,
+    ) =>{
         try {
             const response = await axios.put(`/profile/settings/${user.user_id}`, profile, {
               headers: {
@@ -76,26 +139,39 @@ const ProfileSettingsUsername: React.FC = () =>{
                   Authorization: 'Bearer ' + String(authTokens.access),
                 },
             });
-      
+            removeMultipleErrors(`${errorField}`, index)
             const data = response.data;
             // console.log(data)
             if (response.status === 200) {
-              setProfile(data);
+                setAlertError('Data changed successfully')
+                setProfile(data);
             }
           } catch (error: any) {
             if (error.response && error.response.status === 401) {
               // Unauthorized - Logout the user
               logoutUser();
             } else {
-              // Handle other errors here
+                removeMultipleErrors(`${errorField}`, index)
+                const axiosError = error as AxiosError<ErrorResponse>;
+                if (axiosError.response?.data) {
+                    handleMultipleErrors(`${errorField}`, index, axiosError.response?.data)
+                }
               console.error('Error fetching profile:', error);
             }
           }
     }
     
+    const saveEdit = async () =>{
+        await changeProfile('userData');
+        // setContactEditing(false);
+    }
 
     return (
         <div className="container">
+            {alertError && <ProfileAlert 
+                error={alertError}
+                setError={setAlertError} />}
+
             <div className="container">
                 <div className="text-center">   
                     {err && err.error && (
@@ -119,8 +195,9 @@ const ProfileSettingsUsername: React.FC = () =>{
                     onChange={(e) => handleInputChange(e)}
                     required
                     placeholder="account1"
-                    className={`form-control ${err && err.username && 'is-invalid'}`} 
+                    className={`form-control${renderFieldErrorMultiple('userData', 0, `username`, multipleErrors) ? ' is-invalid' : ''}`}  
                     />
+                    {renderFieldErrorMultiple('userData', 0, `username`, multipleErrors)}
                 </div>
                 {err && err.username && (
                             <span className="text-danger">{err.username[0]}</span>
@@ -137,8 +214,9 @@ const ProfileSettingsUsername: React.FC = () =>{
                     onChange={(e) => handleInputChange(e)}
                     required
                     placeholder="example@test.com"
-                    className={`form-control ${err && err.email && 'is-invalid'}`}
+                    className={`form-control${renderFieldErrorMultiple('userData', 0, `email`, multipleErrors) ? ' is-invalid' : ''}`} 
                     />
+                    {renderFieldErrorMultiple('userData', 0, `email`, multipleErrors)}
                 </div>
                 
                 {err && err.email && (
@@ -147,24 +225,26 @@ const ProfileSettingsUsername: React.FC = () =>{
                 </div>
 
                 <div className="mb-3">
-                    <label htmlFor="password" className="form-label">Password:</label>
+                    <label htmlFor="current_password" className="form-label">Password:</label>
                     <div className="">
                         <input 
-                        name="password" 
+                        name="current_password" 
                         type="password" 
-                        onChange={data => handlePassword(data.target.value)} 
+                        onChange={(e) => handleInputChange(e)} 
                         required
                         placeholder="Provide password to apply changes"
-                        className="form-control"
+                        className={`form-control${renderFieldErrorMultiple('userData', 0, `current_password`, multipleErrors) ? ' is-invalid' : ''}`} 
                         />
+                        {renderFieldErrorMultiple('userData', 0, `current_password`, multipleErrors)}
                     </div>
                 </div>
 
                 <div className="d-grid py-2 text-center">
                 <button 
                     type="submit" 
-                    className="btn btn-primary btn-block"
-                    onClick={changeProfie}
+                    className={`btn btn-primary btn-block`}
+                    disabled={handleDisabled()}
+                    onClick={saveEdit}
                 >
                     Change Account Data
                 </button>      

@@ -29,6 +29,7 @@ from .serializer import (
     UserAboutSerializer,
     ChangePasswordSerializer,
     ChangeUserDataSerializer,
+    DeleteUserDataSerializer,
 )
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
@@ -101,13 +102,19 @@ class ProfileChangeDataView(
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         user = request.user
-        instance = self.queryset.get(
-            id=user.id
-        )  # Get the user instance using the user's ID
-        instance.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        instance = self.queryset.get(id=user.id)
+        delete_serializer = DeleteUserDataSerializer(
+            instance, data=request.data, context={"request": request}
+        )
+
+        # Check if the delete_serializer is valid (if you have any fields)
+        if delete_serializer.is_valid():
+            instance.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response(delete_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProfileChangePasswordView(generics.GenericAPIView):

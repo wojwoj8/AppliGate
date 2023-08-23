@@ -13,6 +13,7 @@ import Footer from './components/Footer';
 import ProfileSettings from './components/ProfileSettings';
 import ProfileSettingsPassword from './components/ProfileSettingsPassword';
 import ProfileSettingsUsername from './components/ProfileSettingsUsername';
+import ProfileSettingsDelete from './components/ProfileSettingsDelete';
 
 // axios.defaults.withCredentials = true; // even for get requests if
 //                                     // demand session authentication
@@ -39,6 +40,7 @@ function App() {
             <Route path="/profileSettings" element={<PrivateRoute><ProfileSettings/></PrivateRoute>}></Route>
             <Route path="/profileSettings/userData" element={<PrivateRoute><ProfileSettingsUsername/></PrivateRoute>}></Route>
             <Route path="/profileSettings/password" element={<PrivateRoute><ProfileSettingsPassword/></PrivateRoute>}></Route>
+            <Route path="/profileSettings/delete" element={<PrivateRoute><ProfileSettingsDelete/></PrivateRoute>}></Route>
             <Route path="/" element={<PrivateRoute><Index/></PrivateRoute>} />
           
         </Routes>

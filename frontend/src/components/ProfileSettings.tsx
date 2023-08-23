@@ -13,7 +13,7 @@ const ProfileSettings: React.FC = () =>{
                 <Link to="/profileSettings/password" className="btn btn-primary mt-3 w-100">
                     Change Password
                 </Link>
-                <Link to="/profileSettings/password" className="btn btn-danger mt-3 w-100">
+                <Link to="/profileSettings/delete" className="btn btn-danger mt-3 w-100">
                     Delete Account
                 </Link>
             </div>

@@ -52,6 +52,25 @@ class ChangeUserDataSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 
+class DeleteUserDataSerializer(serializers.ModelSerializer):
+    current_password = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = [
+            "current_password",
+        ]
+        extra_kwargs = {
+            "password": {"write_only": True},
+        }
+
+    def validate_current_password(self, value):
+        user = self.context["request"].user
+        if not user.check_password(value):
+            raise serializers.ValidationError("Current password is incorrect.")
+        return value
+
+
 class ChangePasswordSerializer(serializers.Serializer):
     current_password = serializers.CharField(write_only=True, required=True)
     new_password = serializers.CharField(write_only=True, required=True)

@@ -5,6 +5,7 @@ import { AxiosError } from "axios";
 import { ErrorResponse } from "./Profile";
 import { MultipleErrorResponse } from './Profile';
 import ProfileAlert from "./profileComponents/ProfileAlert";
+import DeleteModal from "./DeleteModal";
 
 interface ProfileData {
     username: string;
@@ -100,7 +101,7 @@ const ProfileSettingsUsername: React.FC = () =>{
 
     
     const handleDisabled = () =>{
-        return profile?.current_password === undefined;
+        return profile?.current_password === undefined ||  profile?.current_password === '';
 
     }
 
@@ -248,9 +249,13 @@ const ProfileSettingsUsername: React.FC = () =>{
                     type="submit" 
                     className={`btn btn-primary btn-block`}
                     disabled={handleDisabled()}
-                    onClick={saveEdit}
                 >
-                    Change Account Data
+                  <DeleteModal id={`${user.user_id}`} 
+                  name={'Change Account Data'} 
+                  message={'Do you want to change your data?'} 
+                  deleteName = {'Change'}
+                  onDelete={() => saveEdit()} />
+                    
                 </button>      
                 </div>
 

@@ -5,6 +5,7 @@ import { AxiosError } from "axios";
 import { ErrorResponse } from "./Profile";
 import { MultipleErrorResponse } from './Profile';
 import ProfileAlert from "./profileComponents/ProfileAlert";
+import DeleteModal from "./DeleteModal";
 
 interface ProfileData {
     current_password: string;
@@ -95,10 +96,13 @@ const ProfileSettingsPassword: React.FC = () =>{
       };
 
     
-    const handleDisabled = () =>{
-        // return profile?.current_password === undefined;
-
-    }
+    const handleDisabled = () => {
+        return (
+            profile?.current_password === '' ||
+            profile?.new_password === '' ||
+            profile?.confirm_password === ''
+        );
+    };
 
 
     const changeProfile = async (
@@ -210,10 +214,13 @@ const ProfileSettingsPassword: React.FC = () =>{
                 <button 
                     type="submit" 
                     className={`btn btn-primary btn-block`}
-                    // disabled={handleDisabled()}
-                    onClick={saveEdit}
+                    disabled={handleDisabled()}
                 >
-                    Change Password
+                  <DeleteModal id={`${user.user_id}`} 
+                  name={'Change Password '} 
+                  message={'Do you want to change your password?'} 
+                  deleteName = {'Change'}
+                  onDelete={() => saveEdit()} />
                 </button>      
                 </div>
 

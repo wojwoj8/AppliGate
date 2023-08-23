@@ -54,6 +54,9 @@ $form-file-button-hover-bg: $primary;
     .navbar-nav{
         color: $primary;
     }
+    .modal-title, .modal-body{
+        color: $body-color;
+    }
     @import "bootstrap";
 }
 

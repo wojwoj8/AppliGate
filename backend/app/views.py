@@ -74,7 +74,7 @@ class IndexView(generics.GenericAPIView):
     #         return self.retrieve(request, *args, **kwargs)
 
 
-class ProfileSettingsView(
+class ProfileChangeDataView(
     generics.GenericAPIView,
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
@@ -106,6 +106,29 @@ class ProfileSettingsView(
         )  # Get the user instance using the user's ID
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ProfileChangePasswordView(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    generics.GenericAPIView,
+):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        password = request.data.get("password")
+        confirm = request.data.get("confirm")
+
+        if confirm != password:
+            return Response({"invalid": "Passwords do not match"}, status=400)
+
+        # hash that password
+        hashed_password = make_password(password)
+        request.data["password"] = hashed_password
+        self.create(request, *args, **kwargs)
+        return Response({"created": "Account created successfully"}, status=200)
 
 
 class ProfileImageUploadView(generics.UpdateAPIView):

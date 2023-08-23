@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import axios from "axios";
 import AuthContext from "../utils/AuthProvider";
 import { AxiosError } from "axios";
@@ -25,6 +25,7 @@ const ProfileSettingsUsername: React.FC = () =>{
     const [err, setErr] = useState<{ [key: string]: string[] } | null>(null);
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
     const [alertError, setAlertError] = useState('');
+    const inputRef = useRef<HTMLInputElement | null>(null);
     
     useEffect(() => {
         getProfile()
@@ -99,7 +100,7 @@ const ProfileSettingsUsername: React.FC = () =>{
 
     
     const handleDisabled = () =>{
-        return profile?.current_password === '' || profile?.current_password === undefined;
+        return profile?.current_password === undefined;
 
     }
 
@@ -163,7 +164,9 @@ const ProfileSettingsUsername: React.FC = () =>{
     
     const saveEdit = async () =>{
         await changeProfile('userData');
-        // setContactEditing(false);
+        if (inputRef.current) {
+            inputRef.current.value = '';
+        }
     }
 
     return (
@@ -229,7 +232,8 @@ const ProfileSettingsUsername: React.FC = () =>{
                     <div className="">
                         <input 
                         name="current_password" 
-                        type="password" 
+                        type="password"
+                        ref={inputRef} 
                         onChange={(e) => handleInputChange(e)} 
                         required
                         placeholder="Provide password to apply changes"

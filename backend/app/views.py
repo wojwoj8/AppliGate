@@ -27,6 +27,8 @@ from .serializer import (
     UserLanguageSerializer,
     UserLinkSerializer,
     UserAboutSerializer,
+    ChangePasswordSerializer,
+    ChangeUserDataSerializer,
 )
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
@@ -81,7 +83,7 @@ class ProfileChangeDataView(
 ):
     permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = ChangeUserDataSerializer
 
     def get(self, request, *args, **kwargs):
         user = request.user
@@ -108,27 +110,25 @@ class ProfileChangeDataView(
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class ProfileChangePasswordView(
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
-    generics.GenericAPIView,
-):
+class ProfileChangePasswordView(generics.GenericAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request, *args, **kwargs):
-        password = request.data.get("password")
-        confirm = request.data.get("confirm")
+    def put(self, request, *args, **kwargs):
+        print(request.data)
+        serializer = ChangePasswordSerializer(
+            data=request.data, context={"request": request}
+        )
+        if serializer.is_valid():
+            user = request.user
+            new_password = serializer.validated_data["new_password"]
 
-        if confirm != password:
-            return Response({"invalid": "Passwords do not match"}, status=400)
-
-        # hash that password
-        hashed_password = make_password(password)
-        request.data["password"] = hashed_password
-        self.create(request, *args, **kwargs)
-        return Response({"created": "Account created successfully"}, status=200)
+            user.set_password(new_password)
+            user.save()
+            return Response(
+                {"message": "Password changed successfully"}, status=status.HTTP_200_OK
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProfileImageUploadView(generics.UpdateAPIView):

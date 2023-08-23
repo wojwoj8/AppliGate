@@ -1,41 +1,81 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useRef } from "react";
 import axios from "axios";
 import AuthContext from "../utils/AuthProvider";
+import { AxiosError } from "axios";
 import { ErrorResponse } from "./Profile";
+import { MultipleErrorResponse } from './Profile';
+import ProfileAlert from "./profileComponents/ProfileAlert";
 
 interface ProfileData {
-    username: string;
-    email: string;
+    current_password: string;
+    new_password: string;
+    confirm_password: string;
   }
 
+  const initialMultipleErrors: MultipleErrorResponse = {
+    userData: {},
+  };
 const ProfileSettingsPassword: React.FC = () =>{
 
     const {authTokens, user, logoutUser } = useContext(AuthContext);
-    const [profile, setProfile] = useState<ProfileData | null>(null)
-    const [password, setPassword] = useState('')
-    const [confirm, setConfirm] = useState('')
+    const [profile, setProfile] = useState<ProfileData | null>({
+      current_password: "",
+      new_password: "",
+      confirm_password: "",
+  });
     const [err, setErr] = useState<{ [key: string]: string[] } | null>(null);
+    const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
+    const [alertError, setAlertError] = useState('');
+    const inputRef = useRef<HTMLInputElement | null>(null);
+    
 
-    useEffect(() => {
-        getProfile()
-    },[])
 
-    const handlePassword = (e:string) =>{
-        setPassword(e)
-    }
-    const handleConfirm = (e:string) =>{
-        setConfirm(e)
-    }
+    const renderFieldErrorMultiple = (
+        field: string, 
+        index: number, 
+        errorKey: string, 
+        error: MultipleErrorResponse | undefined) => {
+        if (error && error[field] && typeof error[field][index] === "object" && 
+        error[field][index].hasOwnProperty(errorKey)) {
+          const messages = error[field][index][errorKey];
+          return (
+            <div>
+              {messages.map((message, i) => (
+                <span key={i} className="text-danger">
+                  {message}
+                </span>
+              ))}
+            </div>
+          );
+        }
+        return null;
+      };
+    
+      const handleMultipleErrors = (key: string, index: number, errorData: ErrorResponse) => {
+        setMultipleErrors((prevState) => ({
+          ...prevState,
+          [key]: {
+            ...(prevState[key] || {}),
+            [index]: {
+              ...(prevState[key]?.[index] || {}),
+              ...errorData
+            }
+          }
+        }));
+      };
+  
+      const removeMultipleErrors = (key: string, index: number) => {
+        setMultipleErrors((prevState) => ({
+          ...prevState,
+          [key]: {
+            ...(prevState[key] || {}),
+            [index]: {}
+          }
+        }));
+      };
+
     const handleForm = (e: React.FormEvent<HTMLFormElement>) =>{
-        setErr({})
-        if (password === confirm){
-            setErr({})
-        }
-        else{
-            setErr({
-                confirm: ['Passwords are not the same']
-              });
-        }
+        
         
         e.preventDefault()
     }
@@ -54,64 +94,63 @@ const ProfileSettingsPassword: React.FC = () =>{
 
       };
 
+    
     const handleDisabled = () =>{
-        return password === '';
+        // return profile?.current_password === undefined;
 
     }
 
-    const getProfile = async () => {
-        try {
-          const response = await axios.get(`/profile/settings`, {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: 'Bearer ' + String(authTokens.access),
-            },
-          });
-    
-          const data = response.data;
-          // console.log(data)
-          if (response.status === 200) {
-            setProfile(data);
-          }
-        } catch (error: any) {
-          if (error.response && error.response.status === 401) {
-            // Unauthorized - Logout the user
-            logoutUser();
-          } else {
-            // Handle other errors here
-            console.error('Error fetching profile:', error);
-          }
-        }
-      };
 
-    const changeProfie = async () =>{
+    const changeProfile = async (
+        errorField: string,
+        index: number = 0,
+    ) =>{
         try {
-            const response = await axios.put(`profile/settings/${user.user_id}`, profile, {
+            const response = await axios.put(`/profile/settings/changepassword/${user.user_id}`, profile, {
               headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
                 },
             });
-      
+            removeMultipleErrors(`${errorField}`, index)
             const data = response.data;
             // console.log(data)
             if (response.status === 200) {
-              setProfile(data);
+                setAlertError('Password changed successfully')
+                setProfile({
+                  current_password: "",
+                  new_password: "",
+                  confirm_password: "",
+              });
             }
           } catch (error: any) {
             if (error.response && error.response.status === 401) {
               // Unauthorized - Logout the user
               logoutUser();
             } else {
-              // Handle other errors here
+                removeMultipleErrors(`${errorField}`, index)
+                const axiosError = error as AxiosError<ErrorResponse>;
+                if (axiosError.response?.data) {
+                    handleMultipleErrors(`${errorField}`, index, axiosError.response?.data)
+                }
               console.error('Error fetching profile:', error);
             }
           }
     }
     
+    const saveEdit = async () =>{
+        await changeProfile('userData');
+
+    }
+    
 
     return (
         <div className="container">
+
+            {alertError && <ProfileAlert 
+                error={alertError}
+                setError={setAlertError} />}
+
             <div className="container">
                 <div className="text-center">   
                     {err && err.error && (
@@ -126,42 +165,53 @@ const ProfileSettingsPassword: React.FC = () =>{
             <form onSubmit={e => handleForm(e)}>
                 
                 <div className="mb-3">
-                <label htmlFor="password" className="form-label">Current Password:</label>
+                <label htmlFor="current_password" className="form-label">Current Password:</label>
                 <div className="">
                     <input 
-                    name="password" 
+                    name="current_password" 
                     type="password" 
-                    onChange={data => handlePassword(data.target.value)} 
+                    onChange={(e) => handleInputChange(e)} 
                     required
-                    className="form-control"
+                    className={`form-control${renderFieldErrorMultiple('userData', 0, `current_password`, multipleErrors) ? ' is-invalid' : ''}`} 
                     />
+                    {renderFieldErrorMultiple('userData', 0, `current_password`, multipleErrors)}
                 </div>
                 </div>
 
                 <div className="mb-3">
-                <label htmlFor="newpassword" className="form-label">New Password:</label>
+                <label htmlFor="new_password" className="form-label">New Password:</label>
                 <div className="">
                     <input 
-                    name="newpassword" 
+                    name="new_password" 
                     type="password" 
-                    onChange={data => handleConfirm(data.target.value)} 
+                    onChange={(e) => handleInputChange(e)}
                     
-                    className={`form-control ${err && err.confirm && 'is-invalid'}`}
+                    className={`form-control${renderFieldErrorMultiple('userData', 0, `new_password`, multipleErrors) ? ' is-invalid' : ''}`} 
                     />
+                    {renderFieldErrorMultiple('userData', 0, `new_password`, multipleErrors)}
                 </div>
-                {err && err.confirm && (
-                            <span className="text-danger">{err.confirm[0]}</span>
-                            )}
                 </div>
 
-            
+                <div className="mb-3">
+                <label htmlFor="confirm_password" className="form-label">Confirm New Password:</label>
+                <div className="">
+                    <input 
+                    name="confirm_password" 
+                    type="password" 
+                    onChange={(e) => handleInputChange(e)}
+                    required
+                    className={`form-control${renderFieldErrorMultiple('userData', 0, `confirm_password`, multipleErrors) ? ' is-invalid' : ''}`} 
+                    />
+                    {renderFieldErrorMultiple('userData', 0, `confirm_password`, multipleErrors)}
+                </div>
+                </div>
 
                 <div className="d-grid py-2 text-center">
                 <button 
                     type="submit" 
                     className={`btn btn-primary btn-block`}
-                    disabled={handleDisabled()}
-                    onClick={changeProfie}
+                    // disabled={handleDisabled()}
+                    onClick={saveEdit}
                 >
                     Change Password
                 </button>      
@@ -173,4 +223,5 @@ const ProfileSettingsPassword: React.FC = () =>{
     </div>
 )
 }
+
 export default ProfileSettingsPassword;

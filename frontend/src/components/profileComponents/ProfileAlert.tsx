@@ -13,7 +13,8 @@ const ProfileAlert: React.FC<Alert> = ({ error, setError }) => {
       if (error) {
         if (error === 'Image uploaded successfully' || 
         error === 'Image removed successfully' ||
-        error === 'Data changed successfully') {
+        error === 'Data changed successfully'||
+        error === 'Password changed successfully') {
           setIsSuccess(true);
         }
         setShow(true);

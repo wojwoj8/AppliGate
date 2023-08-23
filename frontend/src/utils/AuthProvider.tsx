@@ -157,6 +157,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             }
             
           }
+          console.log(err)
           console.log('An error occurred while signing up the user!');
         }
       };

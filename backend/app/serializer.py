@@ -1,5 +1,5 @@
 # for translating data to JSON
-from rest_framework import serializers
+from rest_framework import serializers, exceptions
 from .models import (
     User,
     UserExperience,
@@ -13,6 +13,19 @@ from datetime import datetime
 
 
 class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "username",
+            "email",
+            "password",
+        ]
+        extra_kwargs = {
+            "password": {"write_only": True},
+        }
+
+
+class ChangeUserDataSerializer(serializers.ModelSerializer):
     current_password = serializers.CharField(write_only=True, required=True)
 
     class Meta:
@@ -37,6 +50,31 @@ class UserSerializer(serializers.ModelSerializer):
             "current_password"
         )  # Remove current_password from validated_data
         return super().update(instance, validated_data)
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(write_only=True, required=True)
+    new_password = serializers.CharField(write_only=True, required=True)
+    confirm_password = serializers.CharField(write_only=True, required=True)
+
+    def validate(self, data):
+        current_password = data.get("current_password")
+        new_password = data.get("new_password")
+        confirm_password = data.get("confirm_password")
+
+        user = self.context["request"].user
+
+        if not user.check_password(current_password):
+            raise exceptions.ValidationError(
+                {"current_password": "Current password is incorrect."}
+            )
+
+        if new_password != confirm_password:
+            raise exceptions.ValidationError(
+                {"confirm_password": "New passwords do not match."}
+            )
+
+        return data
 
 
 class DateSerializer(serializers.Field):

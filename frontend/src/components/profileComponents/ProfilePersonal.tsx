@@ -7,9 +7,8 @@ import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import AuthContext from '../../utils/AuthProvider';
-import ProfileAlert from './ProfileAlert';
 import ProfileDeleteModal from './ProfileDeleteModal';
-import { profile } from 'console';
+
 
 
 interface ProfilePersonalProps {

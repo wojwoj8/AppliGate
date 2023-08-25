@@ -122,7 +122,7 @@ class ProfileChangePasswordView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def put(self, request, *args, **kwargs):
-        print(request.data)
+        # print(request.data)
         serializer = ChangePasswordSerializer(
             data=request.data, context={"request": request}
         )
@@ -162,7 +162,7 @@ class ProfileImageUploadView(generics.UpdateAPIView):
             # Delete the existing profile image if it exists
 
             if user.profile_image != "defaults/default_profile_image.jpg":
-                print(user.profile_image)
+                # print(user.profile_image)
                 user.profile_image.delete()
 
             user.profile_image = profile_image
@@ -190,7 +190,7 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
     def get(self, request, *args, **kwargs):
         user = request.user
         serializer = self.serializer_class(user, many=False)
-        print(serializer.data)
+        # print(serializer.data)
         return Response(serializer.data)
 
     def put(self, request, *args, **kwargs):
@@ -199,14 +199,19 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
         serializer = self.serializer_class(user, data=request.data)
         profile_image = request.data.get("profile_image")
 
-        if profile_image == "/media/defaults/default_profile_image.jpg":
-            print("default image")
+        if profile_image == "defaults/default_profile_image.jpg":
+            # If the profile_image is the default one, remove it from request data
             del request.data["profile_image"]
+
+        # Remove the 'profile_image' key from the request data entirely
+        request.data.pop("profile_image", None)
+
+        serializer = self.serializer_class(user, data=request.data, partial=True)
 
         if serializer.is_valid():
             # Check if profile_image is provided in the request
             if "profile_image" in request.FILES:
-                serializer.validated_data["profile_image"] = request.FILES[
+                serializer.validated_data["profile_image"] = request.data[
                     "profile_image"
                 ]
             serializer.save()

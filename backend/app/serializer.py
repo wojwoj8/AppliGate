@@ -1,5 +1,6 @@
 # for translating data to JSON
 from rest_framework import serializers, exceptions
+from django.core.files.uploadedfile import SimpleUploadedFile
 from .models import (
     User,
     UserExperience,
@@ -132,8 +133,13 @@ class ProfileSerializer(serializers.ModelSerializer):
         ]
 
     def to_internal_value(self, data):
-        if "profile_image" not in data or data["profile_image"] is None:
-            data["profile_image"] = "defaults/default_profile_image.jpg"
+        if (
+            "profile_image" in data
+            and data["profile_image"] == "defaults/default_profile_image.jpg"
+        ):
+            data[
+                "profile_image"
+            ] = None  # Set it to None to represent the default image
         return super().to_internal_value(data)
 
 

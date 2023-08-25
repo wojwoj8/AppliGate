@@ -15,10 +15,6 @@ import ProfileSettingsPassword from './components/ProfileSettingsPassword';
 import ProfileSettingsUsername from './components/ProfileSettingsUsername';
 import ProfileSettingsDelete from './components/ProfileSettingsDelete';
 
-// axios.defaults.withCredentials = true; // even for get requests if
-//                                     // demand session authentication
-// axios.defaults.xsrfCookieName = 'csrftoken'
-// axios.defaults.xsrfHeaderName = 'x-csrftoken'
 
 function App() {
   setInitialMode();

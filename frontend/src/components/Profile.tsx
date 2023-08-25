@@ -165,7 +165,7 @@ const Profile: React.FC = () =>{
     const [singleSkill, setSingleSkill] = useState<SkillData | null>(null);
     
 
-    const { authTokens, logoutUser } = useContext(AuthContext);
+    const { authTokens, user, logoutUser } = useContext(AuthContext);
 
     const [editPersonal, setEditPersonal] = useState(false);
     const [editContact, setEditContact] = useState(false);
@@ -186,6 +186,7 @@ const Profile: React.FC = () =>{
 
     const [previewMode, setPreviewMode] = useState(false);
     const [alertError, setAlertError] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
 
     const params = useParams();
     const username = params['*'];
@@ -271,6 +272,9 @@ const Profile: React.FC = () =>{
             // if (data.date_of_birth) {
             //     data.date_of_birth = new Date(data.date_of_birth);
             // }
+            // if (path === '/profile/q/undefined'){
+            //   console.error('error')
+            // }
             if(response.status === 200){
             }
         }catch(error: any){
@@ -279,6 +283,7 @@ const Profile: React.FC = () =>{
                 logoutUser();
               } else {
                 // Handle other errors here
+                
                 console.error('Error fetching profile:', error);
               }
         }
@@ -484,6 +489,7 @@ const Profile: React.FC = () =>{
       const pageElement = document.getElementById('page');
       if (pageElement) {
         const elements = pageElement.querySelectorAll('button, svg, .profile-svgs, .prevHidden');
+        
         elements.forEach((element) => {
           if (previewMode) {
             element.classList.add('d-none');
@@ -511,19 +517,51 @@ const Profile: React.FC = () =>{
       
     }
 
-    useEffect(() =>{
-        getData(setProfile, `/profile`);
-        getData(setContact, `/profile/contact`);
-        getData(setExperience, `/profile/experience`);
-        getData(setEducation, `/profile/education`);
-        getData(setCourse, `/profile/course`);
-        getData(setLanguage, `/profile/language`);
-        getData(setSkill, `/profile/skill`);
-        getData(setAbout, `/profile/about`);
-        getData(setLink, `/profile/link`);
-    }, [previewMode])
+    const handleAnotherCV = () =>{
+      const pageElement = document.getElementById('page');
+      if (pageElement && username) {
+        const elements = pageElement.querySelectorAll('button, svg, .profile-svgs, .prevHidden');
+        const preview = document.getElementById('preview');
+        const correctedUsername = username.slice(0, -1);
+        if (user.username !== correctedUsername){
+          console.log(user.username)
+          console.log(correctedUsername)
+          elements.forEach((element) =>{
+            element.remove();
+          });
+          if (preview){
+            preview.remove();
+          }
+          
+          return
+        }
+    }
+  }
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      await getData(setProfile, `/profile/`);
+      await getData(setContact, `/profile/contact`);
+      await getData(setExperience, `/profile/experience`);
+      await getData(setEducation, `/profile/education`);
+      await getData(setCourse, `/profile/course`);
+      await getData(setLanguage, `/profile/language`);
+      await getData(setSkill, `/profile/skill`);
+      await getData(setAbout, `/profile/about`);
+      await getData(setLink, `/profile/link`);
+      
+      handleAnotherCV(); // Call your removal function
+      setIsLoading(false);
+    };
 
-   
+    fetchData(); // Execute the data fetching function
+
+  }, [previewMode]);
+
+
+    if (isLoading) {
+      return <p>Loading...</p>;
+    }
     return(
 
       <div className='mx-4 my-2'>
@@ -531,7 +569,7 @@ const Profile: React.FC = () =>{
                 error={alertError}
                 setError={setAlertError} />}
 
-        <div className='d-flex justify-content-center container'>
+        <div className='d-flex justify-content-center container' id='preview'>
           <button className='btn btn-secondary w-100 rounded-4 mb-2' onClick={handlePreviewMode}>
             {previewMode ? 'Hide Preview' : 'Show Preview'}
           </button>

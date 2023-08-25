@@ -50,7 +50,7 @@ const Navbar: React.FC = () =>{
                   <Link to='/' className="nav-link" aria-current="page">Home</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to='/profile' className="nav-link" aria-current="page">Profile</Link>
+                  <Link to={`/profile/${user.username}/`} className="nav-link" aria-current="page">Profile</Link>
                 </li>
                 <li className="nav-item">
                   <Link to='/profileSettings' className="nav-link" aria-current="page">Profile Settings</Link>

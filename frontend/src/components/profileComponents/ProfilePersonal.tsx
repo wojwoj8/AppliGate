@@ -150,7 +150,7 @@ setPersonal, setAlertError, alertError, username}) => {
         // setEditPersonal(false);
     }
 
-
+    console.log(personal)
     return(
         <div>
                     <div className='bg-black row mb-1 rounded-top-2 '>

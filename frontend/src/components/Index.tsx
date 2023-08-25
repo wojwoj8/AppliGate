@@ -10,7 +10,7 @@ interface ProfileData {
 
 const Index: React.FC = () =>{
 
-    const { authTokens, logoutUser } = useContext(AuthContext);
+    const { authTokens, user, logoutUser } = useContext(AuthContext);
     let [profile, setProfile] = useState<ProfileData | null>(null)
     // console.log(localStorage)
     const navigate = useNavigate();
@@ -49,7 +49,7 @@ const Index: React.FC = () =>{
             <p>You are logged in to the homepage!</p>
             <p>Name: {profile?.username}</p>
             <p>Email: {profile?.email}</p>
-            <button type='button' onClick={() => navigate('/profile')}>Create Profile</button>
+            <button type='button' onClick={() => navigate(`/profile/${user.username}/`)}>Create Profile</button>
 
         </div>
     )

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
 import AuthContext from '../utils/AuthProvider';
 import ProfileContact from './profileComponents/ProfileContact';
@@ -186,6 +187,9 @@ const Profile: React.FC = () =>{
     const [previewMode, setPreviewMode] = useState(false);
     const [alertError, setAlertError] = useState('');
 
+    const params = useParams();
+    const username = params['*'];
+
     const handlePdf = async () => {
       if (handlePreviewMode() === false){
         return;
@@ -249,9 +253,9 @@ const Profile: React.FC = () =>{
       endpoint: string,
       id?: number,
     ) => {
-      let path = `${endpoint}`
+      let path = `${endpoint}/${username}`
       if (id){  
-        path = `${endpoint}/${id}`
+        path = `${endpoint}/${username}/${id}`
       }
         try{
             const response = await axios.get(path, {
@@ -290,7 +294,7 @@ const Profile: React.FC = () =>{
 
     ) =>{
       try{
-          const response = await axios.put(`${endpoint}`, state,  {
+          const response = await axios.put(`${endpoint}/${username}`, state,  {
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + String(authTokens.access),
@@ -325,7 +329,7 @@ const Profile: React.FC = () =>{
       index: number = 0,
     ) =>{
         try{
-            const response = await axios.post(`${endpoint}`, state,  {
+            const response = await axios.post(`${endpoint}/${username}`, state,  {
                 headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
@@ -362,7 +366,7 @@ const Profile: React.FC = () =>{
       ) =>{
         let path = `${endpoint}`
         if (id){  
-          path = `${endpoint}/${id}`
+          path = `${endpoint}/${username}/${id}`
         }
       try{
           const response = await axios.put(path, state[index],  {
@@ -413,7 +417,7 @@ const Profile: React.FC = () =>{
       ) =>{
       // console.log(id)
       try{
-          const response = await axios.delete(`${endpoint}/${id}`, {
+          const response = await axios.delete(`${endpoint}/${username}/${id}`, {
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + String(authTokens.access),
@@ -427,7 +431,7 @@ const Profile: React.FC = () =>{
             });
           }
             getData(setData, `${endpoint}`);
-
+            setAlertError('Data deleted successfully');
             // removeMultipleErrors('experience', index)
       }catch (error: any) {
         if (error.response && error.response.status === 401) {
@@ -436,7 +440,8 @@ const Profile: React.FC = () =>{
         }
           // removeMultipleErrors('experience', index)
           const axiosError = error as AxiosError<ErrorResponse>;
-          // if (axiosError.response?.data) {
+          setAlertError('Something went wrong');
+          if (axiosError.response?.data) {
           //     const keys = Object.keys(axiosError.response?.data)
           //     keys.forEach((key) => {
           //         const newKey = key + `_${index}`;
@@ -446,8 +451,8 @@ const Profile: React.FC = () =>{
           //     console.log(axiosError.response?.data)
           //     // handleMultipleErrors('experience', index, axiosError.response?.data)
           //   // setErr(axiosError.response.data);
-          // }
-          // console.log(error);
+          }
+          console.log(error);
         }
   }
 
@@ -507,15 +512,15 @@ const Profile: React.FC = () =>{
     }
 
     useEffect(() =>{
-        getData(setProfile, '/profile/');
-        getData(setContact, '/profile/contact');
-        getData(setExperience, '/profile/experience');
-        getData(setEducation, '/profile/education');
-        getData(setCourse, '/profile/course');
-        getData(setLanguage, '/profile/language');
-        getData(setSkill, '/profile/skill');
-        getData(setAbout, '/profile/about');
-        getData(setLink, '/profile/link');
+        getData(setProfile, `/profile`);
+        getData(setContact, `/profile/contact`);
+        getData(setExperience, `/profile/experience`);
+        getData(setEducation, `/profile/education`);
+        getData(setCourse, `/profile/course`);
+        getData(setLanguage, `/profile/language`);
+        getData(setSkill, `/profile/skill`);
+        getData(setAbout, `/profile/about`);
+        getData(setLink, `/profile/link`);
     }, [previewMode])
 
    

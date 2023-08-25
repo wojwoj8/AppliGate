@@ -36,7 +36,7 @@ function App() {
             <Route path="/register" element={<IfNotLoggedIn><SignUp/></IfNotLoggedIn>}></Route>
 
             {/* PrivateRoute = Accessable if logged in */}
-            <Route path="/profile" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>
+            <Route path="/profile/*" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>
             <Route path="/profileSettings" element={<PrivateRoute><ProfileSettings/></PrivateRoute>}></Route>
             <Route path="/profileSettings/userData" element={<PrivateRoute><ProfileSettingsUsername/></PrivateRoute>}></Route>
             <Route path="/profileSettings/password" element={<PrivateRoute><ProfileSettingsPassword/></PrivateRoute>}></Route>

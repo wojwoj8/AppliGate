@@ -188,10 +188,16 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
             return None
 
     def get(self, request, *args, **kwargs):
-        user = request.user
-        serializer = self.serializer_class(user, many=False)
-        # print(serializer.data)
-        return Response(serializer.data)
+        username = self.kwargs.get("username")  # Get the username from URL
+        if username:
+            user = User.objects.get(username=username)  # Fetch the user by username
+            serializer = self.serializer_class(user, many=False)
+            return Response(serializer.data)
+        else:
+            user = request.user
+            serializer = self.serializer_class(user, many=False)
+            # print(serializer.data)
+            return Response(serializer.data)
 
     def put(self, request, *args, **kwargs):
         user = request.user
@@ -246,7 +252,13 @@ class BaseProfileView(
 
     def get_queryset(self):
         user = self.request.user
+
+        username = self.kwargs.get("username")
         pk = self.kwargs.get("pk")
+
+        if username:
+            return self.queryset.filter(user__username=username)
+
         if pk is None:
             return self.queryset.filter(user=user)
         return self.queryset.filter(user=user, id=pk)
@@ -275,8 +287,10 @@ class BaseProfileView(
 
     def put(self, request, *args, **kwargs):
         item_id = request.data.get("id")
+        print(item_id)
         try:
             instance = self.queryset.get(id=item_id)
+
         except self.serializer_class.Meta.model.DoesNotExist:
             return Response(
                 {"error": f"{self.serializer_class.Meta.model.__name__} not found"},
@@ -289,9 +303,12 @@ class BaseProfileView(
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
 
-    def delete(self, request, pk):
+    def delete(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+
         try:
             instance = self.queryset.get(id=pk)
+            print(instance)
         except self.serializer_class.Meta.model.DoesNotExist:
             return Response(
                 {"error": f"{self.serializer_class.Meta.model.__name__} not found"},
@@ -310,6 +327,10 @@ class BaseProfileView(
 class ProfileEducationView(BaseProfileView):
     queryset = UserEducation.objects.all()
     serializer_class = UserEducationSerializer
+
+    def get_queryset(self):
+        username = self.kwargs.get("username")
+        return self.queryset.filter(user__username=username)
 
 
 class ProfileCourseView(BaseProfileView):

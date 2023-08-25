@@ -30,6 +30,7 @@ interface ProfilePersonalProps {
     renderFieldErrorMultiple: (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => React.ReactNode;
     alertError: string;
     setAlertError: React.Dispatch<React.SetStateAction<string>>
+    username: string | undefined;
 }
 
 
@@ -37,7 +38,7 @@ interface ProfilePersonalProps {
 const ProfilePersonal: React.FC<ProfilePersonalProps> = ({ 
     personal, setEditPersonal, editPersonal, getData, editData,
     multipleErrors, removeMultipleErrors, renderFieldErrorMultiple,
-setPersonal, setAlertError, alertError}) => {
+setPersonal, setAlertError, alertError, username}) => {
 
     
     const { authTokens } = useContext(AuthContext); // Use the authTokens from AuthContext
@@ -73,7 +74,7 @@ setPersonal, setAlertError, alertError}) => {
         formData.append('profile_image', file);
     
         try {
-        const response = await axios.put('/profile/uploadImage', formData, {
+        const response = await axios.put(`/profile/uploadImage/${username}`, formData, {
             headers: {
             'Content-Type': 'multipart/form-data', // Use multipart/form-data
             Authorization: 'Bearer ' + String(authTokens.access),
@@ -95,7 +96,7 @@ setPersonal, setAlertError, alertError}) => {
         const data = {profile_image: 'default'}
         console.log('test')
         try {
-        const response = await axios.put('/profile/uploadImage', data, {
+        const response = await axios.put(`/profile/uploadImage/${username}`, data, {
             headers: {
             'Content-Type': 'multipart/form-data', // Use multipart/form-data
             Authorization: 'Bearer ' + String(authTokens.access),

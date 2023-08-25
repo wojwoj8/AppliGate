@@ -33,7 +33,7 @@ urlpatterns = [
     path("index/", views.IndexView.as_view()),
     # Profile for user
     path("profile/<str:username>/", views.ProfileView.as_view()),
-    path("profile/uploadImage", views.ProfileImageUploadView.as_view()),
+    path("profile/uploadImage/<str:username>/", views.ProfileImageUploadView.as_view()),
     path("profile/contact/<str:username>/", views.ProfileContactView.as_view()),
     path("profile/experience/<str:username>/", views.ProfileExperienceView.as_view()),
     path(

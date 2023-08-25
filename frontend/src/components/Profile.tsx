@@ -550,6 +550,7 @@ const Profile: React.FC = () =>{
                 renderFieldErrorMultiple={renderFieldErrorMultiple}
                 alertError={alertError}
                 setAlertError={setAlertError}
+                username={username}
             />
             <ProfileContact
                 contact={contact}

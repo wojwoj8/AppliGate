@@ -7,6 +7,7 @@ from rest_framework import (
     authentication,
     permissions,
 )
+from rest_framework.exceptions import PermissionDenied
 from .models import (
     User,
     UserExperience,
@@ -88,6 +89,7 @@ class ProfileChangeDataView(
 
     def get(self, request, *args, **kwargs):
         user = request.user
+
         serializer = self.serializer_class(user, many=False)
         return Response(serializer.data)
 
@@ -143,7 +145,13 @@ class ProfileImageUploadView(generics.UpdateAPIView):
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
 
+    def check_username_permission(self):
+        username = self.kwargs.get("username")
+        if self.request.user.username != username:
+            raise PermissionDenied("You do not have permission to perform this action.")
+
     def update(self, request, *args, **kwargs):
+        self.check_username_permission()
         user = request.user  # Get the authenticated user
         profile_image = request.FILES.get("profile_image")
         # print(request.data["profile_image"])
@@ -187,8 +195,14 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
         except ValueError:
             return None
 
+    def check_username_permission(self):
+        username = self.kwargs.get("username")
+        if self.request.user.username != username:
+            raise PermissionDenied("You do not have permission to perform this action.")
+
     def get(self, request, *args, **kwargs):
         username = self.kwargs.get("username")  # Get the username from URL
+
         if username:
             user = User.objects.get(username=username)  # Fetch the user by username
             serializer = self.serializer_class(user, many=False)
@@ -200,8 +214,9 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
             return Response(serializer.data)
 
     def put(self, request, *args, **kwargs):
+        self.check_username_permission()
         user = request.user
-        print(request.data)
+        # print(request.data)
         serializer = self.serializer_class(user, data=request.data)
         profile_image = request.data.get("profile_image")
 
@@ -263,13 +278,21 @@ class BaseProfileView(
             return self.queryset.filter(user=user)
         return self.queryset.filter(user=user, id=pk)
 
+    # for letting only for get method looking at other CV's
+    def check_username_permission(self):
+        username = self.kwargs.get("username")
+        if self.request.user.username != username:
+            raise PermissionDenied("You do not have permission to perform this action.")
+
     def get(self, request, *args, **kwargs):
+        # print(request.user)
         queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
 
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
+        self.check_username_permission()
         serializer = self.serializer_class(data=request.data)
         if request.data is None:
             serializer = self.serializer_class(data={})
@@ -286,8 +309,9 @@ class BaseProfileView(
         return Response(serializer.errors, status=400)
 
     def put(self, request, *args, **kwargs):
+        self.check_username_permission()
         item_id = request.data.get("id")
-        print(item_id)
+        # print(item_id)
         try:
             instance = self.queryset.get(id=item_id)
 
@@ -304,11 +328,12 @@ class BaseProfileView(
         return Response(serializer.errors, status=400)
 
     def delete(self, request, *args, **kwargs):
+        self.check_username_permission()
         pk = kwargs.get("pk")
 
         try:
             instance = self.queryset.get(id=pk)
-            print(instance)
+            # print(instance)
         except self.serializer_class.Meta.model.DoesNotExist:
             return Response(
                 {"error": f"{self.serializer_class.Meta.model.__name__} not found"},

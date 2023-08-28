@@ -74,12 +74,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             console.log('Something went wrong while logging in the user!');
           }
         } catch (err) {
-          
+          console.log(err)
           if (axios.isAxiosError(err)) {
             // console.log(err)
             if(err.code === "ERR_NETWORK"){
     
-              setErrorLogIn({error:'Something went wrong while signing up the user!' })
+              setErrorLogIn({error:'Something went wrong while logging in the user!' })
               console.log(errorLogIn)
             }
             else{

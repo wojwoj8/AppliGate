@@ -56,6 +56,8 @@ urlpatterns = [
     path("profile/link/<str:username>/", views.ProfileLinkView.as_view()),
     path("profile/link/<str:username>/<int:pk>", views.ProfileLinkView.as_view()),
     path("profile/about/<str:username>/", views.ProfileAboutView.as_view()),
+    path("profile/summary/<str:username>/", views.ProfileSummaryView.as_view()),
+    # SETTINGS
     path("profile/settings", views.ProfileChangeDataView.as_view()),
     path("profile/settings/<int:pk>", views.ProfileChangeDataView.as_view()),
     path(

@@ -14,6 +14,7 @@ import ProfileSkill from './profileComponents/ProfileSkill';
 import ProfilePreview from './profileComponents/ProfilePreview';
 import ProfileDeleteModal from './profileComponents/ProfileDeleteModal';
 import ProfileAlert from './profileComponents/ProfileAlert';
+import ProfileSummary from './profileComponents/ProfileSummary';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
@@ -25,6 +26,10 @@ export interface ProfileData{
   city: string;
   current_position: string;
   profile_image: string;
+}
+
+export interface SummaryData{
+  professional_summary: string;
 }
 
 export interface AboutData{
@@ -111,6 +116,7 @@ export type GetDataFunction =
   React.Dispatch<React.SetStateAction<SkillData[]>> |
   React.Dispatch<React.SetStateAction<SkillData | null>> |
   React.Dispatch<React.SetStateAction<AboutData | null>> |
+  React.Dispatch<React.SetStateAction<SummaryData | null>> |
   undefined;
 
 //UNIVERSAL PUT STATES
@@ -130,6 +136,7 @@ export type EditDataFunction =
   SkillData[] |
   SkillData | null |
   AboutData | null |
+  SummaryData | null |
   undefined;
 
 export type EditMultipleDataFunction = 
@@ -156,6 +163,7 @@ const Profile: React.FC = () =>{
     const [link, setLink] = useState<LinkData[]>([]);
     const [skill, setSkill] = useState<SkillData[]>([]);
     const [about, setAbout] = useState<AboutData | null>(null);
+    const [summary, setSummary] = useState<SummaryData | null>(null);
 
     const [singleCourse, setSingleCourse] = useState<CourseData | null>(null);
     const [singleExperience, setSingleExperience] = useState<ExperienceData | null>(null);
@@ -181,6 +189,7 @@ const Profile: React.FC = () =>{
     const [editMultipleLinks, setEditMultipleLinks] = useState<boolean[]>([]);
     const [editAbout, setEditAbout] = useState(false);
     const [editSkill, setEditSkill] = useState(false);
+    const [editSummary, setEditSummary] = useState(false);
     
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
 
@@ -542,6 +551,7 @@ const Profile: React.FC = () =>{
       setIsLoading(true);
       await getData(setProfile, `/profile/`);
       await getData(setContact, `/profile/contact`);
+      await getData(setSummary, `/profile/summary`);
       await getData(setExperience, `/profile/experience`);
       await getData(setEducation, `/profile/education`);
       await getData(setCourse, `/profile/course`);
@@ -556,7 +566,7 @@ const Profile: React.FC = () =>{
 
     fetchData(); // Execute the data fetching function
 
-  }, [previewMode]);
+  }, []);
 
 
     if (isLoading) {
@@ -602,6 +612,18 @@ const Profile: React.FC = () =>{
                 renderFieldErrorMultiple={renderFieldErrorMultiple}
 
             />
+            <ProfileSummary
+              summary={summary}
+              setSummary={setSummary}
+              editData={editData}
+              getData={getData}
+              setEditSummary={setEditSummary}
+              editSummary={editSummary}
+              multipleErrors={multipleErrors}                                             
+              removeMultipleErrors={removeMultipleErrors}
+              renderFieldErrorMultiple={renderFieldErrorMultiple}
+            />
+
             <ProfileExperience
                 experience={experience}
                 setExperience={setExperience}

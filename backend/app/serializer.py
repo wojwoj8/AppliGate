@@ -244,3 +244,9 @@ class UserAboutSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["about_me"]
+
+
+class UserSummarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["professional_summary"]

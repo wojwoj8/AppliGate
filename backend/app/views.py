@@ -31,6 +31,7 @@ from .serializer import (
     ChangePasswordSerializer,
     ChangeUserDataSerializer,
     DeleteUserDataSerializer,
+    UserSummarySerializer,
 )
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
@@ -252,6 +253,11 @@ class ProfileContactView(BaseProfileUpdateView):
 
 class ProfileAboutView(BaseProfileUpdateView):
     serializer_class = UserAboutSerializer
+    queryset = User.objects.all()
+
+
+class ProfileSummaryView(BaseProfileUpdateView):
+    serializer_class = UserSummarySerializer
     queryset = User.objects.all()
 
 

@@ -26,6 +26,7 @@ class User(AbstractUser):
         null=True,
         default="defaults/default_profile_image.jpg",
     )
+    professional_summary = models.CharField(max_length=500, null=True, blank=True)
 
 
 class UserExperience(models.Model):

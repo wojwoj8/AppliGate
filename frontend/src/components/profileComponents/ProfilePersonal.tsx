@@ -150,7 +150,6 @@ setPersonal, setAlertError, alertError, username}) => {
         // setEditPersonal(false);
     }
 
-    console.log(personal)
     return(
         <div>
                     <div className='bg-black row mb-1 rounded-top-2 '>
@@ -165,7 +164,7 @@ setPersonal, setAlertError, alertError, username}) => {
                         
                             <div className={`col-sm-auto row d-flex align-items-center align-items-baseline flex-column ${personal?.profile_image === '/media/defaults/default_profile_image.jpg'
                         ? ('prevHidden') : ('')}`}>
-                                <form className='d-flex d-sm-block flex-column-reverse align-items-center justify-content-center'>
+                                <form className='d-flex d-sm-block flex-column align-items-center justify-content-center'>
                                     {/* Date.now() to make that image refresh when changed */}
                                     <img className='profile-image my-2' src={`${personal?.profile_image}`} alt="Profile" />
                                     <div className='prevHidden row'>
@@ -232,7 +231,7 @@ setPersonal, setAlertError, alertError, username}) => {
                 
                     
                 {editPersonal &&  
-                    <div className="my-2 col-10">
+                    <div className="col-12">
                         <form>
                             <div className='row my-2'>
                                 <div className='mb-3 col-md-6'>
@@ -303,8 +302,8 @@ setPersonal, setAlertError, alertError, username}) => {
                             </div>
                             
                             </form>
-                        <div className='text-center'>
-                            <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={cancelEditProfile}>Cancel</button>
+                        <div className='text-center mb-1'>
+                            <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={cancelEditProfile}>Cancel</button>
                             <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveEdit}>Save</button> 
                         </div>
                         

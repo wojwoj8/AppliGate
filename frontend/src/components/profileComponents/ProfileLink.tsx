@@ -217,7 +217,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                             </div>
                             </form>
                             <div className='text-center'>
-                                <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={cancelEditLink}>
+                                <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={cancelEditLink}>
                                     Cancel
                                 </button>
                                 <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveLink}>
@@ -285,8 +285,8 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                                 </div>
 
                                 </form>
-                            <div className='text-center'>
-                                <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={() => cancelEditMultipleLinks(index, link.id)}>
+                            <div className='text-center mb-1'>
+                                <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={() => cancelEditMultipleLinks(index, link.id)}>
                                     Cancel
                                 </button>
                                 <button className='btn btn-primary' style={{width:'5rem'}} onClick={() => saveEdit(index, link.id)}>

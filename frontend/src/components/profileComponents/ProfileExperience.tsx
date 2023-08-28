@@ -275,8 +275,8 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 </div>
                             </div>
                             </form>
-                            <div className='text-center'>
-                            <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={cancelEditExperience}>
+                            <div className='text-center mb-1'>
+                            <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={cancelEditExperience}>
                                 Cancel
                             </button>
                             <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveExperience}>
@@ -422,8 +422,8 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                         </div>
                                     </div>
                                     </form>
-                                <div className='text-center'>
-                                <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={() => cancelEditMultipleExperiences(index, experience.id)}>
+                                <div className='text-center mb-1'>
+                                <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={() => cancelEditMultipleExperiences(index, experience.id)}>
                                     Cancel
                                 </button>
                                 <button className='btn btn-primary' style={{width:'5rem'}} onClick={() => saveEdit(index, experience.id)}>

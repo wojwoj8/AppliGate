@@ -1,7 +1,6 @@
 import React from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
-import { ProfileData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
@@ -11,7 +10,6 @@ import { AboutData } from '../Profile';
 interface ProfileAboutProps {
     about: AboutData | null;
     setAbout: React.Dispatch<React.SetStateAction<AboutData | null>>;
-    // handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     editData: (state: EditDataFunction, 
         editField: React.Dispatch<React.SetStateAction<boolean>>, 
         endpoint: string, errorField: string, index?: number
@@ -35,7 +33,6 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
 
         const handleInputChange = (
             event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-            // setData: GetDataFunction,
           ) => {
             const { name, value } = event.target;
 
@@ -63,7 +60,6 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
     
         const saveEdit = async () =>{
             await editData(about, setEditAbout, '/profile/about', 'about')
-            // setEditAbout(false);
         }
 
     return(
@@ -86,13 +82,15 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
                     </div>
                     
                     }
-                    <div className='text-center row my-3'>
+                   
                     {!editAbout && 
+                     <div className='text-center row my-3'>
                         <div className='col-auto col-md-8 col-sm-6 text-start'>
                             {about?.about_me && <p>{about?.about_me}</p>}
                         </div>
+                    </div> 
                 }
-                   </div> 
+                   
                 {editAbout &&  
                     <div className="">
                         <form>
@@ -109,8 +107,8 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
                                 </div>
                             </div>
                         </form>
-                        <div className='text-center'>
-                            <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={cancelEditProfile}>Cancel</button>
+                        <div className='text-center mb-1'>
+                            <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={cancelEditProfile}>Cancel</button>
                             <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveEdit}>Save</button>
                         </div>
                         

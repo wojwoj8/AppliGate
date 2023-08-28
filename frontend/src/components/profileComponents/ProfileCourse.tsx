@@ -215,7 +215,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                             <div className='row'>
                                 <div className='mb-3 col-md-6'>
                                     <label htmlFor={`finish_date`} className='form-label'>
-                                        Finish:
+                                        Finish: <span className='fw-light'>(if up to now leave blank)</span>:
                                     </label>
                                     <input 
                                         type="month" 
@@ -242,8 +242,8 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                 </div>
                             </div>
                             </form>
-                            <div className='text-center'>
-                            <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={cancelEditCourse}>
+                            <div className='text-center mb-1 '>
+                            <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={cancelEditCourse}>
                                 Cancel
                             </button>
                             <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveCourse}>
@@ -259,19 +259,19 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                         
                         {!editMultipleCourses[index] && (
                         <>
-                            <div className='col text-start row'>
+                            <div className='col d-flex flex-column flex-sm-row text-start row'>
                                 
-                                <div className='d-sm-flex gap-4 align-items-center col-md-6'>
-                                    <p className='fw-bold'>{course?.finish_date}</p>
+                                <div className='d-sm-flex gap-4 align-items-center  col-sm-6'>
+                                    <p className='fw-bold'>{course?.finish_date ? (course?.finish_date) : ('Ongoing')}</p>
                                 </div>
-                                <div className='col-md-6'>
+                                <div className=' col-sm-6 d-flex  flex-column justify-content-around'>
                                     <span className='fw-bold'>{course?.organizer || ''}:</span>
                                     {course?.course_name && course?.certificate_link ? (
                                         <p className='fw-medium'><a target='_blank' href={course?.certificate_link} rel="noreferrer">{course?.course_name}</a></p>
                                     ) : (
                                         <p>{course?.course_name}</p>
                                     )}
-                            </div>
+                                </div>
                                 
                                 
 
@@ -322,7 +322,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                 <div className='row'>
                                     <div className='mb-3 col-md-6'>
                                     <label htmlFor={`finish_date_${index}`} className='form-label'>
-                                        Finish:
+                                        Finish: <span className='fw-light'>(if up to now leave blank)</span>:
                                     </label>
                                     <input
                                         type='month'
@@ -349,8 +349,8 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                         </div>
                                 </div>
                                 </form>
-                            <div className='text-center'>
-                            <button className='btn btn-secondary me-md-2' style={{width:'5rem'}} onClick={() => cancelEditMultipleCourses(index, course.id)}>
+                            <div className='text-center mb-1'>
+                            <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={() => cancelEditMultipleCourses(index, course.id)}>
                                 Cancel
                             </button>
                             <button className='btn btn-primary' style={{width:'5rem'}} onClick={() => saveEdit(index, course.id)}>

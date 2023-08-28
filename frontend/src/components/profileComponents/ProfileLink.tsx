@@ -160,7 +160,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
         });
     };
     return(
-        <div className='pb-1'>
+        <div className={`pb-1 ${(!link[0])  && 'prevHidden'}`}>
             
                 
                 <div className='bg-black row mb-1 '>
@@ -233,7 +233,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                         
                         {!editMultipleLinks[index] && (
                         <>
-                            <div className='col text-start d-flex'>
+                            <div className='col text-start d-flex my-2'>
                                 <div className='col'>
                                     <p className='fw-medium'>{link?.link_name || ''}: </p>
                                     <a className='fw-medium' href={link?.link} target='_blank' rel="noreferrer"><p>{link?.link || ''}</p></a>  

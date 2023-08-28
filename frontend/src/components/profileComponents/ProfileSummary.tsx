@@ -67,7 +67,7 @@ const ProfileSummary: React.FC<ProfileAboutProps> = ({
         }
 
     return(
-        <div>
+        <div className={`${!summary?.professional_summary && 'prevHidden'}`}>
             <div className='bg-black row mb-1 '>
                 <p className='fs-3 fw-semibold text-white col mb-1'>Professional Summary</p>
                 <div className='col-auto d-flex align-items-center'>
@@ -79,13 +79,13 @@ const ProfileSummary: React.FC<ProfileAboutProps> = ({
             {!summary?.professional_summary && !editSummary &&
             <div className='container'> 
                 <p className='my-4'>
-                Show your passion, hobby to your future employers.
+                Your professional summary is crucial. Highlight your skills, background, and ambitions to boost your job prospects.
                 </p>
             </div>
             
             }
             
-            {!editSummary && 
+            {!editSummary && summary?.professional_summary &&
             <div className='text-center row my-3'>
                 <div className='text-start'>
                     {summary?.professional_summary && <p>{summary?.professional_summary}</p>}

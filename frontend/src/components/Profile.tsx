@@ -546,6 +546,7 @@ const Profile: React.FC = () =>{
         }
     }
   }
+  console.log(username)
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -566,7 +567,7 @@ const Profile: React.FC = () =>{
 
     fetchData(); // Execute the data fetching function
 
-  }, []);
+  }, [username]);
 
 
     if (isLoading) {
@@ -579,7 +580,7 @@ const Profile: React.FC = () =>{
                 error={alertError}
                 setError={setAlertError} />}
 
-        <div className='d-flex justify-content-center container' id='preview'>
+        <div className='d-flex justify-content-center container my-1' id='preview'>
           <button className='btn btn-secondary w-100 rounded-4 mb-2' onClick={handlePreviewMode}>
             {previewMode ? 'Hide Preview' : 'Show Preview'}
           </button>
@@ -740,7 +741,7 @@ const Profile: React.FC = () =>{
             />
         </div>
         <div className='container'>
-          <button className='btn btn-primary w-100 rounded-4 mt-2' onClick={handlePdf}>Download PDF</button>
+          <button className='btn btn-primary w-100 rounded-4 mt-3' onClick={handlePdf}>Download PDF</button>
         </div>
       </div>
     )

@@ -90,7 +90,7 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
       };
 
     return(
-        <div>
+        <div className={`${(!skill[0])  && 'prevHidden'}`}>
             
                 
                 <div className='bg-black row mb-1'>
@@ -101,7 +101,7 @@ const ProfileSkill: React.FC<ProfileSkillProps> = ({
                         <form>
                             <div className=''>
                                 <div className='mb-3'>
-                                    <div className='row align-items-end prevHidden'>
+                                    <div className='row align-items-end prevHidden mt-2'>
                                     <p>Enter your skills <b>one at a time</b> by approving with the "Add" button.</p>
                                         <div className='col'>
                                             <label htmlFor={`skill`} className='form-label'>

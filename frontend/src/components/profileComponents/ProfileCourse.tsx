@@ -159,7 +159,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
         });
     };
     return(
-        <div>
+        <div className={`${(!course[0])  && 'prevHidden'}`}>
             
                 
             <div className='bg-black row mb-1 mb-1'>

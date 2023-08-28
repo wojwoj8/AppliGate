@@ -63,7 +63,7 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
         }
 
     return(
-        <div>
+        <div className={`${!about?.about_me && 'prevHidden'}`}>
             
                 
                 <div className='bg-black row mb-1 '>
@@ -83,9 +83,9 @@ const ProfileAbout: React.FC<ProfileAboutProps> = ({
                     
                     }
                    
-                    {!editAbout && 
+                    {!editAbout && about?.about_me &&
                      <div className='text-center row my-3'>
-                        <div className='col-auto col-md-8 col-sm-6 text-start'>
+                        <div className='col-auto text-start'>
                             {about?.about_me && <p>{about?.about_me}</p>}
                         </div>
                     </div> 

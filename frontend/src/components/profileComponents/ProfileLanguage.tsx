@@ -159,7 +159,7 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
         });
     };
     return(
-        <div>
+        <div className={`${(!language[0])  && 'prevHidden'}`}>
             
                 
             <div className='bg-black row mb-1'>

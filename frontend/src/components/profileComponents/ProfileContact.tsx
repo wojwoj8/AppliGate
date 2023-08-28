@@ -60,7 +60,7 @@ const ProfileContact: React.FC<ProfileContactProps> = ({contact, editContact, se
         // setContactEditing(false);
     }
     return(
-        <div>
+        <div className={`${(!contact?.contact_email && !contact?.phone_number)  && 'prevHidden'}`}>
             
             <div className='bg-black row mb-1'>
                 <p className='fs-3 fw-semibold text-white col mb-1'>Contact Data</p>

@@ -159,7 +159,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
         });
     };
     return(
-        <div>
+        <div className={`${(!education[0])  && 'prevHidden'}`}>
             
                 
             <div className='bg-black row mb-1'>
@@ -286,8 +286,8 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                         
                         {!editMultipleEducations[index] && (
                         <>
-                            <div className='col row text-start'>
-                                <div className='col-md-6'>
+                            <div className='col row text-start my-2'>
+                                <div className='col-sm-6'>
                                 <h2 className='mb-1 text-primary fs-3'>
                                     {education?.school || ''}
                                     </h2>
@@ -295,7 +295,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                     {education?.from_date && education?.to_date && <p>{education?.from_date} - {education?.to_date}</p>} 
                                     {!education?.from_date && education?.to_date && <p>To: <span className='fw-light'>(if up to now leave blank)</span> {education?.to_date}</p>}  
                                 </div>
-                                <div className='col-md-6'>
+                                <div className='col-sm-6'>
                                 <span className='fw-bold'>{education?.major || ''}</span> 
                                         {education?.major && education?.specialization ? <span>, </span> : null}
                                         <span className='fst-italic'>{education?.specialization || ''}</span>
@@ -312,7 +312,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                         )}
                         
                         {editMultipleEducations[index] && (
-                        <div className='container'>
+                        <div className='container '>
                             <form>
                                 <div className='row my-2'>
                                     <div className='mb-3 col-md-6'>

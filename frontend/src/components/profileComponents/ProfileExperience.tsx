@@ -163,7 +163,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
     };
     //   console.log(typeof(experience))
     return(
-        <div>
+        <div className={`${(!experience[0])  && 'prevHidden'}`}>
             
                 
             <div className='bg-black row mb-1'>
@@ -293,8 +293,8 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                             
                             {!editMultipleExperiences[index] && (
                             <>
-                                <div className='col row text-start'>
-                                    <div className='col-md-6 mb-1'>
+                                <div className='col row text-start my-2'>
+                                    <div className='col-sm-6 mb-1'>
                                         <h2 className='mb-1 text-primary fs-3'>
                                         {experience?.position || ''}
                                         </h2>
@@ -302,7 +302,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                         {experience?.from_date && experience?.to_date && <p className=''>{experience?.from_date} - {experience?.to_date}</p>} 
                                         {!experience?.from_date && experience?.to_date && <p>To: <span className='fw-light'>(if up to now leave blank)</span> {experience?.to_date}</p>}    
                                     </div>
-                                    <div className='col-md-6'>
+                                    <div className='col-sm-6'>
                                         <span className='fw-bold'>{experience?.company || ''}</span> 
                                         {experience?.company && experience?.localization ? <span>, </span> : null}
                                         <span className='fst-italic'>{experience?.localization || ''}</span>

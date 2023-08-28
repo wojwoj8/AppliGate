@@ -39,6 +39,7 @@ from django.conf import settings
 from django.core.files.storage import default_storage
 from rest_framework.permissions import IsAuthenticated
 from datetime import datetime
+from rest_framework.generics import get_object_or_404
 
 
 class SignupView(
@@ -205,7 +206,9 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
         username = self.kwargs.get("username")  # Get the username from URL
 
         if username:
-            user = User.objects.get(username=username)  # Fetch the user by username
+            # user = User.objects.get(username=username)  # Fetch the user by username
+            user = get_object_or_404(User, username=username)
+
             serializer = self.serializer_class(user, many=False)
             return Response(serializer.data)
         else:

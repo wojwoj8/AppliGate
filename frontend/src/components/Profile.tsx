@@ -11,12 +11,11 @@ import ProfileAbout from './profileComponents/ProfileAbout';
 import ProfileLanguage from './profileComponents/ProfileLanguage';
 import ProfileLink from './profileComponents/ProfileLink';
 import ProfileSkill from './profileComponents/ProfileSkill';
-import ProfilePreview from './profileComponents/ProfilePreview';
-import ProfileDeleteModal from './profileComponents/ProfileDeleteModal';
 import ProfileAlert from './profileComponents/ProfileAlert';
 import ProfileSummary from './profileComponents/ProfileSummary';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import ErrorPage from './ErrorPage';
 
 export interface ProfileData{
   first_name: string;
@@ -196,6 +195,10 @@ const Profile: React.FC = () =>{
     const [previewMode, setPreviewMode] = useState(false);
     const [alertError, setAlertError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
+
+
+
 
     const params = useParams();
     const username = params['*'];
@@ -287,10 +290,17 @@ const Profile: React.FC = () =>{
             if(response.status === 200){
             }
         }catch(error: any){
+            const axiosError = error as AxiosError<ErrorResponse>;
             if (error.response && error.response.status === 401) {
                 // Unauthorized - Logout the user
                 logoutUser();
-              } else {
+              }
+            else if (error.response && error.response.status === 404) {
+              console.log('not found', error)
+              setError(axiosError);
+              
+            } 
+            else {
                 // Handle other errors here
                 
                 console.error('Error fetching profile:', error);
@@ -549,7 +559,9 @@ const Profile: React.FC = () =>{
   console.log(username)
   useEffect(() => {
     const fetchData = async () => {
+      setError(null);
       setIsLoading(true);
+
       await getData(setProfile, `/profile/`);
       await getData(setContact, `/profile/contact`);
       await getData(setSummary, `/profile/summary`);
@@ -560,11 +572,11 @@ const Profile: React.FC = () =>{
       await getData(setSkill, `/profile/skill`);
       await getData(setAbout, `/profile/about`);
       await getData(setLink, `/profile/link`);
-      
-      handleAnotherCV(); // Call your removal function
+     
       setIsLoading(false);
+      handleAnotherCV();
+      
     };
-
     fetchData(); // Execute the data fetching function
 
   }, [username]);
@@ -573,13 +585,19 @@ const Profile: React.FC = () =>{
     if (isLoading) {
       return <p>Loading...</p>;
     }
+    if (error){
+      return <ErrorPage axiosError={error} />
+    }
     return(
 
+      <>
+      
       <div className='mx-4 my-2'>
         {alertError && <ProfileAlert 
                 error={alertError}
                 setError={setAlertError} />}
 
+        
         <div className='d-flex justify-content-center container my-1' id='preview'>
           <button className='btn btn-secondary w-100 rounded-4 mb-2' onClick={handlePreviewMode}>
             {previewMode ? 'Hide Preview' : 'Show Preview'}
@@ -744,6 +762,7 @@ const Profile: React.FC = () =>{
           <button className='btn btn-primary w-100 rounded-4 mt-3' onClick={handlePdf}>Download PDF</button>
         </div>
       </div>
+      </>
     )
 }
 export default Profile

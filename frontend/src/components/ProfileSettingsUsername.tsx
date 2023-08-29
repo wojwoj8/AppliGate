@@ -7,6 +7,7 @@ import ErrorPage from "./ErrorPage";
 import { MultipleErrorResponse } from './Profile';
 import ProfileAlert from "./profileComponents/ProfileAlert";
 import DeleteModal from "./DeleteModal";
+import Loading from "./Loading";
 
 interface ProfileData {
     username: string;
@@ -30,11 +31,14 @@ const ProfileSettingsUsername: React.FC = () =>{
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
     const [loading, setLoading] = useState(false);
+    const [progress, setProgress] = useState(0);
     
     useEffect(() => {
       const fetchData = async () =>{
         setLoading(true);
+        setProgress(50);
         await getProfile();
+        setProgress(100);
         setLoading(false);
       }
       fetchData();
@@ -187,7 +191,7 @@ const ProfileSettingsUsername: React.FC = () =>{
 
 
     if (loading){
-      return <p>loading...</p>
+      <Loading progress={progress} />
 
     }
     if (error){

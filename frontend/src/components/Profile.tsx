@@ -16,6 +16,7 @@ import ProfileSummary from './profileComponents/ProfileSummary';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import ErrorPage from './ErrorPage';
+import Loading from './Loading';
 
 export interface ProfileData{
   first_name: string;
@@ -196,7 +197,7 @@ const Profile: React.FC = () =>{
     const [alertError, setAlertError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
-
+    const [progress, setProgress] = useState(0);
 
 
 
@@ -559,16 +560,32 @@ const Profile: React.FC = () =>{
       setError(null);
       setIsLoading(true);
 
-      await getData(setProfile, `/profile/`);
-      await getData(setContact, `/profile/contact`);
-      await getData(setSummary, `/profile/summary`);
-      await getData(setExperience, `/profile/experience`);
-      await getData(setEducation, `/profile/education`);
-      await getData(setCourse, `/profile/course`);
-      await getData(setLanguage, `/profile/language`);
-      await getData(setSkill, `/profile/skill`);
-      await getData(setAbout, `/profile/about`);
-      await getData(setLink, `/profile/link`);
+      const steps = 10; // Total number of steps
+      let completedSteps = 0;
+
+      const updateProgress = (completedSteps: number) => {
+        completedSteps++;
+        const newProgress = (completedSteps / steps) * 100;
+        setProgress(newProgress);
+      };
+
+      const fetchDataAndUpdateProgress = async (setter: GetDataFunction, endpoint: string) => {
+        await getData(setter, endpoint);
+        completedSteps++;
+        updateProgress(completedSteps);
+      };
+  
+      await fetchDataAndUpdateProgress(setProfile, `/profile/`);
+      await fetchDataAndUpdateProgress(setContact, `/profile/contact`);
+      await fetchDataAndUpdateProgress(setSummary, `/profile/summary`);
+      await fetchDataAndUpdateProgress(setExperience, `/profile/experience`);
+      await fetchDataAndUpdateProgress(setEducation, `/profile/education`);
+      await fetchDataAndUpdateProgress(setCourse, `/profile/course`);
+      await fetchDataAndUpdateProgress(setLanguage, `/profile/language`);
+      await fetchDataAndUpdateProgress(setSkill, `/profile/skill`);
+      await fetchDataAndUpdateProgress(setAbout, `/profile/about`);
+      
+      await fetchDataAndUpdateProgress(setLink, `/profile/link`);
      
       setIsLoading(false);
       handleAnotherCV();
@@ -580,7 +597,8 @@ const Profile: React.FC = () =>{
 
 
     if (isLoading) {
-      return <p>Loading...</p>;
+      // return <p>Loading...</p>;
+      return <Loading progress={progress} />
     }
     if (error){
       // console.log('error')

@@ -2,9 +2,10 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "./Profile";
+import ErrorPage from "./ErrorPage";
 import AuthContext from "../utils/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import ErrorPage from "./ErrorPage";
+import Loading from './Loading';
 
 interface ProfileData {
     username: string;
@@ -17,12 +18,16 @@ const Index: React.FC = () =>{
     let [profile, setProfile] = useState<ProfileData | null>(null)
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
     const [loading, setIsLoading] = useState(false);
+    const [progress, setProgress] = useState(0);
+    
     // console.log(localStorage)
     const navigate = useNavigate();
     useEffect(() => {
         const fetchData = async () =>{
           setIsLoading(true)
+          setProgress(50)
           await getProfile()
+          setProgress(100)
           setIsLoading(false)
         }
 
@@ -58,12 +63,9 @@ const Index: React.FC = () =>{
       if (error){
         return <ErrorPage axiosError={error} />
       }
-      if (loading){
-        return (
-          <div>
-            loading...
-          </div>
-        )
+      if (loading) {
+        // return <p>Loading...</p>;
+        return <Loading progress={progress} />
       }
 
     return (

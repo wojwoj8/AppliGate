@@ -14,6 +14,7 @@ import ProfileSettings from './components/ProfileSettings';
 import ProfileSettingsPassword from './components/ProfileSettingsPassword';
 import ProfileSettingsUsername from './components/ProfileSettingsUsername';
 import ProfileSettingsDelete from './components/ProfileSettingsDelete';
+import Example from './components/Example';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           {/* default route */}
             <Route path="*" element={<Navigate to="/" replace />} />
             {/* IfNotLoggedIn = Accessable IfNotLoggedIn */}
+            <Route path="/example" element={<Example/>}></Route>
             <Route path="/login" element={<IfNotLoggedIn><LogIn/></IfNotLoggedIn>}></Route>
             <Route path="/register" element={<IfNotLoggedIn><SignUp/></IfNotLoggedIn>}></Route>
 

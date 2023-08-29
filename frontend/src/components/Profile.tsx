@@ -299,6 +299,7 @@ const Profile: React.FC = () =>{
                 // Handle other errors here
                 
                 console.error('Error fetching profile:', error);
+                console.log(axiosError)
                 setError(axiosError);
               }
         }

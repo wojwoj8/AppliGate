@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../utils/AuthProvider";
 import DarkMode from "../utils/DarkMode";
+import Example from "./Example";
 
 
 const Navbar: React.FC = () =>{
@@ -50,6 +51,9 @@ const Navbar: React.FC = () =>{
                   <Link to='/' className="nav-link" aria-current="page">Home</Link>
                 </li>
                 <li className="nav-item">
+                  <Link to='/example' className="nav-link">Example</Link>
+                </li>
+                <li className="nav-item">
                   <Link to={`/profile/${user.username}/`} className="nav-link" aria-current="page">Profile</Link>
                 </li>
                 <li className="nav-item">
@@ -89,6 +93,9 @@ const Navbar: React.FC = () =>{
                   <Link to='/' className="nav-link active" aria-current="page">Home</Link>
                 </li> */}
                 <li className="nav-item">
+                  <Link to='/example' className="nav-link">Example</Link>
+                </li>
+                <li className="nav-item">
                   <Link to='/login' className="nav-link">Log In</Link>
                 </li>
                 <li className="nav-item">
@@ -105,6 +112,7 @@ const Navbar: React.FC = () =>{
                     <label className="form-check-label" htmlFor="flexSwitchCheckCheckedReverse">Dark Mode</label>
                   </div>
                 </li>
+                
               </ul>
               )}
 

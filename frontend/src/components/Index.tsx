@@ -1,7 +1,10 @@
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
+import { AxiosError } from "axios";
+import { ErrorResponse } from "./Profile";
 import AuthContext from "../utils/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import ErrorPage from "./ErrorPage";
 
 interface ProfileData {
     username: string;
@@ -12,10 +15,19 @@ const Index: React.FC = () =>{
 
     const { authTokens, user, logoutUser } = useContext(AuthContext);
     let [profile, setProfile] = useState<ProfileData | null>(null)
+    const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
+    const [loading, setIsLoading] = useState(false);
     // console.log(localStorage)
     const navigate = useNavigate();
     useEffect(() => {
-        getProfile()
+        const fetchData = async () =>{
+          setIsLoading(true)
+          await getProfile()
+          setIsLoading(false)
+        }
+
+        fetchData();
+        
     },[])
 
     const getProfile = async () => {
@@ -33,16 +45,26 @@ const Index: React.FC = () =>{
             setProfile(data);
           }
         } catch (error: any) {
+          const axiosError = error as AxiosError<ErrorResponse>;
           if (error.response && error.response.status === 401) {
             // Unauthorized - Logout the user
             logoutUser();
-          } else {
-            // Handle other errors here
-            console.error('Error fetching profile:', error);
+          } else if (error.response && (error.response.status !== 400)) {
+            setError(axiosError)
           }
         }
       };
     
+      if (error){
+        return <ErrorPage axiosError={error} />
+      }
+      if (loading){
+        return (
+          <div>
+            loading...
+          </div>
+        )
+      }
 
     return (
         <div className="">

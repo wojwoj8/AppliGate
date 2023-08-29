@@ -6,6 +6,7 @@ import { ErrorResponse } from "./Profile";
 import { MultipleErrorResponse } from './Profile';
 import ProfileAlert from "./profileComponents/ProfileAlert";
 import DeleteModal from "./DeleteModal";
+import ErrorPage from "./ErrorPage";
 
 interface ProfileData {
     current_password: string;
@@ -28,6 +29,8 @@ const ProfileSettingsPassword: React.FC = () =>{
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
     const [alertError, setAlertError] = useState('');
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
+    
     
 
 
@@ -128,12 +131,17 @@ const ProfileSettingsPassword: React.FC = () =>{
               });
             }
           } catch (error: any) {
+            const axiosError = error as AxiosError<ErrorResponse>;
             if (error.response && error.response.status === 401) {
               // Unauthorized - Logout the user
               logoutUser();
-            } else {
+            } 
+            else if (error.response && (error.response.status !== 400)) {
+              setError(axiosError)
+            }
+            else {
                 removeMultipleErrors(`${errorField}`, index)
-                const axiosError = error as AxiosError<ErrorResponse>;
+                
                 if (axiosError.response?.data) {
                     handleMultipleErrors(`${errorField}`, index, axiosError.response?.data)
                 }
@@ -146,7 +154,10 @@ const ProfileSettingsPassword: React.FC = () =>{
         await changeProfile('userData');
 
     }
-    
+    if (error){
+      // console.log('error')
+      return <ErrorPage axiosError={error} />
+    }
 
     return (
         <div className="container">

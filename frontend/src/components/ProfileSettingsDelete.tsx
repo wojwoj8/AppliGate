@@ -6,6 +6,7 @@ import { ErrorResponse } from "./Profile";
 import { MultipleErrorResponse } from './Profile';
 import ProfileAlert from "./profileComponents/ProfileAlert";
 import DeleteModal from "./DeleteModal";
+import ErrorPage from "./ErrorPage";
 
 interface ProfileData {
     current_password: string;
@@ -24,8 +25,7 @@ const ProfileSettingsDelete: React.FC = () =>{
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
     const [alertError, setAlertError] = useState('');
     const inputRef = useRef<HTMLInputElement | null>(null);
-    
-
+    const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
 
     const renderFieldErrorMultiple = (
         field: string, 
@@ -113,17 +113,24 @@ const ProfileSettingsDelete: React.FC = () =>{
             removeMultipleErrors(`${errorField}`, index)
             const data = response.data;
             // console.log(data)
-            if (response.status === 200) {
+            if (response.status === 204) {
                 setAlertError('Account deleted successfully')
+                logoutUser();
+               
                 
             }
           } catch (error: any) {
+            const axiosError = error as AxiosError<ErrorResponse>;
             if (error.response && error.response.status === 401) {
               // Unauthorized - Logout the user
               logoutUser();
-            } else {
+            } 
+            else if (error.response && (error.response.status !== 400)) {
+              setError(axiosError)
+            }
+            else {
                 removeMultipleErrors(`${errorField}`, index)
-                const axiosError = error as AxiosError<ErrorResponse>;
+                
                 if (axiosError.response?.data) {
                     handleMultipleErrors(`${errorField}`, index, axiosError.response?.data)
                 }
@@ -135,8 +142,10 @@ const ProfileSettingsDelete: React.FC = () =>{
     
     const saveEdit = async () =>{
         await deleteProfile('userData');
-        logoutUser();
-
+    }
+    if (error){
+      // console.log('error')
+      return <ErrorPage axiosError={error} />
     }
     
     return (

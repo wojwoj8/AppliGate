@@ -3,6 +3,7 @@ import axios from "axios";
 import AuthContext from "../utils/AuthProvider";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "./Profile";
+import ErrorPage from "./ErrorPage";
 import { MultipleErrorResponse } from './Profile';
 import ProfileAlert from "./profileComponents/ProfileAlert";
 import DeleteModal from "./DeleteModal";
@@ -27,9 +28,17 @@ const ProfileSettingsUsername: React.FC = () =>{
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
     const [alertError, setAlertError] = useState('');
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
+    const [loading, setLoading] = useState(false);
     
     useEffect(() => {
-        getProfile()
+      const fetchData = async () =>{
+        setLoading(true);
+        await getProfile();
+        setLoading(false);
+      }
+      fetchData();
+        
     },[])
 
     const renderFieldErrorMultiple = (
@@ -119,13 +128,14 @@ const ProfileSettingsUsername: React.FC = () =>{
           if (response.status === 200) {
             setProfile(data);
           }
-        } catch (error: any) {
+        }catch (error: any) {
+          const axiosError = error as AxiosError<ErrorResponse>;
           if (error.response && error.response.status === 401) {
             // Unauthorized - Logout the user
             logoutUser();
-          } else {
-            // Handle other errors here
-            console.error('Error fetching profile:', error);
+          }
+          else if (error.response && (error.response.status !== 400)) {
+            setError(axiosError)
           }
         }
       };
@@ -149,10 +159,15 @@ const ProfileSettingsUsername: React.FC = () =>{
                 setProfile(data);
             }
           } catch (error: any) {
+            const axiosError = error as AxiosError<ErrorResponse>;
             if (error.response && error.response.status === 401) {
               // Unauthorized - Logout the user
               logoutUser();
-            } else {
+            }
+            else if (error.response && (error.response.status !== 400)) {
+              setError(axiosError)
+            }
+            else {
                 removeMultipleErrors(`${errorField}`, index)
                 const axiosError = error as AxiosError<ErrorResponse>;
                 if (axiosError.response?.data) {
@@ -169,6 +184,18 @@ const ProfileSettingsUsername: React.FC = () =>{
             inputRef.current.value = '';
         }
     }
+
+
+    if (loading){
+      return <p>loading...</p>
+
+    }
+    if (error){
+      // console.log('error')
+      return <ErrorPage axiosError={error} />
+    }
+
+    
 
     return (
         <div className="container">

@@ -281,12 +281,7 @@ const Profile: React.FC = () =>{
                 setData(response.data);
               }
             const data = response.data;
-            // if (data.date_of_birth) {
-            //     data.date_of_birth = new Date(data.date_of_birth);
-            // }
-            // if (path === '/profile/q/undefined'){
-            //   console.error('error')
-            // }
+
             if(response.status === 200){
             }
         }catch(error: any){
@@ -295,15 +290,15 @@ const Profile: React.FC = () =>{
                 // Unauthorized - Logout the user
                 logoutUser();
               }
-            else if (error.response && error.response.status === 404) {
-              console.log('not found', error)
-              setError(axiosError);
-              
+            else if (error.response && (error.response.status !== 400)) {
+                setError(axiosError)
+
             } 
             else {
                 // Handle other errors here
                 
                 console.error('Error fetching profile:', error);
+                setError(axiosError);
               }
         }
     }
@@ -327,12 +322,16 @@ const Profile: React.FC = () =>{
           editField(false)
           removeMultipleErrors(`${errorField}`, index)
       }catch (error: any) {
+        const axiosError = error as AxiosError<ErrorResponse>;
         if (error.response && error.response.status === 401) {
           // Unauthorized - Logout the user
           logoutUser();
         }
+        else if (error.response && (error.response.status !== 400)) {
+          setError(axiosError)
+        }
           removeMultipleErrors(`${errorField}`, index)
-          const axiosError = error as AxiosError<ErrorResponse>;
+          
           if (axiosError.response?.data) {
             handleMultipleErrors(`${errorField}`, index, axiosError.response?.data)
           }
@@ -365,12 +364,16 @@ const Profile: React.FC = () =>{
             getData(setData, `${endpoint}`);
             if (cleanState) cleanState()
         }catch (error: any) {
+          const axiosError = error as AxiosError<ErrorResponse>;
           if (error.response && error.response.status === 401) {
             // Unauthorized - Logout the user
             logoutUser();
           }
+          else if (error.response && (error.response.status !== 400)) {
+            setError(axiosError)
+          }
           removeMultipleErrors(`${errorField}`, index)
-            const axiosError = error as AxiosError<ErrorResponse>;
+            
             if (axiosError.response?.data) {
               handleMultipleErrors(`${errorField}`, index, axiosError.response?.data)
             }
@@ -410,12 +413,16 @@ const Profile: React.FC = () =>{
 
             removeMultipleErrors(`${errorField}`, index)
       }catch (error: any) {
+        const axiosError = error as AxiosError<ErrorResponse>;
         if (error.response && error.response.status === 401) {
           // Unauthorized - Logout the user
           logoutUser();
         }
+        else if (error.response && (error.response.status !== 400)) {
+          setError(axiosError)
+        }
         removeMultipleErrors(`${errorField}`, index)
-          const axiosError = error as AxiosError<ErrorResponse>;
+          
           if (axiosError.response?.data) {
               const keys = Object.keys(axiosError.response?.data)
               keys.forEach((key) => {
@@ -465,17 +472,7 @@ const Profile: React.FC = () =>{
           // removeMultipleErrors('experience', index)
           const axiosError = error as AxiosError<ErrorResponse>;
           setAlertError('Something went wrong');
-          if (axiosError.response?.data) {
-          //     const keys = Object.keys(axiosError.response?.data)
-          //     keys.forEach((key) => {
-          //         const newKey = key + `_${index}`;
-          //         axiosError.response!.data[newKey] = axiosError.response!.data[key];
-          //         delete axiosError.response!.data[key];
-          //     });
-          //     console.log(axiosError.response?.data)
-          //     // handleMultipleErrors('experience', index, axiosError.response?.data)
-          //   // setErr(axiosError.response.data);
-          }
+
           console.log(error);
         }
   }
@@ -586,6 +583,7 @@ const Profile: React.FC = () =>{
       return <p>Loading...</p>;
     }
     if (error){
+      // console.log('error')
       return <ErrorPage axiosError={error} />
     }
     return(

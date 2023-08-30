@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
 import AuthContext from '../utils/AuthProvider';
@@ -536,11 +536,14 @@ const Profile: React.FC = () =>{
     }
 
     const handleAnotherCV = () =>{
-      const pageElement = document.getElementById('page');
+      let pageElement = document.getElementById('page');
+      console.log(pageElement)
       if (pageElement && username) {
-        const elements = pageElement.querySelectorAll('button, svg, .profile-svgs, .prevHidden');
-        const preview = document.getElementById('preview');
-        const correctedUsername = username.slice(0, -1);
+        let elements = pageElement.querySelectorAll('button, svg, .profile-svgs, .prevHidden');
+        let preview = document.getElementById('preview');
+        let correctedUsername = username.slice(0, -1);
+        console.log(user.username)
+        console.log(correctedUsername)
         if (user.username !== correctedUsername){
           console.log(user.username)
           console.log(correctedUsername)
@@ -551,11 +554,11 @@ const Profile: React.FC = () =>{
             preview.remove();
           }
           
-          return
+         
         }
     }
+    return null;
   }
-  console.log(username)
   useEffect(() => {
     const fetchData = async () => {
       setError(null);
@@ -588,14 +591,20 @@ const Profile: React.FC = () =>{
       
       await fetchDataAndUpdateProgress(setLink, `/profile/link`);
      
+      
+      // await handleAnotherCV();
       setIsLoading(false);
-      handleAnotherCV();
       
     };
     fetchData(); // Execute the data fetching function
-
+    
   }, [username]);
 
+  useEffect(() => {
+    if (!isLoading) {
+      handleAnotherCV();
+    }
+  }, [isLoading]);
 
     if (isLoading) {
       // return <p>Loading...</p>;
@@ -775,6 +784,7 @@ const Profile: React.FC = () =>{
                 deleteData={deleteData}
             />
         </div>
+        
         <div className='container'>
           <button className='btn btn-primary w-100 rounded-4 mt-3' onClick={handlePdf}>Download PDF</button>
         </div>

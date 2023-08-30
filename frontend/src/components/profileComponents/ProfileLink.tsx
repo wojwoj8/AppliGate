@@ -236,7 +236,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                             <div className='col text-start d-flex my-2'>
                                 <div className='col'>
                                     <p className='fw-medium'>{link?.link_name || ''}: </p>
-                                    <a className='fw-medium' href={link?.link} target='_blank' rel="noreferrer"><p>{link?.link || ''}</p></a>  
+                                    <a className='fw-medium text-break' href={link?.link} target='_blank' rel="noreferrer"><p>{link?.link || ''}</p></a>  
                                 </div>                                                        
                             </div>
                             <div className='col-auto'>

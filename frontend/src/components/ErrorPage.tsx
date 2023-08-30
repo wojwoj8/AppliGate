@@ -9,6 +9,7 @@ interface ErrorProps{
 
 const ErrorPage: React.FC<ErrorProps> = ({axiosError}) =>{
     const errorData = axiosError?.response;
+    console.log(errorData)
     return (
         <div>
             {/* <h1>Error</h1> */}
@@ -16,7 +17,14 @@ const ErrorPage: React.FC<ErrorProps> = ({axiosError}) =>{
                 <>
                     <div className="error-page text-center">
                         <h2>{axiosError.response?.status}</h2>
-                        <p>{axiosError.response?.statusText}</p>
+                        {axiosError.response?.data?.detail ? (
+                            <p>{axiosError.response?.data?.detail}</p>
+                        )  : (
+                            <p>{axiosError.response?.statusText}</p>
+                        ) 
+                        
+                        }
+                        
                     </div>
                     
                     

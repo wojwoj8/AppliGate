@@ -13,8 +13,7 @@ import ProfileLink from './profileComponents/ProfileLink';
 import ProfileSkill from './profileComponents/ProfileSkill';
 import ProfileAlert from './profileComponents/ProfileAlert';
 import ProfileSummary from './profileComponents/ProfileSummary';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import ProfileStatus from './profileComponents/ProfileStatus';
 import ErrorPage from './ErrorPage';
 import Loading from './Loading';
 
@@ -86,6 +85,10 @@ export interface LinkData{
   link_name: string;
   link: string;
 }
+
+export interface ProfileStatusData{
+  public_profile: boolean;
+}
 // for axios errors
 export interface ErrorResponse{
 
@@ -99,25 +102,23 @@ export interface MultipleErrorResponse {
   };
 }
 
-//UNIVERSAL GET SETSTATES
-export type GetDataFunction = 
-  React.Dispatch<React.SetStateAction<ProfileData | null>> |
-  React.Dispatch<React.SetStateAction<ContactData | null>> |
-  React.Dispatch<React.SetStateAction<ExperienceData | null>> |
-  React.Dispatch<React.SetStateAction<ExperienceData[]>> |
-  React.Dispatch<React.SetStateAction<EducationData | null>> |
-  React.Dispatch<React.SetStateAction<EducationData[]>> |
-  React.Dispatch<React.SetStateAction<CourseData[]>> |
-  React.Dispatch<React.SetStateAction<CourseData | null>> |
-  React.Dispatch<React.SetStateAction<LanguageData[]>> |
-  React.Dispatch<React.SetStateAction<LanguageData | null>> |
-  React.Dispatch<React.SetStateAction<LinkData[]>> |
-  React.Dispatch<React.SetStateAction<LinkData | null>> |
-  React.Dispatch<React.SetStateAction<SkillData[]>> |
-  React.Dispatch<React.SetStateAction<SkillData | null>> |
-  React.Dispatch<React.SetStateAction<AboutData | null>> |
-  React.Dispatch<React.SetStateAction<SummaryData | null>> |
-  undefined;
+// SIMPLIFICATION OF MY GetDataFunction TYPE BECAUSE OF ERROR
+type UpdateFunction<T> = React.Dispatch<React.SetStateAction<T | null>>;
+type ArrayUpdateFunction<T> = React.Dispatch<React.SetStateAction<T[]>>;
+
+export type GetDataFunction =
+  | UpdateFunction<ProfileData>
+  | UpdateFunction<ContactData>
+  | ArrayUpdateFunction<ExperienceData>
+  | ArrayUpdateFunction<EducationData>
+  | ArrayUpdateFunction<CourseData>
+  | ArrayUpdateFunction<LanguageData>
+  | ArrayUpdateFunction<LinkData>
+  | ArrayUpdateFunction<SkillData>
+  | UpdateFunction<AboutData>
+  | UpdateFunction<SummaryData>
+  | UpdateFunction<ProfileStatusData>
+  | undefined;
 
 //UNIVERSAL PUT STATES
 export type EditDataFunction = 
@@ -137,6 +138,7 @@ export type EditDataFunction =
   SkillData | null |
   AboutData | null |
   SummaryData | null |
+  ProfileStatusData | null |
   undefined;
 
 export type EditMultipleDataFunction = 
@@ -164,6 +166,7 @@ const Profile: React.FC = () =>{
     const [skill, setSkill] = useState<SkillData[]>([]);
     const [about, setAbout] = useState<AboutData | null>(null);
     const [summary, setSummary] = useState<SummaryData | null>(null);
+    const [profileStatus, setProfileStatus] = useState<ProfileStatusData | null>(null)
 
     const [singleCourse, setSingleCourse] = useState<CourseData | null>(null);
     const [singleExperience, setSingleExperience] = useState<ExperienceData | null>(null);
@@ -204,40 +207,7 @@ const Profile: React.FC = () =>{
     const params = useParams();
     const username = params['*'];
 
-    const handlePdf = async () => {
-      if (handlePreviewMode() === false){
-        return;
-      }
-      
-      await handleHide();
-
-      const body = document.body; // Get a reference to the body element
-      const input = document.getElementById('page');
     
-      if (input && body) {
-        if (body.id === 'light') {
-          input.classList.add('bg-dark'); // Add the class 'bg-dark'
-        }
-        
-        // Capture the content with the adjusted window dimensions
-        html2canvas(input, { windowWidth: 1920, windowHeight: 1080, scale: 1.25 })
-          .then((canvas) => {
-            const imgData = canvas.toDataURL('image/jpeg', 1.0);
-    
-            const pdfWidth = canvas.width; // Use canvas width for pdfWidth
-            const pdfHeight = (canvas.height / canvas.width) * pdfWidth;
-    
-            const pdf = new jsPDF('p', 'px', [pdfWidth, pdfHeight]);
-    
-            pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save('CV.pdf');
-    
-            if (body.id === 'light') {
-              input.classList.remove('bg-dark'); // Remove the class 'bg-dark'
-            }
-          });
-      }
-    };
 
     const renderFieldErrorMultiple = (
       field: string, 
@@ -293,7 +263,7 @@ const Profile: React.FC = () =>{
               }
             else if (error.response && (error.response.status !== 400)) {
                 setError(axiosError)
-
+                
             } 
             else {
                 // Handle other errors here
@@ -308,7 +278,7 @@ const Profile: React.FC = () =>{
 
     const editData = async (
       state: EditDataFunction,
-      editField: React.Dispatch<React.SetStateAction<boolean>>,
+      editField: React.Dispatch<React.SetStateAction<boolean>> | undefined,
       endpoint: string,
       errorField: string,
       index: number = 0,
@@ -321,8 +291,11 @@ const Profile: React.FC = () =>{
                 Authorization: 'Bearer ' + String(authTokens.access),
               },
             });
-          editField(false)
+            if (editField){
+              editField(false)
+            }
           removeMultipleErrors(`${errorField}`, index)
+          console.log(state)
       }catch (error: any) {
         const axiosError = error as AxiosError<ErrorResponse>;
         if (error.response && error.response.status === 401) {
@@ -503,6 +476,9 @@ const Profile: React.FC = () =>{
       }));
     };
 
+
+
+
     const handleHide = async () =>{
       const pageElement = document.getElementById('page');
       if (pageElement) {
@@ -538,6 +514,7 @@ const Profile: React.FC = () =>{
     const handleAnotherCV = () =>{
       let pageElement = document.getElementById('page');
       console.log(pageElement)
+      let profStatus = document.getElementsByClassName('profileStatusHide');
       if (pageElement && username) {
         let elements = pageElement.querySelectorAll('button, svg, .profile-svgs, .prevHidden');
         let preview = document.getElementById('preview');
@@ -550,6 +527,9 @@ const Profile: React.FC = () =>{
           elements.forEach((element) =>{
             element.remove();
           });
+          Array.from(profStatus).forEach((element) => {
+            element.remove();
+          });
           if (preview){
             preview.remove();
           }
@@ -559,12 +539,19 @@ const Profile: React.FC = () =>{
     }
     return null;
   }
+
+
+  const handleCopy = () => {
+    let currentURL = window.location.href;
+    navigator.clipboard.writeText(currentURL);
+    setAlertError('Profile link coppied successfully');
+  };
   useEffect(() => {
     const fetchData = async () => {
       setError(null);
       setIsLoading(true);
 
-      const steps = 10; // Total number of steps
+      const steps = 11; // Total number of steps
       let completedSteps = 0;
 
       const updateProgress = (completedSteps: number) => {
@@ -588,8 +575,8 @@ const Profile: React.FC = () =>{
       await fetchDataAndUpdateProgress(setLanguage, `/profile/language`);
       await fetchDataAndUpdateProgress(setSkill, `/profile/skill`);
       await fetchDataAndUpdateProgress(setAbout, `/profile/about`);
-      
       await fetchDataAndUpdateProgress(setLink, `/profile/link`);
+      await fetchDataAndUpdateProgress(setProfileStatus, `/profile/profileStatus`);
      
       
       // await handleAnotherCV();
@@ -600,7 +587,8 @@ const Profile: React.FC = () =>{
     
   }, [username]);
 
-  useEffect(() => {
+  // works like useEffect but after rendering
+  useLayoutEffect(() => {
     if (!isLoading) {
       handleAnotherCV();
     }
@@ -614,15 +602,19 @@ const Profile: React.FC = () =>{
       // console.log('error')
       return <ErrorPage axiosError={error} />
     }
+    // if (alertError)
+    // return <ProfileAlert error={alertError} setError={setAlertError} />
+
     return(
 
       <>
       
-      <div className='mx-4 my-2'>
-        {alertError && <ProfileAlert 
+      {alertError && <ProfileAlert 
                 error={alertError}
                 setError={setAlertError} />}
 
+      <div className='mx-4 my-2'>
+        
         
         <div className='d-flex justify-content-center container my-1' id='preview'>
           <button className='btn btn-secondary w-100 rounded-4 mb-2' onClick={handlePreviewMode}>
@@ -784,10 +776,23 @@ const Profile: React.FC = () =>{
                 deleteData={deleteData}
             />
         </div>
-        
+           
         <div className='container'>
-          <button className='btn btn-primary w-100 rounded-4 mt-3' onClick={handlePdf}>Download PDF</button>
+        
+          <button className='btn btn-primary w-100 rounded-4 mt-3' onClick={handleCopy}>Copy Profile Link</button>
+          
         </div>
+        
+        <div className='profileStatusHide'>
+          <ProfileStatus
+                profileStatus={profileStatus}
+                getData={getData}
+                setProfileStatus={setProfileStatus}
+                editData={editData}
+                alertError={alertError}
+                setAlertError={setAlertError}
+              />
+          </div>
       </div>
       </>
     )

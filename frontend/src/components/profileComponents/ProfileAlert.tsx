@@ -15,7 +15,11 @@ const ProfileAlert: React.FC<Alert> = ({ error, setError }) => {
         error === 'Image removed successfully' ||
         error === 'Data changed successfully'||
         error === 'Data deleted successfully'||
-        error === 'Password changed successfully') {
+        error === 'Password changed successfully' ||
+        error === 'Profile link coppied successfully' ||
+        error === 'Profile Changed to Public, now everone can see your CV! Copy profile link and share it' ||
+        error === 'Profile Changed to Private, nobody can see your CV'
+        ) {
           setIsSuccess(true);
         }
         setShow(true);

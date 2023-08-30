@@ -250,3 +250,10 @@ class UserSummarySerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["professional_summary"]
+
+
+# private/public
+class UserProfileStatus(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["public_profile"]

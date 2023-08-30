@@ -32,6 +32,7 @@ from .serializer import (
     ChangeUserDataSerializer,
     DeleteUserDataSerializer,
     UserSummarySerializer,
+    UserProfileStatus,
 )
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
@@ -73,11 +74,6 @@ class IndexView(generics.GenericAPIView):
         user = request.user
         serializer_class = UserSerializer(user, many=False)
         return Response(serializer_class.data)
-
-    # def post(self, request, *args, **kwargs):
-    #     username = kwargs.get('username')
-    #     if username is not None:
-    #         return self.retrieve(request, *args, **kwargs)
 
 
 class ProfileChangeDataView(
@@ -142,6 +138,25 @@ class ProfileChangePasswordView(generics.GenericAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ProfileStatusView(generics.GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        serializer = UserProfileStatus(user)  # Pass the user instance to the serializer
+        return Response(serializer.data)
+
+    def put(self, request, *args, **kwargs):
+        user = request.user
+        serializer = UserProfileStatus(
+            user, data=request.data
+        )  # Pass the user instance and request data to the serializer
+
+        if serializer.is_valid():
+            serializer.save()
+            print(serializer.data)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class ProfileImageUploadView(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = ProfileSerializer
@@ -156,9 +171,6 @@ class ProfileImageUploadView(generics.UpdateAPIView):
         self.check_username_permission()
         user = request.user  # Get the authenticated user
         profile_image = request.FILES.get("profile_image")
-        # print(request.data["profile_image"])
-        # print(profile_image)
-        # print(user.profile_image)
 
         if request.data["profile_image"] == "default":
             user.profile_image.delete()
@@ -289,13 +301,25 @@ class BaseProfileView(
 
     # for letting only for get method looking at other CV's
     def check_username_permission(self):
+        # checked username
         username = self.kwargs.get("username")
+
         if self.request.user.username != username:
             raise PermissionDenied("You do not have permission to perform this action.")
 
+    # for letting to see others profile only if profile is public
+    def check_username_profile(self):
+        # checked username
+        username = self.kwargs.get("username")
+        checked_user = get_object_or_404(User, username=username)
+        if self.request.user != checked_user and not checked_user.public_profile:
+            raise PermissionDenied("Profile is private")
+
     def get(self, request, *args, **kwargs):
         # print(request.user)
+        self.check_username_profile()
         queryset = self.get_queryset()
+
         serializer = self.serializer_class(queryset, many=True)
 
         return Response(serializer.data)

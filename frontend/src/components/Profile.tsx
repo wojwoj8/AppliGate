@@ -513,17 +513,17 @@ const Profile: React.FC = () =>{
 
     const handleAnotherCV = () =>{
       let pageElement = document.getElementById('page');
-      console.log(pageElement)
+      // console.log(pageElement)
       let profStatus = document.getElementsByClassName('profileStatusHide');
       if (pageElement && username) {
         let elements = pageElement.querySelectorAll('button, svg, .profile-svgs, .prevHidden');
         let preview = document.getElementById('preview');
         let correctedUsername = username.slice(0, -1);
-        console.log(user.username)
-        console.log(correctedUsername)
+        // console.log(user.username)
+        // console.log(correctedUsername)
         if (user.username !== correctedUsername){
-          console.log(user.username)
-          console.log(correctedUsername)
+          // console.log(user.username)
+          // console.log(correctedUsername)
           elements.forEach((element) =>{
             element.remove();
           });

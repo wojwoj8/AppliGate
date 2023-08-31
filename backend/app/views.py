@@ -212,12 +212,20 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
         except ValueError:
             return None
 
+    def check_username_profile(self):
+        # checked username
+        username = self.kwargs.get("username")
+        checked_user = get_object_or_404(User, username=username)
+        if self.request.user != checked_user and not checked_user.public_profile:
+            raise PermissionDenied("Profile is private")
+
     def check_username_permission(self):
         username = self.kwargs.get("username")
         if self.request.user.username != username:
             raise PermissionDenied("You do not have permission to perform this action.")
 
     def get(self, request, *args, **kwargs):
+        self.check_username_profile()
         username = self.kwargs.get("username")  # Get the username from URL
 
         if username:

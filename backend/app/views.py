@@ -142,12 +142,18 @@ class ProfileChangePasswordView(generics.GenericAPIView):
 
 
 class ProfileStatusView(generics.GenericAPIView):
+    def check_username_permission(self):
+        username = self.kwargs.get("username")
+        if self.request.user.username != username:
+            raise PermissionDenied("You do not have permission to perform this action.")
+
     def get(self, request, *args, **kwargs):
         user = request.user
         serializer = UserProfileStatus(user)  # Pass the user instance to the serializer
         return Response(serializer.data)
 
     def put(self, request, *args, **kwargs):
+        self.check_username_permission()
         user = request.user
         serializer = UserProfileStatus(
             user, data=request.data

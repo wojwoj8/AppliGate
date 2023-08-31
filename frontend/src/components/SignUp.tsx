@@ -44,7 +44,8 @@ const SignUp: React.FC = () =>{
                 </div>
                 
             </div>
-            <h1 className="text-center display-4">Welcome at AppliGate!</h1>
+            <h1 className="text-center display-4">AppliGate</h1>
+            <p className="text-center fw-bold mb-5">Create Your CV, Secure Your Future, Find Your Dream Job!</p>
             <div className="row justify-content-center">
                 <div className="col-sm-12 col-md-8 col-lg-6">
                 <form onSubmit={e => handleForm(e)}>

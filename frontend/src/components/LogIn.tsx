@@ -20,7 +20,8 @@ const LogIn: React.FC = () => {
                     <p>{errorLogIn[fieldName]}</p>
                 </div>
                 ))}
-            <h1 className="text-center display-4 font-bold">Welcome at AppliGate!</h1>
+            <h1 className="text-center display-3 font-bold">Welcome at AppliGate!</h1>
+            <p className="text-center fw-bold mb-5">Create Your CV, Secure Your Future, Find Your Dream Job!</p>
             <div className="row justify-content-center">
                 <div className="col-sm-12 col-md-8 col-lg-6">
                     <form onSubmit={handleForm}>

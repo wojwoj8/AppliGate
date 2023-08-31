@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 import axios from "axios";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "./Profile";
@@ -45,7 +46,6 @@ const Index: React.FC = () =>{
           });
     
           const data = response.data;
-          // console.log(data)
           if (response.status === 200) {
             setProfile(data);
           }
@@ -64,18 +64,26 @@ const Index: React.FC = () =>{
         return <ErrorPage axiosError={error} />
       }
       if (loading) {
-        // return <p>Loading...</p>;
         return <Loading progress={progress} />
       }
 
     return (
-        <div className="">
-            <p>You are logged in to the homepage!</p>
-            <p>Name: {profile?.username}</p>
-            <p>Email: {profile?.email}</p>
-            <button type='button' onClick={() => navigate(`/profile/${user.username}/`)}>Create Profile</button>
-
+      <div className="">
+        <div className="container text-center py-5">
+          <h2 className="my-3">
+            Hi {profile?.username}, are you ready to create or edit your CV?
+          </h2>
+          <p className="lead mb-4">
+            Show off your skills and experience with a professional CV.
+          </p>
+          <Link to={`/profile/${profile?.username}/`} className="btn btn-primary btn-lg me-3">
+            Create/Edit Your CV
+          </Link>
+          <Link to="/profile/q" className="btn btn-secondary btn-lg">
+            Example Profile
+          </Link>
         </div>
-    )
+      </div>
+  );
 }
 export default Index;

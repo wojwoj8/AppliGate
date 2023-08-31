@@ -73,6 +73,3 @@ class UserLink(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     link_name = models.CharField(max_length=50, blank=False)
     link = models.CharField(max_length=250, blank=False)
-
-
-# class Company(AbstractUser):

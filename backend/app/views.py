@@ -111,6 +111,9 @@ class ProfileChangeDataView(
 
         # Check if the delete_serializer is valid (if you have any fields)
         if delete_serializer.is_valid():
+            # delete user image from media
+            if user.profile_image != "defaults/default_profile_image.jpg":
+                user.profile_image.delete()
             instance.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 

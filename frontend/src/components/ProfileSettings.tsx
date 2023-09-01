@@ -5,8 +5,8 @@ const ProfileSettings: React.FC = () =>{
     
     return (
         <div className="container">
-            <h1 className="text-center display-4">Settings</h1>
-            <div className="d-flex flex-column align-items-center col-lg-8 col-12 center mx-auto">
+            <h1 className="text-center display-2 mb-5 mt-3">Settings</h1>
+            <div className="pt-5 d-flex flex-column align-items-center col-lg-8 col-12 center mx-auto">
                 <Link to="/profileSettings/userData" className="btn btn-primary mt-4 w-100">
                     Change Profile Data
                 </Link>

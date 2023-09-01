@@ -45,7 +45,7 @@ const SignUp: React.FC = () =>{
                 
             </div>
             <h1 className="text-center display-4">AppliGate</h1>
-            <p className="text-center fw-bold mb-5">Create Your CV, Secure Your Future, Find Your Dream Job!</p>
+            <p className="text-center lead mb-5">Create Your CV, Secure Your Future, Find Your Dream Job!</p>
             <div className="row justify-content-center">
                 <div className="col-sm-12 col-md-8 col-lg-6">
                 <form onSubmit={e => handleForm(e)}>
@@ -122,6 +122,7 @@ const SignUp: React.FC = () =>{
                     </div>
 
                     <div className="mb-3 text-center">
+                    <p className="">Not sure? Check out <Link to="/example" className="">my CV!</Link></p>
                     <p className="">Already have an account? <Link to="/login" className="">Log In Here!</Link></p>
                     </div>
                 </form>

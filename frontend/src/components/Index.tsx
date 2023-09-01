@@ -69,16 +69,24 @@ const Index: React.FC = () =>{
 
     return (
       <div className="">
-        <div className="container text-center py-5">
+        <div className="container text-center py-3">
           <h2 className="my-3">
             Hi {profile?.username}, are you ready to create or edit your CV?
           </h2>
           <p className="lead mb-4">
-            Show off your skills and experience with a professional CV.
+            Show off your skills and experience with a professional CV. 
           </p>
+
           <Link to={`/profile/${profile?.username}/`} className="btn btn-primary btn-lg me-3">
             Create/Edit Your CV
           </Link>
+          <p className="lead mb-4 mt-4">
+            Also remember to change your profile to public at the bottom of profile in order to share your CV!
+          </p>
+          <p className="lead mb-4">
+            Want some inspiration? Check out my own CV.
+          </p>
+          
           <Link to="/profile/q" className="btn btn-secondary btn-lg">
             Example Profile
           </Link>

@@ -47,71 +47,57 @@ const Navbar: React.FC = () =>{
             
             {user ? (
               <ul className="navbar-nav text-primary justify-content-end flex-grow-1 pe-3">
-                <li className="nav-item">
+                <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to='/' className="nav-link" aria-current="page">Home</Link>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to='/profile/q' className="nav-link">Example</Link>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to={`/profile/${user.username}/`} className="nav-link" aria-current="page">Profile</Link>
                 </li>
-                <li className="nav-item">
-                  <Link to='/profileSettings' className="nav-link" aria-current="page">Profile Settings</Link>
+                <li className="nav-item dropdown-center">
+                  <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Settings
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li className="dropdown-item">
+                      <div className="form-check form-switch form-check-reverse nav-link me-4 text-left d-table">
+                        <input className="form-check-input" type="checkbox" id="flexSwitchCheckCheckedReverse" 
+                        onChange={handleCheck}
+                        checked={check}
+                        data-bs-dismiss="offcanvas"
+                        />
+                        
+                        <label className="form-check-label" htmlFor="flexSwitchCheckCheckedReverse">Dark Mode</label>
+                      </div>
+                    </li>
+                    <li className="dropdown-item" data-bs-dismiss="offcanvas">
+                      <Link to='/profileSettings' className="nav-link" aria-current="page">Profile Settings</Link>
+                    </li>
+                  </ul>
                 </li>
+               
                 <li className="nav-item" onClick={logoutUser}>
                   <a className="nav-link" href="/" data-bs-dismiss="offcanvas">Log Out</a>
                 </li>
-                {/* <li>
-                  <button className="nav-link" onClick={DarkMode}>Toggle Dark Mode</button>
-                </li> */}
-                <li className="nav-item">
-                  <div className="form-check form-switch form-check-reverse nav-link me-4 text-left d-table">
-                    <input className="form-check-input" type="checkbox" id="flexSwitchCheckCheckedReverse" 
-                    onChange={handleCheck}
-                    checked={check}
-                    
-                    />
-                    
-                    <label className="form-check-label" htmlFor="flexSwitchCheckCheckedReverse">Dark Mode</label>
-                  </div>
-                </li>
-                {/* <li className="nav-item dropdown">
-                  <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown link
-                  </a>
-                  <ul className="dropdown-menu">
-                    <li><a className="dropdown-item" href="#">Another action</a></li>
-                    <li><a className="dropdown-item" href="#">Something else here</a></li>
-                  </ul>
-                </li> */}
+               
+                
+                
               </ul>
               
               ) : (
               <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-                {/* <li className="nav-item">
-                  <Link to='/' className="nav-link active" aria-current="page">Home</Link>
-                </li> */}
-                <li className="nav-item">
+                <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to='/example' className="nav-link">Example</Link>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to='/login' className="nav-link">Log In</Link>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to='/register' className="nav-link">Sign Up</Link>
                 </li>
-                <li className="nav-item">
-                  <div className="form-check form-switch form-check-reverse nav-link me-4 text-left d-table">
-                    <input className="form-check-input" type="checkbox" id="flexSwitchCheckCheckedReverse" 
-                    onChange={handleCheck}
-                    checked={check}
-                    
-                    />
-                    
-                    <label className="form-check-label" htmlFor="flexSwitchCheckCheckedReverse">Dark Mode</label>
-                  </div>
-                </li>
+                
                 
               </ul>
               )}

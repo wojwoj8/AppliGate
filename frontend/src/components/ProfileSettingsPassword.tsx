@@ -174,8 +174,8 @@ const ProfileSettingsPassword: React.FC = () =>{
                 </div>
                 
             </div>
-        <h1 className="text-center display-4">Change Your Password</h1>
-        <div className="row justify-content-center mt-4">
+        <h1 className="text-center display-3 mb-5 mt-3">Change Your Password</h1>
+        <div className="row justify-content-center pt-4">
             <div className="col-sm-12 col-md-8 col-lg-6">
             <form onSubmit={e => handleForm(e)}>
                 

@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
-// import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AuthContext from "../utils/AuthProvider";
 
 
@@ -10,7 +9,6 @@ const SignUp: React.FC = () =>{
     const [password, setPassword] = useState('')
     const [confirm, setConfirm] = useState('')
     const [err, setErr] = useState<{ [key: string]: string[] } | null>(null);
-    const navigate = useNavigate();
     const { signupUser, errorSignUp } = useContext(AuthContext)
 
     const handlePassword = (e:string) =>{
@@ -101,7 +99,6 @@ const SignUp: React.FC = () =>{
                         <input 
                         name="email" 
                         type="email" 
-                        // onChange={data => handleEmail(data.target.value)} 
                         required
                         placeholder="example@test.com"
                         className={`form-control ${errorSignUp && errorSignUp.email && 'is-invalid'}`}

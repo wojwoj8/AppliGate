@@ -23,8 +23,6 @@ const ProfileSettingsUsername: React.FC = () =>{
 
     const {authTokens, user, logoutUser } = useContext(AuthContext);
     const [profile, setProfile] = useState<ProfileData | null>(null)
-    const [password, setPassword] = useState('')
-    const [confirm, setConfirm] = useState('')
     const [err, setErr] = useState<{ [key: string]: string[] } | null>(null);
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
     const [alertError, setAlertError] = useState('');
@@ -88,9 +86,6 @@ const ProfileSettingsUsername: React.FC = () =>{
           }
         }));
       };
-    const handlePassword = (e:string) =>{
-        setPassword(e)
-    }
 
     const handleForm = (e: React.FormEvent<HTMLFormElement>) =>{
         
@@ -100,7 +95,6 @@ const ProfileSettingsUsername: React.FC = () =>{
 
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement>,
-        // setData: GetDataFunction,
       ) => {
         const { name, value } = event.target;
       
@@ -128,7 +122,6 @@ const ProfileSettingsUsername: React.FC = () =>{
           });
     
           const data = response.data;
-          // console.log(data)
           if (response.status === 200) {
             setProfile(data);
           }
@@ -157,7 +150,6 @@ const ProfileSettingsUsername: React.FC = () =>{
             });
             removeMultipleErrors(`${errorField}`, index)
             const data = response.data;
-            // console.log(data)
             if (response.status === 200) {
                 setAlertError('Data changed successfully')
                 setProfile(data);
@@ -177,7 +169,7 @@ const ProfileSettingsUsername: React.FC = () =>{
                 if (axiosError.response?.data) {
                     handleMultipleErrors(`${errorField}`, index, axiosError.response?.data)
                 }
-              console.error('Error fetching profile:', error);
+              // console.error('Error fetching profile:', error);
             }
           }
     }
@@ -195,7 +187,6 @@ const ProfileSettingsUsername: React.FC = () =>{
 
     }
     if (error){
-      // console.log('error')
       return <ErrorPage axiosError={error} />
     }
 

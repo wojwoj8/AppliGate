@@ -209,6 +209,13 @@ const Profile: React.FC = () =>{
 
     
 
+    // Universal method for rendering errors under given inputs, gets
+    // field: key of error section like language
+    // index of given item in state array like language[1]
+    // errorKey: input field name
+    // my array of errors
+
+
     const renderFieldErrorMultiple = (
       field: string, 
       index: number, 
@@ -231,7 +238,10 @@ const Profile: React.FC = () =>{
     };
 
    
-    //single getData
+    // Universal get
+    // setData: setter for my state
+    // endpoint: endpoint
+    // id: optional id of item in db
     const getData = async (
       setData: GetDataFunction,
       endpoint: string,
@@ -275,6 +285,15 @@ const Profile: React.FC = () =>{
     }
 
 
+    // Universal put for states where state is just object
+    // state: given state, for example singleLanguage
+    // editField: state of given item/form (if is opened or closed)
+    // endpoint: endpoint
+    // errorField: given section error key like language, 
+    // for remove all language errors under given index because I store errors like:
+    // multipleErrors: {key: {index: {fileld_index: Array of errors}}}
+    // index: index of given object in state array, default 0
+
     const editData = async (
       state: EditDataFunction,
       editField: React.Dispatch<React.SetStateAction<boolean>> | undefined,
@@ -312,8 +331,16 @@ const Profile: React.FC = () =>{
         }
   }
 
-///////////////////////////////////////
-    // EXPIRIENCE
+    // Universal post for states where state is array of objects or just object
+    // state: given state, for example language[] or singleLanguage
+    // editField: state of given item/form (if is opened or closed)
+    // setData : react set state for given state
+    // cleanState: setState to null to reset given field in order to add another one
+    // endpoint: endpoint
+    // errorField: given section error key like language, 
+    // for remove all language errors under given index because I store errors like:
+    // multipleErrors: {key: {index: {fileld_index: Array of errors}}}
+    // index: index of given object in state array, default 0
 
     const sendMultipleData = async (
       state: EditDataFunction,
@@ -355,6 +382,17 @@ const Profile: React.FC = () =>{
     }
 
 
+    // Universal put for states where state is array of objects
+    // state: given array of objects, for example language[]
+    // editField: state of given item/form (if is opened or closed)
+    // setData : react set state for given state
+    // endpoint: endpoint
+    // errorField: given section error key like language, 
+    // for remove all language errors under given index because I store errors like:
+    // multipleErrors: {key: {index: {fileld_index: Array of errors}}}
+    // index: index of given object in state array
+    // id: id in database of given object
+    
     const editMultipleData = async (
         state: EditMultipleDataFunction,
         editField: React.Dispatch<React.SetStateAction<boolean[]>>,
@@ -395,7 +433,7 @@ const Profile: React.FC = () =>{
           setError(axiosError)
         }
         removeMultipleErrors(`${errorField}`, index)
-          
+          // serializer for errors
           if (axiosError.response?.data) {
               const keys = Object.keys(axiosError.response?.data)
               keys.forEach((key) => {
@@ -403,23 +441,26 @@ const Profile: React.FC = () =>{
                   axiosError.response!.data[newKey] = axiosError.response!.data[key];
                   delete axiosError.response!.data[key];
               });
-              console.log(axiosError.response?.data)
+              
               handleMultipleErrors(`${errorField}`, index, axiosError.response?.data)
-            // setErr(axiosError.response.data);
+            
           }
-          console.log(error);
+          
         }
   }
 
   
+    // Universal delete Data, make possible to delete given item from list, gets:
+    // editField: state of given item/form (if is opened or closed)
+    // setData: react set state for given data
+    // endpoint just backend endpoint as a string
+    // id - item id for endpoint and clearing
     const deleteData = async (
         editField: React.Dispatch<React.SetStateAction<boolean[]>> | undefined,
         setData: GetDataFunction,
         endpoint: string,
-        // errorField: string,
         id: number
       ) =>{
-      // console.log(id)
       try{
           const response = await axios.delete(`${endpoint}/${username}/${id}`, {
               headers: {
@@ -427,6 +468,7 @@ const Profile: React.FC = () =>{
                 Authorization: 'Bearer ' + String(authTokens.access),
               },
             });
+            // set editFields to false => set state of that form to closed
             if (editField){
             editField((prevEditExperiences) => {
               const newEditExperiences = [...prevEditExperiences];
@@ -436,14 +478,11 @@ const Profile: React.FC = () =>{
           }
             getData(setData, `${endpoint}`);
             setAlertError('Data deleted successfully');
-            // removeMultipleErrors('experience', index)
       }catch (error: any) {
         if (error.response && error.response.status === 401) {
           // Unauthorized - Logout the user
           logoutUser();
         }
-          // removeMultipleErrors('experience', index)
-          const axiosError = error as AxiosError<ErrorResponse>;
           setAlertError('Something went wrong');
 
           console.log(error);
@@ -451,6 +490,7 @@ const Profile: React.FC = () =>{
   }
 
 
+    // For handling errors in correct inputs in correct places where are multiple items like work1 and work2
     const handleMultipleErrors = (key: string, index: number, errorData: ErrorResponse) => {
       setMultipleErrors((prevState) => ({
         ...prevState,
@@ -464,6 +504,7 @@ const Profile: React.FC = () =>{
       }));
     };
 
+    // For removing list of errors in given section
     const removeMultipleErrors = (key: string, index: number) => {
       setMultipleErrors((prevState) => ({
         ...prevState,
@@ -477,6 +518,7 @@ const Profile: React.FC = () =>{
 
 
 
+    // Handle hide interactive elements on cv for preview mode
     const handleHide = async () =>{
       const pageElement = document.getElementById('page');
       if (pageElement) {
@@ -509,6 +551,7 @@ const Profile: React.FC = () =>{
       
     }
 
+    // To make preview mode by removing most of interactive elements while looking at others cv
     const handleAnotherCV = () =>{
       let pageElement = document.getElementById('page');
       let profStatus = document.getElementsByClassName('profileStatusHide');
@@ -534,17 +577,20 @@ const Profile: React.FC = () =>{
   }
 
 
+  // To handle copy to clipboard button at the bottom of page
   const handleCopy = () => {
     let currentURL = window.location.href;
     navigator.clipboard.writeText(currentURL);
     setAlertError('Profile link coppied successfully');
   };
+
+  // For fetching data
   useEffect(() => {
     const fetchData = async () => {
       setError(null);
       setIsLoading(true);
 
-      const steps = 11; // Total number of steps
+      const steps = 11; // Total number of steps for loading bar
       let completedSteps = 0;
 
       const updateProgress = (completedSteps: number) => {
@@ -572,7 +618,7 @@ const Profile: React.FC = () =>{
       await fetchDataAndUpdateProgress(setProfileStatus, `/profile/profileStatus`);
      
       
-      // await handleAnotherCV();
+      
       setIsLoading(false);
       
     };
@@ -588,15 +634,11 @@ const Profile: React.FC = () =>{
   }, [isLoading]);
 
     if (isLoading) {
-      // return <p>Loading...</p>;
       return <Loading progress={progress} />
     }
     if (error){
-      // console.log('error')
       return <ErrorPage axiosError={error} />
     }
-    // if (alertError)
-    // return <ProfileAlert error={alertError} setError={setAlertError} />
 
     return(
 

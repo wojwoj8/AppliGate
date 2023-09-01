@@ -274,7 +274,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({
                                 Cancel
                             </button>
                             <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveEducation}>
-                                Save
+                                Add
                             </button>
                             </div>
                             {education && education[0] && <hr className="border border-primary border-3 my-1"></hr>}

@@ -221,7 +221,7 @@ const ProfileLink: React.FC<ProfileLinkProps> = ({
                                     Cancel
                                 </button>
                                 <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveLink}>
-                                    Save
+                                    Add
                                 </button>
                             </div>
                             {link && link[0] && <hr className="border border-primary border-3 my-1"></hr>}

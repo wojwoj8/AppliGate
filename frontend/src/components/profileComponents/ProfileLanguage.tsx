@@ -219,7 +219,7 @@ const ProfileLanguage: React.FC<ProfileLanguageProps> = ({
                                 Cancel
                             </button>
                             <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveLanguage}>
-                                Save
+                                Add
                             </button>
                             </div>
                             {language && language[0] && <hr className="border border-primary border-3 my-1"></hr>}

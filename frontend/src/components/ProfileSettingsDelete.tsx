@@ -24,7 +24,6 @@ const ProfileSettingsDelete: React.FC = () =>{
     const [err, setErr] = useState<{ [key: string]: string[] } | null>(null);
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
     const [alertError, setAlertError] = useState('');
-    const inputRef = useRef<HTMLInputElement | null>(null);
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
 
     const renderFieldErrorMultiple = (
@@ -79,7 +78,6 @@ const ProfileSettingsDelete: React.FC = () =>{
 
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement>,
-        // setData: GetDataFunction,
       ) => {
         const { name, value } = event.target;
       
@@ -112,7 +110,6 @@ const ProfileSettingsDelete: React.FC = () =>{
             });
             removeMultipleErrors(`${errorField}`, index)
             const data = response.data;
-            // console.log(data)
             if (response.status === 204) {
                 setAlertError('Account deleted successfully')
                 logoutUser();
@@ -144,7 +141,6 @@ const ProfileSettingsDelete: React.FC = () =>{
         await deleteProfile('userData');
     }
     if (error){
-      // console.log('error')
       return <ErrorPage axiosError={error} />
     }
     

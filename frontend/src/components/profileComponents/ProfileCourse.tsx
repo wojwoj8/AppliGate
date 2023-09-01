@@ -247,7 +247,7 @@ const ProfileCourse: React.FC<ProfileCourseProps> = ({
                                 Cancel
                             </button>
                             <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveCourse}>
-                                Save
+                                Add
                             </button>
                             </div>
                             {course && course[0] && <hr className="border border-primary border-3 my-1"></hr>}

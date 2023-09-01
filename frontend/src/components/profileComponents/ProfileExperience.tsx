@@ -280,7 +280,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
                                 Cancel
                             </button>
                             <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveExperience}>
-                                Save
+                                Add
                             </button>
                             </div>
                             {experience && experience[0] && <hr className="border border-primary border-3 my-1"></hr>}

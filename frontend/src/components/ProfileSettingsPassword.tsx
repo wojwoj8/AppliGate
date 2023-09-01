@@ -1,4 +1,4 @@
-import { useContext, useState, useRef } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import AuthContext from "../utils/AuthProvider";
 import { AxiosError } from "axios";
@@ -28,7 +28,6 @@ const ProfileSettingsPassword: React.FC = () =>{
     const [err, setErr] = useState<{ [key: string]: string[] } | null>(null);
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
     const [alertError, setAlertError] = useState('');
-    const inputRef = useRef<HTMLInputElement | null>(null);
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
     
     

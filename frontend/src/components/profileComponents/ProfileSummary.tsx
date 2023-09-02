@@ -1,7 +1,6 @@
 import React from 'react';
 import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
-import { ProfileData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
@@ -11,7 +10,7 @@ import { SummaryData } from '../Profile';
 interface ProfileAboutProps {
     summary: SummaryData | null;
     setSummary: React.Dispatch<React.SetStateAction<SummaryData | null>>;
-    // handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+
     editData: (state: EditDataFunction, 
         editField: React.Dispatch<React.SetStateAction<boolean>>, 
         endpoint: string, errorField: string, index?: number

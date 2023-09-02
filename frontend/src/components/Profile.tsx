@@ -156,6 +156,8 @@ const initialMultipleErrors: MultipleErrorResponse = {
 };
 
 const Profile: React.FC = () =>{
+
+    // Data for all components
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [contact, setContact] = useState<ContactData| null>(null);
     const [experience, setExperience] = useState<ExperienceData[]>([]);
@@ -168,6 +170,7 @@ const Profile: React.FC = () =>{
     const [summary, setSummary] = useState<SummaryData | null>(null);
     const [profileStatus, setProfileStatus] = useState<ProfileStatusData | null>(null)
 
+    // Where is only one data in component (only contact data etc.)
     const [singleCourse, setSingleCourse] = useState<CourseData | null>(null);
     const [singleExperience, setSingleExperience] = useState<ExperienceData | null>(null);
     const [singleEducation, setSingleEducation] = useState<EducationData | null>(null);
@@ -176,8 +179,10 @@ const Profile: React.FC = () =>{
     const [singleSkill, setSingleSkill] = useState<SkillData | null>(null);
     
 
+    // Authtoken for CRUD and user for username and logout
     const { authTokens, user, logoutUser } = useContext(AuthContext);
 
+    // To chech if given form is in edit state
     const [editPersonal, setEditPersonal] = useState(false);
     const [editContact, setEditContact] = useState(false);
     const [editExperience, setEditExperience] = useState(false);
@@ -194,15 +199,22 @@ const Profile: React.FC = () =>{
     const [editSkill, setEditSkill] = useState(false);
     const [editSummary, setEditSummary] = useState(false);
     
+    // All errors for all fields
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
 
+    // To check how others see your CV
     const [previewMode, setPreviewMode] = useState(false);
+    // For alert component
     const [alertError, setAlertError] = useState('');
+    // Is page still loading (fetching data)
     const [isLoading, setIsLoading] = useState(true);
+    // Axios error for error component
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
+    // Loading bar
     const [progress, setProgress] = useState(0);
 
 
+    // For getting username from url
 
     const params = useParams();
     const username = params['*'];
@@ -658,6 +670,9 @@ const Profile: React.FC = () =>{
         </div>
         <div className="container shadow-lg rounded-2" id="page">
         
+        {/* Every interface takes some functions/data/states from profile and 
+        assign them through interface, some components have some functions, but 
+        most of them are built to utilize those passed functions in some way */}
             <ProfilePersonal 
                 personal={profile}
                 setPersonal={setProfile}

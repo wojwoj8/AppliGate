@@ -5,7 +5,6 @@ import { AxiosError } from "axios";
 import { ErrorResponse } from "./Profile";
 import ErrorPage from "./ErrorPage";
 import AuthContext from "../utils/AuthProvider";
-import { useNavigate } from "react-router-dom";
 import Loading from './Loading';
 
 interface ProfileData {
@@ -15,14 +14,13 @@ interface ProfileData {
 
 const Index: React.FC = () =>{
 
-    const { authTokens, user, logoutUser } = useContext(AuthContext);
+    const { authTokens, logoutUser } = useContext(AuthContext);
     let [profile, setProfile] = useState<ProfileData | null>(null)
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
     const [loading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
     
-    // console.log(localStorage)
-    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchData = async () =>{
           setIsLoading(true)

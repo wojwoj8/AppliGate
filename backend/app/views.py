@@ -193,7 +193,6 @@ class ProfileImageUploadView(generics.UpdateAPIView):
             # Delete the existing profile image if it exists
 
             if user.profile_image != "defaults/default_profile_image.jpg":
-                # print(user.profile_image)
                 user.profile_image.delete()
 
             user.profile_image = profile_image
@@ -235,7 +234,6 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
         username = self.kwargs.get("username")  # Get the username from URL
 
         if username:
-            # user = User.objects.get(username=username)  # Fetch the user by username
             user = get_object_or_404(User, username=username)
 
             serializer = self.serializer_class(user, many=False)
@@ -249,7 +247,6 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
     def put(self, request, *args, **kwargs):
         self.check_username_permission()
         user = request.user
-        # print(request.data)
         serializer = self.serializer_class(user, data=request.data)
         profile_image = request.data.get("profile_image")
 

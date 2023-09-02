@@ -2,7 +2,6 @@ import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../utils/AuthProvider";
 import DarkMode from "../utils/DarkMode";
-import Example from "./Example";
 
 
 const Navbar: React.FC = () =>{
@@ -57,7 +56,7 @@ const Navbar: React.FC = () =>{
                   <Link to={`/profile/${user.username}/`} className="nav-link" aria-current="page">Profile</Link>
                 </li>
                 <li className="nav-item dropdown-center">
-                  <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a className="nav-link dropdown-toggle" href="/profileSettings" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Settings
                   </a>
                   <ul className="dropdown-menu">

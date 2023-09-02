@@ -14,7 +14,6 @@ import ProfileDeleteModal from './ProfileDeleteModal';
 interface ProfilePersonalProps {
     personal: ProfileData | null;
     setPersonal: React.Dispatch<React.SetStateAction<ProfileData | null>>;
-    // handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     editData: (state: EditDataFunction, 
         editField: React.Dispatch<React.SetStateAction<boolean>>, 
         endpoint: string, errorField: string, index?: number
@@ -76,7 +75,7 @@ setPersonal, setAlertError, alertError, username}) => {
         try {
         const response = await axios.put(`/profile/uploadImage/${username}`, formData, {
             headers: {
-            'Content-Type': 'multipart/form-data', // Use multipart/form-data
+            'Content-Type': 'multipart/form-data',
             Authorization: 'Bearer ' + String(authTokens.access),
             },
         });
@@ -98,7 +97,7 @@ setPersonal, setAlertError, alertError, username}) => {
         try {
         const response = await axios.put(`/profile/uploadImage/${username}`, data, {
             headers: {
-            'Content-Type': 'multipart/form-data', // Use multipart/form-data
+            'Content-Type': 'multipart/form-data', 
             Authorization: 'Bearer ' + String(authTokens.access),
             },
         });
@@ -114,7 +113,6 @@ setPersonal, setAlertError, alertError, username}) => {
     
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement>,
-        // setData: GetDataFunction,
       ) => {
         const { name, value } = event.target;
       
@@ -142,12 +140,7 @@ setPersonal, setAlertError, alertError, username}) => {
     }
 
     const saveEdit = async () =>{
-        // if (personal?.profile_image === '/media/defaults/default_profile_image.jpg') {
-        //     delete personal.profile_image
-        // }
-        
         await editData(personal, setEditPersonal, '/profile/', 'profile')
-        // setEditPersonal(false);
     }
 
     return(
@@ -165,7 +158,6 @@ setPersonal, setAlertError, alertError, username}) => {
                             <div className={`col-sm-auto row d-flex align-items-center align-items-baseline flex-column ${personal?.profile_image === '/media/defaults/default_profile_image.jpg'
                         ? ('prevHidden') : ('')}`}>
                                 <form className='d-flex d-sm-block flex-column align-items-center justify-content-center'>
-                                    {/* Date.now() to make that image refresh when changed */}
                                     <img className='profile-image my-2' src={`${personal?.profile_image}`} alt="Profile" />
                                     <div className='prevHidden row'>
                                         <div className="mb-1 text-center d-flex justify-content-center">

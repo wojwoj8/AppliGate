@@ -1,5 +1,3 @@
-import { profile } from 'console';
-import { useEffect } from 'react';
 import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import { ProfileStatusData } from '../Profile';

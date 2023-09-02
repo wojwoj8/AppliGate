@@ -1,4 +1,4 @@
-import { useContext, useState, useRef } from "react";
+import { useContext, useState} from "react";
 import axios from "axios";
 import AuthContext from "../utils/AuthProvider";
 import { AxiosError } from "axios";
@@ -165,33 +165,33 @@ const ProfileSettingsDelete: React.FC = () =>{
             <form onSubmit={e => handleForm(e)}>
                 
                 <div className="mb-3">
-                <label htmlFor="current_password" className="form-label">Password:</label>
-                <div className="">
-                    <input 
-                    name="current_password" 
-                    type="password" 
-                    onChange={(e) => handleInputChange(e)} 
-                    required
-                    className={`form-control${renderFieldErrorMultiple('userData', 0, `current_password`, multipleErrors) ? ' is-invalid' : ''}`} 
-                    />
-                    {renderFieldErrorMultiple('userData', 0, `current_password`, multipleErrors)}
-                </div>
+                  <label htmlFor="current_password" className="form-label">Password:</label>
+                  <div className="">
+                      <input 
+                      name="current_password" 
+                      type="password" 
+                      onChange={(e) => handleInputChange(e)} 
+                      required
+                      className={`form-control${renderFieldErrorMultiple('userData', 0, `current_password`, multipleErrors) ? ' is-invalid' : ''}`} 
+                      />
+                      {renderFieldErrorMultiple('userData', 0, `current_password`, multipleErrors)}
+                  </div>
                 </div>
 
                 
 
                 <div className="d-grid py-2 text-center">
-                <button 
-                    type="submit" 
-                    className={`btn btn-danger btn-block`}
-                    disabled={handleDisabled()}
-                >
-                  <DeleteModal id={`${user.user_id}`} 
-                  name={'Delete Account'} 
-                  message={'Do you want to delete your account?'} 
-                  deleteName = {'Change'}
-                  onDelete={() => saveEdit()} />
-                </button>      
+                  <button 
+                      type="submit" 
+                      className={`btn btn-danger btn-block`}
+                      disabled={handleDisabled()}
+                  >
+                    <DeleteModal id={`${user.user_id}`} 
+                    name={'Delete Account'} 
+                    message={'Do you want to delete your account?'} 
+                    deleteName = {'Change'}
+                    onDelete={() => saveEdit()} />
+                  </button>      
                 </div>
 
             </form>

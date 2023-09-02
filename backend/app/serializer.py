@@ -101,7 +101,6 @@ class DateSerializer(serializers.Field):
     def to_internal_value(self, value):
         print(value)
         if self.field_name == "date_of_birth" and value == "":
-            # raise serializers.ValidationError("This field may not be blank.")
             return None
         elif value == "":
             return None
@@ -154,9 +153,6 @@ class ContactSerializer(serializers.ModelSerializer):
 
 class MonthYearDateField(serializers.Field):
     def to_internal_value(self, value):
-        # print(value)
-        # if value == "":
-        #     raise serializers.ValidationError("This field may not be blank.")
         if self.field_name == "from_date" and value == "":
             raise serializers.ValidationError("This field may not be blank.")
         elif value == "":

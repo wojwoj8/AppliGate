@@ -10,9 +10,9 @@ const Loading: React.FC<LoadingProps> = ({progress}) =>{
     return(
         <div>
             <LoadingBar
-                color="#10B981"   // Set your desired color
+                color="#10B981" 
                 progress={progress}
-                height={5}         // Set the height of the loading bar
+                height={5}    
             />
         </div>
     )

@@ -10,6 +10,8 @@ const ProfileAlert: React.FC<Alert> = ({ error, setError }) => {
     const [isSuccess, setIsSuccess] = useState(false);
   
     useEffect(() => {
+      // success error are static because I didn't expect that I will use that component
+      // in more places
       if (error) {
         if (error === 'Image uploaded successfully' || 
         error === 'Image removed successfully' ||

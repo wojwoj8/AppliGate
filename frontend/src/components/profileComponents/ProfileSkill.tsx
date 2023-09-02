@@ -1,6 +1,4 @@
 import React from 'react';
-import Icon from '@mdi/react';
-import { mdiPencil } from '@mdi/js';
 import { SkillData } from '../Profile';
 import { MultipleErrorResponse } from '../Profile';
 import { GetDataFunction } from '../Profile';

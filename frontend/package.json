@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8000",
+  "proxy": "https://appligate.onrender.com",
   "homepage": "http://wojwoj8.github.io/AppliGate",
   "dependencies": {
     "@mdi/js": "^7.2.96",

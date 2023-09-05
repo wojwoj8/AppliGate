@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import React, { useState, ReactNode, useContext } from 'react';
+import React, { ReactNode, useContext } from 'react';
 import AuthContext from './AuthProvider';
 
 interface IfNotLoggedInProps {

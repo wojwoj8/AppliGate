@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const username = formData.get('login') as string;
           const password = formData.get('password') as string;
       
-          const response = await axios.post('http://127.0.0.1:8000/api/token/', {
+          const response = await axios.post('/api/token/', {
             username,
             password,
           });
@@ -77,7 +77,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           console.log(err)
           if (axios.isAxiosError(err)) {
             // console.log(err)
-            if(err.code === "ERR_NETWORK"){
+            if(err.code === "ERR_NETWORK" || err.code === "ERR_BAD_RESPONSE" ){
     
               setErrorLogIn({error:'Something went wrong while logging in the user!' })
               console.log(errorLogIn)
@@ -122,7 +122,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           if (response.status === 200) {
             // Perform login after successful signup
             // console.log(data)
-            const loginResponse = await axios.post('http://127.0.0.1:8000/api/token/', {
+            const loginResponse = await axios.post('/api/token/', {
               username,
               password,
             });
@@ -162,7 +162,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       };
     const updateToken = async () => {
-        const response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
+        const response = await fetch('/api/token/refresh/', {
             method: 'POST',
             headers: {
                 'Content-Type':'application/json'

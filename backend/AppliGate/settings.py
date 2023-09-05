@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-m!hyc$qjp+!d$lm4i&)w1@p6#2j1=p-13ij+smon+!c5#l&40i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["appligate.onrender.com", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -64,9 +64,13 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000", "https://wojwoj8.github.io/AppliGate"]
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000",
+]
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://wojwoj8.github.io/AppliGate"]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 ROOT_URLCONF = "AppliGate.urls"
 

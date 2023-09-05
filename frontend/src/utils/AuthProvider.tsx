@@ -1,8 +1,8 @@
 import { ReactNode, createContext, useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom'
-import axios, { AxiosError } from 'axios';
-import { error } from 'console';
+import axios from 'axios';
+
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -39,7 +39,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             return decodedUser;
           }
         }
-        return null; // Or any other default value
+        return null;
       });
     let [authTokens, setAuthTokens] = useState(() => (localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens') as string) : null));
     let [loading, setLoading] = useState(true)

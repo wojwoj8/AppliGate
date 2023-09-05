@@ -5,7 +5,7 @@ import LogIn from './components/LogIn';
 import Navbar from './components/Navbar';
 import Index from './components/Index';
 import PrivateRoute from './utils/PrivateRoute';
-import IfNotLoggedIn from './utils/IfLoggedIn';
+import IfNotLoggedIn from './utils/IfNotLoggedIn';
 import Profile from './components/Profile';
 import { AuthProvider } from './utils/AuthProvider';
 import setInitialMode from './utils/InitlializeDarkMode';

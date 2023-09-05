@@ -33,7 +33,7 @@ const SignUp: React.FC = () =>{
     }
 
     return(
-        <div className="container">
+        <div className="container my-5">
             <div className="container">
                 <div className="text-center">   
                     {errorSignUp && errorSignUp.error && (
@@ -42,8 +42,10 @@ const SignUp: React.FC = () =>{
                 </div>
                 
             </div>
-            <h1 className="text-center display-4">AppliGate</h1>
-            <p className="text-center lead mb-5">Create Your CV, Secure Your Future, Find Your Dream Job!</p>
+            <div className="text-center">
+                <h1 className="display-4 fw-bold">AppliGate</h1>
+                <p className="lead">Craft Your CV, Secure Your Future, Find Your Dream Job</p>
+            </div>
             <div className="row justify-content-center">
                 <div className="col-sm-12 col-md-8 col-lg-6">
                 <form onSubmit={e => handleForm(e)}>

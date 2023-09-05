@@ -1,6 +1,5 @@
 import React from 'react';
-import Icon from '@mdi/react';
-import { mdiDelete } from '@mdi/js'
+
 
 interface DeleteModalProps {
   id: string;

@@ -13,15 +13,17 @@ const LogIn: React.FC = () => {
   };
 
     return(
-        <div className="container">
+        <div className="container my-5">
             {errorLogIn !== null &&
                 Object.keys(errorLogIn).map((fieldName) => (
                 <div key={fieldName} className="text-danger text-center">
                     <p>{errorLogIn[fieldName]}</p>
                 </div>
                 ))}
-            <h1 className="text-center display-3 font-bold">Welcome at AppliGate!</h1>
-            <p className="text-center lead mb-5">Create Your CV, Secure Your Future, Find Your Dream Job!</p>
+           <div className="text-center">
+                <h1 className="display-4 fw-bold">AppliGate</h1>
+                <p className="lead">Craft Your CV, Secure Your Future, Find Your Dream Job</p>
+            </div>
             <div className="row justify-content-center">
                 <div className="col-sm-12 col-md-8 col-lg-6">
                     <form onSubmit={handleForm}>

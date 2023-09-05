@@ -96,8 +96,16 @@ const Navbar: React.FC = () =>{
                 <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to='/register' className="nav-link">Sign Up</Link>
                 </li>
-                
-                
+                <li className="nav-item">
+                  <div className="form-check form-switch form-check-reverse nav-link me-4 text-left d-table">
+                    <input className="form-check-input" type="checkbox" id="flexSwitchCheckCheckedReverse" 
+                    onChange={handleCheck}
+                    checked={check}
+                    data-bs-dismiss="offcanvas"
+                    />
+                    <label className="form-check-label" htmlFor="flexSwitchCheckCheckedReverse">Dark Mode</label>
+                  </div>
+                </li>
               </ul>
               )}
 

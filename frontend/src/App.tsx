@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate} from "react-router-dom";
 import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
 import Navbar from './components/Navbar';
@@ -20,7 +20,7 @@ import Example from './components/Example';
 function App() {
   setInitialMode();
   return (
-    <BrowserRouter>
+    <HashRouter>
     
       <AuthProvider>
         <Navbar></Navbar>
@@ -48,7 +48,7 @@ function App() {
    
     
     {/* <div className='mt-2'></div> */}
-    </BrowserRouter>
+    </HashRouter>
     
   );
 }

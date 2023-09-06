@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const username = formData.get('login') as string;
           const password = formData.get('password') as string;
       
-          const response = await axios.post('/api/token/', {
+          const response = await axios.post('https://appligate.onrender.com/api/token/', {
             username,
             password,
           });
@@ -110,7 +110,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const confirm = formData.get('confirm') as string;
           const email = formData.get('email') as string;
       
-          const response = await axios.post('/register/', {
+          const response = await axios.post('https://appligate.onrender.com/register/', {
             username,
             password,
             confirm,
@@ -122,7 +122,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           if (response.status === 200) {
             // Perform login after successful signup
             // console.log(data)
-            const loginResponse = await axios.post('/api/token/', {
+            const loginResponse = await axios.post('https://appligate.onrender.com/api/token/', {
               username,
               password,
             });

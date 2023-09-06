@@ -114,7 +114,7 @@ const ProfileSettingsUsername: React.FC = () =>{
 
     const getProfile = async () => {
         try {
-          const response = await axios.get(`/profile/settings`, {
+          const response = await axios.get(`https://appligate.onrender.com/profile/settings`, {
             headers: {
               'Content-Type': 'application/json',
               Authorization: 'Bearer ' + String(authTokens.access),
@@ -142,7 +142,7 @@ const ProfileSettingsUsername: React.FC = () =>{
         index: number = 0,
     ) =>{
         try {
-            const response = await axios.put(`/profile/settings/${user.user_id}`, profile, {
+            const response = await axios.put(`https://appligate.onrender.com/profile/settings/${user.user_id}`, profile, {
               headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),

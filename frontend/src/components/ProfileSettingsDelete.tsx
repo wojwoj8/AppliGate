@@ -102,7 +102,7 @@ const ProfileSettingsDelete: React.FC = () =>{
         index: number = 0,
     ) =>{
         try {
-            const response = await axios.post(`/profile/settings/${user.user_id}`, profile, {
+            const response = await axios.post(`https://appligate.onrender.com/profile/settings/${user.user_id}`, profile, {
               headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),

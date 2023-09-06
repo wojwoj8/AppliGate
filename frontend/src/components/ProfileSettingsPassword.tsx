@@ -112,7 +112,7 @@ const ProfileSettingsPassword: React.FC = () =>{
         index: number = 0,
     ) =>{
         try {
-            const response = await axios.put(`/profile/settings/changepassword/${user.user_id}`, profile, {
+            const response = await axios.put(`https://appligate.onrender.com/profile/settings/changepassword/${user.user_id}`, profile, {
               headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),

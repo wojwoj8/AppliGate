@@ -36,7 +36,7 @@ const Index: React.FC = () =>{
 
     const getProfile = async () => {
         try {
-          const response = await axios.get('/index/', {
+          const response = await axios.get('https://appligate.onrender.com/index/', {
             headers: {
               'Content-Type': 'application/json',
               Authorization: 'Bearer ' + String(authTokens.access),

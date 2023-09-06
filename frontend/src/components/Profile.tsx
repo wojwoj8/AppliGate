@@ -261,7 +261,7 @@ const Profile: React.FC = () =>{
     ) => {
       let path = `${endpoint}/${username}`
       if (id){  
-        path = `${endpoint}/${username}/${id}`
+        path = `https://appligate.onrender.com/${endpoint}/${username}/${id}`
       }
         try{
             const response = await axios.get(path, {
@@ -315,7 +315,7 @@ const Profile: React.FC = () =>{
 
     ) =>{
       try{
-          const response = await axios.put(`${endpoint}/${username}`, state,  {
+          const response = await axios.put(`https://appligate.onrender.com/${endpoint}/${username}`, state,  {
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + String(authTokens.access),
@@ -364,7 +364,7 @@ const Profile: React.FC = () =>{
       index: number = 0,
     ) =>{
         try{
-            const response = await axios.post(`${endpoint}/${username}`, state,  {
+            const response = await axios.post(`https://appligate.onrender.com/${endpoint}/${username}`, state,  {
                 headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
@@ -416,7 +416,7 @@ const Profile: React.FC = () =>{
       ) =>{
         let path = `${endpoint}`
         if (id){  
-          path = `${endpoint}/${username}/${id}`
+          path = `https://appligate.onrender.com/${endpoint}/${username}/${id}`
         }
       try{
           const response = await axios.put(path, state[index],  {
@@ -474,7 +474,7 @@ const Profile: React.FC = () =>{
         id: number
       ) =>{
       try{
-          const response = await axios.delete(`${endpoint}/${username}/${id}`, {
+          const response = await axios.delete(`https://appligate.onrender.com/${endpoint}/${username}/${id}`, {
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + String(authTokens.access),

@@ -73,7 +73,7 @@ setPersonal, setAlertError, alertError, username}) => {
         formData.append('profile_image', file);
     
         try {
-        const response = await axios.put(`/profile/uploadImage/${username}`, formData, {
+        const response = await axios.put(`https://appligate.onrender.com/profile/uploadImage/${username}`, formData, {
             headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: 'Bearer ' + String(authTokens.access),
@@ -95,7 +95,7 @@ setPersonal, setAlertError, alertError, username}) => {
         const data = {profile_image: 'default'}
         console.log('test')
         try {
-        const response = await axios.put(`/profile/uploadImage/${username}`, data, {
+        const response = await axios.put(`https://appligate.onrender.com/profile/uploadImage/${username}`, data, {
             headers: {
             'Content-Type': 'multipart/form-data', 
             Authorization: 'Bearer ' + String(authTokens.access),

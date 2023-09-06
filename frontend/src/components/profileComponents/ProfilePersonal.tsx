@@ -158,7 +158,7 @@ setPersonal, setAlertError, alertError, username}) => {
                             <div className={`col-sm-auto row d-flex align-items-center align-items-baseline flex-column ${personal?.profile_image === '/media/defaults/default_profile_image.jpg'
                         ? ('prevHidden') : ('')}`}>
                                 <form className='d-flex d-sm-block flex-column align-items-center justify-content-center'>
-                                    <img className='profile-image my-2' src={`${personal?.profile_image}`} alt="Profile" />
+                                    <img className='profile-image my-2' src={`https://appligate.onrender.com/${personal?.profile_image}`} alt="Profile" />
                                     <div className='prevHidden row'>
                                         <div className="mb-1 text-center d-flex justify-content-center">
                                             <input 
@@ -178,7 +178,7 @@ setPersonal, setAlertError, alertError, username}) => {
                                                 <Icon path={mdiPencil} size={1} />
                                                
                                             </label>
-                                            {personal?.profile_image && personal.profile_image !== '/media/defaults/default_profile_image.jpg' &&
+                                            {personal?.profile_image && personal.profile_image !== 'https://appligate.onrender.com/media/defaults/default_profile_image.jpg' &&
                                                 <ProfileDeleteModal id={`${personal?.profile_image}_${0}`} onDelete={() => removeImage()} />
                                             }
                                             

@@ -5,3 +5,5 @@ djangorestframework-simplejwt
 django-phonenumber-field[phonenumberslite]
 gunicorn==19.7.1
 Pillow
+psycopg2-binary==2.9.7
+dj-database-url==2.1.0

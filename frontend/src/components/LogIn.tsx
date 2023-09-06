@@ -5,17 +5,22 @@ import AuthContext from "../utils/AuthProvider";
 import Loading from "./Loading";
 
 const LogIn: React.FC = () => {
-  const { loginUser, errorLogIn } = useContext(AuthContext);
+  const { loginUser, errorLogIn, setErrorLogIn} = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [loadingMessage, setLoadingMessage] = useState('')
 
   const handleForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    setErrorLogIn({});
     e.preventDefault();
+    
     setLoading(true);
     setProgress(50);
+    setLoadingMessage('Loading may take up to 3 minutes, please wait')
     await loginUser(e); // Call the loginUser function from the AuthContext
     setProgress(100);
     setLoading(false);
+    setLoadingMessage('')
 };
 
   
@@ -27,6 +32,9 @@ const LogIn: React.FC = () => {
                     <p>{errorLogIn[fieldName]}</p>
                 </div>
                 ))}
+            <div className="text-center text-primary">
+            {loadingMessage && loadingMessage }
+            </div>
            <div className="text-center">
                 <h1 className="display-4 fw-bold">AppliGate</h1>
                 <p className="lead">Craft Your CV, Secure Your Future, Find Your Dream Job</p>

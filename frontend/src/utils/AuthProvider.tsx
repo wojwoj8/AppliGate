@@ -16,6 +16,7 @@ interface AuthContextData {
     loginUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
     signupUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
     logoutUser: () => void;
+    setErrorLogIn: (error: { [key: string]: string } | null) => void;
   }
   
   const AuthContext = createContext<AuthContextData>({
@@ -26,6 +27,7 @@ interface AuthContextData {
     loginUser: async (e: React.FormEvent<HTMLFormElement>) => {},
     signupUser: async (e: React.FormEvent<HTMLFormElement>) => {},
     logoutUser: () => {},
+    setErrorLogIn: (error) => {},
   });
 
 export default AuthContext;
@@ -192,6 +194,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         loginUser:loginUser,
         logoutUser:logoutUser,
         signupUser:signupUser,
+        setErrorLogIn:setErrorLogIn,
     }
 
     useEffect(()=>{

@@ -12,6 +12,7 @@ const SignUp: React.FC = () =>{
     const { signupUser, errorSignUp } = useContext(AuthContext)
     const [loading, setLoading] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [loadingMessage, setLoadingMessage] = useState('')
 
     const handlePassword = (e:string) =>{
         setPassword(e)
@@ -21,13 +22,14 @@ const SignUp: React.FC = () =>{
     }
     const handleForm = async (e: React.FormEvent<HTMLFormElement>) =>{
         setErr({})
-        console.log('test')
         setLoading(true);
         setProgress(50)
+        
         if (password === confirm){
-            
+            setLoadingMessage('Loading may take up to 3 minutes, please wait')
             await signupUser(e)
             setErr({})
+            setLoadingMessage('')
             
         }
         else{
@@ -44,13 +46,16 @@ const SignUp: React.FC = () =>{
     return(
         <div className="container my-5">
             <div className="container">
+                <div className="text-center text-primary">
+                    {loadingMessage && loadingMessage }
+                </div>
                 <div className="text-center">   
                     {errorSignUp && errorSignUp.error && (
                         <span className="text-danger">{errorSignUp.error[0]}</span>
                         )}
                 </div>
-                
             </div>
+            
             <div className="text-center">
                 <h1 className="display-4 fw-bold">AppliGate</h1>
                 <p className="lead">Craft Your CV, Secure Your Future, Find Your Dream Job</p>

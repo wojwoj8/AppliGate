@@ -1,27 +1,40 @@
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../utils/AuthProvider";
-import DarkMode from "../utils/DarkMode";
 
 
 const Navbar: React.FC = () =>{
     
     const [check, setCheck] = useState(false);
-    const handleCheck = () => {
-      if (localStorage.getItem('mode') !== 'dark'){
-
-        setCheck(true)
-        DarkMode()
-      } else{
-
-        setCheck(false)
-        DarkMode()
-      }
+    useEffect(() => {
+      const body = document.querySelector('body');
+      const mode = localStorage.getItem('mode');
       
-    }
-    useEffect(() =>{
-      handleCheck();
-    },[])
+      if (body) {
+        if (mode === 'dark') {
+          body.id = 'dark';
+          setCheck(true);
+        } else {
+          body.id = '';
+          setCheck(false);
+        }
+      }
+    }, []);
+  
+    const toggleDarkMode = () => {
+      const body = document.querySelector('body');
+      if (body) {
+        if (check) {
+          body.id = '';
+          localStorage.setItem('mode', '');
+          setCheck(false);
+        } else {
+          body.id = 'dark';
+          localStorage.setItem('mode', 'dark');
+          setCheck(true);
+        }
+      }
+    };
     const authContext = useContext(AuthContext);
     if (!authContext) {
         // Handle the case when context is undefined
@@ -63,7 +76,7 @@ const Navbar: React.FC = () =>{
                     <li className="dropdown-item">
                       <div className="form-check form-switch form-check-reverse nav-link me-4 text-left d-table">
                         <input className="form-check-input" type="checkbox" id="flexSwitchCheckCheckedReverse" 
-                        onChange={handleCheck}
+                        onChange={toggleDarkMode}
                         checked={check}
                         data-bs-dismiss="offcanvas"
                         />
@@ -99,7 +112,7 @@ const Navbar: React.FC = () =>{
                 <li className="nav-item">
                   <div className="form-check form-switch form-check-reverse nav-link me-4 text-left d-table">
                     <input className="form-check-input" type="checkbox" id="flexSwitchCheckCheckedReverse" 
-                    onChange={handleCheck}
+                    onChange={toggleDarkMode}
                     checked={check}
                     data-bs-dismiss="offcanvas"
                     />

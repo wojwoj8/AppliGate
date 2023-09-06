@@ -7,6 +7,7 @@ import { MultipleErrorResponse } from './Profile';
 import ProfileAlert from "./profileComponents/ProfileAlert";
 import DeleteModal from "./DeleteModal";
 import ErrorPage from "./ErrorPage";
+import { ProfileSettingsProps } from "./ProfileSettingsUsername";
 
 interface ProfileData {
     current_password: string;
@@ -17,7 +18,7 @@ interface ProfileData {
   const initialMultipleErrors: MultipleErrorResponse = {
     userData: {},
   };
-const ProfileSettingsPassword: React.FC = () =>{
+const ProfileSettingsPassword: React.FC<ProfileSettingsProps> = ({setAlertError}) =>{
 
     const {authTokens, user, logoutUser } = useContext(AuthContext);
     const [profile, setProfile] = useState<ProfileData | null>({
@@ -27,7 +28,7 @@ const ProfileSettingsPassword: React.FC = () =>{
   });
     const [err, setErr] = useState<{ [key: string]: string[] } | null>(null);
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
-    const [alertError, setAlertError] = useState('');
+    // const [alertError, setAlertError] = useState('');
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
     
     
@@ -128,7 +129,8 @@ const ProfileSettingsPassword: React.FC = () =>{
                   new_password: "",
                   confirm_password: "",
               });
-            }
+              logoutUser();
+            } 
           } catch (error: any) {
             const axiosError = error as AxiosError<ErrorResponse>;
             if (error.response && error.response.status === 401) {
@@ -161,9 +163,9 @@ const ProfileSettingsPassword: React.FC = () =>{
     return (
         <div className="container">
 
-            {alertError && <ProfileAlert 
+            {/* {alertError && <ProfileAlert 
                 error={alertError}
-                setError={setAlertError} />}
+                setError={setAlertError} />} */}
 
             <div className="container">
                 <div className="text-center">   

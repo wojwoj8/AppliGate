@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { HashRouter, Routes, Route, Navigate} from "react-router-dom";
 import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
@@ -15,16 +15,22 @@ import ProfileSettingsPassword from './components/ProfileSettingsPassword';
 import ProfileSettingsUsername from './components/ProfileSettingsUsername';
 import ProfileSettingsDelete from './components/ProfileSettingsDelete';
 import Example from './components/Example';
+import ProfileAlert from './components/profileComponents/ProfileAlert';
+
 
 
 function App() {
   setInitialMode();
+  const [alertError, setAlertError] = useState('');
   return (
     <HashRouter>
     
       <AuthProvider>
         <Navbar></Navbar>
         <div className='pb-2 d-flex flex-column myMain'>
+        {alertError && <ProfileAlert 
+                error={alertError}
+                setError={setAlertError} />}
         <Routes>
           {/* default route */}
             <Route path="*" element={<Navigate to="/" replace />} />
@@ -36,9 +42,9 @@ function App() {
             {/* PrivateRoute = Accessable if logged in */}
             <Route path="/profile/*" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>
             <Route path="/profileSettings" element={<PrivateRoute><ProfileSettings/></PrivateRoute>}></Route>
-            <Route path="/profileSettings/userData" element={<PrivateRoute><ProfileSettingsUsername/></PrivateRoute>}></Route>
-            <Route path="/profileSettings/password" element={<PrivateRoute><ProfileSettingsPassword/></PrivateRoute>}></Route>
-            <Route path="/profileSettings/delete" element={<PrivateRoute><ProfileSettingsDelete/></PrivateRoute>}></Route>
+            <Route path="/profileSettings/userData" element={<PrivateRoute><ProfileSettingsUsername setAlertError={setAlertError}/></PrivateRoute>}></Route>
+            <Route path="/profileSettings/password" element={<PrivateRoute><ProfileSettingsPassword setAlertError={setAlertError}/></PrivateRoute>}></Route>
+            <Route path="/profileSettings/delete" element={<PrivateRoute><ProfileSettingsDelete setAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/" element={<PrivateRoute><Index/></PrivateRoute>} />
           
         </Routes>

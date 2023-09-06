@@ -9,6 +9,10 @@ import ProfileAlert from "./profileComponents/ProfileAlert";
 import DeleteModal from "./DeleteModal";
 import Loading from "./Loading";
 
+export interface ProfileSettingsProps {
+  setAlertError: React.Dispatch<React.SetStateAction<string>>;
+}
+
 interface ProfileData {
     username: string;
     email: string;
@@ -19,13 +23,13 @@ const initialMultipleErrors: MultipleErrorResponse = {
     userData: {},
   };
 
-const ProfileSettingsUsername: React.FC = () =>{
+const ProfileSettingsUsername: React.FC<ProfileSettingsProps> = ({ setAlertError }) =>{
 
     const {authTokens, user, logoutUser } = useContext(AuthContext);
     const [profile, setProfile] = useState<ProfileData | null>(null)
     const [err, setErr] = useState<{ [key: string]: string[] } | null>(null);
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
-    const [alertError, setAlertError] = useState('');
+    // const [alertError, setAlertError] = useState('');
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
     const [loading, setLoading] = useState(false);
@@ -153,6 +157,7 @@ const ProfileSettingsUsername: React.FC = () =>{
             if (response.status === 200) {
                 setAlertError('Data changed successfully')
                 setProfile(data);
+                logoutUser();
             }
           } catch (error: any) {
             const axiosError = error as AxiosError<ErrorResponse>;
@@ -194,9 +199,9 @@ const ProfileSettingsUsername: React.FC = () =>{
 
     return (
         <div className="container">
-            {alertError && <ProfileAlert 
+            {/* {alertError && <ProfileAlert 
                 error={alertError}
-                setError={setAlertError} />}
+                setError={setAlertError} />} */}
 
             <div className="container">
                 <div className="text-center">   

@@ -217,9 +217,8 @@ const Profile: React.FC = () =>{
     // For getting username from url
 
     const params = useParams();
-    const username = params['*'];
-
-    
+    let username = params['*'];
+      
 
     // Universal method for rendering errors under given inputs, gets
     // field: key of error section like language
@@ -259,11 +258,12 @@ const Profile: React.FC = () =>{
       endpoint: string,
       id?: number,
     ) => {
-      let path = `${endpoint}/${username}`
+      let path = `https://appligate.onrender.com/${endpoint}/${username}`
       if (id){  
-        path = `https://appligate.onrender.com/${endpoint}/${username}/${id}`
+        path = `https://appligate.onrender.com/${endpoint}/${username}${id}`
       }
         try{
+            console.log(path)
             const response = await axios.get(path, {
                 headers: {
                   'Content-Type': 'application/json',
@@ -414,9 +414,10 @@ const Profile: React.FC = () =>{
         index: number,
         id?: number
       ) =>{
-        let path = `${endpoint}`
+        let path = `https://appligate.onrender.com/${endpoint}`
         if (id){  
-          path = `https://appligate.onrender.com/${endpoint}/${username}/${id}`
+          path = `https://appligate.onrender.com/${endpoint}/${username}${id}`
+          console.log(username)
         }
       try{
           const response = await axios.put(path, state[index],  {
@@ -474,7 +475,7 @@ const Profile: React.FC = () =>{
         id: number
       ) =>{
       try{
-          const response = await axios.delete(`https://appligate.onrender.com/${endpoint}/${username}/${id}`, {
+          const response = await axios.delete(`https://appligate.onrender.com/${endpoint}/${username}${id}`, {
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + String(authTokens.access),
@@ -617,7 +618,7 @@ const Profile: React.FC = () =>{
         updateProgress(completedSteps);
       };
   
-      await fetchDataAndUpdateProgress(setProfile, `/profile/`);
+      await fetchDataAndUpdateProgress(setProfile, `/profile`);
       await fetchDataAndUpdateProgress(setContact, `/profile/contact`);
       await fetchDataAndUpdateProgress(setSummary, `/profile/summary`);
       await fetchDataAndUpdateProgress(setExperience, `/profile/experience`);
@@ -668,7 +669,7 @@ const Profile: React.FC = () =>{
             {previewMode ? 'Hide Preview' : 'Show Preview'}
           </button>
         </div>
-        <div className="container shadow-lg rounded-2" id="page">
+        <div className="container shadow-lg rounded-2 text-break" id="page">
         
         {/* Every interface takes some functions/data/states from profile and 
         assign them through interface, some components have some functions, but 

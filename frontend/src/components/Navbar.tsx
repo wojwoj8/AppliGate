@@ -78,7 +78,7 @@ const Navbar: React.FC = () =>{
                 </li>
                
                 <li className="nav-item" onClick={logoutUser}>
-                  <a className="nav-link" href="/" data-bs-dismiss="offcanvas">Log Out</a>
+                  <Link to='/' className="nav-link" data-bs-dismiss="offcanvas">Log Out</Link>
                 </li>
                
                 

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../utils/AuthProvider";
-
+import Loading from "./Loading";
 
 
 const SignUp: React.FC = () =>{
@@ -10,6 +10,8 @@ const SignUp: React.FC = () =>{
     const [confirm, setConfirm] = useState('')
     const [err, setErr] = useState<{ [key: string]: string[] } | null>(null);
     const { signupUser, errorSignUp } = useContext(AuthContext)
+    const [loading, setLoading] = useState(false);
+    const [progress, setProgress] = useState(0);
 
     const handlePassword = (e:string) =>{
         setPassword(e)
@@ -17,11 +19,16 @@ const SignUp: React.FC = () =>{
     const handleConfirm = (e:string) =>{
         setConfirm(e)
     }
-    const handleForm = (e: React.FormEvent<HTMLFormElement>) =>{
+    const handleForm = async (e: React.FormEvent<HTMLFormElement>) =>{
         setErr({})
+        console.log('test')
+        setLoading(true);
+        setProgress(50)
         if (password === confirm){
-            signupUser(e)
+            
+            await signupUser(e)
             setErr({})
+            
         }
         else{
             setErr({
@@ -29,7 +36,9 @@ const SignUp: React.FC = () =>{
               });
         }
         
-        e.preventDefault()
+        e.preventDefault();
+        setLoading(false);
+        setProgress(100)
     }
 
     return(
@@ -125,6 +134,7 @@ const SignUp: React.FC = () =>{
                     <p className="">Already have an account? <Link to="/login" className="">Log In Here!</Link></p>
                     </div>
                 </form>
+                {loading && <Loading progress={progress} />}
                 </div>
             </div>
         </div>

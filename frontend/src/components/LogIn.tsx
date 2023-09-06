@@ -1,17 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 // import axios from "axios";
 import { Link } from "react-router-dom";
 import AuthContext from "../utils/AuthProvider";
+import Loading from "./Loading";
 
 const LogIn: React.FC = () => {
   const { loginUser, errorLogIn } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
-
-  const handleForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    loginUser(e); // Call the loginUser function from the AuthContext
-  };
+    setLoading(true);
+    setProgress(50);
+    await loginUser(e); // Call the loginUser function from the AuthContext
+    setProgress(100);
+    setLoading(false);
+};
 
+  
     return(
         <div className="container my-5">
             {errorLogIn !== null &&
@@ -61,6 +68,7 @@ const LogIn: React.FC = () => {
                             <p className="mb-0">Don't have an account? <Link to="/register" className="text-purple-500">Create it Here!</Link></p>
                         </div>
                     </form>
+                    {loading && <Loading progress={progress} />}
                 </div>
             </div>
         </div>

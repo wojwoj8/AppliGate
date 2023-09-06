@@ -155,7 +155,7 @@ setPersonal, setAlertError, alertError, username}) => {
                     </div>
                     <div className='row justify-content-center '>
                         
-                            <div className={`col-sm-auto row d-flex align-items-center align-items-baseline flex-column ${personal?.profile_image === '/media/defaults/default_profile_image.jpg'
+                            {/* <div className={`col-sm-auto row d-flex align-items-center align-items-baseline flex-column ${personal?.profile_image === '/media/defaults/default_profile_image.jpg'
                         ? ('prevHidden') : ('')}`}>
                                 <form className='d-flex d-sm-block flex-column align-items-center justify-content-center'>
                                     <img className='profile-image my-2' src={`https://appligate.onrender.com/${personal?.profile_image}`} alt="Profile" />
@@ -185,7 +185,7 @@ setPersonal, setAlertError, alertError, username}) => {
                                         </div>
                                     </div>
                                 </form>
-                            </div>
+                            </div> */}
                         
                     
                 {!editPersonal && 

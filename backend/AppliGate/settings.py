@@ -27,7 +27,7 @@ MEDIA_URL = "/media/"
 SECRET_KEY = "django-insecure-m!hyc$qjp+!d$lm4i&)w1@p6#2j1=p-13ij+smon+!c5#l&40i"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["appligate.onrender.com", "*"]
 
@@ -93,15 +93,15 @@ WSGI_APPLICATION = "AppliGate.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-if not DEBUG:
-    DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL"))}
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": "db.sqlite3",
-        }
-    }
+# if not DEBUG:
+DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL"))}
+# else:
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.sqlite3",
+#             "NAME": "db.sqlite3",
+#         }
+# }
 
 
 # Password validation

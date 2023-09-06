@@ -668,7 +668,7 @@ const Profile: React.FC = () =>{
             {previewMode ? 'Hide Preview' : 'Show Preview'}
           </button>
         </div>
-        <div className="container shadow-lg rounded-2" id="page">
+        <div className="container shadow-lg rounded-2 text-break" id="page">
         
         {/* Every interface takes some functions/data/states from profile and 
         assign them through interface, some components have some functions, but 

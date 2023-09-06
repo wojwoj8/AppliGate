@@ -7,6 +7,7 @@ import { MultipleErrorResponse } from './Profile';
 import ProfileAlert from "./profileComponents/ProfileAlert";
 import DeleteModal from "./DeleteModal";
 import ErrorPage from "./ErrorPage";
+import { ProfileSettingsProps } from "./ProfileSettingsUsername";
 
 interface ProfileData {
     current_password: string;
@@ -15,7 +16,7 @@ interface ProfileData {
   const initialMultipleErrors: MultipleErrorResponse = {
     userData: {},
   };
-const ProfileSettingsDelete: React.FC = () =>{
+const ProfileSettingsDelete: React.FC<ProfileSettingsProps> = ({ setAlertError }) =>{
 
     const {authTokens, user, logoutUser } = useContext(AuthContext);
     const [profile, setProfile] = useState<ProfileData | null>({
@@ -23,7 +24,7 @@ const ProfileSettingsDelete: React.FC = () =>{
   });
     const [err, setErr] = useState<{ [key: string]: string[] } | null>(null);
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
-    const [alertError, setAlertError] = useState('');
+    // const [alertError, setAlertError] = useState('');
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
 
     const renderFieldErrorMultiple = (
@@ -147,9 +148,9 @@ const ProfileSettingsDelete: React.FC = () =>{
     return (
         <div className="container">
 
-            {alertError && <ProfileAlert 
+            {/* {alertError && <ProfileAlert 
                 error={alertError}
-                setError={setAlertError} />}
+                setError={setAlertError} />} */}
 
             <div className="container">
                 <div className="text-center">   

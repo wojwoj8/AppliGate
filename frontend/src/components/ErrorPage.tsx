@@ -31,7 +31,11 @@ const ErrorPage: React.FC<ErrorProps> = ({axiosError}) =>{
                     
                 </>
             ) : (
-                <p>An error occurred.</p>
+                <div className="error-page text-center">
+                    <h2>500</h2>
+                    <p>An error occurred.</p>
+                </div>
+                
             )}
         </div>
     );

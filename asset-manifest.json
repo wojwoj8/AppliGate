@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/AppliGate/static/css/main.2a330b53.css",
-    "main.js": "/AppliGate/static/js/main.a3f7001d.js",
+    "main.js": "/AppliGate/static/js/main.51311afe.js",
     "index.html": "/AppliGate/index.html",
     "main.2a330b53.css.map": "/AppliGate/static/css/main.2a330b53.css.map",
-    "main.a3f7001d.js.map": "/AppliGate/static/js/main.a3f7001d.js.map"
+    "main.51311afe.js.map": "/AppliGate/static/js/main.51311afe.js.map"
   },
   "entrypoints": [
     "static/css/main.2a330b53.css",
-    "static/js/main.a3f7001d.js"
+    "static/js/main.51311afe.js"
   ]
 }

@@ -58,7 +58,7 @@ const SignUp: React.FC = () =>{
             
             <div className="text-center">
                 <h1 className="display-4 fw-bold">AppliGate</h1>
-                <p className="lead">Craft Your CV, Secure Your Future, Find Your Dream Job</p>
+                <p className="lead mb-5">Craft Your CV, Secure Your Future, Find Your Dream Job</p>
             </div>
             <div className="row justify-content-center">
                 <div className="col-sm-12 col-md-8 col-lg-6">

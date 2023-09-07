@@ -48,18 +48,18 @@ setPersonal, setAlertError, alertError, username}) => {
         const selectedFile = e.target.files && e.target.files[0];
         setSelectedImageFile(selectedFile);
         e.target.value = '';
-        console.log('handle image change')
+        // console.log('handle image change')
         // Automatically submit the image when a file is selected
         if (selectedFile) {
-            console.log('file has been selected')
+            // console.log('file has been selected')
             const maxSize = 500 * 1024; // 500KB in bytes
             if (selectedFile.size >= maxSize) {
               setAlertError("File size exceeds 500KB limit");
-              console.log("File size exceeds 500KB limit.")
+            //   console.log("File size exceeds 500KB limit.")
             //   setSelectedImageFile(null);
             } else if (!allowedFormats.includes(selectedFile.type)) {
               setAlertError("Wrong file format");
-              console.log("Wrong file format.")
+            //   console.log("Wrong file format.")
             //   setSelectedImageFile(null);
             } else {
               await submitImage(selectedFile);
@@ -73,42 +73,42 @@ setPersonal, setAlertError, alertError, username}) => {
         formData.append('profile_image', file);
     
         try {
-        const response = await axios.put(`/profile/uploadImage/${username}`, formData, {
+        const response = await axios.put(`https://appligate.onrender.com/profile/uploadImage/${username}`, formData, {
             headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: 'Bearer ' + String(authTokens.access),
             },
         });
     
-        console.log('Image uploaded successfully');
+        // console.log('Image uploaded successfully');
         setAlertError('Image uploaded successfully')
         } catch (error) {
         setAlertError('Something went wrong')
         console.error('Error uploading image:', error);
         }
-        getData(setPersonal, '/profile/');
+        getData(setPersonal, '/profile');
         setSelectedImageFile(null);
     };
 
     const removeImage = async () => {
   
         const data = {profile_image: 'default'}
-        console.log('test')
+        // console.log('test')
         try {
-        const response = await axios.put(`/profile/uploadImage/${username}`, data, {
+        const response = await axios.put(`https://appligate.onrender.com/profile/uploadImage/${username}`, data, {
             headers: {
             'Content-Type': 'multipart/form-data', 
             Authorization: 'Bearer ' + String(authTokens.access),
             },
         });
     
-        console.log('Image removed successfully');
+        // console.log('Image removed successfully');
         setAlertError('Image removed successfully')
         } catch (error) {
         setAlertError('Something went wrong')
         console.error('Error removing image:', error);
         }
-        getData(setPersonal, '/profile/');
+        getData(setPersonal, '/profile');
     };
     
     const handleInputChange = (
@@ -129,18 +129,18 @@ setPersonal, setAlertError, alertError, username}) => {
         setEditPersonal(!editPersonal);
         if(editPersonal === true){
             removeMultipleErrors('profile', 0)
-            getData(setPersonal, '/profile/');
+            getData(setPersonal, '/profile');
         }
         
     }
     const cancelEditProfile = () =>{
         setEditPersonal(false);
         removeMultipleErrors('profile', 0)
-        getData(setPersonal, '/profile/');
+        getData(setPersonal, '/profile');
     }
 
     const saveEdit = async () =>{
-        await editData(personal, setEditPersonal, '/profile/', 'profile')
+        await editData(personal, setEditPersonal, '/profile', 'profile')
     }
 
     return(
@@ -158,7 +158,7 @@ setPersonal, setAlertError, alertError, username}) => {
                             <div className={`col-sm-auto row d-flex align-items-center align-items-baseline flex-column ${personal?.profile_image === '/media/defaults/default_profile_image.jpg'
                         ? ('prevHidden') : ('')}`}>
                                 <form className='d-flex d-sm-block flex-column align-items-center justify-content-center'>
-                                    <img className='profile-image my-2' src={`${personal?.profile_image}`} alt="Profile" />
+                                    <img className='profile-image my-2' src={`https://appligate.onrender.com/${personal?.profile_image}`} alt="Profile" />
                                     <div className='prevHidden row'>
                                         <div className="mb-1 text-center d-flex justify-content-center">
                                             <input 
@@ -178,7 +178,7 @@ setPersonal, setAlertError, alertError, username}) => {
                                                 <Icon path={mdiPencil} size={1} />
                                                
                                             </label>
-                                            {personal?.profile_image && personal.profile_image !== '/media/defaults/default_profile_image.jpg' &&
+                                            {personal?.profile_image && personal.profile_image !== 'https://appligate.onrender.com/media/defaults/default_profile_image.jpg' &&
                                                 <ProfileDeleteModal id={`${personal?.profile_image}_${0}`} onDelete={() => removeImage()} />
                                             }
                                             

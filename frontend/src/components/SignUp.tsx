@@ -21,7 +21,7 @@ const SignUp: React.FC = () =>{
     }
     const handleForm = async (e: React.FormEvent<HTMLFormElement>) =>{
         setErr({})
-        console.log('test')
+        // console.log('test')
         setLoading(true);
         setProgress(50)
         if (password === confirm){

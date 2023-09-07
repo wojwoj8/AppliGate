@@ -56,10 +56,15 @@ $form-file-button-hover-bg: $primary;
     }
     .modal-title, .modal-body{
         color: $body-color;
+       
     }
     @import "bootstrap";
 }
 
+.modal-title, .modal-body{
+    // color: $body-color;
+    color: #212529;
+}
 .profile-huge-font{
     font-size: 4.5rem !important;
     font-weight: 200;

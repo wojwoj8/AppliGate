@@ -3,3 +3,4 @@ djangorestframework==3.14.0
 django-cors-headers
 djangorestframework-simplejwt
 django-phonenumber-field[phonenumberslite]
+Pillow

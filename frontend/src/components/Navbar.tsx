@@ -73,20 +73,20 @@ const Navbar: React.FC = () =>{
                     Settings
                   </a>
                   <ul className="dropdown-menu">
+                    <li className="dropdown-item" data-bs-dismiss="offcanvas">
+                      <Link to='/profileSettings' className="nav-link" aria-current="page">Profile Settings</Link>
+                    </li>
                     <li className="dropdown-item">
                       <div className="form-check form-switch form-check-reverse nav-link me-4 text-left d-table">
                         <input className="form-check-input" type="checkbox" id="flexSwitchCheckCheckedReverse" 
                         onChange={toggleDarkMode}
                         checked={check}
                         data-bs-dismiss="offcanvas"
-                        />
-                        
+                        />  
                         <label className="form-check-label" htmlFor="flexSwitchCheckCheckedReverse">Dark Mode</label>
                       </div>
                     </li>
-                    <li className="dropdown-item" data-bs-dismiss="offcanvas">
-                      <Link to='/profileSettings' className="nav-link" aria-current="page">Profile Settings</Link>
-                    </li>
+                    
                   </ul>
                 </li>
                

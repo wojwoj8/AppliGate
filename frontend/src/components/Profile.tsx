@@ -263,7 +263,7 @@ const Profile: React.FC = () =>{
         path = `https://appligate.onrender.com/${endpoint}/${username}${id}`
       }
         try{
-            console.log(path)
+            // console.log(path)
             const response = await axios.get(path, {
                 headers: {
                   'Content-Type': 'application/json',
@@ -417,7 +417,7 @@ const Profile: React.FC = () =>{
         let path = `https://appligate.onrender.com/${endpoint}`
         if (id){  
           path = `https://appligate.onrender.com/${endpoint}/${username}${id}`
-          console.log(username)
+          // console.log(username)
         }
       try{
           const response = await axios.put(path, state[index],  {

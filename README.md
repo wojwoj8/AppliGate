@@ -182,7 +182,15 @@ The backend should now be running at `http://localhost:8000`.
   cd ../frontend
   ```
 
-#### 8. Start the Frontend Development Server
+#### 8. Install Frontend Dependencies
+
+- Install the frontend dependencies using npm:
+
+  ```shell
+  npm install
+  ```
+
+#### 9. Start the Frontend Development Server
 
 - Start the React development server, which will automatically open a new browser window:
 

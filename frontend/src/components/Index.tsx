@@ -94,7 +94,7 @@ const Index: React.FC = () =>{
           </p>
         </div>
         <div className="card-footer">
-          <Link to={`/profile/${profile?.username}/`} className="btn btn-primary btn-block w-100">Create/Edit Your CV</Link>
+          <Link to={`/experience`} className="btn btn-primary btn-block w-100">Create/Edit Your CV</Link>
         </div>
       </div>
     </div>

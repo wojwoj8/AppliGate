@@ -16,11 +16,11 @@ AppliGate is significantly more complex than anything I've undertaken in my web 
 
 ## Files and Folder Structure
 
-My project consists of a root folder containing `requirements.txt`, listing all necessary packages for the backend, and two main folders:
+My project consists of two main folders:
 
 ### Backend:
 
-The backend includes my SQLite3 database, which stores all user data, `manage.py` for launching the backend, and five folders:
+The backend includes my SQLite3 database, which stores all user data, `manage.py` for launching the backend,`requirements.txt`, listing all necessary packages for the backend, and and five folders:
 
 - `app`: Contains typical Django files like `views.py`, where I handle data operations for users based on REST requests. `serializer.py` includes methods for serializing data to and from my models. `models.py` consists of seven models, one as a one-to-one relation and six as many-to-one relations. This folder also includes a function for serializing user image names and paths. In `admin.py`, I define my models, enabling data modification in the admin panel.
 - `api`: Contains two files: `views.py`, which implements the backend for JWT token authentication, and `urls.py`, where two paths are defined: one for obtaining tokens and another for refreshing tokens.
@@ -213,6 +213,6 @@ The frontend should now be accessible at `http://localhost:3000`.
 
 3. **Explore and Use the Application:**
 
-   Once you are logged in, you can explore the application, edit your profile, add or update your CV information, and customize your settings.
+   Once you are logged in, you can explore the application, add or update your CV information, and check my own CV as an example for inspiration.
 
-That's it! You should now have AppliGate up and running on your local development environment. Enjoy using the application to manage your CV and profile.
+That's it! You should now have AppliGate up and running on your local development environment. Enjoy using the application to manage your CV.

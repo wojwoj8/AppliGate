@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import axios from 'axios';
 import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
@@ -79,7 +79,6 @@ setPersonal, setAlertError, alertError, username}) => {
             Authorization: 'Bearer ' + String(authTokens.access),
             },
         });
-    
         // console.log('Image uploaded successfully');
         setAlertError('Image uploaded successfully')
         } catch (error) {
@@ -143,6 +142,10 @@ setPersonal, setAlertError, alertError, username}) => {
         await editData(personal, setEditPersonal, '/profile', 'profile')
     }
 
+    useEffect(() =>{
+        const img = personal?.profile_image
+    })
+
     return(
         <div>
                     <div className='bg-black row mb-1 rounded-top-2 '>
@@ -158,7 +161,7 @@ setPersonal, setAlertError, alertError, username}) => {
                             <div className={`col-sm-auto row d-flex align-items-center align-items-baseline flex-column ${personal?.profile_image === '/media/defaults/default_profile_image.jpg'
                         ? ('prevHidden') : ('')}`}>
                                 <form className='d-flex d-sm-block flex-column align-items-center justify-content-center'>
-                                    <img className='profile-image my-2' src={`${personal?.profile_image}`} alt="Profile" />
+                                    <img className='profile-image my-2' src={`${personal?.profile_image}?${Date.now()}`} alt="Profile" />
                                     <div className='prevHidden row'>
                                         <div className="mb-1 text-center d-flex justify-content-center">
                                             <input 

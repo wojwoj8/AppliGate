@@ -2,6 +2,8 @@
 
 Welcome to AppliGate! This project was created as my final assignment for [CS50’s Web Programming with Python and JavaScript](https://cs50.harvard.edu/web/2020/). AppliGate is a full-stack web application developed using ReactJS (TypeScript) and Django (Django Rest Framework).
 
+Live Demo: https://www.youtube.com/watch?v=SRfvdhhJj5U
+
 ## What is AppliGate?
 
 AppliGate is a single page web application that allows you to create and share your CV. You have access to your CV anytime, anywhere, and you can edit it whenever you need. AppliGate is also mobile responsive, so you can use it on your phone. To use the app, you need to create an account, and then you can create and share your beautiful resume.

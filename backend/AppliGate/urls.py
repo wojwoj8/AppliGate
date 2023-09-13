@@ -27,7 +27,7 @@ router = routers.DefaultRouter()
 router.register(r"user", views.SignupView.as_view(), "signup")
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("mysecretadmin/", admin.site.urls),
     # set endpoints
     path("register/", views.SignupView.as_view()),
     path("index/", views.IndexView.as_view()),

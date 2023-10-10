@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 
 # from django.conf.urls import url
 from rest_framework import routers
-from app import views
+from user_app import views
 
 
 router = routers.DefaultRouter()
@@ -66,7 +66,7 @@ urlpatterns = [
         views.ProfileChangePasswordView.as_view(),
     ),
     # Authentication
-    path("api/", include("app.api.urls")),
+    path("api/", include("user_app.api.urls")),
 ]
 
 if settings.DEBUG:

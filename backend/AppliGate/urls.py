@@ -27,44 +27,8 @@ router = routers.DefaultRouter()
 router.register(r"user", views.SignupView.as_view(), "signup")
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    # set endpoints
-    path("register/", views.SignupView.as_view()),
-    path("index/", views.IndexView.as_view()),
-    # Profile for user
-    path("profile/<str:username>/", views.ProfileView.as_view()),
-    path("profile/uploadImage/<str:username>/", views.ProfileImageUploadView.as_view()),
-    path("profile/contact/<str:username>/", views.ProfileContactView.as_view()),
-    path("profile/experience/<str:username>/", views.ProfileExperienceView.as_view()),
-    path(
-        "profile/experience/<str:username>/<int:pk>",
-        views.ProfileExperienceView.as_view(),
-    ),
-    path("profile/education/<str:username>/", views.ProfileEducationView.as_view()),
-    path(
-        "profile/education/<str:username>/<int:pk>",
-        views.ProfileEducationView.as_view(),
-    ),
-    path("profile/course/<str:username>/", views.ProfileCourseView.as_view()),
-    path("profile/course/<str:username>/<int:pk>", views.ProfileCourseView.as_view()),
-    path("profile/language/<str:username>/", views.ProfileLanguageView.as_view()),
-    path(
-        "profile/language/<str:username>/<int:pk>", views.ProfileLanguageView.as_view()
-    ),
-    path("profile/skill/<str:username>/", views.ProfileSkillView.as_view()),
-    path("profile/skill/<str:username>/<int:pk>", views.ProfileSkillView.as_view()),
-    path("profile/link/<str:username>/", views.ProfileLinkView.as_view()),
-    path("profile/link/<str:username>/<int:pk>", views.ProfileLinkView.as_view()),
-    path("profile/about/<str:username>/", views.ProfileAboutView.as_view()),
-    path("profile/summary/<str:username>/", views.ProfileSummaryView.as_view()),
-    path("profile/profileStatus/<str:username>/", views.ProfileStatusView.as_view()),
-    # SETTINGS
-    path("profile/settings", views.ProfileChangeDataView.as_view()),
-    path("profile/settings/<int:pk>", views.ProfileChangeDataView.as_view()),
-    path(
-        "profile/settings/changepassword/<int:pk>",
-        views.ProfileChangePasswordView.as_view(),
-    ),
+    #user_app urls
+    path("", include("user_app.urls")),
     # Authentication
     path("api/", include("user_app.api.urls")),
 ]

@@ -29,7 +29,7 @@ router.register(r"user", views.SignupView.as_view(), "signup")
 urlpatterns = [
     path("admin/", admin.site.urls),
     # set endpoints
-    path("register/", views.SignupView.as_view()),
+    path("register/", views.SignupView.as_view(), name="register"),
     path("index/", views.IndexView.as_view()),
     # Profile for user
     path("profile/<str:username>/", views.ProfileView.as_view()),

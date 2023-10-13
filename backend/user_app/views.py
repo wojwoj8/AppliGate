@@ -63,7 +63,7 @@ class SignupView(
         hashed_password = make_password(password)
         request.data["password"] = hashed_password
         self.create(request, *args, **kwargs)
-        return Response({"created": "Account created successfully"}, status=200)
+        return Response({"created": "Account created successfully"}, status=201)
 
 
 class IndexView(generics.GenericAPIView):

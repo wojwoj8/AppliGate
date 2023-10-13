@@ -73,7 +73,7 @@ class IndexView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         user = request.user
         serializer_class = UserSerializer(user, many=False)
-        print(serializer_class.data)
+        #print(serializer_class.data)
         return Response(serializer_class.data)
 
 
@@ -162,7 +162,7 @@ class ProfileStatusView(generics.GenericAPIView):
 
         if serializer.is_valid():
             serializer.save()
-            print(serializer.data)
+            #print(serializer.data)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

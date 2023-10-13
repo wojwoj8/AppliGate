@@ -104,6 +104,8 @@ class DateSerializer(serializers.Field):
             return None
         elif value == "":
             return None
+        elif type(value) != str:
+            raise serializers.ValidationError("Invalid date format. Use 'YYYY-MM-DD'.")
         try:
             return datetime.strptime(value, "%Y-%m-%d").date()
         except ValueError:

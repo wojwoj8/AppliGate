@@ -32,7 +32,7 @@ urlpatterns = [
     path("register/", views.SignupView.as_view(), name="register"),
     path("index/", views.IndexView.as_view(), name='index'),
     # Profile for user
-    path("profile/<str:username>/", views.ProfileView.as_view()),
+    path("profile/<str:username>/", views.ProfileView.as_view(), name="personal"),
     path("profile/uploadImage/<str:username>/", views.ProfileImageUploadView.as_view()),
     path("profile/contact/<str:username>/", views.ProfileContactView.as_view()),
     path("profile/experience/<str:username>/", views.ProfileExperienceView.as_view()),
@@ -57,7 +57,7 @@ urlpatterns = [
     path("profile/link/<str:username>/<int:pk>", views.ProfileLinkView.as_view()),
     path("profile/about/<str:username>/", views.ProfileAboutView.as_view()),
     path("profile/summary/<str:username>/", views.ProfileSummaryView.as_view()),
-    path("profile/profileStatus/<str:username>/", views.ProfileStatusView.as_view()),
+    path("profile/profileStatus/<str:username>/", views.ProfileStatusView.as_view(), name='profile_status'),
     # SETTINGS
     path("profile/settings", views.ProfileChangeDataView.as_view(), name='settings'),
     path("profile/settings/<int:pk>", views.ProfileChangeDataView.as_view()),

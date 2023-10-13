@@ -259,7 +259,7 @@ class ProfileStatusTests(APITestCase):
         error_message = response.data['detail']
         self.assertEqual(error_message, "You do not have permission to perform this action.")
 
-class ProfileCvData(APITestCase):
+class ProfileCvPersonalDataTests(APITestCase):
     def setUp(self):
         self.user_data = {
             "username": "testuser",
@@ -287,8 +287,8 @@ class ProfileCvData(APITestCase):
         return response.data["access"]
     
     def test_user_personal(self):
-        profile_status_url = reverse('personal', args=[self.user.username])
-        response = self.client.get(profile_status_url, format="json", **self.headers)
+        profile_personal_url = reverse('personal', args=[self.user.username])
+        response = self.client.get(profile_personal_url, format="json", **self.headers)
         # no data
         self.assertEqual(response.data, {'current_position': None, 'first_name': '', 'last_name': '', 
                                          'date_of_birth': None, 'country': None, 'city': None, 'profile_image': '/media/defaults/default_profile_image.jpg'})
@@ -298,10 +298,10 @@ class ProfileCvData(APITestCase):
                 'last_name': 'Żubrowski', 
                 }
         
-        response = self.client.put(profile_status_url, data, format="json", **self.headers)
+        response = self.client.put(profile_personal_url, data, format="json", **self.headers)
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response = self.client.get(profile_status_url, format="json", **self.headers)
+        response = self.client.get(profile_personal_url, format="json", **self.headers)
         self.assertEqual(response.data['first_name'], "Wojciech")
 
     def test_other_user_personal(self):
@@ -315,25 +315,25 @@ class ProfileCvData(APITestCase):
                 'profile_image': '/media/defaults/default_profile_image.jpg'
                 }
         
-        profile_status_url = reverse('personal', args=[self.user2.username])
-        response = self.client.get(profile_status_url, format="json", **self.headers)
+        profile_personal_url = reverse('personal', args=[self.user2.username])
+        response = self.client.get(profile_personal_url, format="json", **self.headers)
         error_message = str(response.data['detail'])
         self.assertEqual(error_message, "Profile is private")
 
         #set to public
         self.user2.public_profile = True
         self.user2.save()
-        response = self.client.get(profile_status_url, format="json", **self.headers)
+        response = self.client.get(profile_personal_url, format="json", **self.headers)
         self.assertEqual(response.data['first_name'], "")
 
         #try use put on other account
-        response = self.client.put(profile_status_url, data, format="json", **self.headers)
+        response = self.client.put(profile_personal_url, data, format="json", **self.headers)
         
         error_message = response.data['detail']
         self.assertEqual(error_message, "You do not have permission to perform this action.")
 
     def test_user_personal_error_fields(self):
-        profile_status_url = reverse('personal', args=[self.user.username])
+        profile_personal_url= reverse('personal', args=[self.user.username])
         data = {'current_position': None, 
                 'first_name': 'Wojciech', 
                 'last_name': 'Żubrowski', 
@@ -343,7 +343,7 @@ class ProfileCvData(APITestCase):
                 'profile_image': '/medi'
                 }
         
-        response = self.client.put(profile_status_url, data, format="json", **self.headers)
+        response = self.client.put(profile_personal_url, data, format="json", **self.headers)
         error_message = str(response.data['date_of_birth'][0])
         self.assertEqual(error_message, "Invalid date format. Use 'YYYY-MM-DD'.")
 
@@ -355,9 +355,75 @@ class ProfileCvData(APITestCase):
                 'city': None, 
                 'profile_image': '/medi'
                 }
-        response = self.client.put(profile_status_url, data2, format="json", **self.headers)
-        print(response.data)
+        response = self.client.put(profile_personal_url, data2, format="json", **self.headers)
+        
         # Set profile_image to default
         self.assertEqual(response.data["profile_image"], '/media/defaults/default_profile_image.jpg')
         self.assertEqual(response.data["date_of_birth"], '2023-10-10')
+
+class ProfileImageTests(APITestCase):
+    def setUp(self):
+        #special id because that work in media user images
+        self.user_data = {
+            "id": 1337,
+            "username": "testuser",
+            "password": "testpassword",
+            "email": "testuser@test.com"
+        }
+        self.user_data2 = {
+            "id": 1338,
+            "username": "testuser2",
+            "password": "testpassword2",
+            "email": "testuser2@test.com"
+        }
+        self.user = User.objects.create_user(**self.user_data)
+        self.user2 = User.objects.create_user(**self.user_data2)
+        self.login_data = {
+            "username": self.user_data["username"],
+            "password": self.user_data["password"],
+        }
+        self.login_url = reverse("token_obtain_pair")
+        self.access_token = self.get_access_token()
+        self.headers = {"HTTP_AUTHORIZATION": f"Bearer {self.access_token}"}
+
+    def get_access_token(self):
+        response = self.client.post(self.login_url, self.login_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        return response.data["access"]
+    
+    def test_user_image_post(self):
+        image_path = './media/defaults/test_image.jpg'
+
+        put_image_url = reverse('upload_image', args=[self.user.username])
+        profile_personal_url= reverse('personal', args=[self.user.username])
+        with open(image_path, 'rb') as image_file:
+            response = self.client.put(put_image_url, {'profile_image': image_file}, format='multipart', **self.headers)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['message'], 'Profile image updated')
+        response = self.client.get(profile_personal_url, format="json", **self.headers)
+        self.assertEqual(response.data['profile_image'], '/media/user_profiles/profile_1337.jpg')
+    
+        #test_delete_image
+        response = self.client.put(put_image_url, {'profile_image': 'default'}, format='multipart', **self.headers)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['message'], 'Profile image updated')
+        response = self.client.get(profile_personal_url, format="json", **self.headers)
+        self.assertEqual(response.data['profile_image'], '/media/defaults/default_profile_image.jpg')
+    
+    def test_user_wrong_image_post(self):
+        image_path = './media/defaults/test_image.webp'
+
+        put_image_url = reverse('upload_image', args=[self.user.username])
+        profile_personal_url= reverse('personal', args=[self.user.username])
+        with open(image_path, 'rb') as image_file:
+            response = self.client.put(put_image_url, {'profile_image': image_file}, format='multipart', **self.headers)
+        
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['error'], 'Invalid image file format')
+        response = self.client.get(profile_personal_url, format="json", **self.headers)
+        self.assertEqual(response.data['profile_image'], '/media/defaults/default_profile_image.jpg')
+        
+
         

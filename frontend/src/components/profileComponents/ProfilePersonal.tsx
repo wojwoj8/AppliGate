@@ -42,7 +42,7 @@ setPersonal, setAlertError, alertError, username}) => {
     
     const { authTokens } = useContext(AuthContext); // Use the authTokens from AuthContext
     const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
-    const allowedFormats = ['image/jpeg','image/jfif', 'image/jpg', 'image/jpg'];
+    const allowedFormats = ['image/jpeg','image/jfif', 'image/jpg', 'image/png', 'image/bmp', 'image/gif'];
     
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files && e.target.files[0];
@@ -168,7 +168,7 @@ setPersonal, setAlertError, alertError, username}) => {
                                             className=''
                                             id='formFileProfile'
                                             type='file'
-                                            accept=".jpeg, .jpg, .jpg, .jfif"
+                                            accept=".jpeg, .jpg, .png, .jfif, bmp, gif"
                                             onChange={handleImageChange}
                                             />
                                             {renderFieldErrorMultiple('profile', 0, `profile_image`, multipleErrors)}

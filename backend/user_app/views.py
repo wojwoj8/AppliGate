@@ -41,6 +41,7 @@ from django.core.files.storage import default_storage
 from rest_framework.permissions import IsAuthenticated
 from datetime import datetime
 from rest_framework.generics import get_object_or_404
+import os
 
 
 class SignupView(
@@ -177,6 +178,11 @@ class ProfileImageUploadView(generics.UpdateAPIView):
         if self.request.user.username != username:
             raise PermissionDenied("You do not have permission to perform this action.")
 
+    def is_valid_image_extension(self, file_name):
+        valid_extensions = ['.jpg', '.jpeg', '.png', '.jfif', '.gif', '.bmp']
+        file_extension = os.path.splitext(file_name)[1].lower()
+        return file_extension in valid_extensions
+    
     def update(self, request, *args, **kwargs):
         self.check_username_permission()
         user = request.user  # Get the authenticated user
@@ -191,6 +197,11 @@ class ProfileImageUploadView(generics.UpdateAPIView):
             )
 
         if profile_image:
+            # extension check
+            if not self.is_valid_image_extension(profile_image.name):
+                return Response(
+                    {"error": "Invalid image file format"}, status=status.HTTP_400_BAD_REQUEST
+                )
             # Delete the existing profile image if it exists
 
             if user.profile_image != "defaults/default_profile_image.jpg":
@@ -266,6 +277,7 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
                 serializer.validated_data["profile_image"] = request.data[
                     "profile_image"
                 ]
+                print(serializer.data)
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

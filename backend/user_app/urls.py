@@ -30,7 +30,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # set endpoints
     path("register/", views.SignupView.as_view(), name="register"),
-    path("index/", views.IndexView.as_view()),
+    path("index/", views.IndexView.as_view(), name='index'),
     # Profile for user
     path("profile/<str:username>/", views.ProfileView.as_view()),
     path("profile/uploadImage/<str:username>/", views.ProfileImageUploadView.as_view()),
@@ -59,11 +59,12 @@ urlpatterns = [
     path("profile/summary/<str:username>/", views.ProfileSummaryView.as_view()),
     path("profile/profileStatus/<str:username>/", views.ProfileStatusView.as_view()),
     # SETTINGS
-    path("profile/settings", views.ProfileChangeDataView.as_view()),
+    path("profile/settings", views.ProfileChangeDataView.as_view(), name='settings'),
     path("profile/settings/<int:pk>", views.ProfileChangeDataView.as_view()),
     path(
         "profile/settings/changepassword/<int:pk>",
         views.ProfileChangePasswordView.as_view(),
+        name='settings_password'
     ),
 ]
 

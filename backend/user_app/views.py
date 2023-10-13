@@ -73,6 +73,7 @@ class IndexView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         user = request.user
         serializer_class = UserSerializer(user, many=False)
+        print(serializer_class.data)
         return Response(serializer_class.data)
 
 

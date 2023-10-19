@@ -29,6 +29,17 @@ class User(AbstractUser):
     )
     professional_summary = models.CharField(max_length=500, null=True, blank=True)
     public_profile = models.BooleanField(default=False)
+    # For user type
+    USER_TYPE_CHOICES = [
+        ('user', 'User'),
+        ('company', 'Company'),
+    ]
+    
+    user_type = models.CharField(
+        max_length=10,
+        choices=USER_TYPE_CHOICES,
+        default='user',
+    )
 
 
 # Multiple

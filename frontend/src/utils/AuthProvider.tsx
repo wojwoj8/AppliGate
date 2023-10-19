@@ -119,7 +119,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
           let data = response.data;
           // console.log(data)
-          if (response.status === 200) {
+          if (response.status === 200 || response.status === 201) {
             // Perform login after successful signup
             // console.log(data)
             const loginResponse = await axios.post('http://127.0.0.1:8000/api/token/', {
@@ -129,7 +129,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
             const loginData = loginResponse.data;
             // console.log(loginResponse)
-            if (loginResponse.status === 200) {
+            if (loginResponse.status === 200 || loginResponse.status === 201) {
               localStorage.setItem('authTokens', JSON.stringify(loginData));
               setAuthTokens(loginData);
               setUser(jwtDecode(loginData.access));

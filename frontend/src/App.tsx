@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { HashRouter, Routes, Route, Navigate} from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate, BrowserRouter} from "react-router-dom";
 import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
 import Navbar from './components/Navbar';
@@ -17,13 +17,16 @@ import ProfileSettingsDelete from './components/ProfileSettingsDelete';
 import Example from './components/Example';
 import ProfileAlert from './components/profileComponents/ProfileAlert';
 
+// Company part
+
+
 
 
 function App() {
   setInitialMode();
   const [alertError, setAlertError] = useState('');
   return (
-    <HashRouter>
+    <BrowserRouter>
     
       <AuthProvider>
         <Navbar></Navbar>
@@ -38,6 +41,9 @@ function App() {
             <Route path="/example" element={<Example/>}></Route>
             <Route path="/login" element={<IfNotLoggedIn><LogIn/></IfNotLoggedIn>}></Route>
             <Route path="/register" element={<IfNotLoggedIn><SignUp/></IfNotLoggedIn>}></Route>
+
+            {/* <Route path="/comapny/login" element={<IfNotLoggedIn><LogIn/></IfNotLoggedIn>}></Route>
+            <Route path="/comapny/register" element={<IfNotLoggedIn><CompanySignUp/></IfNotLoggedIn>}></Route> */}
 
             {/* PrivateRoute = Accessable if logged in */}
             <Route path="/profile/*" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>
@@ -54,7 +60,7 @@ function App() {
    
     
     {/* <div className='mt-2'></div> */}
-    </HashRouter>
+    </BrowserRouter>
     
   );
 }

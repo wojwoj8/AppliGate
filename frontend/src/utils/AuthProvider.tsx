@@ -65,6 +65,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           if (response.status === 200) {
             localStorage.setItem('authTokens', JSON.stringify(data));
             setAuthTokens(data);
+            // console.log(jwtDecode(data.access))
             setUser(jwtDecode(data.access));
             navigate('/');
             setErrorSignUp(null)
@@ -109,12 +110,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const password = formData.get('password') as string;
           const confirm = formData.get('confirm') as string;
           const email = formData.get('email') as string;
+          const user_type = formData.get('account_type')
       
           const response = await axios.post('/register/', {
             username,
             password,
             confirm,
             email,
+            user_type
           });
       
           let data = response.data;

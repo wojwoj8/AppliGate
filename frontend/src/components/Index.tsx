@@ -10,11 +10,12 @@ import Loading from './Loading';
 interface ProfileData {
     username: string;
     email: string;
+    user_type: string;
   }
 
 const Index: React.FC = () =>{
 
-    const { authTokens, logoutUser } = useContext(AuthContext);
+    const { authTokens, logoutUser} = useContext(AuthContext);
     let [profile, setProfile] = useState<ProfileData | null>(null)
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
     const [loading, setIsLoading] = useState(false);
@@ -45,6 +46,7 @@ const Index: React.FC = () =>{
     
           const data = response.data;
           if (response.status === 200) {
+            console.log(data)
             setProfile(data);
           }
         } catch (error: any) {
@@ -57,6 +59,7 @@ const Index: React.FC = () =>{
           }
         }
       };
+ 
     
       if (error){
         return <ErrorPage axiosError={error} />
@@ -69,6 +72,7 @@ const Index: React.FC = () =>{
 <div className="container my-5">
   <div className="text-center pb-5">
     <h2 className="display-4 fw-bold">Welcome, {profile?.username}!</h2>
+    <h2 className="display-4 fw-bold">USER TYPE, {profile?.user_type}</h2>
     <p className="lead">Are you ready to create or edit your professional CV?</p>
   </div>
   <div className="row justify-content-center">

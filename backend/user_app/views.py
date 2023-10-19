@@ -54,6 +54,10 @@ class SignupView(
     permission_classes = [permissions.AllowAny]
 
     def post(self, request, *args, **kwargs):
+        user_types = [
+        ('user', 'User'),
+        ('company', 'Company'),
+    ]
         password = request.data.get("password")
         confirm = request.data.get("confirm")
 
@@ -63,9 +67,19 @@ class SignupView(
         # hash that password
         hashed_password = make_password(password)
         request.data["password"] = hashed_password
-        request.data["user_type"] = "user"
+
+        if request.data["user_type"] ==  None:
+            request.data["user_type"] = 'user'
+        
+        if not request.data["user_type"] or request.data["user_type"] not in dict(user_types):
+            print(request.data["user_type"])
+            print('not in types')
+            return Response({"invalid": "Invalid user type"}, status=400)
+
+        
         self.create(request, *args, **kwargs)
         return Response({"created": "Account created successfully"}, status=201)
+
 
 
 class IndexView(generics.GenericAPIView):

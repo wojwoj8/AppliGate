@@ -68,12 +68,12 @@ class SignupView(
         hashed_password = make_password(password)
         request.data["password"] = hashed_password
 
-        if request.data["user_type"] ==  None:
+        user_type = request.data.get("user_type", None)
+        if user_type is None:
             request.data["user_type"] = 'user'
         
         if not request.data["user_type"] or request.data["user_type"] not in dict(user_types):
-            print(request.data["user_type"])
-            print('not in types')
+  
             return Response({"invalid": "Invalid user type"}, status=400)
 
         

@@ -14,12 +14,13 @@ class AuthenticationTests(APITestCase):
         }
         self.user = User.objects.create_user(**self.user_data)
 
-    def test_successful_signup(self):
+    def test_successful_signup_company(self):
         data = {
             "username": "testuser2",
             "password": "testpassword2",
             "confirm": "testpassword2",
-            "email": "testuser2@test.com"
+            "email": "testuser2@test.com",
+            "user_type": "company"
         }
     
         response = self.client.post(reverse("register"), data, format="json")
@@ -29,7 +30,26 @@ class AuthenticationTests(APITestCase):
         self.assertEqual(User.objects.count(), 2) #Counting setUp user
         user = User.objects.last()
         self.assertEqual(user.username, "testuser2")
+        self.assertEqual(user.user_type, "company")
 
+    def test_successful_signup_user(self):
+        data = {
+            "username": "testuser22",
+            "password": "testpassword22",
+            "confirm": "testpassword22",
+            "email": "testuser2@test.com",
+            "user_type": "user"
+        }
+    
+        response = self.client.post(reverse("register"), data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['created'], "Account created successfully")
+        # Verify that the user2 was created
+        self.assertEqual(User.objects.count(), 2) #Counting setUp user
+        user = User.objects.last()
+        self.assertEqual(user.username, "testuser22")
+        self.assertEqual(user.user_type, "user")
+        
     def test_password_mismatch_signup(self):
         data = {
             "username": "testuser",
@@ -42,6 +62,22 @@ class AuthenticationTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['invalid'], 'Passwords do not match')
         self.assertEqual(User.objects.count(), 1)  # Ensure user is not created
+
+
+    def test_user_type_invalid_signup(self):
+        data = {
+            "username": "testuser",
+            "password": "testpassword",
+            "confirm": "testpassword",
+            "email": "testuser2@test.com",
+            "user_type": "somethingwrong"
+        }
+
+        response = self.client.post(reverse("register"), data, format="json")
+        print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['invalid'], 'Invalid user type')
+
 
     def test_successful_login(self):
         data = {

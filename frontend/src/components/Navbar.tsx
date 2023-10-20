@@ -41,7 +41,7 @@ const Navbar: React.FC = () =>{
         return null; // or return a loading state, error message, or fallback UI
       }
       const { user, logoutUser } = authContext;
-    
+      
 
     return(
       <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
@@ -58,7 +58,13 @@ const Navbar: React.FC = () =>{
             <div className="offcanvas-body">
             
             {user ? (
+              // user as user
+              (user.user_type === 'user') ?
+              
               <ul className="navbar-nav text-primary justify-content-end flex-grow-1 pe-3">
+                <li className="nav-item" data-bs-dismiss="offcanvas">
+                  <p className="nav-link" aria-current="page">{user.user_type}</p>
+                </li>
                 <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to='/' className="nav-link" aria-current="page">Home</Link>
                 </li>
@@ -94,10 +100,50 @@ const Navbar: React.FC = () =>{
                   <Link to='/' className="nav-link" data-bs-dismiss="offcanvas">Log Out</Link>
                 </li>
                
-                
-                
               </ul>
-              
+              // logged in company user under
+              :
+              <ul className="navbar-nav text-primary justify-content-end flex-grow-1 pe-3">
+                <li className="nav-item" data-bs-dismiss="offcanvas">
+                  <p className="nav-link" aria-current="page">{user.user_type}</p>
+                </li>
+                <li className="nav-item" data-bs-dismiss="offcanvas">
+                  <Link to='/' className="nav-link" aria-current="page">Home</Link>
+                </li>
+                <li className="nav-item" data-bs-dismiss="offcanvas">
+                  <Link to='/example' className="nav-link">Example</Link>
+                </li>
+                <li className="nav-item" data-bs-dismiss="offcanvas">
+                  <Link to={`/profile/${user.username}/`} className="nav-link" aria-current="page">Profile</Link>
+                </li>
+                <li className="nav-item dropdown-center">
+                  <a className="nav-link dropdown-toggle" href="/profileSettings" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Settings
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li className="dropdown-item" data-bs-dismiss="offcanvas">
+                      <Link to='/profileSettings' className="nav-link" aria-current="page">Profile Settings</Link>
+                    </li>
+                    <li className="dropdown-item">
+                      <div className="form-check form-switch form-check-reverse nav-link me-4 text-left d-table">
+                        <input className="form-check-input" type="checkbox" id="flexSwitchCheckCheckedReverse" 
+                        onChange={toggleDarkMode}
+                        checked={check}
+                        data-bs-dismiss="offcanvas"
+                        />  
+                        <label className="form-check-label" htmlFor="flexSwitchCheckCheckedReverse">Dark Mode</label>
+                      </div>
+                    </li>
+                    
+                  </ul>
+                </li>
+               
+                <li className="nav-item" onClick={logoutUser}>
+                  <Link to='/' className="nav-link" data-bs-dismiss="offcanvas">Log Out</Link>
+                </li>
+               
+              </ul>
+              // not logged in
               ) : (
               <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li className="nav-item" data-bs-dismiss="offcanvas">

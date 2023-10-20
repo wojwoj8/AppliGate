@@ -4,6 +4,8 @@ import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
 import Navbar from './components/Navbar';
 import Index from './components/Index';
+import PrivateRouteCompanyOnly from './utils/PrivateRouteCompanyOnly';
+import PrivateRouteUserOnly from './utils/PrivateRouteUserOnly';
 import PrivateRoute from './utils/PrivateRoute';
 import IfNotLoggedIn from './utils/IfNotLoggedIn';
 import Profile from './components/Profile';
@@ -18,7 +20,7 @@ import Example from './components/Example';
 import ProfileAlert from './components/profileComponents/ProfileAlert';
 
 // Company part
-
+import ProfileCompany from './components/companyComponents/ProfileCompany';
 
 
 
@@ -46,12 +48,16 @@ function App() {
             <Route path="/comapny/register" element={<IfNotLoggedIn><CompanySignUp/></IfNotLoggedIn>}></Route> */}
 
             {/* PrivateRoute = Accessable if logged in */}
-            <Route path="/profile/*" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>
+            {/* PrivateRouteUserOnly = Accessable if logged in and user type is user */}
+            {/* PrivateRouteCompanyOnly = Accessable if logged in and user type is company */}
+            <Route path="/profile/*" element={<PrivateRouteUserOnly><Profile/></PrivateRouteUserOnly>}></Route>
             <Route path="/profileSettings" element={<PrivateRoute><ProfileSettings/></PrivateRoute>}></Route>
             <Route path="/profileSettings/userData" element={<PrivateRoute><ProfileSettingsUsername setAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/profileSettings/password" element={<PrivateRoute><ProfileSettingsPassword setAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/profileSettings/delete" element={<PrivateRoute><ProfileSettingsDelete setAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/" element={<PrivateRoute><Index/></PrivateRoute>} />
+
+
           
         </Routes>
         </div>

@@ -232,7 +232,7 @@ class ProfileImageUploadView(generics.UpdateAPIView):
                 {"error": "No image provided"}, status=status.HTTP_400_BAD_REQUEST
             )
 
-
+# One to one data
 class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
     permission_classes = [IsAuthenticated]
     serializer_class = None  # Subclasses must set this
@@ -318,6 +318,7 @@ class ProfileSummaryView(BaseProfileUpdateView):
     queryset = User.objects.all()
 
 
+# One to many data
 class BaseProfileView(
     generics.GenericAPIView,
     mixins.ListModelMixin,

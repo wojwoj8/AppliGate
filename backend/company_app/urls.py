@@ -20,20 +20,15 @@ from django.conf.urls.static import static
 
 # from django.conf.urls import url
 from rest_framework import routers
-from user_app import views
+
+from company_app import views
 
 
-router = routers.DefaultRouter()
-router.register(r"user", views.SignupView.as_view(), "signup")
 
 urlpatterns = [
-    #user_app urls
-    path("", include("user_app.urls")),
-    #company_app urls
-    path("", include("company_app.urls")),
-    # Authentication
-    path("api/", include("user_app.api.urls")),
+
+    # ProfileCompany for company
+    path("company/profile/<str:username>/", views.ProfileCompanyView.as_view(), name="personalCompany"),
+    
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

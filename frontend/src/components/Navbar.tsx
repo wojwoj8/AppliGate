@@ -114,7 +114,7 @@ const Navbar: React.FC = () =>{
                   <Link to='/example' className="nav-link">Example</Link>
                 </li>
                 <li className="nav-item" data-bs-dismiss="offcanvas">
-                  <Link to={`/profile/${user.username}/`} className="nav-link" aria-current="page">Profile</Link>
+                  <Link to={`/company/profile/${user.username}/`} className="nav-link" aria-current="page">Profile</Link>
                 </li>
                 <li className="nav-item dropdown-center">
                   <a className="nav-link dropdown-toggle" href="/profileSettings" role="button" data-bs-toggle="dropdown" aria-expanded="false">

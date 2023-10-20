@@ -44,8 +44,7 @@ function App() {
             <Route path="/login" element={<IfNotLoggedIn><LogIn/></IfNotLoggedIn>}></Route>
             <Route path="/register" element={<IfNotLoggedIn><SignUp/></IfNotLoggedIn>}></Route>
 
-            {/* <Route path="/comapny/login" element={<IfNotLoggedIn><LogIn/></IfNotLoggedIn>}></Route>
-            <Route path="/comapny/register" element={<IfNotLoggedIn><CompanySignUp/></IfNotLoggedIn>}></Route> */}
+            
 
             {/* PrivateRoute = Accessable if logged in */}
             {/* PrivateRouteUserOnly = Accessable if logged in and user type is user */}
@@ -56,6 +55,11 @@ function App() {
             <Route path="/profileSettings/password" element={<PrivateRoute><ProfileSettingsPassword setAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/profileSettings/delete" element={<PrivateRoute><ProfileSettingsDelete setAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/" element={<PrivateRoute><Index/></PrivateRoute>} />
+
+
+            {/* company routes */}
+            <Route path="/company/profile/*" element={<PrivateRouteCompanyOnly><ProfileCompany/></PrivateRouteCompanyOnly>}></Route>
+
 
 
           

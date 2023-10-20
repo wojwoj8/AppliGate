@@ -6,8 +6,9 @@ import AuthContext from '../../utils/AuthProvider';
 import ProfileAlert from '../profileComponents/ProfileAlert';
 import ErrorPage from '../ErrorPage';
 import Loading from '../Loading';
+import ProfileCompanyMain from './companyProfileComponents/ProfileCompanyMain';
 
-export interface ProfileData{
+export interface ProfileCompanyMainData{
     first_name: string;
     last_name: string;
     date_of_birth: string;
@@ -97,7 +98,7 @@ export interface ProfileData{
   type ArrayUpdateFunction<T> = React.Dispatch<React.SetStateAction<T[]>>;
   
   export type GetDataFunction =
-    | UpdateFunction<ProfileData>
+    | UpdateFunction<ProfileCompanyMainData>
     | UpdateFunction<ContactData>
     | ArrayUpdateFunction<ExperienceData>
     | ArrayUpdateFunction<EducationData>
@@ -112,7 +113,7 @@ export interface ProfileData{
   
   //UNIVERSAL PUT STATES
   export type EditDataFunction = 
-    ProfileData | null |
+    ProfileCompanyMainData | null |
     ContactData | null |
     ExperienceData | null |
     ExperienceData[] |
@@ -141,14 +142,14 @@ export interface ProfileData{
     ;
   
   const initialMultipleErrors: MultipleErrorResponse = {
-    profile: {},
+    profileMain: {},
     experience: {}
   };
   
   const ProfileCompany: React.FC = () =>{
   
       // Data for all components
-      const [profile, setProfile] = useState<ProfileData | null>(null);
+      const [profileMain, setProfileMain] = useState<ProfileCompanyMainData | null>(null);
       const [contact, setContact] = useState<ContactData| null>(null);
       const [experience, setExperience] = useState<ExperienceData[]>([]);
       const [education, setEducation] = useState<EducationData[]>([]);
@@ -607,7 +608,7 @@ export interface ProfileData{
           updateProgress(completedSteps);
         };
     
-        // await fetchDataAndUpdateProgress(setProfile, `/profile/`);
+        await fetchDataAndUpdateProgress(setProfileMain, `/company/profile/`);
         // await fetchDataAndUpdateProgress(setContact, `/profile/contact`);
         // await fetchDataAndUpdateProgress(setSummary, `/profile/summary`);
         // await fetchDataAndUpdateProgress(setExperience, `/profile/experience`);
@@ -663,7 +664,20 @@ export interface ProfileData{
           {/* Every interface takes some functions/data/states from profile and 
           assign them through interface, some components have some functions, but 
           most of them are built to utilize those passed functions in some way */}
-              
+              <ProfileCompanyMain 
+                personal={profileMain}
+                setPersonal={setProfileMain}
+                editData={editData}
+                getData={getData}
+                setEditPersonal={setEditPersonal}
+                editPersonal={editPersonal}
+                multipleErrors={multipleErrors}                                             
+                removeMultipleErrors={removeMultipleErrors}
+                renderFieldErrorMultiple={renderFieldErrorMultiple}
+                alertError={alertError}
+                setAlertError={setAlertError}
+                username={username}
+            />
           </div>
              
           <div className='container'>
@@ -672,16 +686,17 @@ export interface ProfileData{
             
           </div>
           
-            {/* <div className='profileStatusHide'>
-                <ProfileStatus
+            <div className='profileStatusHide'>
+
+                {/* <ProfileStatus
                   profileStatus={profileStatus}
                   getData={getData}
                   setProfileStatus={setProfileStatus}
                   editData={editData}
                   alertError={alertError}
                   setAlertError={setAlertError}
-                />
-            </div> */}
+                /> */}
+            </div>
         </div>
         </>
       )

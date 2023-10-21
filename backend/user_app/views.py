@@ -202,13 +202,25 @@ class ProfileImageUploadView(generics.UpdateAPIView):
         self.check_username_permission()
         user = request.user  # Get the authenticated user
         profile_image = request.FILES.get("profile_image")
+        background_image = request.FILES.get("background_image")
+        # print(profile_image)
+        print(background_image)
 
-        if request.data["profile_image"] == "default":
+
+        if "profile_image" in request.data and request.data["profile_image"] == "default":
             user.profile_image.delete()
             user.profile_image = "defaults/default_profile_image.jpg"
             user.save()
             return Response(
                 {"message": "Profile image updated"}, status=status.HTTP_200_OK
+            )
+        
+        if "background_image" in request.data and request.data["background_image"] == "default":
+            user.background_image.delete()
+            user.background_image = "defaults/default_background.png"
+            user.save()
+            return Response(
+                {"message": "Profile background image updated"}, status=status.HTTP_200_OK
             )
 
         if profile_image:
@@ -218,14 +230,27 @@ class ProfileImageUploadView(generics.UpdateAPIView):
                     {"error": "Invalid image file format"}, status=status.HTTP_400_BAD_REQUEST
                 )
             # Delete the existing profile image if it exists
-
             if user.profile_image != "defaults/default_profile_image.jpg":
                 user.profile_image.delete()
-
             user.profile_image = profile_image
             user.save()
             return Response(
                 {"message": "Profile image updated"}, status=status.HTTP_200_OK
+            )
+        elif background_image:
+            print('test')
+            # extension check
+            if not self.is_valid_image_extension(background_image.name):
+                return Response(
+                    {"error": "Invalid image file format"}, status=status.HTTP_400_BAD_REQUEST
+                )
+            # Delete the existing background image if it exists
+            if user.background_image != "defaults/default_background.png":
+                user.background_image.delete()
+            user.background_image = background_image
+            user.save()
+            return Response(
+                {"message": "Profile background image updated"}, status=status.HTTP_200_OK
             )
         else:
             return Response(

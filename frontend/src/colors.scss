@@ -107,13 +107,13 @@ p{
     max-height: 100px;
     max-width: 100px;
 }
-#formFileProfile{
+#formFileProfile, #formFileProfileBackground{
     display: none;
 }
 .cursor-pointer{
     cursor: pointer;
 }
-#profile-imgAdd{
+#profile-imgAdd, #background-imgAdd{
     @extend .cursor-pointer;
 }
 nav{

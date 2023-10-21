@@ -7,7 +7,8 @@ import { MultipleErrorResponse } from '../ProfileCompany';
 import { GetDataFunction } from '../ProfileCompany';
 import { EditDataFunction } from '../ProfileCompany';
 import AuthContext from '../../../utils/AuthProvider';
-import DeleteModalProps from '../../DeleteModal';
+
+import ProfileDeleteModal from '../../profileComponents/ProfileDeleteModal';
 
 
 
@@ -42,9 +43,10 @@ setPersonal, setAlertError, alertError, username}) => {
     
     const { authTokens } = useContext(AuthContext); // Use the authTokens from AuthContext
     const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+    const [selectedBackgroundImageFile, setSelectedBackgroundImageFile] = useState<File | null>(null);
     const allowedFormats = ['image/jpeg','image/jfif', 'image/jpg', 'image/png', 'image/bmp', 'image/gif'];
     
-    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>, data: string) => {
         const selectedFile = e.target.files && e.target.files[0];
         setSelectedImageFile(selectedFile);
         e.target.value = '';
@@ -62,15 +64,43 @@ setPersonal, setAlertError, alertError, username}) => {
             //   console.log("Wrong file format.")
             //   setSelectedImageFile(null);
             } else {
-              await submitImage(selectedFile);
+                console.log(data)
+              await submitImage(selectedFile, data);
+              
+            }
+        }
+    };
+
+    const handleBackgroundImageChange = async (e: React.ChangeEvent<HTMLInputElement>, data: string ) => {
+        const selectedBackgroundFile = e.target.files && e.target.files[0];
+        setSelectedBackgroundImageFile(selectedBackgroundFile);
+        e.target.value = '';
+        // console.log('handle image change')
+        // Automatically submit the image when a file is selected
+        if (selectedBackgroundFile) {
+            // console.log('file has been selected')
+            const maxSize = 1000 * 1024; // 1000KB in bytes
+            if (selectedBackgroundFile.size >= maxSize) {
+              setAlertError("File size exceeds 1000KB limit");
+            //   console.log("File size exceeds 500KB limit.")
+            //   setSelectedImageFile(null);
+            } else if (!allowedFormats.includes(selectedBackgroundFile.type)) {
+              setAlertError("Wrong file format");
+            //   console.log("Wrong file format.")
+            //   setSelectedImageFile(null);
+            } else {
+                
+              await submitImage(selectedBackgroundFile, data);
               
             }
         }
     };
     
-    const submitImage = async (file: File) => {
+    const submitImage = async (file: File, data: string) => {
         const formData = new FormData();
-        formData.append('profile_image', file);
+        formData.append(data, file);
+
+        console.log(data)
     
         try {
         const response = await axios.put(`/profile/uploadImage/${username}`, formData, {
@@ -85,13 +115,13 @@ setPersonal, setAlertError, alertError, username}) => {
         setAlertError('Something went wrong')
         console.error('Error uploading image:', error);
         }
-        getData(setPersonal, '/profile');
+        getData(setPersonal, '/company/profile/');
         setSelectedImageFile(null);
     };
 
-    const removeImage = async () => {
+    const removeImage = async (data: { profile_image?: string, background_image?: string }) => {
   
-        const data = {profile_image: 'default'}
+        // const data = {profile_image: 'default'}
         // console.log('test')
         try {
         const response = await axios.put(`/profile/uploadImage/${username}`, data, {
@@ -107,7 +137,7 @@ setPersonal, setAlertError, alertError, username}) => {
         setAlertError('Something went wrong')
         console.error('Error removing image:', error);
         }
-        getData(setPersonal, '/profile');
+        getData(setPersonal, '/company/profile/');
     };
     
     const handleInputChange = (
@@ -157,7 +187,34 @@ setPersonal, setAlertError, alertError, username}) => {
                         </div>
                     </div>
                     <div className='row justify-content-center '>
-                        
+                        <img src={`${personal?.background_image}?${Date.now()}`} className="img-fluid" style={{height: "200px"}}  alt="background_img"/>
+                        <div className='prevHidden row'>
+                                        <div className="mb-1 text-center d-flex justify-content-center">
+                                            <input 
+                                            className=''
+                                            id='formFileProfileBackground'
+                                            type='file'
+                                            accept=".jpeg, .jpg, .png, .jfif, bmp, gif"
+                                            onChange={(e) => handleBackgroundImageChange(e, "background_image")}
+                                            />
+                                            {renderFieldErrorMultiple('profileMain', 0, `background_image`, multipleErrors)}
+                                            <label 
+                                            htmlFor="formFileProfileBackground" 
+                                            className="form-label mb-0  profile-svgs"
+                                            id='background-imgAdd'
+                                            
+                                            >
+                                                <Icon path={mdiPencil} size={1} />
+                                               
+                                            </label>
+                                            {personal?.background_image && personal.background_image !== '/media/defaults/default_background.png' &&
+                                                <ProfileDeleteModal id={`${personal?.background_image}_${0}`} onDelete={() => removeImage({background_image: 'default'})}  />
+                                            }
+                                            
+                                        </div>
+                                    </div>
+
+
                             <div className={`col-sm-auto row d-flex align-items-center align-items-baseline flex-column ${personal?.profile_image === '/media/defaults/default_profile_image.jpg'
                         ? ('prevHidden') : ('')}`}>
                                 <form className='d-flex d-sm-block flex-column align-items-center justify-content-center'>
@@ -169,7 +226,7 @@ setPersonal, setAlertError, alertError, username}) => {
                                             id='formFileProfile'
                                             type='file'
                                             accept=".jpeg, .jpg, .png, .jfif, bmp, gif"
-                                            onChange={handleImageChange}
+                                            onChange={(e) => handleImageChange(e, "profile_image")}
                                             />
                                             {renderFieldErrorMultiple('profileMain', 0, `profile_image`, multipleErrors)}
                                             <label 
@@ -182,7 +239,7 @@ setPersonal, setAlertError, alertError, username}) => {
                                                
                                             </label>
                                             {personal?.profile_image && personal.profile_image !== '/media/defaults/default_profile_image.jpg' &&
-                                                <DeleteModalProps id={`${personal?.profile_image}_${0}`} onDelete={() => removeImage()} deleteName='' message='' name='' />
+                                                <ProfileDeleteModal id={`${personal?.profile_image}_${0}`} onDelete={() => removeImage({profile_image: 'default'})}  />
                                             }
                                             
                                         </div>

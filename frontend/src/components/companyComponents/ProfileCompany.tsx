@@ -16,6 +16,7 @@ export interface ProfileCompanyMainData{
     city: string;
     current_position: string;
     profile_image: string;
+    background_image: string;
   }
   
   export interface SummaryData{

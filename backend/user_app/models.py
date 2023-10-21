@@ -8,6 +8,9 @@ from phonenumber_field.modelfields import PhoneNumberField
 def profile_image_upload_path(instance, filename):
     return f"user_profiles/profile_{instance.id}.{filename.split('.')[-1]}"
 
+def profile_background_image_upload_path(instance, filename):
+    return f"user_profiles/backgrounds/profile_{instance.id}.{filename.split('.')[-1]}"
+
 
 # Only one
 class User(AbstractUser):
@@ -26,6 +29,12 @@ class User(AbstractUser):
         blank=False,
         null=True,
         default="defaults/default_profile_image.jpg",
+    )
+    background_image = models.ImageField(
+        upload_to=profile_background_image_upload_path,
+        blank=False,
+        null=True,
+        default="defaults/default_background.png",
     )
     professional_summary = models.CharField(max_length=500, null=True, blank=True)
     public_profile = models.BooleanField(default=False)

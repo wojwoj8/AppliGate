@@ -29,6 +29,8 @@ urlpatterns = [
 
     # ProfileCompany for company
     path("company/profile/<str:username>/", views.ProfileCompanyView.as_view(), name="personalCompany"),
+    # path("company/joboffercreator/", views.ProfileCompanyView.as_view(), name="personalCompany"),
+    
     
 ]
 

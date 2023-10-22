@@ -108,6 +108,10 @@ const Navbar: React.FC = () =>{
                   <p className="nav-link" aria-current="page">{user.user_type}</p>
                 </li>
                 <li className="nav-item" data-bs-dismiss="offcanvas">
+                  <Link to='/company/joboffercreator' className="nav-link" aria-current="page">Job Offer Creator</Link>
+                </li>
+                
+                <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to='/' className="nav-link" aria-current="page">Home</Link>
                 </li>
                 <li className="nav-item" data-bs-dismiss="offcanvas">

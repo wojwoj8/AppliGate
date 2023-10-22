@@ -314,6 +314,7 @@ const Profile: React.FC = () =>{
       index: number = 0,
 
     ) =>{
+      
       try{
           const response = await axios.put(`${endpoint}/${username}`, state,  {
               headers: {
@@ -363,6 +364,7 @@ const Profile: React.FC = () =>{
       errorField: string,
       index: number = 0,
     ) =>{
+      
         try{
             const response = await axios.post(`${endpoint}/${username}`, state,  {
                 headers: {

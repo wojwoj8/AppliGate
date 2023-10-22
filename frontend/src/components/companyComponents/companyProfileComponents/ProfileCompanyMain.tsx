@@ -54,9 +54,9 @@ setPersonal, setAlertError, alertError, username}) => {
         // Automatically submit the image when a file is selected
         if (selectedFile) {
             // console.log('file has been selected')
-            const maxSize = 500 * 1024; // 500KB in bytes
+            const maxSize = 5000 * 1024; // 500KB in bytes
             if (selectedFile.size >= maxSize) {
-              setAlertError("File size exceeds 500KB limit");
+              setAlertError("File size exceeds 5000KB limit");
             //   console.log("File size exceeds 500KB limit.")
             //   setSelectedImageFile(null);
             } else if (!allowedFormats.includes(selectedFile.type)) {
@@ -79,9 +79,9 @@ setPersonal, setAlertError, alertError, username}) => {
         // Automatically submit the image when a file is selected
         if (selectedBackgroundFile) {
             // console.log('file has been selected')
-            const maxSize = 1000 * 1024; // 1000KB in bytes
+            const maxSize = 10000 * 1024; // 1000KB in bytes
             if (selectedBackgroundFile.size >= maxSize) {
-              setAlertError("File size exceeds 1000KB limit");
+              setAlertError("File size exceeds 10000KB limit");
             //   console.log("File size exceeds 500KB limit.")
             //   setSelectedImageFile(null);
             } else if (!allowedFormats.includes(selectedBackgroundFile.type)) {
@@ -194,7 +194,7 @@ setPersonal, setAlertError, alertError, username}) => {
                                             className=''
                                             id='formFileProfileBackground'
                                             type='file'
-                                            accept=".jpeg, .jpg, .png, .jfif, bmp, gif"
+                                            accept=".jpeg, .jpg, .png, .jfif, .bmp, .gif"
                                             onChange={(e) => handleBackgroundImageChange(e, "background_image")}
                                             />
                                             {renderFieldErrorMultiple('profileMain', 0, `background_image`, multipleErrors)}
@@ -225,7 +225,7 @@ setPersonal, setAlertError, alertError, username}) => {
                                             className=''
                                             id='formFileProfile'
                                             type='file'
-                                            accept=".jpeg, .jpg, .png, .jfif, bmp, gif"
+                                            accept=".jpeg, .jpg, .png, .jfif, .bmp, .gif"
                                             onChange={(e) => handleImageChange(e, "profile_image")}
                                             />
                                             {renderFieldErrorMultiple('profileMain', 0, `profile_image`, multipleErrors)}

@@ -301,13 +301,17 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
         user = request.user
         serializer = self.serializer_class(user, data=request.data)
         profile_image = request.data.get("profile_image")
+        background_image = request.data.get("background_image")
 
         if profile_image == "defaults/default_profile_image.jpg":
             # If the profile_image is the default one, remove it from request data
             del request.data["profile_image"]
 
+        if background_image == "defaults/default_background.png":
+            del request.data["background_image"]
         # Remove the 'profile_image' key from the request data entirely
         request.data.pop("profile_image", None)
+        request.data.pop("background_image", None)
 
         serializer = self.serializer_class(user, data=request.data, partial=True)
 
@@ -317,7 +321,7 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
                 serializer.validated_data["profile_image"] = request.data[
                     "profile_image"
                 ]
-                print(serializer.data)
+                
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

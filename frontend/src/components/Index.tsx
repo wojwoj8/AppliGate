@@ -145,7 +145,7 @@ const Index: React.FC = () =>{
           //company index
            ) : (
             <div>
-              <p></p>
+              <p>INDEX</p>
             </div>
           )}
         </div>

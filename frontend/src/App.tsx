@@ -23,6 +23,9 @@ import ProfileAlert from './components/profileComponents/ProfileAlert';
 import ProfileCompany from './components/companyComponents/ProfileCompany';
 
 
+//JobOffer
+import JobOfferCreator from './components/companyComponents/JobOfferCreator';
+
 
 function App() {
   setInitialMode();
@@ -59,7 +62,7 @@ function App() {
 
             {/* company routes */}
             <Route path="/company/profile/*" element={<PrivateRouteCompanyOnly><ProfileCompany/></PrivateRouteCompanyOnly>}></Route>
-
+            <Route path="/company/joboffercreator" element={<PrivateRouteCompanyOnly><JobOfferCreator/></PrivateRouteCompanyOnly>}></Route>
 
 
           

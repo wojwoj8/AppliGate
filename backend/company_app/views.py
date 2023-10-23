@@ -36,6 +36,7 @@ class ProfileCompanyView(BaseProfileUpdateView):
     serializer_class = ProfileCompanySerializer
     queryset = User.objects.all()
 
+
 class JobOfferListing(generics.ListAPIView):
     queryset = JobOffer.objects.all()  # Define the queryset here
     serializer_class = JobListingsSerializer

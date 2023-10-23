@@ -107,9 +107,21 @@ const Navbar: React.FC = () =>{
                 <li className="nav-item" data-bs-dismiss="offcanvas">
                   <p className="nav-link" aria-current="page">{user.user_type}</p>
                 </li>
-                <li className="nav-item" data-bs-dismiss="offcanvas">
-                  <Link to='/company/joboffercreator' className="nav-link" aria-current="page">Job Offer Creator</Link>
+                <li className="nav-item dropdown-center">
+                  <a className="nav-link dropdown-toggle" href="/profileSettings" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Job Offers
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li className="dropdown-item" data-bs-dismiss="offcanvas">
+                      <Link to='/company/joboffer' className="nav-link" aria-current="page">Job Offer Creator/VIEW</Link>
+                    </li>
+                    <li className="dropdown-item" data-bs-dismiss="offcanvas">
+                      <Link to='/company/jobofferlistings' className="nav-link" aria-current="page">Job Offer Listings</Link>
+                    </li>
+                    
+                  </ul>
                 </li>
+                
                 
                 <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to='/' className="nav-link" aria-current="page">Home</Link>

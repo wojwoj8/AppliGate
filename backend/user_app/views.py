@@ -329,7 +329,7 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
 
 class ProfileView(BaseProfileUpdateView):
     serializer_class = ProfileSerializer
-    queryset = User.objects.all()
+    # queryset = User.objects.all()
 
 
 class ProfileContactView(BaseProfileUpdateView):

@@ -28,8 +28,19 @@ from rest_framework.permissions import IsAuthenticated
 from datetime import datetime
 from rest_framework.generics import get_object_or_404
 import os
+from .models import JobOffer
+from .serializer import JobListingsSerializer
 
 
 class ProfileCompanyView(BaseProfileUpdateView):
     serializer_class = ProfileCompanySerializer
     queryset = User.objects.all()
+
+class JobOfferListing(generics.ListAPIView):
+    queryset = JobOffer.objects.all()  # Define the queryset here
+    serializer_class = JobListingsSerializer
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()  # You can also remove this line since queryset is defined
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)

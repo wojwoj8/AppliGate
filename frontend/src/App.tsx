@@ -24,7 +24,8 @@ import ProfileCompany from './components/companyComponents/ProfileCompany';
 
 
 //JobOffer
-import JobOfferCreator from './components/companyComponents/JobOfferCreator';
+import JobOffer from './components/JobOffers/JobOffer';
+import JobOfferListing from './components/JobOffers/JobOfferListing';
 
 
 function App() {
@@ -62,9 +63,9 @@ function App() {
 
             {/* company routes */}
             <Route path="/company/profile/*" element={<PrivateRouteCompanyOnly><ProfileCompany/></PrivateRouteCompanyOnly>}></Route>
-            <Route path="/company/joboffercreator" element={<PrivateRouteCompanyOnly><JobOfferCreator/></PrivateRouteCompanyOnly>}></Route>
-
-
+            <Route path="/company/joboffer" element={<PrivateRouteCompanyOnly><JobOffer/></PrivateRouteCompanyOnly>}></Route>
+            <Route path="/company/jobofferlistings" element={<PrivateRoute><JobOfferListing/></PrivateRoute>}></Route>
+            
           
         </Routes>
         </div>

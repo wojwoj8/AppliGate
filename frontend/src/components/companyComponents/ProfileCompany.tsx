@@ -611,7 +611,7 @@ export interface ProfileCompanyMainData{
           updateProgress(completedSteps);
         };
     
-        await fetchDataAndUpdateProgress(setProfileMain, `/company/profile/`);
+        await fetchDataAndUpdateProgress(setProfileMain, `/company/profile`);
         // await fetchDataAndUpdateProgress(setContact, `/profile/contact`);
         // await fetchDataAndUpdateProgress(setSummary, `/profile/summary`);
         // await fetchDataAndUpdateProgress(setExperience, `/profile/experience`);

@@ -115,7 +115,7 @@ setPersonal, setAlertError, alertError, username}) => {
         setAlertError('Something went wrong')
         console.error('Error uploading image:', error);
         }
-        getData(setPersonal, '/company/profile/');
+        getData(setPersonal, '/company/profile');
         setSelectedImageFile(null);
     };
 
@@ -137,7 +137,7 @@ setPersonal, setAlertError, alertError, username}) => {
         setAlertError('Something went wrong')
         console.error('Error removing image:', error);
         }
-        getData(setPersonal, '/company/profile/');
+        getData(setPersonal, '/company/profile');
     };
     
     const handleInputChange = (
@@ -158,18 +158,18 @@ setPersonal, setAlertError, alertError, username}) => {
         setEditPersonal(!editPersonal);
         if(editPersonal === true){
             removeMultipleErrors('profileMain', 0)
-            getData(setPersonal, '/company/profile/');
+            getData(setPersonal, '/company/profile');
         }
         
     }
     const cancelEditProfile = () =>{
         setEditPersonal(false);
         removeMultipleErrors('profileMain', 0)
-        getData(setPersonal, '/company/profile/');
+        getData(setPersonal, '/company/profile');
     }
 
     const saveEdit = async () =>{
-        await editData(personal, setEditPersonal, '/company/profile/', 'profileMain')
+        await editData(personal, setEditPersonal, '/company/profile', 'profileMain')
     }
 
     useEffect(() =>{

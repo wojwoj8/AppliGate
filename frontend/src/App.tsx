@@ -53,7 +53,7 @@ function App() {
             {/* PrivateRoute = Accessable if logged in */}
             {/* PrivateRouteUserOnly = Accessable if logged in and user type is user */}
             {/* PrivateRouteCompanyOnly = Accessable if logged in and user type is company */}
-            <Route path="/profile/*" element={<PrivateRouteUserOnly><Profile/></PrivateRouteUserOnly>}></Route>
+            <Route path="/profile/*" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>
             <Route path="/profileSettings" element={<PrivateRoute><ProfileSettings/></PrivateRoute>}></Route>
             <Route path="/profileSettings/userData" element={<PrivateRoute><ProfileSettingsUsername setAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/profileSettings/password" element={<PrivateRoute><ProfileSettingsPassword setAlertError={setAlertError}/></PrivateRoute>}></Route>

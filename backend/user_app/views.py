@@ -7,7 +7,7 @@ from rest_framework import (
     authentication,
     permissions,
 )
-from rest_framework.decorators import authentication_classes
+
 from rest_framework.exceptions import PermissionDenied
 from .models import (
     User,
@@ -45,45 +45,19 @@ from rest_framework.generics import get_object_or_404
 import os
 
 
-
-class UserAuthentication(authentication.BaseAuthentication):
-    def authenticate(self, request):
-        # Get the user from the request
-        user = request.user
-
-        # Check if the user is authenticated
-        if user is None or user.is_anonymous:
-            return None
-
-        # Get user type from the JWT token
-        user_type = user.user_type
-
-        # Check user type and raise PermissionDenied if it's not a user
-        if user_type == 'user':
-            # This is a user
-            return (user, None)
+class IsUserPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        print(request.__dict__)
+        # Check if the request method is GET or if the user type is "user"
+        if request.method == 'GET' or (request.user.is_authenticated and request.user.user_type == 'user'):
+            return True
         else:
-            raise PermissionDenied("Invalid user type")
+            raise PermissionDenied("You do not have permission to perform this action.")
 
-class CompanyAuthentication(authentication.BaseAuthentication):
-    def authenticate(self, request):
-        # Get the user from the request
-        user = request.user
-
-        # Check if the user is authenticated
-        if user is None or user.is_anonymous:
-            return None
-
-        # Get user type from the JWT token
-        user_type = user.user_type 
-
-        # Check user type and raise PermissionDenied if it's not a company
-        if user_type == 'company':
-            # This is a company
-            return (user, None)
-        else:
-            raise PermissionDenied("Invalid user type")
-
+class IsOwnerPermission(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        # Check if the user making the request is the owner of the object.
+        return obj.owner == request.user
 
 class SignupView(
     mixins.ListModelMixin,
@@ -279,7 +253,7 @@ class ProfileImageUploadView(generics.UpdateAPIView):
                 {"message": "Profile image updated"}, status=status.HTTP_200_OK
             )
         elif background_image:
-            print('test')
+            # print('test')
             # extension check
             if not self.is_valid_image_extension(background_image.name):
                 return Response(
@@ -323,9 +297,9 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
         if self.request.user.username != username:
             raise PermissionDenied("You do not have permission to perform this action.")
 
-    # @authentication_classes([UserAuthentication])
     def get(self, request, *args, **kwargs):
         self.check_username_profile()
+        
         username = self.kwargs.get("username")  # Get the username from URL
 
         if username:
@@ -371,6 +345,7 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
 
 
 class ProfileView(BaseProfileUpdateView):
+    permission_classes = [IsUserPermission]
     serializer_class = ProfileSerializer
     # queryset = User.objects.all()
 

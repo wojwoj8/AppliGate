@@ -7,6 +7,7 @@ from rest_framework import (
     authentication,
     permissions,
 )
+from rest_framework.decorators import authentication_classes
 from rest_framework.exceptions import PermissionDenied
 from .models import (
     User,
@@ -42,6 +43,46 @@ from rest_framework.permissions import IsAuthenticated
 from datetime import datetime
 from rest_framework.generics import get_object_or_404
 import os
+
+
+
+class UserAuthentication(authentication.BaseAuthentication):
+    def authenticate(self, request):
+        # Get the user from the request
+        user = request.user
+
+        # Check if the user is authenticated
+        if user is None or user.is_anonymous:
+            return None
+
+        # Get user type from the JWT token
+        user_type = user.user_type
+
+        # Check user type and raise PermissionDenied if it's not a user
+        if user_type == 'user':
+            # This is a user
+            return (user, None)
+        else:
+            raise PermissionDenied("Invalid user type")
+
+class CompanyAuthentication(authentication.BaseAuthentication):
+    def authenticate(self, request):
+        # Get the user from the request
+        user = request.user
+
+        # Check if the user is authenticated
+        if user is None or user.is_anonymous:
+            return None
+
+        # Get user type from the JWT token
+        user_type = user.user_type 
+
+        # Check user type and raise PermissionDenied if it's not a company
+        if user_type == 'company':
+            # This is a company
+            return (user, None)
+        else:
+            raise PermissionDenied("Invalid user type")
 
 
 class SignupView(
@@ -273,6 +314,7 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
         # checked username
         username = self.kwargs.get("username")
         checked_user = get_object_or_404(User, username=username)
+        # print(self.request.__dict__)
         if self.request.user != checked_user and not checked_user.public_profile:
             raise PermissionDenied("Profile is private")
 
@@ -281,6 +323,7 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
         if self.request.user.username != username:
             raise PermissionDenied("You do not have permission to perform this action.")
 
+    # @authentication_classes([UserAuthentication])
     def get(self, request, *args, **kwargs):
         self.check_username_profile()
         username = self.kwargs.get("username")  # Get the username from URL
@@ -383,7 +426,9 @@ class BaseProfileView(
     def check_username_profile(self):
         # checked username
         username = self.kwargs.get("username")
+        
         checked_user = get_object_or_404(User, username=username)
+        
         if self.request.user != checked_user and not checked_user.public_profile:
             raise PermissionDenied("Profile is private")
 

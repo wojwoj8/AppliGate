@@ -7,6 +7,7 @@ import ProfileAlert from '../profileComponents/ProfileAlert';
 import ErrorPage from '../ErrorPage';
 import Loading from '../Loading';
 import ProfileCompanyMain from './companyProfileComponents/ProfileCompanyMain';
+import ProfileCompanyStatus from './companyProfileComponents/ProfileCompanyStatus';
 
 export interface ProfileCompanyMainData{
     first_name: string;
@@ -620,7 +621,7 @@ export interface ProfileCompanyMainData{
         // await fetchDataAndUpdateProgress(setSkill, `/profile/skill`);
         // await fetchDataAndUpdateProgress(setAbout, `/profile/about`);
         // await fetchDataAndUpdateProgress(setLink, `/profile/link`);
-        // await fetchDataAndUpdateProgress(setProfileStatus, `/profile/profileStatus`);
+        await fetchDataAndUpdateProgress(setProfileStatus, `/profile/profileStatus`);
        
         
         
@@ -690,14 +691,14 @@ export interface ProfileCompanyMainData{
           
             <div className='profileStatusHide'>
 
-                {/* <ProfileStatus
+                <ProfileCompanyStatus
                   profileStatus={profileStatus}
                   getData={getData}
                   setProfileStatus={setProfileStatus}
                   editData={editData}
                   alertError={alertError}
                   setAlertError={setAlertError}
-                /> */}
+                />
             </div>
         </div>
         </>

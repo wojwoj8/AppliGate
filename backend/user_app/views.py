@@ -44,20 +44,16 @@ from datetime import datetime
 from rest_framework.generics import get_object_or_404
 import os
 
-
+# logged users can get, and other methods works only for owner
 class IsUserPermission(permissions.BasePermission):
     def has_permission(self, request, view):
-        print(request.__dict__)
+        # print(request.__dict__)
         # Check if the request method is GET or if the user type is "user"
         if request.method == 'GET' or (request.user.is_authenticated and request.user.user_type == 'user'):
             return True
         else:
             raise PermissionDenied("You do not have permission to perform this action.")
 
-class IsOwnerPermission(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        # Check if the user making the request is the owner of the object.
-        return obj.owner == request.user
 
 class SignupView(
     mixins.ListModelMixin,
@@ -347,20 +343,23 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
 class ProfileView(BaseProfileUpdateView):
     permission_classes = [IsUserPermission]
     serializer_class = ProfileSerializer
-    # queryset = User.objects.all()
+    queryset = User.objects.all()
 
 
 class ProfileContactView(BaseProfileUpdateView):
+    permission_classes = [IsUserPermission]
     serializer_class = ContactSerializer
     queryset = User.objects.all()
 
 
 class ProfileAboutView(BaseProfileUpdateView):
+    permission_classes = [IsUserPermission]
     serializer_class = UserAboutSerializer
     queryset = User.objects.all()
 
 
 class ProfileSummaryView(BaseProfileUpdateView):
+    permission_classes = [IsUserPermission]
     serializer_class = UserSummarySerializer
     queryset = User.objects.all()
 

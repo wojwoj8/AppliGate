@@ -375,9 +375,12 @@ class ProfileCvPersonalDataTests(APITestCase):
         self.assertEqual(response.data['first_name'], "")
 
         #try use put on other account
-        response = self.client.put(profile_personal_url, data, format="json", **self.headers)
         
+        response = self.client.put(profile_personal_url, data, format="json", **self.headers)
+        # print(self.headers)
+        print(response.data)
         error_message = response.data['detail']
+        
         self.assertEqual(error_message, "You do not have permission to perform this action.")
 
 

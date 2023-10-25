@@ -74,7 +74,7 @@ class AuthenticationTests(APITestCase):
         }
 
         response = self.client.post(reverse("register"), data, format="json")
-        print(response.data)
+        # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['invalid'], 'Invalid user type')
 
@@ -378,7 +378,7 @@ class ProfileCvPersonalDataTests(APITestCase):
         
         response = self.client.put(profile_personal_url, data, format="json", **self.headers)
         # print(self.headers)
-        print(response.data)
+        # print(response.data)
         error_message = response.data['detail']
         
         self.assertEqual(error_message, "You do not have permission to perform this action.")
@@ -497,6 +497,18 @@ class ProfileImageTests(APITestCase):
         self.assertEqual(response.data['message'], 'Profile image updated')
         response = self.client.get(profile_personal_url, format="json", **self.headers)
         self.assertEqual(response.data['profile_image'], '/media/defaults/default_profile_image.jpg')
+
+        profile_personal_url = reverse('personalCompany', args=[self.user.username])
+        response = self.client.get(profile_personal_url, format="json", **self.headers)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+        response = self.client.put(profile_personal_url, {'first_name': "shouldNotWork"}, format="json", **self.headers)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        error_message = response.data['detail']
+        
+        self.assertEqual(error_message, "You do not have permission to perform this action.")
+
+
     
     def test_user_wrong_image_post(self):
         image_path = './media/defaults/test_image.webp'
@@ -511,5 +523,72 @@ class ProfileImageTests(APITestCase):
         response = self.client.get(profile_personal_url, format="json", **self.headers)
         self.assertEqual(response.data['profile_image'], '/media/defaults/default_profile_image.jpg')
         
+class WrongProfileTypeView(APITestCase):
+    def setUp(self):
+        self.user_data3 = {
+            "username": "testuser",
+            "password": "testpassword",
+            "email": "testuser@test.com",
+            "user_type": "user"
+        }
+        self.user_data2 = {
+            "username": "testuser2",
+            "password": "testpassword2",
+            "email": "testuser2@test.com",
+            "user_type": "user"
+        }
+        self.user_data = {
+            "username": "company1",
+            "password": "company1",
+            "email": "company1@test.com",
+            "user_type": "company"
+        }
+        self.user = User.objects.create_user(**self.user_data)
+        self.user2 = User.objects.create_user(**self.user_data2)
+        self.company_user = User.objects.create_user(**self.user_data3)
+        
+        self.login_data = {
+            "username": self.user_data["username"],
+            "password": self.user_data["password"],
+        }
+        self.login_url = reverse("token_obtain_pair")
+        self.access_token = self.get_access_token()
+        self.headers = {"HTTP_AUTHORIZATION": f"Bearer {self.access_token}"}
+
+    def get_access_token(self, login_data=None):
+        if login_data is None:
+            login_data = self.login_data
+        response = self.client.post(self.login_url, login_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        return response.data["access"]
+
+    def test_company_personal(self):
+        profile_personal_url = reverse('personalCompany', args=[self.user.username])
+        response = self.client.get(profile_personal_url, format="json", **self.headers)
+        
+        # no data
+        self.assertEqual(response.data, 
+                         {'current_position': None, 
+                          'first_name': '', 
+                          'country': None, 
+                          'city': None, 
+                          'profile_image': '/media/defaults/default_profile_image.jpg', 
+                          'background_image': '/media/defaults/default_background.png'}
+        )
+        data = {
+                'first_name': 'Wojciech', 
+                 
+                }
+        
+        response = self.client.put(profile_personal_url, data, format="json", **self.headers)
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response = self.client.get(profile_personal_url, format="json", **self.headers)
+        self.assertEqual(response.data['first_name'], "Wojciech")
+
+        profile_personal_url = reverse('personal', args=[self.user.username])
+        response = self.client.get(profile_personal_url, format="json", **self.headers)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
 
         

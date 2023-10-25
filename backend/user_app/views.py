@@ -44,15 +44,17 @@ from datetime import datetime
 from rest_framework.generics import get_object_or_404
 import os
 
+    
 # logged users can get, and other methods works only for owner
 class IsUserPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         # print(request.__dict__)
         # Check if the request method is GET or if the user type is "user"
+        # print(view)
         if request.method == 'GET' or (request.user.is_authenticated and request.user.user_type == 'user'):
             return True
         else:
-            raise PermissionDenied("You do not have permission to perform this action.")
+            raise PermissionDenied("You do not have permission to perform this action. xdad")
 
 
 class SignupView(
@@ -137,7 +139,7 @@ class ProfileChangeDataView(
             instance, data=request.data, context={"request": request}
         )
 
-        # Check if the delete_serializer is valid (if you have any fields)
+        # Check if the delete_serializer is valid (if user have any fields)
         if delete_serializer.is_valid():
             # delete user image from media
             if user.profile_image != "defaults/default_profile_image.jpg":
@@ -215,7 +217,7 @@ class ProfileImageUploadView(generics.UpdateAPIView):
         profile_image = request.FILES.get("profile_image")
         background_image = request.FILES.get("background_image")
         # print(profile_image)
-        print(background_image)
+        # print(background_image)
 
 
         if "profile_image" in request.data and request.data["profile_image"] == "default":
@@ -271,8 +273,9 @@ class ProfileImageUploadView(generics.UpdateAPIView):
 # One to one data
 class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
     permission_classes = [IsAuthenticated]
+    
     serializer_class = None  # Subclasses must set this
-
+    # print('tst')
     def process_date(self, date_string):
         try:
             date_object = datetime.fromisoformat(date_string[:-1])
@@ -292,14 +295,39 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
         username = self.kwargs.get("username")
         if self.request.user.username != username:
             raise PermissionDenied("You do not have permission to perform this action.")
+        
+    # for letting to view user or company profiles only of existing user types profiles?
+    # like if user check his /company/profile/user should not work, similar with company
+    def check_user_type_permission(self, request):
+        username = self.kwargs.get("username")
+        # print(request.path)
+        # checked profile user_type
+        user_type = User.objects.filter(username=username).values('user_type').first()
+        if user_type == None:
+            return False
+        user_type = user_type["user_type"]
+        # print(user_type)
+        # print(request.path.startswith('/company/'))
+        if user_type == 'user' and request.path.startswith('/profile/'):
+            return True
+        elif user_type == 'company' and request.path.startswith('/company/'):
+            return True
+        #     raise PermissionDenied("You do not have permission to perform this action.")
+        else:
+           return False
+            
 
     def get(self, request, *args, **kwargs):
+        # print(request.__dict__)
+        if(self.check_user_type_permission(request) == False):
+            return Response(status=status.HTTP_404_NOT_FOUND)
         self.check_username_profile()
         
         username = self.kwargs.get("username")  # Get the username from URL
 
         if username:
             user = get_object_or_404(User, username=username)
+            # print(user)
 
             serializer = self.serializer_class(user, many=False)
             return Response(serializer.data)
@@ -311,6 +339,10 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
 
     def put(self, request, *args, **kwargs):
         self.check_username_permission()
+        self.check_username_profile()
+        if(self.check_user_type_permission(request) == False):
+            raise PermissionDenied("You do not have permission to perform this action.")
+
         user = request.user
         serializer = self.serializer_class(user, data=request.data)
         profile_image = request.data.get("profile_image")
@@ -341,25 +373,24 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
 
 
 class ProfileView(BaseProfileUpdateView):
-    permission_classes = [IsUserPermission]
     serializer_class = ProfileSerializer
     queryset = User.objects.all()
 
 
 class ProfileContactView(BaseProfileUpdateView):
-    permission_classes = [IsUserPermission]
+    
     serializer_class = ContactSerializer
     queryset = User.objects.all()
 
 
 class ProfileAboutView(BaseProfileUpdateView):
-    permission_classes = [IsUserPermission]
+   
     serializer_class = UserAboutSerializer
     queryset = User.objects.all()
 
 
 class ProfileSummaryView(BaseProfileUpdateView):
-    permission_classes = [IsUserPermission]
+   
     serializer_class = UserSummarySerializer
     queryset = User.objects.all()
 
@@ -406,9 +437,33 @@ class BaseProfileView(
         if self.request.user != checked_user and not checked_user.public_profile:
             raise PermissionDenied("Profile is private")
 
+    # for letting to view user or company profiles only of existing user types profiles?
+    # like if user check his /company/profile/user should not work, similar with company
+    def check_user_type_permission(self, request):
+        username = self.kwargs.get("username")
+        # print(request.path)
+        # checked profile user_type
+        user_type = User.objects.filter(username=username).values('user_type').first()
+        if user_type == None:
+            return False
+        user_type = user_type["user_type"]
+        # print(user_type)
+        # print(request.path.startswith('/company/'))
+        if user_type == 'user' and request.path.startswith('/profile/'):
+            return True
+        elif user_type == 'company' and request.path.startswith('/company/'):
+            return True
+        #     raise PermissionDenied("You do not have permission to perform this action.")
+        else:
+           return False
+        
+
     def get(self, request, *args, **kwargs):
         # print(request.user)
+        if(self.check_user_type_permission(request) == False):
+            return Response(status=status.HTTP_404_NOT_FOUND)
         self.check_username_profile()
+        
         queryset = self.get_queryset()
 
         serializer = self.serializer_class(queryset, many=True)
@@ -417,6 +472,8 @@ class BaseProfileView(
 
     def post(self, request, *args, **kwargs):
         self.check_username_permission()
+        if(self.check_user_type_permission(request) == False):
+            raise PermissionDenied("You do not have permission to perform this action.")
         serializer = self.serializer_class(data=request.data)
         if request.data is None:
             serializer = self.serializer_class(data={})
@@ -476,10 +533,6 @@ class BaseProfileView(
 class ProfileEducationView(BaseProfileView):
     queryset = UserEducation.objects.all()
     serializer_class = UserEducationSerializer
-
-    def get_queryset(self):
-        username = self.kwargs.get("username")
-        return self.queryset.filter(user__username=username)
 
 
 class ProfileCourseView(BaseProfileView):

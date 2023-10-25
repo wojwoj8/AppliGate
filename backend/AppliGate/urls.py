@@ -33,6 +33,7 @@ urlpatterns = [
     path("", include("company_app.urls")),
     # Authentication
     path("api/", include("user_app.api.urls")),
+    path('api-auth/', include('rest_framework.urls')) # ONLY FOR DEBUG
 ]
 
 if settings.DEBUG:

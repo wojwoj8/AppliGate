@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { HashRouter, Routes, Route, Navigate} from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate, BrowserRouter} from "react-router-dom";
 import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
 import Navbar from './components/Navbar';
 import Index from './components/Index';
+import PrivateRouteCompanyOnly from './utils/PrivateRouteCompanyOnly';
+import PrivateRouteUserOnly from './utils/PrivateRouteUserOnly';
 import PrivateRoute from './utils/PrivateRoute';
 import IfNotLoggedIn from './utils/IfNotLoggedIn';
 import Profile from './components/Profile';
@@ -17,13 +19,20 @@ import ProfileSettingsDelete from './components/ProfileSettingsDelete';
 import Example from './components/Example';
 import ProfileAlert from './components/profileComponents/ProfileAlert';
 
+// Company part
+import ProfileCompany from './components/companyComponents/ProfileCompany';
+
+
+//JobOffer
+import JobOffer from './components/JobOffers/JobOffer';
+import JobOfferListing from './components/JobOffers/JobOfferListing';
 
 
 function App() {
   setInitialMode();
   const [alertError, setAlertError] = useState('');
   return (
-    <HashRouter>
+    <BrowserRouter>
     
       <AuthProvider>
         <Navbar></Navbar>
@@ -39,13 +48,24 @@ function App() {
             <Route path="/login" element={<IfNotLoggedIn><LogIn/></IfNotLoggedIn>}></Route>
             <Route path="/register" element={<IfNotLoggedIn><SignUp/></IfNotLoggedIn>}></Route>
 
+            
+
             {/* PrivateRoute = Accessable if logged in */}
+            {/* PrivateRouteUserOnly = Accessable if logged in and user type is user */}
+            {/* PrivateRouteCompanyOnly = Accessable if logged in and user type is company */}
             <Route path="/profile/*" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>
             <Route path="/profileSettings" element={<PrivateRoute><ProfileSettings/></PrivateRoute>}></Route>
             <Route path="/profileSettings/userData" element={<PrivateRoute><ProfileSettingsUsername setAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/profileSettings/password" element={<PrivateRoute><ProfileSettingsPassword setAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/profileSettings/delete" element={<PrivateRoute><ProfileSettingsDelete setAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/" element={<PrivateRoute><Index/></PrivateRoute>} />
+
+
+            {/* company routes */}
+            <Route path="/company/profile/*" element={<PrivateRoute><ProfileCompany/></PrivateRoute>}></Route>
+            <Route path="/company/joboffer" element={<PrivateRouteCompanyOnly><JobOffer/></PrivateRouteCompanyOnly>}></Route>
+            <Route path="/company/jobofferlistings" element={<PrivateRoute><JobOfferListing/></PrivateRoute>}></Route>
+            
           
         </Routes>
         </div>
@@ -54,7 +74,7 @@ function App() {
    
     
     {/* <div className='mt-2'></div> */}
-    </HashRouter>
+    </BrowserRouter>
     
   );
 }

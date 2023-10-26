@@ -168,7 +168,7 @@ setPersonal, setAlertError, alertError, username}) => {
                                             className=''
                                             id='formFileProfile'
                                             type='file'
-                                            accept=".jpeg, .jpg, .png, .jfif, bmp, gif"
+                                            accept=".jpeg, .jpg, .png, .jfif, .bmp, .gif"
                                             onChange={handleImageChange}
                                             />
                                             {renderFieldErrorMultiple('profile', 0, `profile_image`, multipleErrors)}

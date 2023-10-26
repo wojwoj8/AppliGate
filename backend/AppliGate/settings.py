@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "user_app",
+    "company_app",
     "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
@@ -150,6 +151,7 @@ AUTH_USER_MODEL = "user_app.User"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        # 'rest_framework.authentication.SessionAuthentication', # ONLY FOR DEBUG
     )
 }
 SIMPLE_JWT = {

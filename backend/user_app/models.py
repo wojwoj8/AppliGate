@@ -2,11 +2,15 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 
+
 # Create your models here.
 
 
 def profile_image_upload_path(instance, filename):
     return f"user_profiles/profile_{instance.id}.{filename.split('.')[-1]}"
+
+def profile_background_image_upload_path(instance, filename):
+    return f"user_profiles/backgrounds/profile_{instance.id}.{filename.split('.')[-1]}"
 
 
 # Only one
@@ -27,8 +31,26 @@ class User(AbstractUser):
         null=True,
         default="defaults/default_profile_image.jpg",
     )
+    background_image = models.ImageField(
+        upload_to=profile_background_image_upload_path,
+        blank=False,
+        null=True,
+        default="defaults/default_background.png",
+    )
     professional_summary = models.CharField(max_length=500, null=True, blank=True)
     public_profile = models.BooleanField(default=False)
+    # For user type
+    USER_TYPE_CHOICES = [
+        ('user', 'User'),
+        ('company', 'Company'),
+    ]
+    
+    user_type = models.CharField(
+        max_length=10,
+        choices=USER_TYPE_CHOICES,
+        default='user',
+    )
+
 
 
 # Multiple

@@ -7,6 +7,7 @@ from rest_framework import (
     authentication,
     permissions,
 )
+
 from rest_framework.exceptions import PermissionDenied
 from .models import (
     User,
@@ -43,6 +44,18 @@ from datetime import datetime
 from rest_framework.generics import get_object_or_404
 import os
 
+    
+# logged users can get, and other methods works only for owner
+class IsUserPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        # print(request.__dict__)
+        # Check if the request method is GET or if the user type is "user"
+        # print(view)
+        if request.method == 'GET' or (request.user.is_authenticated and request.user.user_type == 'user'):
+            return True
+        else:
+            raise PermissionDenied("You do not have permission to perform this action. xdad")
+
 
 class SignupView(
     mixins.ListModelMixin,
@@ -54,6 +67,10 @@ class SignupView(
     permission_classes = [permissions.AllowAny]
 
     def post(self, request, *args, **kwargs):
+        user_types = [
+        ('user', 'User'),
+        ('company', 'Company'),
+    ]
         password = request.data.get("password")
         confirm = request.data.get("confirm")
 
@@ -63,8 +80,19 @@ class SignupView(
         # hash that password
         hashed_password = make_password(password)
         request.data["password"] = hashed_password
+
+        user_type = request.data.get("user_type", None)
+        if user_type is None:
+            request.data["user_type"] = 'user'
+        
+        if not request.data["user_type"] or request.data["user_type"] not in dict(user_types):
+  
+            return Response({"invalid": "Invalid user type"}, status=400)
+
+        
         self.create(request, *args, **kwargs)
         return Response({"created": "Account created successfully"}, status=201)
+
 
 
 class IndexView(generics.GenericAPIView):
@@ -111,7 +139,7 @@ class ProfileChangeDataView(
             instance, data=request.data, context={"request": request}
         )
 
-        # Check if the delete_serializer is valid (if you have any fields)
+        # Check if the delete_serializer is valid (if user have any fields)
         if delete_serializer.is_valid():
             # delete user image from media
             if user.profile_image != "defaults/default_profile_image.jpg":
@@ -187,13 +215,25 @@ class ProfileImageUploadView(generics.UpdateAPIView):
         self.check_username_permission()
         user = request.user  # Get the authenticated user
         profile_image = request.FILES.get("profile_image")
+        background_image = request.FILES.get("background_image")
+        # print(profile_image)
+        # print(background_image)
 
-        if request.data["profile_image"] == "default":
+
+        if "profile_image" in request.data and request.data["profile_image"] == "default":
             user.profile_image.delete()
             user.profile_image = "defaults/default_profile_image.jpg"
             user.save()
             return Response(
                 {"message": "Profile image updated"}, status=status.HTTP_200_OK
+            )
+        
+        if "background_image" in request.data and request.data["background_image"] == "default":
+            user.background_image.delete()
+            user.background_image = "defaults/default_background.png"
+            user.save()
+            return Response(
+                {"message": "Profile background image updated"}, status=status.HTTP_200_OK
             )
 
         if profile_image:
@@ -203,25 +243,39 @@ class ProfileImageUploadView(generics.UpdateAPIView):
                     {"error": "Invalid image file format"}, status=status.HTTP_400_BAD_REQUEST
                 )
             # Delete the existing profile image if it exists
-
             if user.profile_image != "defaults/default_profile_image.jpg":
                 user.profile_image.delete()
-
             user.profile_image = profile_image
             user.save()
             return Response(
                 {"message": "Profile image updated"}, status=status.HTTP_200_OK
+            )
+        elif background_image:
+            # print('test')
+            # extension check
+            if not self.is_valid_image_extension(background_image.name):
+                return Response(
+                    {"error": "Invalid image file format"}, status=status.HTTP_400_BAD_REQUEST
+                )
+            # Delete the existing background image if it exists
+            if user.background_image != "defaults/default_background.png":
+                user.background_image.delete()
+            user.background_image = background_image
+            user.save()
+            return Response(
+                {"message": "Profile background image updated"}, status=status.HTTP_200_OK
             )
         else:
             return Response(
                 {"error": "No image provided"}, status=status.HTTP_400_BAD_REQUEST
             )
 
-
+# One to one data
 class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
     permission_classes = [IsAuthenticated]
+    
     serializer_class = None  # Subclasses must set this
-
+    # print('tst')
     def process_date(self, date_string):
         try:
             date_object = datetime.fromisoformat(date_string[:-1])
@@ -233,6 +287,7 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
         # checked username
         username = self.kwargs.get("username")
         checked_user = get_object_or_404(User, username=username)
+        # print(self.request.__dict__)
         if self.request.user != checked_user and not checked_user.public_profile:
             raise PermissionDenied("Profile is private")
 
@@ -240,13 +295,39 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
         username = self.kwargs.get("username")
         if self.request.user.username != username:
             raise PermissionDenied("You do not have permission to perform this action.")
+        
+    # for letting to view user or company profiles only of existing user types profiles?
+    # like if user check his /company/profile/user should not work, similar with company
+    def check_user_type_permission(self, request):
+        username = self.kwargs.get("username")
+        # print(request.path)
+        # checked profile user_type
+        user_type = User.objects.filter(username=username).values('user_type').first()
+        if user_type == None:
+            return False
+        user_type = user_type["user_type"]
+        # print(user_type)
+        # print(request.path.startswith('/company/'))
+        if user_type == 'user' and request.path.startswith('/profile/'):
+            return True
+        elif user_type == 'company' and request.path.startswith('/company/'):
+            return True
+        #     raise PermissionDenied("You do not have permission to perform this action.")
+        else:
+           return False
+            
 
     def get(self, request, *args, **kwargs):
+        # print(request.__dict__)
+        if(self.check_user_type_permission(request) == False):
+            return Response(status=status.HTTP_404_NOT_FOUND)
         self.check_username_profile()
+        
         username = self.kwargs.get("username")  # Get the username from URL
 
         if username:
             user = get_object_or_404(User, username=username)
+            # print(user)
 
             serializer = self.serializer_class(user, many=False)
             return Response(serializer.data)
@@ -258,16 +339,24 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
 
     def put(self, request, *args, **kwargs):
         self.check_username_permission()
+        self.check_username_profile()
+        if(self.check_user_type_permission(request) == False):
+            raise PermissionDenied("You do not have permission to perform this action.")
+
         user = request.user
         serializer = self.serializer_class(user, data=request.data)
         profile_image = request.data.get("profile_image")
+        background_image = request.data.get("background_image")
 
         if profile_image == "defaults/default_profile_image.jpg":
             # If the profile_image is the default one, remove it from request data
             del request.data["profile_image"]
 
+        if background_image == "defaults/default_background.png":
+            del request.data["background_image"]
         # Remove the 'profile_image' key from the request data entirely
         request.data.pop("profile_image", None)
+        request.data.pop("background_image", None)
 
         serializer = self.serializer_class(user, data=request.data, partial=True)
 
@@ -277,7 +366,7 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
                 serializer.validated_data["profile_image"] = request.data[
                     "profile_image"
                 ]
-                print(serializer.data)
+                
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -289,20 +378,24 @@ class ProfileView(BaseProfileUpdateView):
 
 
 class ProfileContactView(BaseProfileUpdateView):
+    
     serializer_class = ContactSerializer
     queryset = User.objects.all()
 
 
 class ProfileAboutView(BaseProfileUpdateView):
+   
     serializer_class = UserAboutSerializer
     queryset = User.objects.all()
 
 
 class ProfileSummaryView(BaseProfileUpdateView):
+   
     serializer_class = UserSummarySerializer
     queryset = User.objects.all()
 
 
+# One to many data
 class BaseProfileView(
     generics.GenericAPIView,
     mixins.ListModelMixin,
@@ -338,13 +431,39 @@ class BaseProfileView(
     def check_username_profile(self):
         # checked username
         username = self.kwargs.get("username")
+        
         checked_user = get_object_or_404(User, username=username)
+        
         if self.request.user != checked_user and not checked_user.public_profile:
             raise PermissionDenied("Profile is private")
 
+    # for letting to view user or company profiles only of existing user types profiles?
+    # like if user check his /company/profile/user should not work, similar with company
+    def check_user_type_permission(self, request):
+        username = self.kwargs.get("username")
+        # print(request.path)
+        # checked profile user_type
+        user_type = User.objects.filter(username=username).values('user_type').first()
+        if user_type == None:
+            return False
+        user_type = user_type["user_type"]
+        # print(user_type)
+        # print(request.path.startswith('/company/'))
+        if user_type == 'user' and request.path.startswith('/profile/'):
+            return True
+        elif user_type == 'company' and request.path.startswith('/company/'):
+            return True
+        #     raise PermissionDenied("You do not have permission to perform this action.")
+        else:
+           return False
+        
+
     def get(self, request, *args, **kwargs):
         # print(request.user)
+        if(self.check_user_type_permission(request) == False):
+            return Response(status=status.HTTP_404_NOT_FOUND)
         self.check_username_profile()
+        
         queryset = self.get_queryset()
 
         serializer = self.serializer_class(queryset, many=True)
@@ -353,6 +472,8 @@ class BaseProfileView(
 
     def post(self, request, *args, **kwargs):
         self.check_username_permission()
+        if(self.check_user_type_permission(request) == False):
+            raise PermissionDenied("You do not have permission to perform this action.")
         serializer = self.serializer_class(data=request.data)
         if request.data is None:
             serializer = self.serializer_class(data={})
@@ -412,10 +533,6 @@ class BaseProfileView(
 class ProfileEducationView(BaseProfileView):
     queryset = UserEducation.objects.all()
     serializer_class = UserEducationSerializer
-
-    def get_queryset(self):
-        username = self.kwargs.get("username")
-        return self.queryset.filter(user__username=username)
 
 
 class ProfileCourseView(BaseProfileView):

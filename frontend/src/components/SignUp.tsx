@@ -12,6 +12,7 @@ const SignUp: React.FC = () =>{
     const { signupUser, errorSignUp } = useContext(AuthContext)
     const [loading, setLoading] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [isChecked, setIsChecked] = useState(false);
 
     const handlePassword = (e:string) =>{
         setPassword(e)
@@ -19,8 +20,12 @@ const SignUp: React.FC = () =>{
     const handleConfirm = (e:string) =>{
         setConfirm(e)
     }
+    const handleCheckbox = () => {
+        setIsChecked(!isChecked);
+    }
     const handleForm = async (e: React.FormEvent<HTMLFormElement>) =>{
         setErr({})
+
         // console.log('test')
         setLoading(true);
         setProgress(50)
@@ -76,63 +81,79 @@ const SignUp: React.FC = () =>{
                     </div>
                     
                     <div className="mb-3">
-                    <label htmlFor="password" className="form-label">Password:</label>
-                    <div className="">
-                        <input 
-                        name="password" 
-                        type="password" 
-                        onChange={data => handlePassword(data.target.value)} 
-                        required
-                        className="form-control"
-                        />
-                    </div>
+                        <label htmlFor="password" className="form-label">Password:</label>
+                        <div className="">
+                            <input 
+                            name="password" 
+                            type="password" 
+                            onChange={data => handlePassword(data.target.value)} 
+                            required
+                            className="form-control"
+                            />
+                        </div>
                     </div>
 
                     <div className="mb-3">
-                    <label htmlFor="confirm" className="form-label">Confirm Password:</label>
-                    <div className="">
-                        <input 
-                        name="confirm" 
-                        type="password" 
-                        onChange={data => handleConfirm(data.target.value)} 
-                        required
-                        className={`form-control ${err && err.confirm && 'is-invalid'}`}
-                        />
-                    </div>
+                        <label htmlFor="confirm" className="form-label">Confirm Password:</label>
+                        <div className="">
+                            <input 
+                            name="confirm" 
+                            type="password" 
+                            onChange={data => handleConfirm(data.target.value)} 
+                            required
+                            className={`form-control ${err && err.confirm && 'is-invalid'}`}
+                            />
+                        </div>
                     {err && err.confirm && (
                                 <span className="text-danger">{err.confirm[0]}</span>
                                 )}
                     </div>
 
                     <div className="mb-3">
-                    <label htmlFor="email" className="form-label">Email:</label>
-                    <div className="">
-                        <input 
-                        name="email" 
-                        type="email" 
-                        required
-                        placeholder="example@test.com"
-                        className={`form-control ${errorSignUp && errorSignUp.email && 'is-invalid'}`}
-                        />
-                    </div>
+                        <label htmlFor="email" className="form-label">Email:</label>
+                        <div className="">
+                            <input 
+                            name="email" 
+                            type="email" 
+                            required
+                            placeholder="example@test.com"
+                            className={`form-control ${errorSignUp && errorSignUp.email && 'is-invalid'}`}
+                            />
+                        </div>
                     {errorSignUp && errorSignUp.email && (
                                 <span className="text-danger">{errorSignUp.email[0]}</span>
                                 )}
                     </div>
-
+                    
+                    <div className="form-check mb-3">
+                        <input 
+                            className="form-check-input" 
+                            type="checkbox" 
+                            name="account_type"
+                            value={isChecked ? 'company' : 'user'} 
+                            id="flexCheckIndeterminate"
+                            onChange={handleCheckbox}
+                            checked={isChecked}
+                            
+                        />
+                        <label className="form-check-label" htmlFor="flexCheckIndeterminate">
+                            Company Account <span className="fw-light d-md-inline d-sm-block">(Company account is for posting job offers)</span>
+                        </label>
+                    </div>
                     <div className="d-grid py-2 text-center">
-                    <button 
-                        type="submit" 
-                        className="btn btn-primary btn-block"
-                    >
-                        Sign Up
-                    </button>      
+                        <button 
+                            type="submit" 
+                            className="btn btn-primary btn-block"
+                        >
+                            Sign Up
+                        </button>      
                     </div>
 
                     <div className="mb-3 text-center">
-                    <p className="">Not sure? Check out <Link to="/example" className="">my CV!</Link></p>
-                    <p className="">Already have an account? <Link to="/login" className="">Log In Here!</Link></p>
+                        <p className="">Not sure? Check out <Link to="/example" className="">my CV!</Link></p>
+                        <p className="">Already have an account? <Link to="/login" className="">Log In Here!</Link></p>
                     </div>
+                    
                 </form>
                 {loading && <Loading progress={progress} />}
                 </div>

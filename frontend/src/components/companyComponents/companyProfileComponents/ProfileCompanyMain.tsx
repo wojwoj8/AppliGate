@@ -3,7 +3,7 @@ import axios from 'axios';
 import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
 import { ProfileCompanyMainData } from '../ProfileCompany';
-import { MultipleErrorResponse } from '../ProfileCompany';
+import { MultipleErrorResponse } from '../../Profile';
 import { GetDataFunction } from '../ProfileCompany';
 import { EditDataFunction } from '../ProfileCompany';
 import AuthContext from '../../../utils/AuthProvider';

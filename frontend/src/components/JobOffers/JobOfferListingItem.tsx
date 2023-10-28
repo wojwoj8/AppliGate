@@ -1,6 +1,6 @@
-import { JobOfferInterface } from "./JobOfferListing";
+import { JobOfferListingData } from "./JobOfferListing";
 interface JobOfferListingItemProps {
-    jobOffer: JobOfferInterface;
+    jobOffer: JobOfferListingData;
   }
   
   const JobOfferListingItem: React.FC<JobOfferListingItemProps> = ({ jobOffer }) => {

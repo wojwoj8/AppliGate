@@ -47,6 +47,8 @@ class ProfileCompanySerializer(serializers.ModelSerializer):
             ] = None  # Set it to None to represent the default image
         return super().to_internal_value(data)
     
+
+
 class JobListingsSerializer(serializers.ModelSerializer):
     profile_image = serializers.ImageField(source='company.profile_image')
     first_name = serializers.CharField(source='company.first_name')

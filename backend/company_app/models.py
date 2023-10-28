@@ -12,6 +12,7 @@ class CompanyProfileMain(models.Model):
 
 # For job offer part
 class JobOffer(models.Model):
+    # only company user can create joboffer
     company = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'user_type': 'company'})
     title = models.CharField(max_length=100)
     job_description = models.TextField()
@@ -35,6 +36,9 @@ class JobOffer(models.Model):
     application_process = models.TextField() 
     job_benefits = models.TextField() 
     job_additional_information = models.TextField() 
+
+    def __str__(self):
+        return f"Company: {self.company} Position: {self.title} "
 
 
 # Multiple

@@ -118,6 +118,9 @@ const Navbar: React.FC = () =>{
                     <li className="dropdown-item" data-bs-dismiss="offcanvas">
                       <Link to='/company/jobofferlistings' className="nav-link" aria-current="page">Job Offer Listings</Link>
                     </li>
+                    <li className="dropdown-item" data-bs-dismiss="offcanvas">
+                      <Link to='/company/myJobOffers' className="nav-link" aria-current="page">My Job Offers</Link>
+                    </li>
                     
                   </ul>
                 </li>

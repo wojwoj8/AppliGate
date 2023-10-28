@@ -5,6 +5,8 @@ import AuthContext from '../../utils/AuthProvider';
 
 import ProfileAlert from '../profileComponents/ProfileAlert';
 import ErrorPage from '../ErrorPage';
+import { ErrorResponse } from '../Profile';
+import { MultipleErrorResponse } from '../Profile';
 import Loading from '../Loading';
 import ProfileCompanyMain from './companyProfileComponents/ProfileCompanyMain';
 import ProfileCompanyStatus from './companyProfileComponents/ProfileCompanyStatus';
@@ -82,18 +84,8 @@ export interface ProfileCompanyMainData{
   export interface ProfileStatusData{
     public_profile: boolean;
   }
-  // for axios errors
-  export interface ErrorResponse{
-  
-      [key: string]: string[];
-  }
-  export interface MultipleErrorResponse {
-    [key: string]: {
-      [key: number]: {
-        [key: string]: string[];
-      };
-    };
-  }
+
+
   
   // SIMPLIFICATION OF MY GetDataFunction TYPE BECAUSE OF ERROR
   type UpdateFunction<T> = React.Dispatch<React.SetStateAction<T | null>>;

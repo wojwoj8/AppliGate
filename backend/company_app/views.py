@@ -13,6 +13,7 @@ from user_app.models import (
 )
 from .serializer import (
     ProfileCompanySerializer,
+    JobListingsSerializer,
 
 )
 from user_app.views import (
@@ -29,10 +30,11 @@ from datetime import datetime
 from rest_framework.generics import get_object_or_404
 import os
 from .models import JobOffer
-from .serializer import JobListingsSerializer
+
 
 
 class ProfileCompanyView(BaseProfileUpdateView):
+    permission_classes = [IsAuthenticated]
     serializer_class = ProfileCompanySerializer
     queryset = User.objects.all()
 
@@ -45,3 +47,15 @@ class JobOfferListing(generics.ListAPIView):
         queryset = self.get_queryset()  # You can also remove this line since queryset is defined
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
+
+class MyJobOffersListing(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = JobListingsSerializer
+
+    def get(self, request, *args, **kwargs):
+        queryset = JobOffer.objects.filter(company=self.request.user)
+        job_offers = list(queryset)  # Convert the queryset to a list of instances
+        print(job_offers)
+        serializer = self.serializer_class(job_offers, many=True)
+        return Response(serializer.data)
+

@@ -5,26 +5,14 @@ import { Link } from 'react-router-dom';
 import Loading from '../Loading';
 import AuthContext from '../../utils/AuthProvider';
 import ErrorPage from '../ErrorPage';
+
+
 import { ErrorResponse } from '../Profile';
 
-export interface JobOfferListingData {
-  id: number;
-  profile_image: string;
-  first_name: string;
-  background_image: string;
-  title: string;
-  job_location: string;
-  salary_min: string;
-  salary_max: string;
-  salary_description: string;
-  job_description: string;
-  salary_currency: string;
-  job_published_at: string;
-  job_application_deadline: string;
-  job_type: string;
-}
 
-const JobOfferListing: React.FC = () => {
+import { JobOfferListingData } from './JobOfferListing';
+
+const MyJobOffers: React.FC = () => {
   const [jobOffers, setJobOffers] = useState<JobOfferListingData[]>([]);
 
   // for loading
@@ -32,35 +20,40 @@ const JobOfferListing: React.FC = () => {
   const [progress, setProgress] = useState(0);
 
   // Authtoken for CRUD and user for username and logout
-  const { logoutUser } = useContext(AuthContext);
+  const { authTokens, user, logoutUser } = useContext(AuthContext);
 
    // Axios error for error component
    const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null)
-
   // Fetch job offer data from the backend
   const fetchJobOffers = async () => {
     try {
-      const response = await axios.get('/company/jobofferlistings');
-      setJobOffers(response.data);
-      if(response.status === 200){
+      const response = await axios.get(`/company/myJobOffers`,{
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + String(authTokens.access),
+          },
       }
-  }catch(error: any){
-      const axiosError = error as AxiosError<ErrorResponse>;
-      if (error.response && error.response.status === 401) {
-          // Unauthorized - Logout the user
-          logoutUser();
-        }
-      else if (error.response && (error.response.status !== 400)) {
-          setError(axiosError)
-          
-      } 
-      else {
-          
-          console.error('Error fetching data:', error);
-          console.log(axiosError)
-          setError(axiosError);
-        }
-  }
+      );
+      setJobOffers(response.data);
+     if(response.status === 200){
+    }
+}catch(error: any){
+    const axiosError = error as AxiosError<ErrorResponse>;
+    if (error.response && error.response.status === 401) {
+        // Unauthorized - Logout the user
+        logoutUser();
+      }
+    else if (error.response && (error.response.status !== 400)) {
+        setError(axiosError)
+        
+    } 
+    else {
+        
+        console.error('Error fetching data:', error);
+        console.log(axiosError)
+        setError(axiosError);
+      }
+}
   };
   useEffect(() => {
     const fetchData = async () =>{
@@ -82,7 +75,7 @@ const JobOfferListing: React.FC = () => {
   return (
     <div className='container-fluid'>
         
-      <h1>ALL JOB OFFERS LISTING</h1>
+      <h1>My JOB OFFERS </h1>
       <ul>
         {jobOffers.map((jobOffer) => (
             <Link to={`/company/joboffer/${jobOffer.id}`} key={jobOffer.id} style={{textDecoration:"none"}}>
@@ -95,4 +88,4 @@ const JobOfferListing: React.FC = () => {
   );
 };
 
-export default JobOfferListing;
+export default MyJobOffers;

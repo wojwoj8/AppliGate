@@ -1,5 +1,6 @@
 $primary: #10B981;
 $form-file-button-hover-bg: $primary;
+$enable-negative-margins: true;
 @import "../node_modules/bootstrap/scss/functions";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 @import "../node_modules/bootstrap/scss/variables";
@@ -136,4 +137,15 @@ textarea{
         font-size: 2rem !important;
         font-weight: bold;
     }
+}
+
+
+
+
+//JOB OFFER
+.jo-background-image{
+    min-height: 400px;
+    width: 100%;
+    border-radius: 0 0 20% 20%;
+    background: center top/cover no-repeat;
 }

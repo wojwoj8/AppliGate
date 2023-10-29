@@ -3,6 +3,8 @@ import { JobOfferListingData } from "./JobOfferListing";
 import React, { useState, useEffect, useContext } from 'react';
 import axios, { AxiosError } from 'axios';
 import { Link, useParams } from 'react-router-dom';
+import Icon from '@mdi/react';
+import { mdiPencil } from '@mdi/js';
 import Loading from '../Loading';
 import AuthContext from '../../utils/AuthProvider';
 import ErrorPage from '../ErrorPage';
@@ -122,17 +124,29 @@ const JobOffer: React.FC = () =>{
     return(
         <>
             <div>
-                <h1>JOB OFFER</h1>
-                {id ? (<div className='row justify-content-center '>
-                    <div>
-                        <img src={jobOfferCompany?.background_image} className="img-img-fluid" alt="companyBackground"></img>
-                        </div>
-                    
-                        <img src={jobOfferCompany?.profile_image} alt="logo" style={{height: "200px", width:"200px"}}></img>
+                {/* <h1>JOB OFFER</h1> */}
+                {id ? (
+                
+                    <div className='justify-content-center'>
+                        <div className="jo-background-image z-0 " style={{backgroundImage: `url(${jobOfferCompany?.background_image})`}}>
+                    </div>
                         
-                        <p>{jobOfferCompany?.first_name}</p>
-                        <p>{jobOfferCompany?.country}</p>
-                        <p>{jobOfferCompany?.city}</p>
+                    <div className="container shadow-lg bg-body-bg rounded-2 text-break mt-n5 z-1" id="page">
+                        <div className='bg-black row mb-0 rounded-top-2'>
+                            <p className='fs-3 fw-semibold text-white col mb-1'></p>
+                            <div className='col-auto d-flex align-items-center previewHidden'>
+                                <div className='profile-svgs d-flex my-1'>
+                                {/* <div className='profile-svgs d-flex my-1' onClick={editProfile}> */}
+                                    <Icon className='text-white' path={mdiPencil} size={1.25} />
+                                </div>
+                            </div>
+                        </div>
+                            <img src={jobOfferCompany?.profile_image} alt="logo" style={{height: "150px", width:"150px"}}></img>
+                            
+                            <p>{jobOfferCompany?.first_name}</p>
+                            <p>{jobOfferCompany?.country}</p>
+                            <p>{jobOfferCompany?.city}</p>
+                        </div>
                     </div>
                 
                 ) :

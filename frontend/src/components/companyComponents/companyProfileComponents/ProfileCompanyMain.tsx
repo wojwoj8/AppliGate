@@ -187,7 +187,8 @@ setPersonal, setAlertError, alertError, username}) => {
                         </div>
                     </div>
                     <div className='row justify-content-center '>
-                        <img src={`${personal?.background_image}?${Date.now()}`} className="img-fluid" style={{height: "200px"}}  alt="background_img"/>
+                        <div className="jo-background-image" style={{backgroundImage: `url(${personal?.background_image}?${Date.now()}`}}/>
+                        {/* <img src={`${personal?.background_image}?${Date.now()}`} className="img-fluid" style={{height: "200px"}}  alt="background_img"/> */}
                         <div className='prevHidden row'>
                                         <div className="mb-1 text-center d-flex justify-content-center">
                                             <input 

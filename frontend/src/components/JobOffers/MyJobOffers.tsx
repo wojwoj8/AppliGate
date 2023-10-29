@@ -20,7 +20,7 @@ const MyJobOffers: React.FC = () => {
   const [progress, setProgress] = useState(0);
 
   // Authtoken for CRUD and user for username and logout
-  const { authTokens, user, logoutUser } = useContext(AuthContext);
+  const { authTokens, logoutUser } = useContext(AuthContext);
 
    // Axios error for error component
    const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null)
@@ -76,13 +76,19 @@ const MyJobOffers: React.FC = () => {
     <div className='container-fluid'>
         
       <h1>My JOB OFFERS </h1>
-      <ul>
+      {jobOffers[0] ? (<ul>
         {jobOffers.map((jobOffer) => (
             <Link to={`/company/joboffer/${jobOffer.id}`} key={jobOffer.id} style={{textDecoration:"none"}}>
                 <JobOfferListingItem  jobOffer={jobOffer} />
             </Link>
         ))}
-      </ul>
+      </ul>)
+      : (
+        <div>
+            <h2>You don't have any listed Job Offers</h2>
+        </div>
+      )}
+      
 
     </div>
   );

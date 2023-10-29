@@ -39,7 +39,8 @@ class ProfileCompanyView(BaseProfileUpdateView):
     queryset = User.objects.all()
 
 
-class JobOfferListing(generics.ListAPIView):
+class JobOfferListingView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = JobOffer.objects.all()  # Define the queryset here
     serializer_class = JobListingsSerializer
 
@@ -48,7 +49,7 @@ class JobOfferListing(generics.ListAPIView):
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
-class MyJobOffersListing(generics.ListAPIView):
+class MyJobOffersListingView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = JobListingsSerializer
 
@@ -59,3 +60,33 @@ class MyJobOffersListing(generics.ListAPIView):
         serializer = self.serializer_class(job_offers, many=True)
         return Response(serializer.data)
 
+# class JobOfferSkills(generics.ListAPIView):
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = JobListingsSerializer
+
+#     def get(self, request, *args, **kwargs):
+#         queryset = JobOffer.objects.filter(company=self.request.user)
+#         job_offers = list(queryset)  # Convert the queryset to a list of instances
+#         print(job_offers)
+#         serializer = self.serializer_class(job_offers, many=True)
+#         return Response(serializer.data)
+
+
+
+class JobOfferView(
+    generics.GenericAPIView,
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+):
+    permission_classes = [IsAuthenticated]
+    serializer_class = None
+
+    def get(self, request, *args, **kwargs):
+        id = self.kwargs.get("id")
+        offer = get_object_or_404(JobOffer, id=id)
+        print(offer)
+        
+        serializer = JobListingsSerializer(offer, many=False)
+        return Response(serializer.data)

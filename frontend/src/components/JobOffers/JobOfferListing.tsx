@@ -32,7 +32,7 @@ const JobOfferListing: React.FC = () => {
   const [progress, setProgress] = useState(0);
 
   // Authtoken for CRUD and user for username and logout
-  const { logoutUser } = useContext(AuthContext);
+  const { logoutUser, authTokens } = useContext(AuthContext);
 
    // Axios error for error component
    const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null)
@@ -40,7 +40,12 @@ const JobOfferListing: React.FC = () => {
   // Fetch job offer data from the backend
   const fetchJobOffers = async () => {
     try {
-      const response = await axios.get('/company/jobofferlistings');
+      const response = await axios.get('/company/jobofferlistings',{
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + String(authTokens.access),
+          },
+      });
       setJobOffers(response.data);
       if(response.status === 200){
       }

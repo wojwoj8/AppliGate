@@ -7,6 +7,20 @@ import Loading from '../Loading';
 import AuthContext from '../../utils/AuthProvider';
 import ErrorPage from '../ErrorPage';
 
+// make mulitple interfaces for easier crud
+// should make one for immutable company data
+interface JobOfferCompanyData {
+    first_name: string;
+    // last_name: string;
+    // date_of_birth: string;
+    country: string;
+    city: string;
+    // current_position: string;
+    profile_image: string;
+    background_image: string;   
+}
+
+
 
 interface JobOfferData {
     company: string;
@@ -39,7 +53,8 @@ interface JobOfferData {
 const JobOffer: React.FC = () =>{
     const { id } = useParams();
 
-    const [jobOffers, setJobOffers] = useState<JobOfferListingData[]>([]);
+    const [jobOfferCompany, setJobOfferCompany] = useState<JobOfferCompanyData>();
+    const [jobOffers, setJobOffers] = useState<JobOfferListingData>();
     
     // for loading
     const [isLoading, setIsLoading] = useState(true);
@@ -53,14 +68,18 @@ const JobOffer: React.FC = () =>{
     
     // Fetch job offer data from the backend
     const fetchJobOffer = async () => {
+        let path = `/company/joboffer`
+        if (id){  
+        path = `/company/joboffer/${id}`
+      }
         try {
-        const response = await axios.get(`/company/joboffer/${id}`,{
+        const response = await axios.get(path,{
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + String(authTokens.access),
             },
         });
-        setJobOffers(response.data);
+        setJobOfferCompany(response.data);
         if(response.status === 200){
         }
     }catch(error: any){
@@ -101,9 +120,30 @@ const JobOffer: React.FC = () =>{
    
     // Job offer - will work as creator and view
     return(
-        <div>
-            <h1>JOB OFFER</h1>
-        </div>
+        <>
+            <div>
+                <h1>JOB OFFER</h1>
+                {id ? (<div className='row justify-content-center '>
+                    <div>
+                        <img src={jobOfferCompany?.background_image} className="img-img-fluid" alt="companyBackground"></img>
+                        </div>
+                    
+                        <img src={jobOfferCompany?.profile_image} alt="logo" style={{height: "200px", width:"200px"}}></img>
+                        
+                        <p>{jobOfferCompany?.first_name}</p>
+                        <p>{jobOfferCompany?.country}</p>
+                        <p>{jobOfferCompany?.city}</p>
+                    </div>
+                
+                ) :
+                (
+                    <div>
+                        <h2>Creator view</h2>
+                    </div>
+                ) }
+                
+            </div>
+        </>
     )
 }
 export default JobOffer;

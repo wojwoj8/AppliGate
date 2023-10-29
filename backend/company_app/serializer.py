@@ -73,3 +73,22 @@ class JobListingsSerializer(serializers.ModelSerializer):
             "job_application_deadline",
             "id",
         ]
+
+# company data serializer (immutable for joboffer)
+class JobOfferCompanySerializer(serializers.ModelSerializer):
+    profile_image = serializers.ImageField(source='company.profile_image')
+    first_name = serializers.CharField(source='company.first_name')
+    country = serializers.CharField(source='company.country')
+    city = serializers.CharField(source='company.city')
+    background_image = serializers.ImageField(source='company.background_image')
+    
+
+    class Meta:
+        model = JobOffer
+        fields = [
+            "profile_image",
+            "first_name",
+            "background_image",
+            "country",
+            "city",
+        ]

@@ -51,7 +51,8 @@ class User(AbstractUser):
         default='user',
     )
 
-
+    def __str__(self):
+        return f"{self.user_type, self.username}"
 
 # Multiple
 class UserExperience(models.Model):

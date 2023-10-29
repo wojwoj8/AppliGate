@@ -14,6 +14,7 @@ from user_app.models import (
 from .serializer import (
     ProfileCompanySerializer,
     JobListingsSerializer,
+    JobOfferCompanySerializer,
 
 )
 from user_app.views import (
@@ -88,5 +89,5 @@ class JobOfferView(
         offer = get_object_or_404(JobOffer, id=id)
         print(offer)
         
-        serializer = JobListingsSerializer(offer, many=False)
+        serializer = JobOfferCompanySerializer(offer, many=False)
         return Response(serializer.data)

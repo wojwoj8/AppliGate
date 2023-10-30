@@ -318,7 +318,7 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
             
 
     def get(self, request, *args, **kwargs):
-        # print(request.__dict__)
+        print(request.__dict__)
         if(self.check_user_type_permission(request) == False):
             return Response(status=status.HTTP_404_NOT_FOUND)
         self.check_username_profile()
@@ -327,7 +327,7 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
 
         if username:
             user = get_object_or_404(User, username=username)
-            # print(user)
+            print(user)
 
             serializer = self.serializer_class(user, many=False)
             return Response(serializer.data)

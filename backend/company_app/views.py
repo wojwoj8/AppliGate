@@ -15,6 +15,7 @@ from .serializer import (
     ProfileCompanySerializer,
     JobListingsSerializer,
     JobOfferCompanySerializer,
+    JobOfferTopSerializer,
 
 )
 from user_app.views import (
@@ -74,7 +75,25 @@ class MyJobOffersListingView(generics.ListAPIView):
 
 
 
-class JobOfferView(
+# class JobOfferView(
+#     generics.GenericAPIView,
+#     mixins.ListModelMixin,
+#     mixins.CreateModelMixin,
+#     mixins.UpdateModelMixin,
+#     mixins.DestroyModelMixin,
+# ):
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = None
+
+#     def get(self, request, *args, **kwargs):
+#         id = self.kwargs.get("id")
+#         offer = get_object_or_404(JobOffer, id=id)
+#         print(offer)
+        
+#         serializer = JobOfferCompanySerializer(offer, many=False)
+#         return Response(serializer.data)
+    
+class BaseJobOfferView(
     generics.GenericAPIView,
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
@@ -83,11 +102,27 @@ class JobOfferView(
 ):
     permission_classes = [IsAuthenticated]
     serializer_class = None
+    queryset = None
 
     def get(self, request, *args, **kwargs):
         id = self.kwargs.get("id")
-        offer = get_object_or_404(JobOffer, id=id)
-        print(offer)
-        
-        serializer = JobOfferCompanySerializer(offer, many=False)
+        offer = self.get_object(id)
+        serializer = self.get_serializer(offer)
         return Response(serializer.data)
+
+    def get_object(self, id):
+        return get_object_or_404(self.queryset, id=id)
+
+    def get_serializer(self, instance):
+        if self.serializer_class:
+            return self.serializer_class(instance, many=False)
+        raise NotImplementedError("Serializer class is not defined.")
+    
+class JobOfferCompanyView(BaseJobOfferView):
+    serializer_class = JobOfferCompanySerializer
+    queryset = JobOffer.objects.all()
+
+class JobOfferTopView(BaseJobOfferView):
+    serializer_class = JobOfferTopSerializer
+    queryset = JobOffer.objects.all()
+    

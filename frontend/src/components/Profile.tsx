@@ -274,6 +274,7 @@ const Profile: React.FC = () =>{
                 setData(response.data);
               }
             const data = response.data;
+            // console.log(data)
 
             if(response.status === 200){
             }

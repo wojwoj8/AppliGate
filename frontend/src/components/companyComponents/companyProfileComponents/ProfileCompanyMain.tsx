@@ -4,8 +4,8 @@ import Icon from '@mdi/react';
 import { mdiPencil } from '@mdi/js';
 import { ProfileCompanyMainData } from '../ProfileCompany';
 import { MultipleErrorResponse } from '../../Profile';
-import { GetDataFunction } from '../ProfileCompany';
-import { EditDataFunction } from '../ProfileCompany';
+import { GetCompanyDataFunction } from '../ProfileCompany';
+import { EditCompanyDataFunction } from '../ProfileCompany';
 import AuthContext from '../../../utils/AuthProvider';
 
 import ProfileDeleteModal from '../../profileComponents/ProfileDeleteModal';
@@ -15,12 +15,12 @@ import ProfileDeleteModal from '../../profileComponents/ProfileDeleteModal';
 interface ProfilePersonalProps {
     personal: ProfileCompanyMainData | null;
     setPersonal: React.Dispatch<React.SetStateAction<ProfileCompanyMainData | null>>;
-    editData: (state: EditDataFunction, 
+    editData: (state: EditCompanyDataFunction, 
         editField: React.Dispatch<React.SetStateAction<boolean>>, 
         endpoint: string, errorField: string, index?: number
         ) => Promise<void>;
     getData: (
-        setData: GetDataFunction,
+        setData: GetCompanyDataFunction,
         endpoint: string
         ) => void;
     setEditPersonal: React.Dispatch<React.SetStateAction<boolean>>;

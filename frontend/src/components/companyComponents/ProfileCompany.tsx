@@ -91,7 +91,7 @@ export interface ProfileCompanyMainData{
   type UpdateFunction<T> = React.Dispatch<React.SetStateAction<T | null>>;
   type ArrayUpdateFunction<T> = React.Dispatch<React.SetStateAction<T[]>>;
   
-  export type GetDataFunction =
+  export type GetCompanyDataFunction =
     | UpdateFunction<ProfileCompanyMainData>
     | UpdateFunction<ContactData>
     | ArrayUpdateFunction<ExperienceData>
@@ -106,7 +106,7 @@ export interface ProfileCompanyMainData{
     | undefined;
   
   //UNIVERSAL PUT STATES
-  export type EditDataFunction = 
+  export type EditCompanyDataFunction = 
     ProfileCompanyMainData | null |
     ContactData | null |
     ExperienceData | null |
@@ -126,7 +126,7 @@ export interface ProfileCompanyMainData{
     ProfileStatusData | null |
     undefined;
   
-  export type EditMultipleDataFunction = 
+  export type EditMultipleCompanyDataFunction = 
     ExperienceData[] |
     EducationData[] |
     CourseData[] |
@@ -240,7 +240,7 @@ export interface ProfileCompanyMainData{
       // endpoint: endpoint
       // id: optional id of item in db
       const getData = async (
-        setData: GetDataFunction,
+        setData: GetCompanyDataFunction,
         endpoint: string,
         id?: number,
       ) => {
@@ -259,6 +259,8 @@ export interface ProfileCompanyMainData{
                   setData(response.data);
                 }
               const data = response.data;
+              console.log(data)
+              // console.log(username)
   
               if(response.status === 200){
               }
@@ -292,7 +294,7 @@ export interface ProfileCompanyMainData{
       // index: index of given object in state array, default 0
   
       const editData = async (
-        state: EditDataFunction,
+        state: EditCompanyDataFunction,
         editField: React.Dispatch<React.SetStateAction<boolean>> | undefined,
         endpoint: string,
         errorField: string,
@@ -341,9 +343,9 @@ export interface ProfileCompanyMainData{
       // index: index of given object in state array, default 0
   
       const sendMultipleData = async (
-        state: EditDataFunction,
+        state: EditCompanyDataFunction,
         editField: React.Dispatch<React.SetStateAction<boolean>>,
-        setData: GetDataFunction,
+        setData: GetCompanyDataFunction,
         cleanState: (() => void) | null = null,
         endpoint: string,
         errorField: string,
@@ -392,9 +394,9 @@ export interface ProfileCompanyMainData{
       // id: id in database of given object
       
       const editMultipleData = async (
-          state: EditMultipleDataFunction,
+          state: EditMultipleCompanyDataFunction,
           editField: React.Dispatch<React.SetStateAction<boolean[]>>,
-          setData: GetDataFunction,
+          setData: GetCompanyDataFunction,
           endpoint: string,
           errorField: string,
           index: number,
@@ -455,7 +457,7 @@ export interface ProfileCompanyMainData{
       // id - item id for endpoint and clearing
       const deleteData = async (
           editField: React.Dispatch<React.SetStateAction<boolean[]>> | undefined,
-          setData: GetDataFunction,
+          setData: GetCompanyDataFunction,
           endpoint: string,
           id: number
         ) =>{
@@ -582,13 +584,16 @@ export interface ProfileCompanyMainData{
       setAlertError('Profile link coppied successfully');
     };
   
+    const sleep = (milliseconds: any) => {
+      return new Promise((resolve) => setTimeout(resolve, milliseconds));
+    };
     // For fetching data
     useEffect(() => {
       const fetchData = async () => {
         setError(null);
         setIsLoading(true);
   
-        const steps = 11; // Total number of steps for loading bar
+        const steps = 2; // Total number of steps for loading bar
         let completedSteps = 0;
   
         const updateProgress = (completedSteps: number) => {
@@ -597,13 +602,16 @@ export interface ProfileCompanyMainData{
           setProgress(newProgress);
         };
   
-        const fetchDataAndUpdateProgress = async (setter: GetDataFunction, endpoint: string) => {
+        const fetchDataAndUpdateProgress = async (setter: GetCompanyDataFunction, endpoint: string) => {
           await getData(setter, endpoint);
           completedSteps++;
           updateProgress(completedSteps);
         };
-    
+        const sleepTime = 1000;
+        // console.log(await fetchDataAndUpdateProgress(setProfileMain, `/company/profile`))
+        // await sleep(sleepTime);
         await fetchDataAndUpdateProgress(setProfileMain, `/company/profile`);
+        
         // await fetchDataAndUpdateProgress(setContact, `/profile/contact`);
         // await fetchDataAndUpdateProgress(setSummary, `/profile/summary`);
         // await fetchDataAndUpdateProgress(setExperience, `/profile/experience`);

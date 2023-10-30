@@ -73,6 +73,7 @@ export type GetDataFunction =
 export type JobOfferEditDataFunction = 
     JobOfferCompanyData | null |
     JobOfferTopData | null |
+    
     undefined;
 // multiple data
 // export type JobOfferEditMultipleDataFunction = 
@@ -90,9 +91,14 @@ const initialMultipleErrors: MultipleErrorResponse = {
   
     
 const JobOffer: React.FC = () =>{
-    const { id } = useParams();
+    const params = useParams();
+    const id = params['id'];
+    console.log(id)
 
     const [jobOfferCompany, setJobOfferCompany] = useState<JobOfferCompanyData| null>(null);
+    const [jobOfferTop, setJobOfferTop] = useState<JobOfferTopData| null>(null);
+
+    
     const [jobOffers, setJobOffers] = useState<JobOfferListingData| null>(null);
     
     // for loading
@@ -147,9 +153,11 @@ const JobOffer: React.FC = () =>{
         id?: number,
       ) => {
         let path = `${endpoint}`
-        if (id){  
+        if (id && id !== undefined){  
           path = `${endpoint}/${id}`
+          console.log(`${id}`)
         }
+        
           try{
               const response = await axios.get(path, {
                   headers: {
@@ -161,7 +169,7 @@ const JobOffer: React.FC = () =>{
                   setData(response.data);
                 }
               const data = response.data;
-  
+                console.log(data)
               if(response.status === 200){
               }
           }catch(error: any){
@@ -205,8 +213,13 @@ const JobOffer: React.FC = () =>{
         completedSteps++;
         updateProgress(completedSteps);
       };
-  
-      await fetchDataAndUpdateProgress(setJobOfferCompany, `/company/joboffer/${id}`);
+      console.log(`test, id:${id}`)
+      if (id){
+        await fetchDataAndUpdateProgress(setJobOfferCompany, `/company/joboffer/${id}`);
+        await fetchDataAndUpdateProgress(setJobOfferTop, `/company/joboffer/top/${id}`);
+      }
+      
+      
       
      
       
@@ -216,7 +229,7 @@ const JobOffer: React.FC = () =>{
     };
     fetchData(); // Execute the data fetching function
     
-  }, [id]);
+  }, []);
     
     if (isLoading) {
         return <Loading progress={progress} />

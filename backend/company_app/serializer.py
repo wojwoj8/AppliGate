@@ -92,3 +92,16 @@ class JobOfferCompanySerializer(serializers.ModelSerializer):
             "country",
             "city",
         ]
+
+class JobOfferTopSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = JobOffer
+        fields = [
+            "title",
+            "salary_min",
+            "salary_max",
+            "salary_currency",
+            "salary_description",
+            
+        ]

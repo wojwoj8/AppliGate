@@ -1,5 +1,5 @@
-import { GetDataFunction } from "../ProfileCompany";
-import { EditDataFunction } from "../ProfileCompany";
+import { GetCompanyDataFunction } from "../ProfileCompany";
+import { EditCompanyDataFunction } from "../ProfileCompany";
 import { ProfileStatusData } from "../ProfileCompany";
 
 
@@ -7,10 +7,10 @@ interface ProfileCompanyStatusInterface{
     profileStatus: ProfileStatusData | null;
     setProfileStatus: React.Dispatch<React.SetStateAction<ProfileStatusData | null>>;
     getData: (
-        setData: GetDataFunction,
+        setData: GetCompanyDataFunction,
         endpoint: string
         ) => void;
-    editData: (state: EditDataFunction, 
+    editData: (state: EditCompanyDataFunction, 
         editField: React.Dispatch<React.SetStateAction<boolean>> | undefined, 
         endpoint: string, errorField: string, index?: number
         ) => Promise<void>;

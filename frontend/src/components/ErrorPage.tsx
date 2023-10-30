@@ -1,6 +1,7 @@
 import { ErrorResponse } from "./Profile";
 import { AxiosError } from "axios";
 
+
 interface ErrorProps{
 
     axiosError: AxiosError<ErrorResponse, any>

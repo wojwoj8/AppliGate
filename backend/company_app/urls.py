@@ -32,7 +32,7 @@ urlpatterns = [
     path("company/profile/<str:username>/", views.ProfileCompanyView.as_view(), name="personalCompany"),
     # path("company/profile/<str:username>/", ProfileStatusView.as_view(), name="profileStatusView"),
     path("company/jobofferlistings", views.JobOfferListingView.as_view(), name="jobOfferListing"),
-    path("company/joboffer", views.JobOfferListingView.as_view(), name="jobOffer"),
+    # path("company/joboffer", views.JobOfferListingView.as_view(), name="jobOffer"),
     path("company/joboffer/<int:id>", views.JobOfferCompanyView.as_view(), name="jobOfferCompanyData"),
     path("company/joboffer/top/<int:id>", views.JobOfferTopView.as_view(), name="JobOfferTopData"),
     

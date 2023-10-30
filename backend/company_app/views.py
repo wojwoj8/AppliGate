@@ -36,7 +36,7 @@ from .models import JobOffer
 
 
 class ProfileCompanyView(BaseProfileUpdateView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     serializer_class = ProfileCompanySerializer
     queryset = User.objects.all()
 

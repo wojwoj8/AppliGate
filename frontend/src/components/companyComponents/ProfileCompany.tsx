@@ -584,9 +584,6 @@ export interface ProfileCompanyMainData{
       setAlertError('Profile link coppied successfully');
     };
   
-    const sleep = (milliseconds: any) => {
-      return new Promise((resolve) => setTimeout(resolve, milliseconds));
-    };
     // For fetching data
     useEffect(() => {
       const fetchData = async () => {
@@ -607,10 +604,10 @@ export interface ProfileCompanyMainData{
           completedSteps++;
           updateProgress(completedSteps);
         };
-        const sleepTime = 1000;
+        
         // console.log(await fetchDataAndUpdateProgress(setProfileMain, `/company/profile`))
         // await sleep(sleepTime);
-        await fetchDataAndUpdateProgress(setProfileMain, `/company/profile`);
+        await fetchDataAndUpdateProgress(setProfileMain, `/company/profile/`);
         
         // await fetchDataAndUpdateProgress(setContact, `/profile/contact`);
         // await fetchDataAndUpdateProgress(setSummary, `/profile/summary`);

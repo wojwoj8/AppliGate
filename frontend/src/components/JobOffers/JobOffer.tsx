@@ -199,7 +199,7 @@ const JobOffer: React.FC = () =>{
       setError(null);
       setIsLoading(true);
 
-      const steps = 11; // Total number of steps for loading bar
+      const steps = 2; // Total number of steps for loading bar
       let completedSteps = 0;
 
       const updateProgress = (completedSteps: number) => {
@@ -219,17 +219,12 @@ const JobOffer: React.FC = () =>{
         await fetchDataAndUpdateProgress(setJobOfferTop, `/company/joboffer/top/${id}`);
       }
       
-      
-      
-     
-      
-      
       setIsLoading(false);
       
     };
     fetchData(); // Execute the data fetching function
     
-  }, []);
+  }, [id]);
     
     if (isLoading) {
         return <Loading progress={progress} />

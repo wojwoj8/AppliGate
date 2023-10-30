@@ -22,7 +22,13 @@ interface JobOfferCompanyData {
     background_image: string;   
 }
 
-
+interface JobOfferTopData {
+    title: string;
+    salary_min: number;
+    salary_max: number;
+    salary_description: string;
+    salary_currency: string;
+}
 
 interface JobOfferData {
     company: string;
@@ -45,18 +51,49 @@ interface JobOfferData {
     skills: string[];
   }
   
-  interface JobOfferSkillData {
+interface JobOfferSkillData {
     id: number;
     skill: string;
   }
 
+// SIMPLIFICATION OF MY GetDataFunction TYPE BECAUSE OF ERROR
+//one data
+type UpdateFunction<T> = React.Dispatch<React.SetStateAction<T | null>>;
+//array of data
+type ArrayUpdateFunction<T> = React.Dispatch<React.SetStateAction<T[]>>;
+
+
+export type GetDataFunction =
+  | UpdateFunction<JobOfferCompanyData>
+  | UpdateFunction<JobOfferTopData>
+//   | ArrayUpdateFunction<ExperienceData>
+  | undefined;
+  //UNIVERSAL PUT STATES
+  //single data
+export type JobOfferEditDataFunction = 
+    JobOfferCompanyData | null |
+    JobOfferTopData | null |
+    undefined;
+// multiple data
+// export type JobOfferEditMultipleDataFunction = 
+//     ExperienceData[] |
+//     EducationData[] |
+//     CourseData[] |
+//     LanguageData[] |
+//     LinkData[] |
+//     SkillData[] 
+//     ;
+const initialMultipleErrors: MultipleErrorResponse = {
+    salary: {},
+  };
 
   
+    
 const JobOffer: React.FC = () =>{
     const { id } = useParams();
 
-    const [jobOfferCompany, setJobOfferCompany] = useState<JobOfferCompanyData>();
-    const [jobOffers, setJobOffers] = useState<JobOfferListingData>();
+    const [jobOfferCompany, setJobOfferCompany] = useState<JobOfferCompanyData| null>(null);
+    const [jobOffers, setJobOffers] = useState<JobOfferListingData| null>(null);
     
     // for loading
     const [isLoading, setIsLoading] = useState(true);
@@ -65,53 +102,121 @@ const JobOffer: React.FC = () =>{
     // Authtoken for CRUD and user for username and logout
     const { logoutUser, authTokens } = useContext(AuthContext);
     
-        // Axios error for error component
-        const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null)
-    
-    // Fetch job offer data from the backend
-    const fetchJobOffer = async () => {
-        let path = `/company/joboffer`
+    // Axios error for error component
+    const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null)
+
+
+
+    // Universal method for rendering errors under given inputs, gets
+    // field: key of error section like language
+    // index of given item in state array like language[1]
+    // errorKey: input field name
+    // my array of errors
+
+
+    const renderFieldErrorMultiple = (
+        field: string, 
+        index: number, 
+        errorKey: string, 
+        error: MultipleErrorResponse | undefined) => {
+        if (error && error[field] && typeof error[field][index] === "object" && 
+        error[field][index].hasOwnProperty(errorKey)) {
+          const messages = error[field][index][errorKey];
+          return (
+            <div>
+              {messages.map((message, i) => (
+                <span key={i} className="text-danger">
+                  {message}
+                </span>
+              ))}
+            </div>
+          );
+        }
+        return null;
+      };
+
+
+    // Universal get
+    // setData: setter for my state
+    // endpoint: endpoint
+    // id: optional id of item in db
+
+    const getData = async (
+        setData: GetDataFunction,
+        endpoint: string,
+        id?: number,
+      ) => {
+        let path = `${endpoint}`
         if (id){  
-        path = `/company/joboffer/${id}`
-      }
-        try {
-        const response = await axios.get(path,{
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + String(authTokens.access),
-            },
-        });
-        setJobOfferCompany(response.data);
-        if(response.status === 200){
+          path = `${endpoint}/${id}`
         }
-    }catch(error: any){
-        const axiosError = error as AxiosError<ErrorResponse>;
-        if (error.response && error.response.status === 401) {
-            // Unauthorized - Logout the user
-            logoutUser();
-            }
-        else if (error.response && (error.response.status !== 400)) {
-            setError(axiosError)
-            
-        } 
-        else {
-            
-            console.error('Error fetching data:', error);
-            console.log(axiosError)
-            setError(axiosError);
-            }
-    }
+          try{
+              const response = await axios.get(path, {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + String(authTokens.access),
+                  },
+                });
+              if (setData) {
+                  setData(response.data);
+                }
+              const data = response.data;
+  
+              if(response.status === 200){
+              }
+          }catch(error: any){
+              const axiosError = error as AxiosError<ErrorResponse>;
+              if (error.response && error.response.status === 401) {
+                  // Unauthorized - Logout the user
+                  logoutUser();
+                }
+              else if (error.response && (error.response.status !== 400)) {
+                  setError(axiosError)
+                  
+              } 
+              else {
+                  
+                  console.error('Error fetching profile:', error);
+                  console.log(axiosError)
+                  setError(axiosError);
+                }
+          }
+        }
+
+    
+    
+// For fetching data
+  useEffect(() => {
+    const fetchData = async () => {
+      setError(null);
+      setIsLoading(true);
+
+      const steps = 11; // Total number of steps for loading bar
+      let completedSteps = 0;
+
+      const updateProgress = (completedSteps: number) => {
+        completedSteps++;
+        const newProgress = (completedSteps / steps) * 100;
+        setProgress(newProgress);
+      };
+
+      const fetchDataAndUpdateProgress = async (setter: GetDataFunction, endpoint: string) => {
+        await getData(setter, endpoint);
+        completedSteps++;
+        updateProgress(completedSteps);
+      };
+  
+      await fetchDataAndUpdateProgress(setJobOfferCompany, `/company/joboffer/${id}`);
+      
+     
+      
+      
+      setIsLoading(false);
+      
     };
-    useEffect(() => {
-        const fetchData = async () =>{
-            setIsLoading(true);
-            setProgress(50);
-            await fetchJobOffer();
-            setProgress(100);
-            setIsLoading(false);
-        }
-        fetchData();
-    }, [id]);
+    fetchData(); // Execute the data fetching function
+    
+  }, [id]);
     
     if (isLoading) {
         return <Loading progress={progress} />

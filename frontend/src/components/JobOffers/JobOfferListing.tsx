@@ -28,7 +28,7 @@ const JobOfferListing: React.FC = () => {
   const [jobOffers, setJobOffers] = useState<JobOfferListingData[]>([]);
 
   // for loading
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
   // Authtoken for CRUD and user for username and logout

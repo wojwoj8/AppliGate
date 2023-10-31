@@ -259,7 +259,7 @@ export interface ProfileCompanyMainData{
                   setData(response.data);
                 }
               const data = response.data;
-              console.log(data)
+             
               // console.log(username)
   
               if(response.status === 200){
@@ -605,8 +605,6 @@ export interface ProfileCompanyMainData{
           updateProgress(completedSteps);
         };
         
-        // console.log(await fetchDataAndUpdateProgress(setProfileMain, `/company/profile`))
-        // await sleep(sleepTime);
         await fetchDataAndUpdateProgress(setProfileMain, `/company/profile/`);
         
         // await fetchDataAndUpdateProgress(setContact, `/profile/contact`);

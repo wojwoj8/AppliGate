@@ -100,7 +100,7 @@ setPersonal, setAlertError, alertError, username}) => {
         const formData = new FormData();
         formData.append(data, file);
 
-        console.log(data)
+
     
         try {
         const response = await axios.put(`/profile/uploadImage/${username}`, formData, {

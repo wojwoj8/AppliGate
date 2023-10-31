@@ -81,11 +81,13 @@ class JobOfferCompanySerializer(serializers.ModelSerializer):
     country = serializers.CharField(source='company.country')
     city = serializers.CharField(source='company.city')
     background_image = serializers.ImageField(source='company.background_image')
+    username = serializers.CharField(source='company.username')
     
 
     class Meta:
         model = JobOffer
         fields = [
+            "username",
             "profile_image",
             "first_name",
             "background_image",

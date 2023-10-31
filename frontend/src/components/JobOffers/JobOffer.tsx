@@ -8,10 +8,12 @@ import { mdiPencil } from '@mdi/js';
 import Loading from '../Loading';
 import AuthContext from '../../utils/AuthProvider';
 import ErrorPage from '../ErrorPage';
+import JobOfferTop from "./JobOfferComponents/JobOfferTop";
 
 // make mulitple interfaces for easier crud
 // should make one for immutable company data
-interface JobOfferCompanyData {
+export interface JobOfferCompanyData {
+    username: string;
     first_name: string;
     // last_name: string;
     // date_of_birth: string;
@@ -22,7 +24,7 @@ interface JobOfferCompanyData {
     background_image: string;   
 }
 
-interface JobOfferTopData {
+export interface JobOfferTopData {
     title: string;
     salary_min: number;
     salary_max: number;
@@ -56,14 +58,14 @@ interface JobOfferSkillData {
     skill: string;
   }
 
-// SIMPLIFICATION OF MY GetDataFunction TYPE BECAUSE OF ERROR
+// SIMPLIFICATION OF MY JobOfferGetDataFunction TYPE BECAUSE OF ERROR
 //one data
 type UpdateFunction<T> = React.Dispatch<React.SetStateAction<T | null>>;
 //array of data
 type ArrayUpdateFunction<T> = React.Dispatch<React.SetStateAction<T[]>>;
 
 
-export type GetDataFunction =
+export type JobOfferGetDataFunction =
   | UpdateFunction<JobOfferCompanyData>
   | UpdateFunction<JobOfferTopData>
 //   | ArrayUpdateFunction<ExperienceData>
@@ -93,7 +95,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
 const JobOffer: React.FC = () =>{
     const params = useParams();
     const id = params['id'];
-    console.log(id)
+   
 
     const [jobOfferCompany, setJobOfferCompany] = useState<JobOfferCompanyData| null>(null);
     const [jobOfferTop, setJobOfferTop] = useState<JobOfferTopData| null>(null);
@@ -104,12 +106,23 @@ const JobOffer: React.FC = () =>{
     // for loading
     const [isLoading, setIsLoading] = useState(true);
     const [progress, setProgress] = useState(0);
+
+    // All errors for all fields
+    const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
+    
+    // For alert component
+    const [alertError, setAlertError] = useState('');
     
     // Authtoken for CRUD and user for username and logout
     const { logoutUser, authTokens } = useContext(AuthContext);
     
     // Axios error for error component
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null)
+
+    // To check if given form is in edit state
+    const [editJobOfferCompany, setEditJobOfferCompany] = useState(false);
+    const [editJobOfferTop, setEditJobOfferTop] = useState(false);
+
 
 
 
@@ -148,14 +161,13 @@ const JobOffer: React.FC = () =>{
     // id: optional id of item in db
 
     const getData = async (
-        setData: GetDataFunction,
+        setData: JobOfferGetDataFunction,
         endpoint: string,
         id?: number,
       ) => {
         let path = `${endpoint}`
-        if (id && id !== undefined){  
+        if (id){  
           path = `${endpoint}/${id}`
-          console.log(`${id}`)
         }
         
           try{
@@ -169,7 +181,7 @@ const JobOffer: React.FC = () =>{
                   setData(response.data);
                 }
               const data = response.data;
-                console.log(data)
+              
               if(response.status === 200){
               }
           }catch(error: any){
@@ -191,6 +203,69 @@ const JobOffer: React.FC = () =>{
           }
         }
 
+    const editData = async (
+      state: JobOfferEditDataFunction,
+      editField: React.Dispatch<React.SetStateAction<boolean>> | undefined,
+      endpoint: string,
+      errorField: string,
+      index: number = 0,
+    ) =>{
+      
+      try{
+          const response = await axios.put(`${endpoint}/${id}`, state,  {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + String(authTokens.access),
+              },
+            });
+            if (editField){
+              editField(false)
+            }
+          removeMultipleErrors(`${errorField}`, index)
+      }catch (error: any) {
+        const axiosError = error as AxiosError<ErrorResponse>;
+        if (error.response && error.response.status === 401) {
+          // Unauthorized - Logout the user
+          logoutUser();
+        }
+        else if (error.response && (error.response.status !== 400)) {
+          setError(axiosError)
+        }
+          removeMultipleErrors(`${errorField}`, index)
+          
+          if (axiosError.response?.data) {
+            handleMultipleErrors(`${errorField}`, index, axiosError.response?.data)
+          }
+          console.log(error);
+        }
+    }
+
+
+
+    // For handling errors in correct inputs in correct places where are multiple items like work1 and work2
+    const handleMultipleErrors = (key: string, index: number, errorData: ErrorResponse) => {
+      setMultipleErrors((prevState) => ({
+        ...prevState,
+        [key]: {
+          ...(prevState[key] || {}),
+          [index]: {
+            ...(prevState[key]?.[index] || {}),
+            ...errorData
+          }
+        }
+      }));
+    };
+
+    // For removing list of errors in given section
+    const removeMultipleErrors = (key: string, index: number) => {
+      setMultipleErrors((prevState) => ({
+        ...prevState,
+        [key]: {
+          ...(prevState[key] || {}),
+          [index]: {}
+        }
+      }));
+    };
     
     
 // For fetching data
@@ -208,12 +283,12 @@ const JobOffer: React.FC = () =>{
         setProgress(newProgress);
       };
 
-      const fetchDataAndUpdateProgress = async (setter: GetDataFunction, endpoint: string) => {
+      const fetchDataAndUpdateProgress = async (setter: JobOfferGetDataFunction, endpoint: string) => {
         await getData(setter, endpoint);
         completedSteps++;
         updateProgress(completedSteps);
       };
-      console.log(`test, id:${id}`)
+      
       if (id){
        
       }
@@ -235,32 +310,34 @@ const JobOffer: React.FC = () =>{
    
     // Job offer - will work as creator and view
     return(
+
+        
         <>
             <div>
                 {/* <h1>JOB OFFER</h1> */}
                 {id ? (
-                
+                  <>
                     <div className='justify-content-center'>
-                        <div className="jo-background-image z-0 " style={{backgroundImage: `url(${jobOfferCompany?.background_image})`}}>
+                        <div className="jo-background-image z-0 " style={{backgroundImage: `url(${jobOfferCompany?.background_image})`}}/>
                     </div>
                         
-                    <div className="container shadow-lg bg-body-bg rounded-2 text-break mt-n5 z-1" id="page">
-                        <div className='bg-black row mb-0 rounded-top-2'>
-                            <p className='fs-3 fw-semibold text-white col mb-1'></p>
-                            <div className='col-auto d-flex align-items-center previewHidden'>
-                                <div className='profile-svgs d-flex my-1'>
-                                {/* <div className='profile-svgs d-flex my-1' onClick={editProfile}> */}
-                                    <Icon className='text-white' path={mdiPencil} size={1.25} />
-                                </div>
-                            </div>
-                        </div>
-                            <img src={jobOfferCompany?.profile_image} alt="logo" style={{height: "150px", width:"150px"}}></img>
-                            
-                            <p>{jobOfferCompany?.first_name}</p>
-                            <p>{jobOfferCompany?.country}</p>
-                            <p>{jobOfferCompany?.city}</p>
-                        </div>
-                    </div>
+                    <JobOfferTop
+                      jobOfferCompany={jobOfferCompany}
+                      jobOfferTop={jobOfferTop}
+                      getData={getData}
+                      editData={editData}
+                      multipleErrors={multipleErrors}
+                      removeMultipleErrors={removeMultipleErrors}
+                      renderFieldErrorMultiple={renderFieldErrorMultiple}
+                      alertError={alertError}
+                      setAlertError={setAlertError}
+                      // editJobOfferCompany={editJobOfferCompany}
+                      // setEditJobOfferCompany={setEditJobOfferCompany}
+                      setEditJobOfferTop={setEditJobOfferTop}
+                      editJobOfferTop={editJobOfferTop}
+                    />
+                    
+                  </>
                 
                 ) :
                 (

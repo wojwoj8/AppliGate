@@ -182,7 +182,7 @@ const Profile: React.FC = () =>{
     // Authtoken for CRUD and user for username and logout
     const { authTokens, user, logoutUser } = useContext(AuthContext);
 
-    // To chech if given form is in edit state
+    // To check if given form is in edit state
     const [editPersonal, setEditPersonal] = useState(false);
     const [editContact, setEditContact] = useState(false);
     const [editExperience, setEditExperience] = useState(false);

@@ -94,7 +94,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
     
 const JobOffer: React.FC = () =>{
     const params = useParams();
-    const id = params['id'];
+    const offerid = params['offerid'];
    
 
     const [jobOfferCompany, setJobOfferCompany] = useState<JobOfferCompanyData| null>(null);
@@ -210,9 +210,9 @@ const JobOffer: React.FC = () =>{
       errorField: string,
       index: number = 0,
     ) =>{
-      
+      console.log(state)
       try{
-          const response = await axios.put(`${endpoint}/${id}`, state,  {
+          const response = await axios.put(`${endpoint}`, state,  {
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + String(authTokens.access),
@@ -221,6 +221,7 @@ const JobOffer: React.FC = () =>{
             if (editField){
               editField(false)
             }
+          
           removeMultipleErrors(`${errorField}`, index)
       }catch (error: any) {
         const axiosError = error as AxiosError<ErrorResponse>;
@@ -289,17 +290,17 @@ const JobOffer: React.FC = () =>{
         updateProgress(completedSteps);
       };
       
-      if (id){
+      if (offerid){
        
       }
-      await fetchDataAndUpdateProgress(setJobOfferCompany, `/company/joboffer/info/${id}`);
-      await fetchDataAndUpdateProgress(setJobOfferTop, `/company/joboffer/top/${id}`);
+      await fetchDataAndUpdateProgress(setJobOfferCompany, `/company/joboffer/info/${offerid}`);
+      await fetchDataAndUpdateProgress(setJobOfferTop, `/company/joboffer/top/${offerid}`);
       setIsLoading(false);
       
     };
     fetchData(); // Execute the data fetching function
     
-  }, [id]);
+  }, [offerid]);
     
     if (isLoading) {
         return <Loading progress={progress} />
@@ -315,7 +316,7 @@ const JobOffer: React.FC = () =>{
         <>
             <div>
                 {/* <h1>JOB OFFER</h1> */}
-                {id ? (
+                {offerid ? (
                   <>
                     <div className='justify-content-center'>
                         <div className="jo-background-image z-0 " style={{backgroundImage: `url(${jobOfferCompany?.background_image})`}}/>
@@ -324,6 +325,7 @@ const JobOffer: React.FC = () =>{
                     <JobOfferTop
                       jobOfferCompany={jobOfferCompany}
                       jobOfferTop={jobOfferTop}
+                      setJobOfferTop={setJobOfferTop}
                       getData={getData}
                       editData={editData}
                       multipleErrors={multipleErrors}
@@ -335,6 +337,7 @@ const JobOffer: React.FC = () =>{
                       // setEditJobOfferCompany={setEditJobOfferCompany}
                       setEditJobOfferTop={setEditJobOfferTop}
                       editJobOfferTop={editJobOfferTop}
+                      offerid={offerid}
                     />
                     
                   </>

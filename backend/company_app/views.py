@@ -117,6 +117,16 @@ class BaseJobOfferView(
         if self.serializer_class:
             return self.serializer_class(instance, many=False)
         raise NotImplementedError("Serializer class is not defined.")
+
+    def put(self, request, *args, **kwargs):
+        print(request.__dict__)
+        id = self.kwargs.get("id")
+        offer = self.get_object(id)
+        serializer = self.serializer_class(offer, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class JobOfferCompanyView(BaseJobOfferView):
     serializer_class = JobOfferCompanySerializer

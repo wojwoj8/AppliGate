@@ -65,7 +65,7 @@ function App() {
             {/* company routes */}
             <Route path="/company/profile/*" element={<PrivateRoute><ProfileCompany/></PrivateRoute>}></Route>
             <Route path="/company/joboffer" element={<PrivateRouteCompanyOnly><JobOffer/></PrivateRouteCompanyOnly>}></Route>
-            <Route path="/company/joboffer/:id" element={<PrivateRouteCompanyOnly><JobOffer/></PrivateRouteCompanyOnly>}></Route>
+            <Route path="/company/joboffer/:offerid" element={<PrivateRouteCompanyOnly><JobOffer/></PrivateRouteCompanyOnly>}></Route>
             <Route path="/company/jobofferlistings" element={<PrivateRoute><JobOfferListing/></PrivateRoute>}></Route>
             <Route path="/company/myJobOffers" element={<PrivateRouteCompanyOnly><MyJobOffers/></PrivateRouteCompanyOnly>}></Route>
             

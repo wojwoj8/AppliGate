@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 interface JobOfferTopProps {
     jobOfferCompany: JobOfferCompanyData | null;
     jobOfferTop: JobOfferTopData | null;
+    setJobOfferTop: React.Dispatch<React.SetStateAction<JobOfferTopData | null>>;
     getData: (
         setData: JobOfferGetDataFunction,
         endpoint: string
@@ -26,21 +27,62 @@ interface JobOfferTopProps {
     removeMultipleErrors: (key: string, index: number) => void;
     renderFieldErrorMultiple: (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => React.ReactNode;
     alertError: string;
-    setAlertError: React.Dispatch<React.SetStateAction<string>>
+    setAlertError: React.Dispatch<React.SetStateAction<string>>;
+    offerid: string;
     }
 
-const JobOfferTop : React.FC<JobOfferTopProps> = ({jobOfferCompany, jobOfferTop, getData, multipleErrors,
-    removeMultipleErrors, renderFieldErrorMultiple, alertError, setAlertError, setEditJobOfferTop, editJobOfferTop
+
+
+
+
+
+
+
+const JobOfferTop : React.FC<JobOfferTopProps> = ({jobOfferCompany, jobOfferTop, getData, editData, multipleErrors,
+    removeMultipleErrors, renderFieldErrorMultiple, alertError, setAlertError, setEditJobOfferTop, editJobOfferTop,
+    setJobOfferTop, offerid
 }) =>{
 
+
+    const handleInputChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+        ) => {
+        const { name, value } = event.target;
+        
+        
+        setJobOfferTop((prevJobOfferTop) => ({
+        ...prevJobOfferTop!,
+        [name]: value,
+        }));
+
+        };
+
+    const editJobOffer = () =>{
+        setEditJobOfferTop(!editJobOfferTop);
+        if(editJobOfferTop === true){
+            removeMultipleErrors('top', 0)
+            getData(setJobOfferTop, `/company/joboffer/top/${offerid}`);
+        }
+        
+    }
+    const cancelEditJobOffer = () =>{
+        setEditJobOfferTop(false);
+        removeMultipleErrors('top', 0)
+        getData(setJobOfferTop, `/company/joboffer/top/${offerid}`);
+    }
+
+    const saveEdit = async () =>{
+        await editData(jobOfferTop, setEditJobOfferTop, `/company/joboffer/top/${offerid}`, 'top')
+    }
     return(
         <div className="container shadow-lg bg-body-bg rounded-2 text-break mt-n5 z-1" id="page">
             <div className='bg-black row mb-0 rounded-top-2'>
                 <p className='fs-3 fw-semibold text-white col mb-1'>TOP PART</p>
                 <div className='col-auto d-flex align-items-center previewHidden'>
                     <div className='profile-svgs d-flex my-1'>
-                    {/* <div className='profile-svgs d-flex my-1' onClick={editProfile}> */}
-                        <Icon className='text-white' path={mdiPencil} size={1.25} />
+                        <div className='profile-svgs d-flex my-1' onClick={editJobOffer}>
+                            <Icon className='text-white' path={mdiPencil} size={1.25} />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -92,6 +134,46 @@ const JobOfferTop : React.FC<JobOfferTopProps> = ({jobOfferCompany, jobOfferTop,
                         </div>
                     </div>
                 </div>
+            </>
+            }
+            {editJobOfferTop && 
+            <>
+                <div className="col-12">
+                    <form>
+                        <div className='row my-2'>
+                            <div className='mb-3 col-md-6'>
+                            <label htmlFor='title' className='form-label'>Title:</label>
+                            <input
+                                type='text' name='title'
+                                className={`form-control${renderFieldErrorMultiple('top', 0, `title`, multipleErrors) ? ' is-invalid' : ''}`}
+                                placeholder='FrontEnd developer (React)' value={jobOfferTop?.title  ?? ''}
+                                onChange={handleInputChange}
+                            />
+                            {renderFieldErrorMultiple('top', 0, `title`, multipleErrors)}
+                            </div>
+                                <div className='mb-3 col-md-6'>
+                                    <label htmlFor='last_name' className='form-label'>Last name:</label>
+                                    <input
+                                        type='number' name='salary_min'
+                                        className={`form-control${renderFieldErrorMultiple('top', 0, `salary_min`, multipleErrors) ? ' is-invalid' : ''}`}
+                                        placeholder='Smith' value={jobOfferTop?.salary_min ?? ''}
+                                        onChange={handleInputChange}
+                                    />
+                                    {renderFieldErrorMultiple('top', 0, `salary_min`, multipleErrors)}
+                                </div>
+                            </div>
+
+                        
+                        
+                        </form>
+                    <div className='text-center mb-1'>
+                        <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={cancelEditJobOffer}>Cancel</button>
+                        <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveEdit}>Save</button> 
+                    </div>
+                    
+                </div>
+                    
+                    
             </>
             }
         </div>         

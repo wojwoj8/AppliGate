@@ -215,10 +215,10 @@ const JobOffer: React.FC = () =>{
       };
       console.log(`test, id:${id}`)
       if (id){
-        await fetchDataAndUpdateProgress(setJobOfferCompany, `/company/joboffer/${id}`);
-        await fetchDataAndUpdateProgress(setJobOfferTop, `/company/joboffer/top/${id}`);
+       
       }
-      
+      await fetchDataAndUpdateProgress(setJobOfferCompany, `/company/joboffer/info/${id}`);
+      await fetchDataAndUpdateProgress(setJobOfferTop, `/company/joboffer/top/${id}`);
       setIsLoading(false);
       
     };

@@ -1,6 +1,6 @@
 import { ErrorResponse, MultipleErrorResponse } from "../Profile";
 import { JobOfferListingData } from "./JobOfferListing";
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import axios, { AxiosError } from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import Icon from '@mdi/react';
@@ -9,6 +9,7 @@ import Loading from '../Loading';
 import AuthContext from '../../utils/AuthProvider';
 import ErrorPage from '../ErrorPage';
 import JobOfferTop from "./JobOfferComponents/JobOfferTop";
+import ProfileAlert from "../profileComponents/ProfileAlert";
 
 // make mulitple interfaces for easier crud
 // should make one for immutable company data
@@ -109,11 +110,14 @@ const JobOffer: React.FC = () =>{
     // All errors for all fields
     const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
     
+    // To check how others see your JobOffer
+    const [previewMode, setPreviewMode] = useState(false);
+
     // For alert component
     const [alertError, setAlertError] = useState('');
     
     // Authtoken for CRUD and user for username and logout
-    const { logoutUser, authTokens } = useContext(AuthContext);
+    const { logoutUser, authTokens, user } = useContext(AuthContext);
     
     // Axios error for error component
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null)
@@ -266,6 +270,67 @@ const JobOffer: React.FC = () =>{
       }));
     };
     
+
+
+      // Handle hide interactive elements on cv for preview mode
+    const handleHide = async () =>{
+      const pageElement = document.getElementById('page');
+      if (pageElement) {
+        const elements = pageElement.querySelectorAll('button, svg, .profile-svgs, .prevHidden');
+        
+        elements.forEach((element) => {
+          if (previewMode) {
+            element.classList.add('d-none');
+          } else {
+            element.classList.remove('d-none');
+          }
+        });
+      }
+    }
+    // for preview mode
+    useEffect(() => {
+      handleHide();
+    }, [previewMode]);
+
+    const handlePreviewMode = () => {
+      let forms = document.querySelectorAll('form');
+      console.log(forms)
+      if (forms.length >= 1){
+        setAlertError('Close all forms in order to show preview');
+        return false;
+      }
+      else{
+        setPreviewMode(!previewMode);
+        return true;
+      }
+      
+    }
+
+
+    // To make preview mode by removing most of interactive elements while looking at not owned joboffer
+  const handleNotOwnedJobOffer = () =>{
+    let pageElement = document.getElementById('page');
+    let profStatus = document.getElementsByClassName('profileStatusHide');
+    if (pageElement && jobOfferCompany?.username) {
+      let elements = pageElement.querySelectorAll('button, svg, .profile-svgs, .prevHidden');
+      let preview = document.getElementById('preview');
+      // let correctedUsername = username.slice(0, -1);
+      if (user.username !== jobOfferCompany?.username){
+        elements.forEach((element) =>{
+          element.remove();
+        });
+        Array.from(profStatus).forEach((element) => {
+          element.remove();
+        });
+        if (preview){
+          preview.remove();
+        }
+        
+        
+      }
+    }
+    return null;
+  }
     
 // For fetching data
   useEffect(() => {
@@ -299,6 +364,13 @@ const JobOffer: React.FC = () =>{
     fetchData(); // Execute the data fetching function
     
   }, [offerid]);
+
+  // works like useEffect but after rendering
+  useLayoutEffect(() => {
+    if (!isLoading) {
+      handleNotOwnedJobOffer();
+    }
+  }, [isLoading]);
     
     if (isLoading) {
         return <Loading progress={progress} />
@@ -306,13 +378,21 @@ const JobOffer: React.FC = () =>{
     if (error){
         return <ErrorPage axiosError={error} />
     }
-   
+    
     // Job offer - will work as creator and view
     return(
-
-        
+      
+      
         <>
+        {alertError && <ProfileAlert 
+                error={alertError}
+                setError={setAlertError} />}
             <div>
+              <div className='d-flex justify-content-center container my-1' id='preview'>
+                <button className='btn btn-secondary w-100 rounded-4 mb-2' onClick={handlePreviewMode}>
+                  {previewMode ? 'Hide Preview' : 'Show Preview'}
+                </button>
+              </div>
                 {/* <h1>JOB OFFER</h1> */}
                 {offerid ? (
                   <>

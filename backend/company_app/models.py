@@ -14,7 +14,7 @@ class CompanyProfileMain(models.Model):
 class JobOffer(models.Model):
     # only company user can create joboffer
     company = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'user_type': 'company'})
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=40)
     job_description = models.TextField()
     job_location = models.CharField(max_length=100)
     # Job Type: Full-time, Part-time, Contract, etc.
@@ -22,8 +22,8 @@ class JobOffer(models.Model):
 
     salary_min = models.DecimalField(max_digits=10, decimal_places=2)
     salary_max = models.DecimalField(max_digits=10, decimal_places=2)
-    salary_description = models.CharField(max_length=50, default='gross per month')
-    salary_currency = models.CharField(max_length=10, default="PLN")
+    salary_type = models.CharField(max_length=20, default='per hour')
+    salary_currency = models.CharField(max_length=5, default="PLN")
 
     job_responsibilities = models.TextField()
     job_requirements = models.TextField()

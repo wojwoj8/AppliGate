@@ -28,7 +28,7 @@ export interface JobOfferTopData {
     title: string;
     salary_min: number;
     salary_max: number;
-    salary_description: string;
+    salary_type: string;
     salary_currency: string;
 }
 
@@ -40,7 +40,7 @@ interface JobOfferData {
     job_type: string;
     salary_min: number;
     salary_max: number;
-    salary_description: string;
+    salary_type: string;
     salary_currency: string;
     job_responsibilities: string;
     job_requirements: string;
@@ -73,7 +73,6 @@ export type JobOfferGetDataFunction =
   //UNIVERSAL PUT STATES
   //single data
 export type JobOfferEditDataFunction = 
-    JobOfferCompanyData | null |
     JobOfferTopData | null |
     
     undefined;
@@ -120,7 +119,6 @@ const JobOffer: React.FC = () =>{
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null)
 
     // To check if given form is in edit state
-    const [editJobOfferCompany, setEditJobOfferCompany] = useState(false);
     const [editJobOfferTop, setEditJobOfferTop] = useState(false);
 
 
@@ -333,8 +331,6 @@ const JobOffer: React.FC = () =>{
                       renderFieldErrorMultiple={renderFieldErrorMultiple}
                       alertError={alertError}
                       setAlertError={setAlertError}
-                      // editJobOfferCompany={editJobOfferCompany}
-                      // setEditJobOfferCompany={setEditJobOfferCompany}
                       setEditJobOfferTop={setEditJobOfferTop}
                       editJobOfferTop={editJobOfferTop}
                       offerid={offerid}

@@ -68,7 +68,7 @@ class JobListingsSerializer(serializers.ModelSerializer):
             "job_description",
             "job_type",
             "salary_currency",
-            "salary_description",
+            "salary_type",
             "job_published_at",
             "job_application_deadline",
             "id",
@@ -104,6 +104,6 @@ class JobOfferTopSerializer(serializers.ModelSerializer):
             "salary_min",
             "salary_max",
             "salary_currency",
-            "salary_description",
+            "salary_type",
             
         ]

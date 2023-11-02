@@ -87,25 +87,14 @@ const JobOfferTop : React.FC<JobOfferTopProps> = ({jobOfferCompany, jobOfferTop,
                 </div>
             </div>
             <div className='row justify-content-center '>
+            {!editJobOfferTop && 
                 <div className={`col-sm-auto row d-flex align-items-center align-items-baseline flex-column`}>
                     <div className='d-flex d-sm-block flex-column align-items-center justify-content-center'>
                                             {/* <img className='profile-image my-2' src={`${personal?.profile_image}?${Date.now()}`} alt="Profile" /> */}
                         <img src={jobOfferCompany?.profile_image} alt="logo" className="profile-image my-2" style={{height: "150px", width:"150px"}}></img>
                     </div>
                 </div>
-                {/* <p>{jobOfferCompany?.first_name}</p>
-                <p>{jobOfferCompany?.country}</p>
-                <p>{jobOfferCompany?.city}</p>
-
-                <div>
-                    <p>{jobOfferTop?.salary_currency}</p>
-                    <p>{jobOfferTop?.salary_description}</p>
-                    <p>{jobOfferTop?.salary_max}</p>
-                    <p>{jobOfferTop?.salary_min}</p>
-                    <p>{jobOfferTop?.title}</p>
-                </div>
-            */}
-
+                }
 
             {!editJobOfferTop && 
             <>
@@ -130,7 +119,7 @@ const JobOfferTop : React.FC<JobOfferTopProps> = ({jobOfferCompany, jobOfferTop,
                     <div className="card bg-danger mt-2">
                         <div className="card-body">
                             <span>{jobOfferTop?.salary_min} - {jobOfferTop?.salary_max} {jobOfferTop?.salary_currency}</span>
-                            <p>{jobOfferTop?.salary_description}</p>
+                            <p>{jobOfferTop?.salary_type}</p>
                         </div>
                     </div>
                 </div>
@@ -142,26 +131,60 @@ const JobOfferTop : React.FC<JobOfferTopProps> = ({jobOfferCompany, jobOfferTop,
                     <form>
                         <div className='row my-2'>
                             <div className='mb-3 col-md-6'>
-                            <label htmlFor='title' className='form-label'>Title:</label>
-                            <input
-                                type='text' name='title'
-                                className={`form-control${renderFieldErrorMultiple('top', 0, `title`, multipleErrors) ? ' is-invalid' : ''}`}
-                                placeholder='FrontEnd developer (React)' value={jobOfferTop?.title  ?? ''}
-                                onChange={handleInputChange}
-                            />
-                            {renderFieldErrorMultiple('top', 0, `title`, multipleErrors)}
+                                <label htmlFor='title' className='form-label'>Title:</label>
+                                <input
+                                    type='text' name='title'
+                                    className={`form-control${renderFieldErrorMultiple('top', 0, `title`, multipleErrors) ? ' is-invalid' : ''}`}
+                                    placeholder='FrontEnd developer (React)' value={jobOfferTop?.title  ?? ''}
+                                    onChange={handleInputChange}
+                                />
+                                {renderFieldErrorMultiple('top', 0, `title`, multipleErrors)}
                             </div>
-                                <div className='mb-3 col-md-6'>
-                                    <label htmlFor='last_name' className='form-label'>Last name:</label>
-                                    <input
-                                        type='number' name='salary_min'
-                                        className={`form-control${renderFieldErrorMultiple('top', 0, `salary_min`, multipleErrors) ? ' is-invalid' : ''}`}
-                                        placeholder='Smith' value={jobOfferTop?.salary_min ?? ''}
-                                        onChange={handleInputChange}
-                                    />
-                                    {renderFieldErrorMultiple('top', 0, `salary_min`, multipleErrors)}
-                                </div>
+                            <div className='mb-3 col-md-6'>
+                                <label htmlFor='salary_type' className='form-label'>Salary Type:</label>
+                                <input
+                                    type='test' name='salary_type'
+                                    className={`form-control${renderFieldErrorMultiple('top', 0, `salary_type`, multipleErrors) ? ' is-invalid' : ''}`}
+                                    placeholder='per hour' value={jobOfferTop?.salary_type ?? ''}
+                                    onChange={handleInputChange}
+                                />
+                                {renderFieldErrorMultiple('top', 0, `salary_type`, multipleErrors)}
                             </div>
+                            
+                        </div>
+                        <div className='row my-2'>
+                            <div className='mb-3 col-md-4'>
+                                <label htmlFor='salary_min' className='form-label'>Salary min:</label>
+                                <input
+                                    type='number' name='salary_min'
+                                    className={`form-control${renderFieldErrorMultiple('top', 0, `salary_min`, multipleErrors) ? ' is-invalid' : ''}`}
+                                    placeholder='20' value={jobOfferTop?.salary_min ?? ''}
+                                    onChange={handleInputChange}
+                                />
+                                {renderFieldErrorMultiple('top', 0, `salary_min`, multipleErrors)}
+                            </div>
+                            <div className='mb-3 col-md-4'>
+                                <label htmlFor='salary_max' className='form-label'>Salary max:</label>
+                                <input
+                                    type='number' name='salary_max'
+                                    className={`form-control${renderFieldErrorMultiple('top', 0, `salary_max`, multipleErrors) ? ' is-invalid' : ''}`}
+                                    placeholder='100' value={jobOfferTop?.salary_max  ?? ''}
+                                    onChange={handleInputChange}
+                                />
+                                {renderFieldErrorMultiple('top', 0, `salary_max`, multipleErrors)}
+                            </div>
+                            <div className='mb-3 col-md-4'>
+                                <label htmlFor='salary_currency' className='form-label'>Salary currency:</label>
+                                <input
+                                    type='text' name='salary_currency'
+                                    className={`form-control${renderFieldErrorMultiple('top', 0, `salary_currency`, multipleErrors) ? ' is-invalid' : ''}`}
+                                    placeholder='PLN' value={jobOfferTop?.salary_currency ?? ''}
+                                    onChange={handleInputChange}
+                                />
+                                {renderFieldErrorMultiple('top', 0, `salary_currency`, multipleErrors)}
+                            </div>
+                        </div>
+                        
 
                         
                         

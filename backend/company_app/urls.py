@@ -36,8 +36,11 @@ urlpatterns = [
     
     path("company/joboffer/info", views.JobOfferCompanyView.as_view(), name="jobOfferCompanyData"),
     path("company/joboffer/top", views.JobOfferTopView.as_view(), name="JobOfferTopData"),
-    path("company/joboffer/info/<int:id>", views.JobOfferCompanyView.as_view(), name="jobOfferCompanyData"),
-    path("company/joboffer/top/<int:id>", views.JobOfferTopView.as_view(), name="JobOfferTopData"),
+    path("company/joboffer/info/<int:id>", views.JobOfferCompanyView.as_view(), name="jobOfferCompanyDataId"),
+    path("company/joboffer/top/<int:id>", views.JobOfferTopView.as_view(), name="JobOfferTopDataId"),
+    path("company/joboffer/skill", views.JobOfferSkillView.as_view(), name="JobOfferskillsData"),
+    path("company/joboffer/skill/<int:id>", views.JobOfferSkillView.as_view(), name="JobOfferskillsDataId"),
+    path("company/joboffer/skill/delete/<int:del_id>", views.JobOfferSkillView.as_view(), name="JobOfferskillsDataId"),
     
     # path("company/jobofferlistings/<str:username>/", views.JobOfferListing.as_view(), name="jobOfferListingIsername"),
     # list job offers created by company user

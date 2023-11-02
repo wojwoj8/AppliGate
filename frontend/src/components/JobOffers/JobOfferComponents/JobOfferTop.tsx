@@ -75,7 +75,7 @@ const JobOfferTop : React.FC<JobOfferTopProps> = ({jobOfferCompany, jobOfferTop,
         await editData(jobOfferTop, setEditJobOfferTop, `/company/joboffer/top/${offerid}`, 'top')
     }
     return(
-        <div className="container shadow-lg bg-body-bg rounded-2 text-break mt-n5 z-1" id="page">
+        <div className="container shadow-lg bg-body-bg rounded-2 text-break mt-n5 z-1">
             <div className='bg-black row mb-0 rounded-top-2'>
                 <p className='fs-3 fw-semibold text-white col mb-1'>TOP PART</p>
                 <div className='col-auto d-flex align-items-center previewHidden'>

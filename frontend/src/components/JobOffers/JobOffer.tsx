@@ -10,6 +10,7 @@ import AuthContext from '../../utils/AuthProvider';
 import ErrorPage from '../ErrorPage';
 import JobOfferTop from "./JobOfferComponents/JobOfferTop";
 import ProfileAlert from "../profileComponents/ProfileAlert";
+import JobOfferSkill from "./JobOfferComponents/JobOfferSkill";
 
 // make mulitple interfaces for easier crud
 // should make one for immutable company data
@@ -32,7 +33,11 @@ export interface JobOfferTopData {
     salary_type: string;
     salary_currency: string;
 }
-
+export interface JobOfferSkillData{
+    id: number;
+    skill: string;
+    offer_id: string | null;
+}
 interface JobOfferData {
     company: string;
     title: string;
@@ -53,11 +58,7 @@ interface JobOfferData {
     job_additional_information: string;
     skills: string[];
   }
-  
-interface JobOfferSkillData {
-    id: number;
-    skill: string;
-  }
+
 
 // SIMPLIFICATION OF MY JobOfferGetDataFunction TYPE BECAUSE OF ERROR
 //one data
@@ -69,23 +70,25 @@ type ArrayUpdateFunction<T> = React.Dispatch<React.SetStateAction<T[]>>;
 export type JobOfferGetDataFunction =
   | UpdateFunction<JobOfferCompanyData>
   | UpdateFunction<JobOfferTopData>
-//   | ArrayUpdateFunction<ExperienceData>
+  | ArrayUpdateFunction<JobOfferSkillData>
   | undefined;
   //UNIVERSAL PUT STATES
   //single data
 export type JobOfferEditDataFunction = 
     JobOfferTopData | null |
+    JobOfferSkillData[] |
+    JobOfferSkillData | null |
     
     undefined;
 // multiple data
-// export type JobOfferEditMultipleDataFunction = 
+export type JobOfferEditMultipleDataFunction = 
 //     ExperienceData[] |
 //     EducationData[] |
 //     CourseData[] |
 //     LanguageData[] |
 //     LinkData[] |
-//     SkillData[] 
-//     ;
+    JobOfferSkillData[] 
+     ;
 const initialMultipleErrors: MultipleErrorResponse = {
     salary: {},
   };
@@ -96,13 +99,17 @@ const JobOffer: React.FC = () =>{
     const params = useParams();
     const offerid = params['offerid'];
    
-
+    // Data for all components
     const [jobOfferCompany, setJobOfferCompany] = useState<JobOfferCompanyData| null>(null);
     const [jobOfferTop, setJobOfferTop] = useState<JobOfferTopData| null>(null);
+    const [jobOfferSkill, setJobOfferSkill] = useState<JobOfferSkillData[]>([]);
+    
+    // const [jobOffers, setJobOffers] = useState<JobOfferListingData| null>(null);
+    
+    // Only one data (like post only field)
+    const [singleJobOfferSkill, setSingleJobOfferSkill] = useState<JobOfferSkillData | null>(null);
 
-    
-    const [jobOffers, setJobOffers] = useState<JobOfferListingData| null>(null);
-    
+
     // for loading
     const [isLoading, setIsLoading] = useState(true);
     const [progress, setProgress] = useState(0);
@@ -124,7 +131,7 @@ const JobOffer: React.FC = () =>{
 
     // To check if given form is in edit state
     const [editJobOfferTop, setEditJobOfferTop] = useState(false);
-
+    const [editJobOfferSkill, setEditJobOfferSkill] = useState(false);
 
 
 
@@ -243,7 +250,80 @@ const JobOffer: React.FC = () =>{
         }
     }
 
+  const sendMultipleData = async (
+    state: JobOfferEditDataFunction,
+    editField: React.Dispatch<React.SetStateAction<boolean>>,
+    setData: JobOfferGetDataFunction,
+    cleanState: (() => void) | null = null,
+    endpoint: string,
+    errorField: string,
+    index: number = 0,
+  ) =>{
+    
+    console.log(state)
+      try{
+          const response = await axios.post(`${endpoint}`, state,  {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + String(authTokens.access),
+              },
+            });
+            editField(false)
 
+          removeMultipleErrors(`${errorField}`, index)
+          getData(setData, `${endpoint}`);
+          if (cleanState) cleanState()
+      }catch (error: any) {
+        const axiosError = error as AxiosError<ErrorResponse>;
+        if (error.response && error.response.status === 401) {
+          // Unauthorized - Logout the user
+          logoutUser();
+        }
+        else if (error.response && (error.response.status !== 400)) {
+          setError(axiosError)
+        }
+        removeMultipleErrors(`${errorField}`, index)
+          
+          if (axiosError.response?.data) {
+            handleMultipleErrors(`${errorField}`, index, axiosError.response?.data)
+          }
+          console.log(error);
+        }
+    }
+
+  const deleteData = async (
+    editField: React.Dispatch<React.SetStateAction<boolean[]>> | undefined,
+    setData: JobOfferGetDataFunction,
+    endpoint: string,
+    id: number
+  ) =>{
+  try{
+      const response = await axios.delete(`${endpoint}/delete/${id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + String(authTokens.access),
+          },
+        });
+        // set editFields to false => set state of that form to closed
+        if (editField){
+        editField((prevEditExperiences) => {
+          const newEditExperiences = [...prevEditExperiences];
+          newEditExperiences[id] = false;
+          return newEditExperiences;
+        });
+      }
+        getData(setData, `${endpoint}/${offerid}`);
+        setAlertError('Data deleted successfully');
+  }catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      // Unauthorized - Logout the user
+      logoutUser();
+    }
+      setAlertError('Something went wrong');
+
+      console.log(error);
+    }
+}
 
     // For handling errors in correct inputs in correct places where are multiple items like work1 and work2
     const handleMultipleErrors = (key: string, index: number, errorData: ErrorResponse) => {
@@ -294,8 +374,8 @@ const JobOffer: React.FC = () =>{
 
     const handlePreviewMode = () => {
       let forms = document.querySelectorAll('form');
-      console.log(forms)
-      if (forms.length >= 1){
+
+      if (forms.length >= 2){
         setAlertError('Close all forms in order to show preview');
         return false;
       }
@@ -316,6 +396,7 @@ const JobOffer: React.FC = () =>{
       let preview = document.getElementById('preview');
       // let correctedUsername = username.slice(0, -1);
       if (user.username !== jobOfferCompany?.username){
+        console.log(elements)
         elements.forEach((element) =>{
           element.remove();
         });
@@ -358,6 +439,7 @@ const JobOffer: React.FC = () =>{
       }
       await fetchDataAndUpdateProgress(setJobOfferCompany, `/company/joboffer/info/${offerid}`);
       await fetchDataAndUpdateProgress(setJobOfferTop, `/company/joboffer/top/${offerid}`);
+      await fetchDataAndUpdateProgress(setJobOfferSkill, `/company/joboffer/skill/${offerid}`);
       setIsLoading(false);
       
     };
@@ -393,6 +475,7 @@ const JobOffer: React.FC = () =>{
                   {previewMode ? 'Hide Preview' : 'Show Preview'}
                 </button>
               </div>
+              <div id="page">
                 {/* <h1>JOB OFFER</h1> */}
                 {offerid ? (
                   <>
@@ -416,6 +499,22 @@ const JobOffer: React.FC = () =>{
                       offerid={offerid}
                     />
                     
+                    <JobOfferSkill
+                      jobOfferSkill={jobOfferSkill}
+                      setJobOfferSkill={setJobOfferSkill}
+                      setSingleJobOfferSkill={setSingleJobOfferSkill}
+                      singleJobOfferSkill={singleJobOfferSkill}
+                      setEditJobOfferSkill={setEditJobOfferSkill}
+                      editJobOfferSkill={editJobOfferSkill}
+                      getData={getData}
+                      sendMultipleData={sendMultipleData}
+                      multipleErrors={multipleErrors}
+                      removeMultipleErrors={removeMultipleErrors}
+                      renderFieldErrorMultiple={renderFieldErrorMultiple}
+                      deleteData={deleteData}
+                      
+                      offerid={offerid}
+                    />
                   </>
                 
                 ) :
@@ -424,7 +523,7 @@ const JobOffer: React.FC = () =>{
                         <h2>Creator view</h2>
                     </div>
                 ) }
-                
+                </div>
             </div>
         </>
     )

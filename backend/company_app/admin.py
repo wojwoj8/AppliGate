@@ -1,7 +1,7 @@
 from django.contrib import admin
 from company_app.models import (
     JobOffer,
-    CompanyProfileMain,
+    JobOfferSkill,
 )
 
 from django.contrib.auth.admin import UserAdmin
@@ -11,5 +11,5 @@ from django.contrib.auth.admin import UserAdmin
 
 
 
-
+admin.site.register(JobOfferSkill)
 admin.site.register(JobOffer)

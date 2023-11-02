@@ -481,12 +481,7 @@ class BaseProfileView(
             serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
-            return Response(
-                {
-                    "created": f"{self.serializer_class.Meta.model.__name__} added successfully"
-                },
-                status=200,
-            )
+            return Response(serializer.data)
         return Response(serializer.errors, status=400)
 
     def put(self, request, *args, **kwargs):

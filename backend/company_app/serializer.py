@@ -4,7 +4,7 @@ from user_app.models import (
     User,
 )
 from .models import (
-    JobOfferSkills,
+    JobOfferSkill,
     JobOffer,
 )
 from user_app.serializer import (
@@ -96,7 +96,6 @@ class JobOfferCompanySerializer(serializers.ModelSerializer):
         ]
 
 class JobOfferTopSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = JobOffer
         fields = [
@@ -107,3 +106,8 @@ class JobOfferTopSerializer(serializers.ModelSerializer):
             "salary_type",
             
         ]
+
+class JobOfferSkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobOfferSkill
+        fields = ["id", "skill"]

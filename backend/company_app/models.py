@@ -42,6 +42,6 @@ class JobOffer(models.Model):
 
 
 # Multiple
-class JobOfferSkills(models.Model):
+class JobOfferSkill(models.Model):
     job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE)
     skill = models.CharField(max_length=100, blank=False)

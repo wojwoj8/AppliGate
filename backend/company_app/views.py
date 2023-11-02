@@ -35,6 +35,20 @@ from .models import JobOffer
 
 
 
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow owners of a job offer to edit it.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        # Write permissions are only allowed to the owner of the job offer.
+        return obj.company == request.user
+
+
 class ProfileCompanyView(BaseProfileUpdateView):
     # permission_classes = [IsAuthenticated]
     serializer_class = ProfileCompanySerializer
@@ -110,16 +124,29 @@ class BaseJobOfferView(
         serializer = self.get_serializer(offer)
         return Response(serializer.data)
 
+    # check if request.user is owner
+    def check_joboffer_owner(self, request):
+        id = self.kwargs.get("id")
+        try:
+            job_offer = JobOffer.objects.get(id=id)
+            owner_id = job_offer.company.id
+            if request.user.id != owner_id:
+                raise PermissionDenied("You do not have permission to perform this action.")
+        except JobOffer.DoesNotExist:
+            return Response({"detail": "JobOffer not found"}, status=status.HTTP_404_NOT_FOUND)
+
     def get_object(self, id):
         return get_object_or_404(self.queryset, id=id)
 
+    
     def get_serializer(self, instance):
         if self.serializer_class:
             return self.serializer_class(instance, many=False)
         raise NotImplementedError("Serializer class is not defined.")
 
     def put(self, request, *args, **kwargs):
-        print(request.__dict__)
+        self.check_joboffer_owner(request)
+        # print(request.__dict__)
         id = self.kwargs.get("id")
         offer = self.get_object(id)
         serializer = self.serializer_class(offer, data=request.data)
@@ -131,8 +158,9 @@ class BaseJobOfferView(
 class JobOfferCompanyView(BaseJobOfferView):
     serializer_class = JobOfferCompanySerializer
     queryset = JobOffer.objects.all()
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
 class JobOfferTopView(BaseJobOfferView):
     serializer_class = JobOfferTopSerializer
     queryset = JobOffer.objects.all()
-    
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]

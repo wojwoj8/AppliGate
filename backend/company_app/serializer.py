@@ -110,4 +110,4 @@ class JobOfferTopSerializer(serializers.ModelSerializer):
 class JobOfferSkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOfferSkill
-        fields = ["id", "skill"]
+        fields = ["id", "skill", "skill_type"]

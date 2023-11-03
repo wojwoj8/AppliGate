@@ -45,3 +45,8 @@ class JobOffer(models.Model):
 class JobOfferSkill(models.Model):
     job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE)
     skill = models.CharField(max_length=100, blank=False)
+    SKILL_TYPE_CHOICES = [
+        ("required", "Required"),
+        ("optional", "Optional"),
+    ]
+    skill_type = models.CharField(max_length=40, choices=SKILL_TYPE_CHOICES)

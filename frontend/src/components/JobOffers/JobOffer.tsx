@@ -36,6 +36,7 @@ export interface JobOfferTopData {
 export interface JobOfferSkillData{
     id: number;
     skill: string;
+    skill_type: string;
     offer_id: string | null;
 }
 interface JobOfferData {
@@ -512,7 +513,7 @@ const JobOffer: React.FC = () =>{
                       removeMultipleErrors={removeMultipleErrors}
                       renderFieldErrorMultiple={renderFieldErrorMultiple}
                       deleteData={deleteData}
-                      
+                      previewMode={previewMode}
                       offerid={offerid}
                     />
                   </>

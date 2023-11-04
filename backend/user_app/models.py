@@ -52,7 +52,7 @@ class User(AbstractUser):
     )
 
     def __str__(self):
-        return f"{self.user_type, self.username}"
+        return f"{self.username}"
 
 # Multiple
 class UserExperience(models.Model):

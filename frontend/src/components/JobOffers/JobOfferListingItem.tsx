@@ -25,10 +25,10 @@ interface JobOfferListingItemProps {
                         </p>
                         {/* <p className="card-text">{jobOffer.job_description}</p> */}
                         <p className="card-text">
-                            Published At: {new Date(jobOffer.job_published_at).toLocaleString()}
+                            Published At: {new Date(jobOffer.job_published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                         </p>
                         <p className="card-text">
-                            Application Deadline: {new Date(jobOffer.job_application_deadline).toLocaleString()}
+                            Application Deadline: {new Date(jobOffer.job_application_deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                         </p>
                     </div>
                 </div>

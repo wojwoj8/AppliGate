@@ -14,21 +14,34 @@ class CompanyProfileMain(models.Model):
 class JobOffer(models.Model):
     # only company user can create joboffer
     company = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'user_type': 'company'})
-    title = models.CharField(max_length=40)
+    title = models.CharField(max_length=40, blank=False)
     job_description = models.TextField()
-    job_location = models.CharField(max_length=100)
-    # Job Type: Full-time, Part-time, Contract, etc.
-    job_type = models.CharField(max_length=100, blank=True)
+    job_location = models.CharField(max_length=100, blank=False)
+    # work_schedule: Full-time, Part-time, etc.
+    work_schedule = models.CharField(max_length=100, blank=False)
+    #position_level: specialist (mid / regular), junior specialist (junior), etc.
+    position_level = models.CharField(max_length=100, blank=False)
+    # contract_type: contract of employment, b2b etc.
+    contract_type = models.CharField(max_length=100, blank=False)
+    # wakat
+    vacancy = models.CharField(max_length=50, blank=True)
+    # remote, stationary etc
+    work_mode = models.CharField(max_length=100, blank=True)
 
-    salary_min = models.DecimalField(max_digits=10, decimal_places=2)
-    salary_max = models.DecimalField(max_digits=10, decimal_places=2)
-    salary_type = models.CharField(max_length=20, default='per hour')
-    salary_currency = models.CharField(max_length=5, default="PLN")
+    specialization = models.CharField(max_length=100, blank=False)
+
+
+
+    #salary part
+    salary_min = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
+    salary_max = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
+    salary_type = models.CharField(max_length=20, default='per hour', blank=False)
+    salary_currency = models.CharField(max_length=5, default="PLN", blank=False)
 
     job_responsibilities = models.TextField()
     job_requirements = models.TextField()
-    job_published_at = models.DateTimeField(auto_now_add=True)
-    job_application_deadline = models.DateTimeField()
+    job_published_at = models.DateTimeField(auto_now_add=True, blank=False)
+    job_application_deadline = models.DateTimeField(blank=False)
 
     # Recruitment Type: Remote, In-company, On-site, etc.
     recruitment_type = models.CharField(max_length=100, blank=True)
@@ -38,7 +51,7 @@ class JobOffer(models.Model):
     job_additional_information = models.TextField() 
 
     def __str__(self):
-        return f"Company: {self.company} Position: {self.title} "
+        return f"Company: {self.company} Position: {self.title}"
 
 
 # Multiple

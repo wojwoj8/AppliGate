@@ -33,12 +33,20 @@ export interface JobOfferTopData {
     salary_max: number;
     salary_type: string;
     salary_currency: string;
+    
 }
 export interface JobOfferTopMoreData{
     job_application_deadline: string;
     recruitment_type: string;
     job_location: string;
-    job_type: string;
+    work_schedule: string;
+    position_level: string;
+    contract_type: string;
+    vacancy: string;
+    work_mode: string;
+    specialization: string;
+    
+
 }
 
 export interface JobOfferSkillData{
@@ -54,7 +62,7 @@ interface JobOfferData {
     title: string;
     job_description: string;
     job_location: string;
-    job_type: string;
+    work_schedule: string;
     salary_min: number;
     salary_max: number;
     salary_type: string;

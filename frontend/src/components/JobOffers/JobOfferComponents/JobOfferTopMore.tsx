@@ -68,19 +68,52 @@ interface JobOfferTopMoreMoreProps {
     const saveEdit = async () =>{
         await editData(jobOfferTopMore, setEditJobOfferTopMore, `/company/joboffer/top/${offerid}`, 'top')
     }
+    const formatRemainingTime = (deadline: string) => {
+        const deadlineDate = new Date(deadline);
+        const currentDate = new Date();
     
+        const timeDifference = (deadlineDate as any) - (currentDate as any);
+        const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    
+        if (daysDifference >= 1) {
+            return `${deadlineDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} (${daysDifference} days remaining)`;
+        } 
+        else {
+            const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+            if (hoursDifference >= 1) {
+                return `${hoursDifference} hours remaining`;
+        } 
+        else {
+            const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+            if (minutesDifference >= 1) {
+                return `${minutesDifference} minutes remaining`;
+            } 
+            else {
+                return "Offer Expired";
+            }
+        }
+    }
+}
 
       return(
         <div>
             <hr></hr>
             <p className="card-text">
                 Application Deadline: {jobOfferTopMore?.job_application_deadline
-                    ? new Date(jobOfferTopMore.job_application_deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-                    : 'No deadline specified'}
+                ? formatRemainingTime(jobOfferTopMore.job_application_deadline)
+                : 'No deadline specified'}
             </p>
+            <p>{jobOfferTopMore?.job_location}</p>
+            <p>{jobOfferTopMore?.work_schedule}</p>
+            <p>{jobOfferTopMore?.recruitment_type}</p>
+            <p>{jobOfferTopMore?.position_level}</p>
+            <p>{jobOfferTopMore?.contract_type}</p>
+            <p>{jobOfferTopMore?.work_mode}</p>
+            <p>{jobOfferTopMore?.vacancy}</p>
+            <hr></hr>
+            <p>{jobOfferTopMore?.specialization}</p>
 
-
-            <p>more</p>
+            
         </div>
     )
 }

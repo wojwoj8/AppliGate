@@ -54,19 +54,19 @@ interface JobOfferTopMoreMoreProps {
     const editJobOffer = () =>{
         setEditJobOfferTopMore(!editJobOfferTopMore);
         if(editJobOfferTopMore === true){
-            removeMultipleErrors('top', 0)
-            getData(setJobOfferTopMore, `/company/joboffer/top/${offerid}`);
+            removeMultipleErrors('topmore', 0)
+            getData(setJobOfferTopMore, `/company/joboffer/topmore/${offerid}`);
         }
         
     }
     const cancelEditJobOffer = () =>{
         setEditJobOfferTopMore(false);
-        removeMultipleErrors('top', 0)
-        getData(setJobOfferTopMore, `/company/joboffer/top/${offerid}`);
+        removeMultipleErrors('topmore', 0)
+        getData(setJobOfferTopMore, `/company/joboffer/topmore/${offerid}`);
     }
 
     const saveEdit = async () =>{
-        await editData(jobOfferTopMore, setEditJobOfferTopMore, `/company/joboffer/top/${offerid}`, 'top')
+        await editData(jobOfferTopMore, setEditJobOfferTopMore, `/company/joboffer/topmore/${offerid}`, 'topmore')
     }
     const formatRemainingTime = (deadline: string) => {
         const deadlineDate = new Date(deadline);
@@ -98,21 +98,39 @@ interface JobOfferTopMoreMoreProps {
       return(
         <div>
             <hr></hr>
-            <p className="card-text">
-                Application Deadline: {jobOfferTopMore?.job_application_deadline
-                ? formatRemainingTime(jobOfferTopMore.job_application_deadline)
-                : 'No deadline specified'}
-            </p>
-            <p>{jobOfferTopMore?.job_location}</p>
-            <p>{jobOfferTopMore?.work_schedule}</p>
-            <p>{jobOfferTopMore?.recruitment_type}</p>
-            <p>{jobOfferTopMore?.position_level}</p>
-            <p>{jobOfferTopMore?.contract_type}</p>
-            <p>{jobOfferTopMore?.work_mode}</p>
-            <p>{jobOfferTopMore?.vacancy}</p>
-            <hr></hr>
-            <p>{jobOfferTopMore?.specialization}</p>
-
+            <div className='profile-svgs d-flex justify-content-end my-1'>
+                <div className='profile-svgs d-flex my-1' onClick={editJobOffer}>
+                    <Icon className='text-white' path={mdiPencil} size={1.25} />
+                </div>
+            </div>
+            {!editJobOfferTopMore && 
+            <>
+                <div className="row row-cols-2">
+                    <p className="card-text">
+                        Application Deadline: {jobOfferTopMore?.job_application_deadline
+                        ? formatRemainingTime(jobOfferTopMore.job_application_deadline)
+                        : 'No deadline specified'}
+                    </p>
+                    <p>{jobOfferTopMore?.job_location}</p>
+                    <p>{jobOfferTopMore?.work_schedule}</p>
+                    <p>{jobOfferTopMore?.recruitment_type}</p>
+                    <p>{jobOfferTopMore?.position_level}</p>
+                    <p>{jobOfferTopMore?.contract_type}</p>
+                    <p>{jobOfferTopMore?.work_mode}</p>
+                    <p>{jobOfferTopMore?.vacancy}</p>
+                    
+                </div>
+                <div>
+                    <hr></hr>
+                    <p>{jobOfferTopMore?.specialization}</p>
+                </div>
+            </>
+                    }
+            {editJobOfferTopMore &&
+                <div>
+                    <p>form</p>
+                </div>
+            }
             
         </div>
     )

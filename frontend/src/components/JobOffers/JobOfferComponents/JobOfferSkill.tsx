@@ -113,7 +113,7 @@ interface JobOfferSkillProps {
                                 <div className='mb-3'>
                                     
                                     <div className='row align-items-end prevHidden mt-2'>
-                                        <p>Enter required skills <b>one at a time</b> by approving with the "Add" button.</p>
+                                    <p>Enter skills <b>one at a time</b> and categorize them as "Required" or "Optional" using the buttons.</p>
                                         <div className='col'>
                                             <label htmlFor={`skill`} className='form-label'>
                                                 Skill:
@@ -143,6 +143,7 @@ interface JobOfferSkillProps {
                         </form>
                     </div>
                     <div className=''>
+                        {/* checks if at least one element */}
                     {jobOfferSkill.some(skill => skill.skill_type === 'required') && (
                         <>
                             <p className="mt-2">Required</p>

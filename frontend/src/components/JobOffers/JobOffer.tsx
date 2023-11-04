@@ -11,6 +11,7 @@ import ErrorPage from '../ErrorPage';
 import JobOfferTop from "./JobOfferComponents/JobOfferTop";
 import ProfileAlert from "../profileComponents/ProfileAlert";
 import JobOfferSkill from "./JobOfferComponents/JobOfferSkill";
+import JobOfferTopMore from "./JobOfferComponents/JobOfferTopMore";
 
 // make mulitple interfaces for easier crud
 // should make one for immutable company data
@@ -33,12 +34,21 @@ export interface JobOfferTopData {
     salary_type: string;
     salary_currency: string;
 }
+export interface JobOfferTopMoreData{
+    job_application_deadline: string;
+    recruitment_type: string;
+    job_location: string;
+    job_type: string;
+}
+
 export interface JobOfferSkillData{
     id: number;
     skill: string;
     skill_type: string;
     offer_id: string | null;
 }
+
+
 interface JobOfferData {
     company: string;
     title: string;
@@ -72,6 +82,7 @@ export type JobOfferGetDataFunction =
   | UpdateFunction<JobOfferCompanyData>
   | UpdateFunction<JobOfferTopData>
   | ArrayUpdateFunction<JobOfferSkillData>
+  | UpdateFunction<JobOfferTopMoreData>
   | undefined;
   //UNIVERSAL PUT STATES
   //single data
@@ -79,6 +90,7 @@ export type JobOfferEditDataFunction =
     JobOfferTopData | null |
     JobOfferSkillData[] |
     JobOfferSkillData | null |
+    JobOfferTopMoreData | null |
     
     undefined;
 // multiple data
@@ -103,6 +115,7 @@ const JobOffer: React.FC = () =>{
     // Data for all components
     const [jobOfferCompany, setJobOfferCompany] = useState<JobOfferCompanyData| null>(null);
     const [jobOfferTop, setJobOfferTop] = useState<JobOfferTopData| null>(null);
+    const [jobOfferTopMore, setJobOfferTopMore] = useState<JobOfferTopMoreData| null>(null);
     const [jobOfferSkill, setJobOfferSkill] = useState<JobOfferSkillData[]>([]);
     
     // const [jobOffers, setJobOffers] = useState<JobOfferListingData| null>(null);
@@ -133,6 +146,7 @@ const JobOffer: React.FC = () =>{
     // To check if given form is in edit state
     const [editJobOfferTop, setEditJobOfferTop] = useState(false);
     const [editJobOfferSkill, setEditJobOfferSkill] = useState(false);
+    const [editJobOfferTopMore, setEditJobOfferTopMore] = useState(false);
 
 
 
@@ -441,6 +455,7 @@ const JobOffer: React.FC = () =>{
       await fetchDataAndUpdateProgress(setJobOfferCompany, `/company/joboffer/info/${offerid}`);
       await fetchDataAndUpdateProgress(setJobOfferTop, `/company/joboffer/top/${offerid}`);
       await fetchDataAndUpdateProgress(setJobOfferSkill, `/company/joboffer/skill/${offerid}`);
+      await fetchDataAndUpdateProgress(setJobOfferTopMore, `/company/joboffer/topmore/${offerid}`)
       setIsLoading(false);
       
     };
@@ -483,22 +498,38 @@ const JobOffer: React.FC = () =>{
                     <div className='justify-content-center'>
                         <div className="jo-background-image z-0 " style={{backgroundImage: `url(${jobOfferCompany?.background_image})`}}/>
                     </div>
-                        
-                    <JobOfferTop
-                      jobOfferCompany={jobOfferCompany}
-                      jobOfferTop={jobOfferTop}
-                      setJobOfferTop={setJobOfferTop}
-                      getData={getData}
-                      editData={editData}
-                      multipleErrors={multipleErrors}
-                      removeMultipleErrors={removeMultipleErrors}
-                      renderFieldErrorMultiple={renderFieldErrorMultiple}
-                      alertError={alertError}
-                      setAlertError={setAlertError}
-                      setEditJobOfferTop={setEditJobOfferTop}
-                      editJobOfferTop={editJobOfferTop}
-                      offerid={offerid}
+                    <div className="container shadow-lg bg-body-bg rounded-2 text-break mt-n5 z-1">
+                      <JobOfferTop
+                        jobOfferCompany={jobOfferCompany}
+                        jobOfferTop={jobOfferTop}
+                        setJobOfferTop={setJobOfferTop}
+                        getData={getData}
+                        editData={editData}
+                        multipleErrors={multipleErrors}
+                        removeMultipleErrors={removeMultipleErrors}
+                        renderFieldErrorMultiple={renderFieldErrorMultiple}
+                        alertError={alertError}
+                        setAlertError={setAlertError}
+                        setEditJobOfferTop={setEditJobOfferTop}
+                        editJobOfferTop={editJobOfferTop}
+                        offerid={offerid}
+                      />
+                      <JobOfferTopMore
+                        jobOfferTopMore={jobOfferTopMore}
+                        setJobOfferTopMore={setJobOfferTopMore}
+                        getData={getData}
+                        editData={editData}
+                        multipleErrors={multipleErrors}
+                        removeMultipleErrors={removeMultipleErrors}
+                        renderFieldErrorMultiple={renderFieldErrorMultiple}
+                        alertError={alertError}
+                        setAlertError={setAlertError}
+                        setEditJobOfferTopMore={setEditJobOfferTopMore}
+                        editJobOfferTopMore={editJobOfferTopMore}
+                        offerid={offerid}
                     />
+
+                    </div>
                     
                     <JobOfferSkill
                       jobOfferSkill={jobOfferSkill}

@@ -111,3 +111,14 @@ class JobOfferSkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOfferSkill
         fields = ["id", "skill", "skill_type"]
+
+class JobOfferTopMoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobOffer
+        fields = [
+            "job_application_deadline",
+            "recruitment_type",
+            "job_location",
+            "job_type",
+                    
+        ]

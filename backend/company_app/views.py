@@ -16,6 +16,7 @@ from .serializer import (
     JobListingsSerializer,
     JobOfferCompanySerializer,
     JobOfferTopSerializer,
+    JobOfferTopMoreSerializer,
     JobOfferSkillSerializer,
 
 )
@@ -177,6 +178,11 @@ class JobOfferTopView(BaseJobOfferView):
     queryset = JobOffer.objects.all()
     permission_classes = [IsAuthenticated]
 
+class JobOfferTopMoreView(BaseJobOfferView):
+    serializer_class = JobOfferTopMoreSerializer
+    queryset = JobOffer.objects.all()
+    permission_classes = [IsAuthenticated]
+
 
 class BaseJobOfferMultipleView(
     generics.GenericAPIView,
@@ -210,13 +216,13 @@ class BaseJobOfferMultipleView(
             return Response({"detail": "JobOffer not found"}, status=status.HTTP_404_NOT_FOUND)
         
     def get_queryset(self):
-        job_offer_id = self.kwargs.get("id")  # Assuming "id" corresponds to the job offer ID
+        job_offer_id = self.kwargs.get("id") 
         if job_offer_id:
             return self.queryset.filter(job_offer__id=job_offer_id)
-        # return self.queryset.all()  # If you want to retrieve all skills
+        # return self.queryset.all() 
 
     def get(self, request, *args, **kwargs):
-        # print(request.__dict__)
+        print(request.__dict__)
         queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
        
@@ -240,7 +246,7 @@ class BaseJobOfferMultipleView(
     
     def delete(self, request, *args, **kwargs):
         self.check_joboffer_owner(request)
-        skill_id = self.kwargs.get("del_id")  # Assuming "id" corresponds to the skill ID
+        skill_id = self.kwargs.get("del_id")
 
         try:
             instance = self.queryset.get(id=skill_id)

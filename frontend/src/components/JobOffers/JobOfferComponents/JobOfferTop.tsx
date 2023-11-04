@@ -7,7 +7,7 @@ import { mdiPencil } from '@mdi/js';
 import { Link } from "react-router-dom";
 
 
-interface JobOfferTopProps {
+export interface JobOfferTopProps {
     jobOfferCompany: JobOfferCompanyData | null;
     jobOfferTop: JobOfferTopData | null;
     setJobOfferTop: React.Dispatch<React.SetStateAction<JobOfferTopData | null>>;
@@ -75,7 +75,7 @@ const JobOfferTop : React.FC<JobOfferTopProps> = ({jobOfferCompany, jobOfferTop,
         await editData(jobOfferTop, setEditJobOfferTop, `/company/joboffer/top/${offerid}`, 'top')
     }
     return(
-        <div className="container shadow-lg bg-body-bg rounded-2 text-break mt-n5 z-1">
+        <>
             <div className='bg-black row mb-0 rounded-top-2'>
                 <p className='fs-3 fw-semibold text-white col mb-1'>TOP PART</p>
                 <div className='col-auto d-flex align-items-center previewHidden'>
@@ -195,12 +195,14 @@ const JobOfferTop : React.FC<JobOfferTopProps> = ({jobOfferCompany, jobOfferTop,
                     </div>
                     
                 </div>
+                
                     
                     
             </>
             }
+            
         </div>         
-    </div>
+    </>
     )
 }
 export default JobOfferTop;

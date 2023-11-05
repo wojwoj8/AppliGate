@@ -157,7 +157,7 @@ const JobOffer: React.FC = () =>{
     const [editJobOfferTop, setEditJobOfferTop] = useState(false);
     const [editJobOfferSkill, setEditJobOfferSkill] = useState(false);
     const [editJobOfferTopMore, setEditJobOfferTopMore] = useState(false);
-
+    const [editColors, setEditColors] = useState(false);
     // custom colors
     const [color, setColor] = useState('#ffffff');
     const [backColor, setBackColor] = useState('#ff0000');
@@ -558,6 +558,8 @@ const JobOffer: React.FC = () =>{
                         setColor={setColor}
                         backColor={backColor}
                         setBackColor={setBackColor}
+                        setEditColors={setEditColors}
+                        editColors={editColors}
                     />
 
                     </div>

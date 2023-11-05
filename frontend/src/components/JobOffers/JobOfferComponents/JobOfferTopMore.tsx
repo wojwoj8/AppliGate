@@ -3,11 +3,12 @@ import { JobOfferTopMoreData, JobOfferCompanyData } from "../JobOffer";
 import { JobOfferGetDataFunction, JobOfferEditDataFunction } from "../JobOffer";
 import { MultipleErrorResponse } from "../../Profile";
 import Icon from '@mdi/react';
-import { mdiPencil } from '@mdi/js';
+import { mdiPencil, mdiPalette } from '@mdi/js';
 import { Link } from "react-router-dom";
 import CustomColorPicker from "../../sharedComponents/ColorPicker";
 // @ts-ignore
 import { SketchPicker } from 'react-color';
+
 
 interface JobOfferTopMoreMoreProps {
     jobOfferTopMore: JobOfferTopMoreData | null;
@@ -34,12 +35,14 @@ interface JobOfferTopMoreMoreProps {
     setColor: React.Dispatch<React.SetStateAction<string>>;
     backColor: string;
     setBackColor: React.Dispatch<React.SetStateAction<string>>;
+    setEditColors: React.Dispatch<React.SetStateAction<boolean>>
+    editColors: boolean;
     }
 
     const JobOfferTopMoreMore: React.FC<JobOfferTopMoreMoreProps> = ({
     jobOfferTopMore, getData, editData, multipleErrors,
     removeMultipleErrors, renderFieldErrorMultiple, alertError, setAlertError, setEditJobOfferTopMore, editJobOfferTopMore,
-    setJobOfferTopMore, offerid, color, setColor, backColor, setBackColor
+    setJobOfferTopMore, offerid, color, setColor, backColor, setBackColor, setEditColors, editColors
       }) => {
 
 
@@ -78,8 +81,24 @@ interface JobOfferTopMoreMoreProps {
         getData(setJobOfferTopMore, `/company/joboffer/topmore/${offerid}`);
     }
 
+    const editColorsForm = () =>{
+        setEditColors(!editColors);
+        if(editColors === true){
+            // removeMultipleErrors('topmore', 0)
+            // getData(setJobOfferTopMore, `/company/joboffer/topmore/${offerid}`);
+        } 
+    }
+    const cancelEditColorsForm = () =>{
+        setEditColors(false);
+        // removeMultipleErrors('topmore', 0)
+        // getData(setJobOfferTopMore, `/company/joboffer/topmore/${offerid}`);
+    }
+
     const saveEdit = async () =>{
         await editData(jobOfferTopMore, setEditJobOfferTopMore, `/company/joboffer/topmore/${offerid}`, 'topmore')
+    }
+    const saveEditColors = async () =>{
+        // await editData(jobOfferTopMore, setEditJobOfferTopMore, `/company/joboffer/topmore/${offerid}`, 'topmore')
     }
     const formatRemainingTime = (deadline: string) => {
         const deadlineDate = new Date(deadline);
@@ -117,22 +136,38 @@ interface JobOfferTopMoreMoreProps {
       return(
         <div>
             <hr></hr>
-            <div className="d-flex row row-cols-md-auto justify-content-md-around">
-                <div className="d-flex flex-column align-items-center">
-                    <p>Main color:</p>
-                    <SketchPicker color={color} onChange={handleColorChange} />
-                </div>
-                <div className="d-flex flex-column align-items-center">
-                    <p>Background color:</p>
-                    <SketchPicker color={backColor} onChange={handleBackColorChange} />
-                </div>
-            </div>
-            <hr></hr>
+            
+            
             <div className='profile-svgs d-flex justify-content-end my-1'>
                 <div className='profile-svgs d-flex my-1' onClick={editJobOffer}>
                     <Icon className='text-white' path={mdiPencil} size={1.25} />
                 </div>
+                <div className='profile-svgs d-flex my-1' onClick={editColorsForm}>
+                    <Icon path={mdiPalette} size={1.25} />
+                </div>
             </div>
+
+            {editColors &&
+                <>
+                
+                <div className="d-flex row row-cols-md-auto justify-content-md-around">
+                    <div className="d-flex flex-column align-items-center">
+                        <p>Main color:</p>
+                        <SketchPicker color={color} onChange={handleColorChange} />
+                    </div>
+                    <div className="d-flex flex-column align-items-center">
+                        <p>Background color:</p>
+                        <SketchPicker color={backColor} onChange={handleBackColorChange} />
+                    </div>
+                </div>
+                <div className='text-center mb-1 mt-2'>
+                        <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={cancelEditColorsForm}>Cancel</button>
+                        <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveEditColors}>Save</button>
+                    </div>
+                <hr></hr>
+                </>
+            }
+
             {!editJobOfferTopMore && 
             <>
                 <div className="row gy-4 row-cols-md-2 d-flex align-items-center">

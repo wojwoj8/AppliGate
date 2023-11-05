@@ -51,7 +51,7 @@ class JobOffer(models.Model):
     job_responsibilities = models.TextField()
     job_requirements = models.TextField()
     job_published_at = models.DateTimeField(auto_now_add=True, blank=False)
-    job_application_deadline = models.DateTimeField(blank=False)
+    job_application_deadline = models.DateField(blank=False)
 
     # Recruitment Type: Remote, In-company, On-site, etc.
     recruitment_type = models.CharField(max_length=100, blank=True)

@@ -124,7 +124,14 @@ class JobOfferTopMoreSerializer(serializers.ModelSerializer):
             "contract_type",
             "vacancy",
             "work_mode",
-            "specialization",
+            "specialization",     
+        ]
+
+class JobOfferTopColorsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobOffer
+        fields = [
             "svg_color",
+            "background_color",
                     
         ]

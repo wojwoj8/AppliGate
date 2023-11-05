@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { JobOfferTopMoreData, JobOfferCompanyData } from "../JobOffer";
+import { JobOfferTopMoreData, JobOfferTopColorsData } from "../JobOffer";
 import { JobOfferGetDataFunction, JobOfferEditDataFunction } from "../JobOffer";
 import { MultipleErrorResponse } from "../../Profile";
 import Icon from '@mdi/react';
@@ -10,7 +10,7 @@ import CustomColorPicker from "../../sharedComponents/ColorPicker";
 import { SketchPicker } from 'react-color';
 
 
-interface JobOfferTopMoreMoreProps {
+interface JobOfferTopMoreProps {
     jobOfferTopMore: JobOfferTopMoreData | null;
     setJobOfferTopMore: React.Dispatch<React.SetStateAction<JobOfferTopMoreData | null>>;
     getData: (
@@ -37,21 +37,34 @@ interface JobOfferTopMoreMoreProps {
     setBackColor: React.Dispatch<React.SetStateAction<string>>;
     setEditColors: React.Dispatch<React.SetStateAction<boolean>>
     editColors: boolean;
+    setJobOfferTopColors: React.Dispatch<React.SetStateAction<JobOfferTopColorsData | null>>;
+    jobOfferTopColors: JobOfferTopColorsData | null;
     }
 
-    const JobOfferTopMoreMore: React.FC<JobOfferTopMoreMoreProps> = ({
+    const JobOfferTopMore: React.FC<JobOfferTopMoreProps> = ({
     jobOfferTopMore, getData, editData, multipleErrors,
     removeMultipleErrors, renderFieldErrorMultiple, alertError, setAlertError, setEditJobOfferTopMore, editJobOfferTopMore,
-    setJobOfferTopMore, offerid, color, setColor, backColor, setBackColor, setEditColors, editColors
+    setJobOfferTopMore, offerid, color, setColor, backColor, setBackColor, setEditColors, editColors, setJobOfferTopColors,
+    jobOfferTopColors
       }) => {
 
 
     
     const handleColorChange = (newColor: any) => {
         setColor(newColor.hex);
+        setJobOfferTopColors((prevColors) => ({
+            ...prevColors,
+            svg_color: newColor.hex,
+            background_color: prevColors ? prevColors.background_color : ''
+        }));
         };
     const handleBackColorChange = (newColor: any) => {
         setBackColor(newColor.hex);
+        setJobOfferTopColors((prevColors) => ({
+            ...prevColors,
+            background_color: newColor.hex,
+            svg_color: prevColors ? prevColors.svg_color : '' 
+        }));
         };
 
     const handleInputChange = (
@@ -84,21 +97,21 @@ interface JobOfferTopMoreMoreProps {
     const editColorsForm = () =>{
         setEditColors(!editColors);
         if(editColors === true){
-            // removeMultipleErrors('topmore', 0)
-            // getData(setJobOfferTopMore, `/company/joboffer/topmore/${offerid}`);
+            removeMultipleErrors('topcolors', 0)
+            getData(setJobOfferTopColors, `/company/joboffer/topcolors/${offerid}`);
         } 
     }
     const cancelEditColorsForm = () =>{
         setEditColors(false);
-        // removeMultipleErrors('topmore', 0)
-        // getData(setJobOfferTopMore, `/company/joboffer/topmore/${offerid}`);
+            removeMultipleErrors('topcolors', 0)
+            getData(setJobOfferTopColors, `/company/joboffer/topcolors/${offerid}`);
     }
 
     const saveEdit = async () =>{
         await editData(jobOfferTopMore, setEditJobOfferTopMore, `/company/joboffer/topmore/${offerid}`, 'topmore')
     }
     const saveEditColors = async () =>{
-        // await editData(jobOfferTopMore, setEditJobOfferTopMore, `/company/joboffer/topmore/${offerid}`, 'topmore')
+        await editData(jobOfferTopColors, setEditColors, `/company/joboffer/topcolors/${offerid}`, 'topcolors')
     }
     const formatRemainingTime = (deadline: string) => {
         const deadlineDate = new Date(deadline);
@@ -385,4 +398,4 @@ interface JobOfferTopMoreMoreProps {
         </div>
     )
 }
-export default JobOfferTopMoreMore;
+export default JobOfferTopMore;

@@ -18,6 +18,7 @@ from .serializer import (
     JobOfferTopSerializer,
     JobOfferTopMoreSerializer,
     JobOfferSkillSerializer,
+    JobOfferTopColorsSerializer,
 
 )
 from user_app.views import (
@@ -150,7 +151,7 @@ class BaseJobOfferView(
 
     def put(self, request, *args, **kwargs):
         self.check_joboffer_owner(request)
-        
+        print(request.data)
         id = self.kwargs.get("id")
         offer = self.get_object(id)
         serializer = self.serializer_class(offer, data=request.data)
@@ -180,6 +181,11 @@ class JobOfferTopView(BaseJobOfferView):
 
 class JobOfferTopMoreView(BaseJobOfferView):
     serializer_class = JobOfferTopMoreSerializer
+    queryset = JobOffer.objects.all()
+    permission_classes = [IsAuthenticated]
+
+class JobOfferTopColorsView(BaseJobOfferView):
+    serializer_class = JobOfferTopColorsSerializer
     queryset = JobOffer.objects.all()
     permission_classes = [IsAuthenticated]
 
@@ -222,7 +228,7 @@ class BaseJobOfferMultipleView(
         # return self.queryset.all() 
 
     def get(self, request, *args, **kwargs):
-        print(request.__dict__)
+        # print(request.__dict__)
         queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
        

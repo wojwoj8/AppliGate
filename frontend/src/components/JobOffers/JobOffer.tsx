@@ -45,10 +45,12 @@ export interface JobOfferTopMoreData{
     vacancy: string;
     work_mode: string;
     specialization: string;
+    
+}
+
+export interface JobOfferTopColorsData{
     svg_color: string;
     background_color: string;
-    
-
 }
 
 export interface JobOfferSkillData{
@@ -93,6 +95,7 @@ export type JobOfferGetDataFunction =
   | UpdateFunction<JobOfferTopData>
   | ArrayUpdateFunction<JobOfferSkillData>
   | UpdateFunction<JobOfferTopMoreData>
+  | UpdateFunction<JobOfferTopColorsData>
   | undefined;
   //UNIVERSAL PUT STATES
   //single data
@@ -101,7 +104,7 @@ export type JobOfferEditDataFunction =
     JobOfferSkillData[] |
     JobOfferSkillData | null |
     JobOfferTopMoreData | null |
-    
+    JobOfferTopColorsData | null |
     undefined;
 // multiple data
 export type JobOfferEditMultipleDataFunction = 
@@ -127,6 +130,7 @@ const JobOffer: React.FC = () =>{
     const [jobOfferTop, setJobOfferTop] = useState<JobOfferTopData| null>(null);
     const [jobOfferTopMore, setJobOfferTopMore] = useState<JobOfferTopMoreData| null>(null);
     const [jobOfferSkill, setJobOfferSkill] = useState<JobOfferSkillData[]>([]);
+    const [jobOfferTopColors, setJobOfferTopColors] = useState<JobOfferTopColorsData| null>(null);
     
     // const [jobOffers, setJobOffers] = useState<JobOfferListingData| null>(null);
     
@@ -473,22 +477,27 @@ const JobOffer: React.FC = () =>{
       await fetchDataAndUpdateProgress(setJobOfferTop, `/company/joboffer/top/${offerid}`);
       await fetchDataAndUpdateProgress(setJobOfferSkill, `/company/joboffer/skill/${offerid}`);
       await fetchDataAndUpdateProgress(setJobOfferTopMore, `/company/joboffer/topmore/${offerid}`)
+      await fetchDataAndUpdateProgress(setJobOfferTopColors, `/company/joboffer/topcolors/${offerid}`)
+      
       setIsLoading(false);
       
     };
     fetchData(); // Execute the data fetching function
+    
+
     
   }, [offerid]);
 
   // works like useEffect but after rendering
   useLayoutEffect(() => {
     if (!isLoading) {
+      if (jobOfferTopColors){
+        setColor(jobOfferTopColors?.svg_color)
+        setBackColor(jobOfferTopColors?.background_color)
+        // console.log(jobOfferTopColors?.svg_color)
+      }
       
       handleNotOwnedJobOffer();
-
-      if (jobOfferTopMore){
-        setColor(jobOfferTopMore?.svg_color)
-      }
 
     }
   }, [isLoading]);
@@ -499,6 +508,7 @@ const JobOffer: React.FC = () =>{
     if (error){
         return <ErrorPage axiosError={error} />
     }
+
     
     // Job offer - will work as creator and view
     return(
@@ -560,6 +570,8 @@ const JobOffer: React.FC = () =>{
                         setBackColor={setBackColor}
                         setEditColors={setEditColors}
                         editColors={editColors}
+                        setJobOfferTopColors={setJobOfferTopColors}
+                        jobOfferTopColors={jobOfferTopColors}
                     />
 
                     </div>

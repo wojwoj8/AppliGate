@@ -40,6 +40,10 @@ urlpatterns = [
     path("company/joboffer/top/<int:id>", views.JobOfferTopView.as_view(), name="JobOfferTopDataId"),
     path("company/joboffer/topmore", views.JobOfferTopMoreView.as_view(), name="JobOfferTopMoreData"),
     path("company/joboffer/topmore/<int:id>", views.JobOfferTopMoreView.as_view(), name="JobOfferTopMoreDataId"),
+
+    path("company/joboffer/topcolors", views.JobOfferTopColorsView.as_view(), name="JobOfferTopColorsData"),
+    path("company/joboffer/topcolors/<int:id>", views.JobOfferTopColorsView.as_view(), name="JobOfferTopColorsDataId"),
+    
     path("company/joboffer/skill", views.JobOfferSkillView.as_view(), name="JobOfferskillsData"),
     path("company/joboffer/skill/<int:id>", views.JobOfferSkillView.as_view(), name="JobOfferskillsDataId"),
     path("company/joboffer/skill/delete/<int:del_id>", views.JobOfferSkillView.as_view(), name="JobOfferskillsDataId"),

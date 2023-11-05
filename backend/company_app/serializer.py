@@ -125,5 +125,6 @@ class JobOfferTopMoreSerializer(serializers.ModelSerializer):
             "vacancy",
             "work_mode",
             "specialization",
+            "svg_color",
                     
         ]

@@ -1,8 +1,15 @@
 from django.db import models
 from user_app.models import User
-
+from django.core.validators import RegexValidator
 # def profile_image_upload_path(instance, filename):
 #     return f"user_profiles/profile_{instance.id}.{filename.split('.')[-1]}"
+
+
+# regular expression pattern to validate a hexadecimal color code
+hex_color_validator = RegexValidator(
+    regex=r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
+    message='Enter a valid hexadecimal color code. (e.g. #RRGGBB or #RGB)',
+)
 
 # Create your models here.
 # For profile part
@@ -27,6 +34,9 @@ class JobOffer(models.Model):
     vacancy = models.CharField(max_length=50, blank=True)
     # remote, stationary etc
     work_mode = models.CharField(max_length=100, blank=True)
+
+    svg_color = models.CharField(max_length=7, blank=True, validators=[hex_color_validator], default='#ffffff')
+    background_color = models.CharField(max_length=7, blank=True, validators=[hex_color_validator], default='#ff0000')
 
     specialization = models.CharField(max_length=100, blank=False)
 

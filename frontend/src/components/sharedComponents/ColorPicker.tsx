@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
+// @ts-ignore
+import { SketchPicker } from 'react-color';
 
+function CustomColorPicker() {
+  const [color, setColor] = useState('#000000');
 
-const ColorPicker = () => {
-  const [selectedColor, setSelectedColor] = useState('#000000');
-
-  const handleColorChange = (color: any) => {
-    setSelectedColor(color.hex);
+  const handleColorChange = (newColor: any) => {
+    setColor(newColor.hex);
   };
 
   return (
     <div>
-      <h2>Color Picker</h2>
-      {/* <SketchPicker color={selectedColor} onChange={handleColorChange} /> */}
-      <p>Selected Color: {selectedColor}</p>
+      <SketchPicker color={color} onChange={handleColorChange} />
     </div>
   );
 }
 
-export default ColorPicker;
+export default CustomColorPicker;

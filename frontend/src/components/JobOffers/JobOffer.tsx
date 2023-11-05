@@ -45,6 +45,8 @@ export interface JobOfferTopMoreData{
     vacancy: string;
     work_mode: string;
     specialization: string;
+    svg_color: string;
+    background_color: string;
     
 
 }
@@ -156,6 +158,9 @@ const JobOffer: React.FC = () =>{
     const [editJobOfferSkill, setEditJobOfferSkill] = useState(false);
     const [editJobOfferTopMore, setEditJobOfferTopMore] = useState(false);
 
+    // custom colors
+    const [color, setColor] = useState('#ffffff');
+    const [backColor, setBackColor] = useState('#ff0000');
 
 
     // Universal method for rendering errors under given inputs, gets
@@ -478,7 +483,13 @@ const JobOffer: React.FC = () =>{
   // works like useEffect but after rendering
   useLayoutEffect(() => {
     if (!isLoading) {
+      
       handleNotOwnedJobOffer();
+
+      if (jobOfferTopMore){
+        setColor(jobOfferTopMore?.svg_color)
+      }
+
     }
   }, [isLoading]);
     
@@ -525,6 +536,10 @@ const JobOffer: React.FC = () =>{
                         setEditJobOfferTop={setEditJobOfferTop}
                         editJobOfferTop={editJobOfferTop}
                         offerid={offerid}
+                        color={color}
+                        setColor={setColor}
+                        backColor={backColor}
+                        setBackColor={setBackColor}
                       />
                       <JobOfferTopMore
                         jobOfferTopMore={jobOfferTopMore}
@@ -539,6 +554,10 @@ const JobOffer: React.FC = () =>{
                         setEditJobOfferTopMore={setEditJobOfferTopMore}
                         editJobOfferTopMore={editJobOfferTopMore}
                         offerid={offerid}
+                        color={color}
+                        setColor={setColor}
+                        backColor={backColor}
+                        setBackColor={setBackColor}
                     />
 
                     </div>

@@ -376,16 +376,20 @@ const JobOffer: React.FC = () =>{
 
 
       // Handle hide interactive elements on cv for preview mode
-    const handleHide = async () =>{
+    const handleHide = async () => {
       const pageElement = document.getElementById('page');
       if (pageElement) {
         const elements = pageElement.querySelectorAll('button, svg, .profile-svgs, .prevHidden');
-        
+    
         elements.forEach((element) => {
-          if (previewMode) {
-            element.classList.add('d-none');
+          if (element.classList.contains('not-hidden')) {
+            // Do nothing, don't add or remove the d-none class
           } else {
-            element.classList.remove('d-none');
+            if (previewMode) {
+              element.classList.add('d-none');
+            } else {
+              element.classList.remove('d-none');
+            }
           }
         });
       }

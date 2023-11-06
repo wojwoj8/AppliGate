@@ -172,9 +172,7 @@ const JobOffer: React.FC = () =>{
     const [editJobOfferSkill, setEditJobOfferSkill] = useState(false);
     const [editJobOfferTopMore, setEditJobOfferTopMore] = useState(false);
     const [editColors, setEditColors] = useState(false);
-    // custom colors
-    const [color, setColor] = useState('#ffffff');
-    const [backColor, setBackColor] = useState('#ff0000');
+
 
 
     // Universal method for rendering errors under given inputs, gets
@@ -502,11 +500,6 @@ const JobOffer: React.FC = () =>{
   // works like useEffect but after rendering
   useLayoutEffect(() => {
     if (!isLoading) {
-      if (jobOfferTopColors){
-        setColor(jobOfferTopColors?.svg_color)
-        setBackColor(jobOfferTopColors?.background_color)
-        // console.log(jobOfferTopColors?.svg_color)
-      }
       
       handleNotOwnedJobOffer();
 
@@ -557,10 +550,7 @@ const JobOffer: React.FC = () =>{
                         setEditJobOfferTop={setEditJobOfferTop}
                         editJobOfferTop={editJobOfferTop}
                         offerid={offerid}
-                        color={color}
-                        setColor={setColor}
-                        backColor={backColor}
-                        setBackColor={setBackColor}
+                        jobOfferTopColors={jobOfferTopColors}
                       />
                       <JobOfferTopMore
                         jobOfferTopMore={jobOfferTopMore}
@@ -575,10 +565,6 @@ const JobOffer: React.FC = () =>{
                         setEditJobOfferTopMore={setEditJobOfferTopMore}
                         editJobOfferTopMore={editJobOfferTopMore}
                         offerid={offerid}
-                        color={color}
-                        setColor={setColor}
-                        backColor={backColor}
-                        setBackColor={setBackColor}
                         setEditColors={setEditColors}
                         editColors={editColors}
                         setJobOfferTopColors={setJobOfferTopColors}

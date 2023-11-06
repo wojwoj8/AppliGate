@@ -51,7 +51,7 @@ urlpatterns = [
     path("company/joboffer/jobofferstatus", views.JobOfferStatusView.as_view(), name="JobOfferStatuData"),
     path("company/joboffer/jobofferstatus/<int:id>", views.JobOfferStatusView.as_view(), name="JobOfferStatuDataId"),
 
-    
+    path("company/joboffer/deleteoffer/<int:pk>", views.JobOfferDeleteOfferView.as_view(), name="JobOfferDeleteOffer"),
     # path("company/jobofferlistings/<str:username>/", views.JobOfferListing.as_view(), name="jobOfferListingIsername"),
     # list job offers created by company user
     path("company/myJobOffers", views.MyJobOffersListingView.as_view(), name="myJobOffers"),

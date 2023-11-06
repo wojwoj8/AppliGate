@@ -84,36 +84,21 @@ class MyJobOffersListingView(generics.ListAPIView):
         serializer = self.serializer_class(job_offers, many=True)
         return Response(serializer.data)
 
-# class JobOfferSkill(generics.ListAPIView):
-#     permission_classes = [IsAuthenticated]
-#     serializer_class = JobListingsSerializer
+class JobOfferDeleteOfferView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = JobOffer.objects.all()
 
-#     def get(self, request, *args, **kwargs):
-#         queryset = JobOffer.objects.filter(company=self.request.user)
-#         job_offers = list(queryset)  # Convert the queryset to a list of instances
-#         print(job_offers)
-#         serializer = self.serializer_class(job_offers, many=True)
-#         return Response(serializer.data)
+    def check_joboffer_owner(self, request, instance):
+        owner_id = instance.company.id
+        if request.user.id != owner_id:
+            raise PermissionDenied("You do not have permission to perform this action.")
+        elif JobOffer.DoesNotExist:
+            return Response({"detail": "JobOffer not found"}, status=status.HTTP_404_NOT_FOUND)
 
+    def perform_destroy(self, instance):
+        self.check_joboffer_owner(self.request, instance)
+        instance.delete()
 
-
-# class JobOfferView(
-#     generics.GenericAPIView,
-#     mixins.ListModelMixin,
-#     mixins.CreateModelMixin,
-#     mixins.UpdateModelMixin,
-#     mixins.DestroyModelMixin,
-# ):
-#     permission_classes = [IsAuthenticated]
-#     serializer_class = None
-
-#     def get(self, request, *args, **kwargs):
-#         id = self.kwargs.get("id")
-#         offer = get_object_or_404(JobOffer, id=id)
-#         print(offer)
-        
-#         serializer = JobOfferCompanySerializer(offer, many=False)
-#         return Response(serializer.data)
     
 class BaseJobOfferView(
     generics.GenericAPIView,
@@ -158,9 +143,6 @@ class BaseJobOfferView(
         serializer = self.get_serializer(offer)
         return Response(serializer.data)
 
-    
-
-    
     def get_serializer(self, instance):
         if self.serializer_class:
             return self.serializer_class(instance, many=False)

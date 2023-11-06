@@ -34,11 +34,6 @@ export interface JobOfferTopProps {
 
 
 
-
-
-
-
-
 const JobOfferTop : React.FC<JobOfferTopProps> = ({jobOfferCompany, jobOfferTop, getData, editData, multipleErrors,
     removeMultipleErrors, renderFieldErrorMultiple, alertError, setAlertError, setEditJobOfferTop, editJobOfferTop,
     setJobOfferTop, offerid, jobOfferTopColors
@@ -118,10 +113,10 @@ const JobOfferTop : React.FC<JobOfferTopProps> = ({jobOfferCompany, jobOfferTop,
                 </div>
                 <div className={"col-md-auto row d-flex align-items-center align-items-baseline flex-column me-md-1 "}>
                     
-                    <div className="card mt-2">
-                        <div className="row rounded-3" style={{background: jobOfferTopColors?.background_color}}>
-                            <div className="col-auto d-flex align-items-center p-0">
-                            <svg className="not-hidden" width="48" height="48" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <div className="mt-2">
+                        <div className="row rounded-3 p-2" style={{background: jobOfferTopColors?.background_color}}>
+                            <div className="col-auto d-flex align-items-center ps-0">
+                            <svg className="not-hidden pe-2 " width="48" height="48" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path fill={`${jobOfferTopColors?.svg_color}`} d="M12 12.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7ZM10.5 16a1.5 1.5 0 1 1 3 0a1.5 1.5 0 0 1-3 0Z"/>
                                 <path fill={`${jobOfferTopColors?.svg_color}`} d="M17.526 5.116L14.347.659L2.658 9.997L2.01 9.99V10H1.5v12h21V10h-.962l-1.914-5.599l-2.098.715ZM19.425 10H9.397l7.469-2.546l1.522-.487L19.425 10ZM15.55 5.79L7.84 8.418l6.106-4.878l1.604 2.25ZM3.5 18.169v-4.34A3.008 3.008 0 0 0 5.33 12h13.34a3.009 3.009 0 0 0 1.83 1.83v4.34A3.009 3.009 0 0 0 18.67 20H5.332A3.01 3.01 0 0 0 3.5 18.169Z"/>
                             </svg>

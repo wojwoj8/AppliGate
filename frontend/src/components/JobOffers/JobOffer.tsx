@@ -126,9 +126,11 @@ const initialMultipleErrors: MultipleErrorResponse = {
     salary: {},
   };
 
-  
+  interface JobOfferProps {
+    setGlobalAlertError: (error: string) => void;
+  }
     
-const JobOffer: React.FC = () =>{
+  const JobOffer: React.FC<JobOfferProps> = ({ setGlobalAlertError }) => {
     const params = useParams();
     const offerid = params['offerid'];
    
@@ -442,7 +444,11 @@ const JobOffer: React.FC = () =>{
       if (user.username !== jobOfferCompany?.username){
         console.log(elements)
         elements.forEach((element) =>{
+          if (element.classList.contains('not-hidden')) {
+            // Do nothing, don't add or remove the d-none class
+          } else {
           element.remove();
+          }
         });
         Array.from(profStatus).forEach((element) => {
           element.remove();
@@ -588,6 +594,7 @@ const JobOffer: React.FC = () =>{
                       deleteData={deleteData}
                       previewMode={previewMode}
                       offerid={offerid}
+                      jobOfferTopColors={jobOfferTopColors}
                     />
                     <JobOfferStatus
                       jobOfferStatus={jobOfferStatus}
@@ -597,6 +604,9 @@ const JobOffer: React.FC = () =>{
                       alertError={alertError}
                       setAlertError={setAlertError}
                       offerid={offerid}
+                      error={error}
+                      setError={setError}
+                      setGlobalAlertError={setGlobalAlertError}
                     />
                   </>
                 

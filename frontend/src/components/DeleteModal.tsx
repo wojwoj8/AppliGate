@@ -9,7 +9,7 @@ interface DeleteModalProps {
   deleteName: string;
 }
 
-const DeleteModalProps: React.FC<DeleteModalProps> = ({ id, onDelete, message, name, deleteName }) => {
+const DeleteModal: React.FC<DeleteModalProps> = ({ id, onDelete, message, name, deleteName }) => {
      const sanitizedId = id.replace(/\s+/g, '-').toLowerCase();
   return (
     <>
@@ -37,4 +37,4 @@ const DeleteModalProps: React.FC<DeleteModalProps> = ({ id, onDelete, message, n
   );
 }
 
-export default DeleteModalProps;
+export default DeleteModal;

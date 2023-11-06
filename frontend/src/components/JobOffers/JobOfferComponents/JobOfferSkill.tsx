@@ -1,5 +1,5 @@
 import React from "react";
-import { JobOfferSkillData } from "../JobOffer";
+import { JobOfferSkillData, JobOfferTopColorsData } from "../JobOffer";
 import { JobOfferGetDataFunction, JobOfferEditDataFunction , JobOfferEditMultipleDataFunction } from "../JobOffer";
 import { MultipleErrorResponse } from "../../Profile";
 import Icon from '@mdi/react';
@@ -38,6 +38,7 @@ interface JobOfferSkillProps {
         ) => Promise<void>;
     offerid: string;
     previewMode: boolean;
+    jobOfferTopColors: JobOfferTopColorsData | null;
     }
 
     const JobOfferSkill: React.FC<JobOfferSkillProps> = ({
@@ -54,7 +55,8 @@ interface JobOfferSkillProps {
         sendMultipleData,
         deleteData,
         offerid,
-        previewMode
+        previewMode,
+        jobOfferTopColors,
       }) => {
 
 
@@ -152,7 +154,7 @@ interface JobOfferSkillProps {
                                     .filter(jobOfferSkill => jobOfferSkill.skill_type === 'required')
                                     .map((jobOfferSkill, index) => (
                                         <div key={index} className='col-auto p-0'>
-                                            <div className='profile-skill border border-1 text-white bg-black rounded-2 p-1 px-2 d-flex align-items-center'>
+                                            <div className='profile-skill text-white bg-black rounded-4 p-1 px-3 d-flex align-items-center'>
                                                 <p className='mb-0 '>{jobOfferSkill?.skill || ''}
                                                     <svg
                                                         height="0.75rem"
@@ -179,13 +181,14 @@ interface JobOfferSkillProps {
                     )}
                     {jobOfferSkill.some(skill => skill.skill_type === 'optional') && (
                         <>
+                            <hr></hr>
                             <p className="mt-2">Nice to have</p>
                             <div className='row flex mb-3 row-gap-2 column-gap-3 container'>
                                 {jobOfferSkill
                                     .filter(jobOfferSkill => jobOfferSkill.skill_type === 'optional')
                                     .map((jobOfferSkill, index) => (
                                         <div key={index} className='col-auto p-0'>
-                                            <div className='profile-skill border border-1 text-white bg-black rounded-2 p-1 px-2 d-flex align-items-center'>
+                                            <div className='profile-skill text-white bg-black rounded-4 p-1 px-3 d-flex align-items-center'>
                                                 <p className='mb-0 '>{jobOfferSkill?.skill || ''}
                                                     <svg
                                                         height="0.75rem"

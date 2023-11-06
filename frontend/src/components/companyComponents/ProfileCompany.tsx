@@ -477,13 +477,13 @@ export interface ProfileCompanyMainData{
               });
             }
               getData(setData, `${endpoint}`);
-              setAlertError('Data deleted successfully');
+              setAlertError('Data deleted successfully success');
         }catch (error: any) {
           if (error.response && error.response.status === 401) {
             // Unauthorized - Logout the user
             logoutUser();
           }
-            setAlertError('Something went wrong');
+            setAlertError('Something went wrong error');
   
             console.log(error);
           }
@@ -541,7 +541,7 @@ export interface ProfileCompanyMainData{
       const handlePreviewMode = () => {
         let forms = document.querySelectorAll('form');
         if (forms.length > 2){
-          setAlertError('Close all forms in order to show preview');
+          setAlertError('Close all forms in order to show preview error');
           return false;
         }
         else{
@@ -581,7 +581,7 @@ export interface ProfileCompanyMainData{
     const handleCopy = () => {
       let currentURL = window.location.href;
       navigator.clipboard.writeText(currentURL);
-      setAlertError('Profile link coppied successfully');
+      setAlertError('Profile link coppied successfully success');
     };
   
     // For fetching data

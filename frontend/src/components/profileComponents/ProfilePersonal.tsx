@@ -80,9 +80,9 @@ setPersonal, setAlertError, alertError, username}) => {
             },
         });
         // console.log('Image uploaded successfully');
-        setAlertError('Image uploaded successfully')
+        setAlertError('Image uploaded successfully success')
         } catch (error) {
-        setAlertError('Something went wrong')
+        setAlertError('Something went wrong error')
         console.error('Error uploading image:', error);
         }
         getData(setPersonal, '/profile');
@@ -102,9 +102,9 @@ setPersonal, setAlertError, alertError, username}) => {
         });
     
         // console.log('Image removed successfully');
-        setAlertError('Image removed successfully')
+        setAlertError('Image removed successfully success')
         } catch (error) {
-        setAlertError('Something went wrong')
+        setAlertError('Something went wrong error')
         console.error('Error removing image:', error);
         }
         getData(setPersonal, '/profile');

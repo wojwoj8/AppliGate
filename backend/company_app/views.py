@@ -19,6 +19,7 @@ from .serializer import (
     JobOfferTopMoreSerializer,
     JobOfferSkillSerializer,
     JobOfferTopColorsSerializer,
+    JobOfferStatusSerializer,
 
 )
 from user_app.views import (
@@ -62,11 +63,13 @@ class ProfileCompanyView(BaseProfileUpdateView):
 
 class JobOfferListingView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = JobOffer.objects.all()  # Define the queryset here
     serializer_class = JobListingsSerializer
 
+    def get_queryset(self):
+        return JobOffer.objects.filter(job_offer_status=True)
+
     def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset()  # You can also remove this line since queryset is defined
+        queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
@@ -123,12 +126,6 @@ class BaseJobOfferView(
     serializer_class = None
     queryset = None
 
-    def get(self, request, *args, **kwargs):
-        id = self.kwargs.get("id")
-        offer = self.get_object(id)
-        serializer = self.get_serializer(offer)
-        return Response(serializer.data)
-
     # check if request.user is owner
     def check_joboffer_owner(self, request):
         id = self.kwargs.get("id")
@@ -140,8 +137,28 @@ class BaseJobOfferView(
         except JobOffer.DoesNotExist:
             return Response({"detail": "JobOffer not found"}, status=status.HTTP_404_NOT_FOUND)
 
+    def check_joboffer_status(self, request):
+        id = self.kwargs.get("id")
+        try:
+            job_offer = JobOffer.objects.get(id=id)
+            owner_id = job_offer.company.id
+            if request.user.id != owner_id and not job_offer.job_offer_status:
+                raise PermissionDenied("This JobOffer is not listed.")
+        except JobOffer.DoesNotExist:
+            return Response({"detail": "JobOffer not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        
     def get_object(self, id):
         return get_object_or_404(self.queryset, id=id)
+
+    def get(self, request, *args, **kwargs):
+        self.check_joboffer_status(request)
+        id = self.kwargs.get("id")
+        offer = self.get_object(id)
+        serializer = self.get_serializer(offer)
+        return Response(serializer.data)
+
+    
 
     
     def get_serializer(self, instance):
@@ -188,6 +205,13 @@ class JobOfferTopColorsView(BaseJobOfferView):
     serializer_class = JobOfferTopColorsSerializer
     queryset = JobOffer.objects.all()
     permission_classes = [IsAuthenticated]
+
+class JobOfferStatusView(BaseJobOfferView):
+    serializer_class = JobOfferStatusSerializer
+    queryset = JobOffer.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    
 
 
 class BaseJobOfferMultipleView(

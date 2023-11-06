@@ -85,7 +85,7 @@ setPersonal, setAlertError, alertError, username}) => {
             //   console.log("File size exceeds 500KB limit.")
             //   setSelectedImageFile(null);
             } else if (!allowedFormats.includes(selectedBackgroundFile.type)) {
-              setAlertError("Wrong file format");
+              setAlertError("Wrong file format error");
             //   console.log("Wrong file format.")
             //   setSelectedImageFile(null);
             } else {
@@ -110,9 +110,9 @@ setPersonal, setAlertError, alertError, username}) => {
             },
         });
         // console.log('Image uploaded successfully');
-        setAlertError('Image uploaded successfully')
+        setAlertError('Image uploaded successfully success')
         } catch (error) {
-        setAlertError('Something went wrong')
+        setAlertError('Something went wrong error')
         console.error('Error uploading image:', error);
         }
         getData(setPersonal, '/company/profile');
@@ -132,9 +132,9 @@ setPersonal, setAlertError, alertError, username}) => {
         });
     
         // console.log('Image removed successfully');
-        setAlertError('Image removed successfully')
+        setAlertError('Image removed successfully success')
         } catch (error) {
-        setAlertError('Something went wrong')
+        setAlertError('Something went wrong error')
         console.error('Error removing image:', error);
         }
         getData(setPersonal, '/company/profile');

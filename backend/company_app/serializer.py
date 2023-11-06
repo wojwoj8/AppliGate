@@ -135,3 +135,9 @@ class JobOfferTopColorsSerializer(serializers.ModelSerializer):
             "background_color",
                     
         ]
+class JobOfferStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobOffer
+        fields = [
+            'job_offer_status'    
+        ]

@@ -5,49 +5,55 @@ type Alert = {
 }
 
 
+const getErrorType = (error: string): "success" | "error" | "info" => {
+  // split the error message into words
+  const words = error.split(' ');
+  // get the last word in lowercase
+  const lastWord = words[words.length - 1].toLowerCase(); 
+
+  if (lastWord === "error") {
+    return "error";
+  } else if (lastWord === "info") {
+    return "info";
+  } else if (lastWord === "success") {
+    return "success";
+  } else {
+    return "error"; // Default to error
+  }
+};
+
 const ProfileAlert: React.FC<Alert> = ({ error, setError }) => {
-    const [show, setShow] = useState(true);
-    const [isSuccess, setIsSuccess] = useState(false);
-  
-    useEffect(() => {
-      // success error are static because I didn't expect that I will use that component
-      // in more places
-      if (error) {
-        if (error === 'Image uploaded successfully' || 
-        error === 'Image removed successfully' ||
-        error === 'Data changed successfully'||
-        error === 'Data deleted successfully'||
-        error === 'Password changed successfully' ||
-        error === 'Profile link coppied successfully' ||
-        error === 'Account deleted successfully' ||
-        error === 'Profile Changed to Public, now everone can see your CV! Copy profile link and share it' ||
-        error === 'Profile Changed to Private, nobody can see your CV'
-        ) {
-          setIsSuccess(true);
-        }
-        setShow(true);
-        const timer = setTimeout(() => {
-          setShow(false);
-          setError('');
-          setIsSuccess(false);
-        }, 5000);
-  
-        return () => clearTimeout(timer);
-      }
-    }, [error, setError]);
-  
-    return (
-      <div className="sticky-top">
-        {show && (
-          <div
-            className={`container alert ${isSuccess ? 'alert-success' : 'alert-danger'} fade show`}
-            role="alert"
-          >
-            <strong>{isSuccess ? 'Success!' : 'Error!'}</strong> {error}.
-          </div>
-        )}
-      </div>
-    );
-  };
+  const [show, setShow] = useState(true);
+  const errorType = getErrorType(error.toString());
+  let errMessage = error.split(' ');
+  errMessage.pop()
+  const errFinalMessage = errMessage.join(' ')
+  useEffect(() => {
+    if (error) {
+      // errMessage.pop()
+      // errMessage.join(' ')
+      console.log(errMessage)
+      setShow(true);
+      const timer = setTimeout(() => {
+        setShow(false);
+        setError('');
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error, setError]);
+
+  const alertClassName = errorType === "success" ? "alert-success" : "alert-danger";
+
+  return (
+    <div className="sticky-top">
+      {show && (
+        <div className={`container alert ${alertClassName} fade show`} role="alert">
+          <strong>{errorType === "success" ? 'Success!' : 'Error!'}</strong> {errFinalMessage}.
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default ProfileAlert;

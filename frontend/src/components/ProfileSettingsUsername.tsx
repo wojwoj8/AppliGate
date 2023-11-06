@@ -155,7 +155,7 @@ const ProfileSettingsUsername: React.FC<ProfileSettingsProps> = ({ setAlertError
             removeMultipleErrors(`${errorField}`, index)
             const data = response.data;
             if (response.status === 200) {
-                setAlertError('Data changed successfully')
+                setAlertError('Data changed successfully success')
                 setProfile(data);
                 logoutUser();
             }

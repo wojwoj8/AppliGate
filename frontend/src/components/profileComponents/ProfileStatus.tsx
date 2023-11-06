@@ -30,9 +30,9 @@ const ProfileStatus: React.FC<ProfileContactProps> = ({profileStatus, setProfile
             await setProfileStatus(updatedProfileStatus);
         
             if (updatedProfileStatus.public_profile === false) {
-              setAlertError('Profile Changed to Private, nobody can see your CV');
+              setAlertError('Profile Changed to Private, nobody can see your CV success');
             } else {
-              setAlertError('Profile Changed to Public, now everone can see your CV! Copy profile link and share it');
+              setAlertError('Profile Changed to Public, now everone can see your CV! Copy profile link and share it success');
             }
         
             editData(updatedProfileStatus, undefined, '/profile/profileStatus', 'profileStatus');

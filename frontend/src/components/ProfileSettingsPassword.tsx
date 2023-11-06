@@ -123,7 +123,7 @@ const ProfileSettingsPassword: React.FC<ProfileSettingsProps> = ({setAlertError}
             const data = response.data;
             // console.log(data)
             if (response.status === 200) {
-                setAlertError('Password changed successfully')
+                setAlertError('Password changed successfully success')
                 setProfile({
                   current_password: "",
                   new_password: "",

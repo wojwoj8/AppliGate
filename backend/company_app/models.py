@@ -60,6 +60,8 @@ class JobOffer(models.Model):
     job_benefits = models.TextField() 
     job_additional_information = models.TextField() 
 
+    job_offer_status = models.BooleanField(default=False)
+
     def __str__(self):
         return f"Company: {self.company} Position: {self.title}"
 

@@ -12,6 +12,7 @@ import JobOfferTop from "./JobOfferComponents/JobOfferTop";
 import ProfileAlert from "../profileComponents/ProfileAlert";
 import JobOfferSkill from "./JobOfferComponents/JobOfferSkill";
 import JobOfferTopMore from "./JobOfferComponents/JobOfferTopMore";
+import JobOfferStatus from "./JobOfferComponents/JobOfferStatus";
 
 // make mulitple interfaces for easier crud
 // should make one for immutable company data
@@ -60,6 +61,10 @@ export interface JobOfferSkillData{
     offer_id: string | null;
 }
 
+export interface JobOfferStatusData{
+  job_offer_status: boolean;
+}
+
 
 interface JobOfferData {
     company: string;
@@ -96,6 +101,7 @@ export type JobOfferGetDataFunction =
   | ArrayUpdateFunction<JobOfferSkillData>
   | UpdateFunction<JobOfferTopMoreData>
   | UpdateFunction<JobOfferTopColorsData>
+  | UpdateFunction<JobOfferStatusData>
   | undefined;
   //UNIVERSAL PUT STATES
   //single data
@@ -105,6 +111,7 @@ export type JobOfferEditDataFunction =
     JobOfferSkillData | null |
     JobOfferTopMoreData | null |
     JobOfferTopColorsData | null |
+    JobOfferStatusData | null |
     undefined;
 // multiple data
 export type JobOfferEditMultipleDataFunction = 
@@ -132,6 +139,9 @@ const JobOffer: React.FC = () =>{
     const [jobOfferSkill, setJobOfferSkill] = useState<JobOfferSkillData[]>([]);
     const [jobOfferTopColors, setJobOfferTopColors] = useState<JobOfferTopColorsData| null>(null);
     
+
+    const [jobOfferStatus, setJobOfferStatus] = useState<JobOfferStatusData | null>(null)
+
     // const [jobOffers, setJobOffers] = useState<JobOfferListingData| null>(null);
     
     // Only one data (like post only field)
@@ -345,13 +355,13 @@ const JobOffer: React.FC = () =>{
         });
       }
         getData(setData, `${endpoint}/${offerid}`);
-        setAlertError('Data deleted successfully');
+        setAlertError('Data deleted successfully success');
   }catch (error: any) {
     if (error.response && error.response.status === 401) {
       // Unauthorized - Logout the user
       logoutUser();
     }
-      setAlertError('Something went wrong');
+      setAlertError('Something went wrong error');
 
       console.log(error);
     }
@@ -412,7 +422,7 @@ const JobOffer: React.FC = () =>{
       let forms = document.querySelectorAll('form');
 
       if (forms.length >= 2){
-        setAlertError('Close all forms in order to show preview');
+        setAlertError('Close all forms in order to show preview error');
         return false;
       }
       else{
@@ -478,6 +488,7 @@ const JobOffer: React.FC = () =>{
       await fetchDataAndUpdateProgress(setJobOfferSkill, `/company/joboffer/skill/${offerid}`);
       await fetchDataAndUpdateProgress(setJobOfferTopMore, `/company/joboffer/topmore/${offerid}`)
       await fetchDataAndUpdateProgress(setJobOfferTopColors, `/company/joboffer/topcolors/${offerid}`)
+      await fetchDataAndUpdateProgress(setJobOfferStatus, `/company/joboffer/jobofferstatus/${offerid}`)
       
       setIsLoading(false);
       
@@ -590,6 +601,15 @@ const JobOffer: React.FC = () =>{
                       renderFieldErrorMultiple={renderFieldErrorMultiple}
                       deleteData={deleteData}
                       previewMode={previewMode}
+                      offerid={offerid}
+                    />
+                    <JobOfferStatus
+                      jobOfferStatus={jobOfferStatus}
+                      setJobOfferStatus={setJobOfferStatus}
+                      getData={getData}
+                      editData={editData}
+                      alertError={alertError}
+                      setAlertError={setAlertError}
                       offerid={offerid}
                     />
                   </>

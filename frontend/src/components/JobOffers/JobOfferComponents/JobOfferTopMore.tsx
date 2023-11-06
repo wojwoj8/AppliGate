@@ -153,7 +153,7 @@ interface JobOfferTopMoreProps {
             
             <div className='profile-svgs d-flex justify-content-end my-1'>
                 <div className='profile-svgs d-flex my-1' onClick={editJobOffer}>
-                    <Icon className='text-white' path={mdiPencil} size={1.25} />
+                    <Icon path={mdiPencil} size={1.25} />
                 </div>
                 <div className='profile-svgs d-flex my-1' onClick={editColorsForm}>
                     <Icon path={mdiPalette} size={1.25} />

@@ -112,7 +112,7 @@ const ProfileSettingsDelete: React.FC<ProfileSettingsProps> = ({ setAlertError }
             removeMultipleErrors(`${errorField}`, index)
             const data = response.data;
             if (response.status === 204) {
-                setAlertError('Account deleted successfully')
+                setAlertError('Account deleted successfully success')
                 logoutUser();
                
                 

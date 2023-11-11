@@ -101,12 +101,14 @@ const JobOfferTop : React.FC<JobOfferTopProps> = ({jobOfferCompany, jobOfferTop,
                             {jobOfferTop?.title || 'Title'}
                         </h2>
                         <p>
-                            <Link to={`/company/profile/${jobOfferCompany?.username}/`}>
-                                <b className='fs-5'>{jobOfferCompany?.first_name}</b>
-                            </Link>
+                            <b className='fs-5'>{jobOfferCompany?.first_name}</b>
+                            
                         </p>
+                        <Link to={`/company/profile/${jobOfferCompany?.username}/`} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                            About the company  
+                        </Link>
                         <div className='d-flex flex-column flex-md-row justify-content-md-between text-break my-md-2 my-1 mt-3'>
-                            <p>test</p>
+                            {/* <p>test</p> */}
                         </div>
                     </div>
                 

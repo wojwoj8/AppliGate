@@ -87,7 +87,7 @@ const JobOfferAbout: React.FC<JobOfferAboutProps> = ({
                     }
                    
                     {!editJobOfferAbout && jobOfferAbout?.job_about&&
-                     <div className='text-center row my-3'>
+                     <div className='text-center row my-3 pb-3'>
                         <div className='col-auto text-start'>
                             {jobOfferAbout?.job_about && <p style={{ whiteSpace: 'pre-wrap' }}>{jobOfferAbout?.job_about}</p>}
                         </div>

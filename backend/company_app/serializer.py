@@ -141,3 +141,9 @@ class JobOfferStatusSerializer(serializers.ModelSerializer):
         fields = [
             'job_offer_status'    
         ]
+class JobOfferAboutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobOffer
+        fields = [
+            'job_about'
+        ]

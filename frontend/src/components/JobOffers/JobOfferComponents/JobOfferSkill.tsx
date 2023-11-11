@@ -144,11 +144,11 @@ interface JobOfferSkillProps {
                             </div>
                         </form>
                     </div>
-                    <div className=''>
+                    <div className='pb-2'>
                         {/* checks if at least one element */}
                     {jobOfferSkill.some(skill => skill.skill_type === 'required') && (
                         <>
-                            <p className="mt-2">Required</p>
+                            <p className="mt-2 pb-1">Required</p>
                             <div className='row flex mb-3 row-gap-2 column-gap-3 container'>
                                 {jobOfferSkill
                                     .filter(jobOfferSkill => jobOfferSkill.skill_type === 'required')
@@ -179,10 +179,13 @@ interface JobOfferSkillProps {
                             </div>
                         </>
                     )}
+                    {jobOfferSkill.some(skill => skill.skill_type === 'optional') && jobOfferSkill.some(skill => skill.skill_type === 'required') 
+                    && <hr />}
+                    
                     {jobOfferSkill.some(skill => skill.skill_type === 'optional') && (
                         <>
-                            <hr></hr>
-                            <p className="mt-2">Nice to have</p>
+                            
+                            <p className="mt-2 pb-1">Nice to have</p>
                             <div className='row flex mb-3 row-gap-2 column-gap-3 container'>
                                 {jobOfferSkill
                                     .filter(jobOfferSkill => jobOfferSkill.skill_type === 'optional')

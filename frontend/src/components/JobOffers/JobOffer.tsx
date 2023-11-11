@@ -13,6 +13,7 @@ import ProfileAlert from "../profileComponents/ProfileAlert";
 import JobOfferSkill from "./JobOfferComponents/JobOfferSkill";
 import JobOfferTopMore from "./JobOfferComponents/JobOfferTopMore";
 import JobOfferStatus from "./JobOfferComponents/JobOfferStatus";
+import JobOfferAbout from "./JobOfferComponents/JobOfferAbout";
 
 // make mulitple interfaces for easier crud
 // should make one for immutable company data
@@ -65,6 +66,9 @@ export interface JobOfferStatusData{
   job_offer_status: boolean;
 }
 
+export interface JobOfferAboutData{
+  job_about: string;
+}
 
 interface JobOfferData {
     company: string;
@@ -102,6 +106,7 @@ export type JobOfferGetDataFunction =
   | UpdateFunction<JobOfferTopMoreData>
   | UpdateFunction<JobOfferTopColorsData>
   | UpdateFunction<JobOfferStatusData>
+  | UpdateFunction<JobOfferAboutData>
   | undefined;
   //UNIVERSAL PUT STATES
   //single data
@@ -112,6 +117,7 @@ export type JobOfferEditDataFunction =
     JobOfferTopMoreData | null |
     JobOfferTopColorsData | null |
     JobOfferStatusData | null |
+    JobOfferAboutData | null |
     undefined;
 // multiple data
 export type JobOfferEditMultipleDataFunction = 
@@ -140,6 +146,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
     const [jobOfferTopMore, setJobOfferTopMore] = useState<JobOfferTopMoreData| null>(null);
     const [jobOfferSkill, setJobOfferSkill] = useState<JobOfferSkillData[]>([]);
     const [jobOfferTopColors, setJobOfferTopColors] = useState<JobOfferTopColorsData| null>(null);
+    const [jobOfferAbout, setJobOfferAbout] = useState<JobOfferAboutData | null>(null);
     
 
     const [jobOfferStatus, setJobOfferStatus] = useState<JobOfferStatusData | null>(null)
@@ -174,6 +181,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
     const [editJobOfferSkill, setEditJobOfferSkill] = useState(false);
     const [editJobOfferTopMore, setEditJobOfferTopMore] = useState(false);
     const [editColors, setEditColors] = useState(false);
+    const [editJobOfferAbout, setEditJobOfferAbout] = useState(false);
 
 
 
@@ -493,6 +501,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
       await fetchDataAndUpdateProgress(setJobOfferTopMore, `/company/joboffer/topmore/${offerid}`)
       await fetchDataAndUpdateProgress(setJobOfferTopColors, `/company/joboffer/topcolors/${offerid}`)
       await fetchDataAndUpdateProgress(setJobOfferStatus, `/company/joboffer/jobofferstatus/${offerid}`)
+      await fetchDataAndUpdateProgress(setJobOfferAbout, `/company/joboffer/about/${offerid}`)
       
       setIsLoading(false);
       
@@ -596,6 +605,25 @@ const initialMultipleErrors: MultipleErrorResponse = {
                       offerid={offerid}
                       jobOfferTopColors={jobOfferTopColors}
                     />
+
+                    <JobOfferAbout
+                      jobOfferAbout={jobOfferAbout}
+                      setJobOfferAbout={setJobOfferAbout}
+                      editJobOfferAbout={editJobOfferAbout}
+                      setEditJobOfferAbout={setEditJobOfferAbout}
+                      getData={getData}
+                      editData={editData}
+                      offerid={offerid}
+                      multipleErrors={multipleErrors}
+                      removeMultipleErrors={removeMultipleErrors}
+                      renderFieldErrorMultiple={renderFieldErrorMultiple}
+                      // error={error}
+                      // setError={setError}
+                      // setGlobalAlertError={setGlobalAlertError}
+                    />
+
+
+
                     <JobOfferStatus
                       jobOfferStatus={jobOfferStatus}
                       setJobOfferStatus={setJobOfferStatus}
@@ -608,6 +636,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
                       setError={setError}
                       setGlobalAlertError={setGlobalAlertError}
                     />
+                    
                   </>
                 
                 ) :

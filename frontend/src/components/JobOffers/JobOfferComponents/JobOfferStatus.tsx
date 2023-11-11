@@ -4,7 +4,6 @@ import axios, { AxiosError } from "axios";
 import { useContext } from "react";
 import AuthContext from "../../../utils/AuthProvider";
 import DeleteModal from "../../DeleteModal";
-import ErrorPage from "../../ErrorPage";
 import { ErrorResponse } from "../../Profile";
 import { useNavigate } from "react-router-dom";
 

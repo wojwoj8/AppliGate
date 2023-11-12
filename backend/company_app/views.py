@@ -219,7 +219,7 @@ class BaseJobOfferMultipleView(
 
     def check_joboffer_owner(self, request):
         id = self.kwargs.get("id")
-        del_id = self.kwargs.get("del_id")
+        item_id = self.kwargs.get("item_id")
         
         #check if user is owner
         try:
@@ -229,8 +229,8 @@ class BaseJobOfferMultipleView(
                 if request.user.id != owner_id:
                     raise PermissionDenied("You do not have permission to perform this action.")
             # check if item owner is related to user
-            if del_id:
-                item = self.queryset.get(id=del_id)
+            if item_id:
+                item = self.queryset.get(id=item_id)
                 if item.job_offer.company != request.user:
                     raise PermissionDenied("You do not have permission to perform this action.")
                 
@@ -252,14 +252,14 @@ class BaseJobOfferMultipleView(
 
     def post(self, request, *args, **kwargs):
         self.check_joboffer_owner(request)
-        offer_id = request.data.get('offer_id')
+        offer_id = kwargs.get('id')
+        print(offer_id)
         
         try:
             job_offer = JobOffer.objects.get(id=offer_id)
         except JobOffer.DoesNotExist:
             return Response({'error': 'JobOffer not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        
         if request.data is None:
             serializer = self.serializer_class(data={})
         else:
@@ -272,15 +272,17 @@ class BaseJobOfferMultipleView(
     
     def put(self, request, *args, **kwargs):
         self.check_joboffer_owner(request)
-        offer_id = request.data.get('offer_id')
-        print(offer_id)
+        item_id = kwargs.get('item_id')
+        
+        
         try:
-            job_offer_item = JobOffer.objects.get(id=offer_id)
+            instance = self.queryset.get(id=item_id)
         except JobOffer.DoesNotExist:
+            print('test')
             return Response({'error': 'JobOffer not found'}, status=status.HTTP_404_NOT_FOUND)
         
 
-        serializer = self.serializer_class(job_offer_item, data=request.data)
+        serializer = self.serializer_class(instance, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -288,7 +290,7 @@ class BaseJobOfferMultipleView(
 
     def delete(self, request, *args, **kwargs):
         self.check_joboffer_owner(request)
-        skill_id = self.kwargs.get("del_id")
+        skill_id = self.kwargs.get("item_id")
 
         try:
             instance = self.queryset.get(id=skill_id)

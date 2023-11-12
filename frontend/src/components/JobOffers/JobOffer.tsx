@@ -239,6 +239,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
           path = `${endpoint}/${id}`
         }
         
+        
           try{
               const response = await axios.get(path, {
                   headers: {
@@ -362,7 +363,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
     ) =>{
       let path = `${endpoint}`
         if (id){  
-          path = `${endpoint}/${id}`
+          path = `${endpoint}/edit/${id}`
         }
     try{
         const response = await axios.put(path, state[index],  {
@@ -378,7 +379,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
             return newEdit;
             
           });
-          getData(setData, `${endpoint}`);
+          getData(setData, `${endpoint}/${offerid}`);
 
           removeMultipleErrors(`${errorField}`, index)
     }catch (error: any) {
@@ -583,7 +584,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
   useLayoutEffect(() => {
     if (!isLoading) {
       
-      handleNotOwnedJobOffer();
+       handleNotOwnedJobOffer();
 
     }
   }, [isLoading]);
@@ -689,21 +690,6 @@ const initialMultipleErrors: MultipleErrorResponse = {
                       // setGlobalAlertError={setGlobalAlertError}
                     />
 
-
-
-                    <JobOfferStatus
-                      jobOfferStatus={jobOfferStatus}
-                      setJobOfferStatus={setJobOfferStatus}
-                      getData={getData}
-                      editData={editData}
-                      alertError={alertError}
-                      setAlertError={setAlertError}
-                      offerid={offerid}
-                      error={error}
-                      setError={setError}
-                      setGlobalAlertError={setGlobalAlertError}
-                    />
-                    
                     <JobOfferResponsibility
                       jobOfferResponsibility={jobOfferResponsibility}
                       setJobOfferResponsibility={setJobOfferResponsibility}
@@ -721,7 +707,23 @@ const initialMultipleErrors: MultipleErrorResponse = {
                       renderFieldErrorMultiple={renderFieldErrorMultiple}
                       deleteData={deleteData}
                       offerid={offerid}
+                      jobOfferTopColors={jobOfferTopColors}
                     />
+
+                    <JobOfferStatus
+                      jobOfferStatus={jobOfferStatus}
+                      setJobOfferStatus={setJobOfferStatus}
+                      getData={getData}
+                      editData={editData}
+                      alertError={alertError}
+                      setAlertError={setAlertError}
+                      offerid={offerid}
+                      error={error}
+                      setError={setError}
+                      setGlobalAlertError={setGlobalAlertError}
+                      
+                    />
+
                   </>
                 
                 ) :

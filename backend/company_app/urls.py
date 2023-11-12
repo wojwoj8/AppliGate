@@ -53,6 +53,11 @@ urlpatterns = [
     path("company/joboffer/responsibility/edit/<int:item_id>", views.JobOfferResponsibilityView.as_view(), name="JobOfferResponsibilityDataId"),
     path("company/joboffer/responsibility/delete/<int:item_id>", views.JobOfferResponsibilityView.as_view(), name="JobOfferResponsibilityDataId"),
 
+    path("company/joboffer/requirement", views.JobOfferRequirementView.as_view(), name="JobOfferRequirementData"),
+    path("company/joboffer/requirement/<int:id>", views.JobOfferRequirementView.as_view(), name="JobOfferRequirementDataId"),
+    path("company/joboffer/requirement/edit/<int:item_id>", views.JobOfferRequirementView.as_view(), name="JobOfferRequirementDataId"),
+    path("company/joboffer/requirement/delete/<int:item_id>", views.JobOfferRequirementView.as_view(), name="JobOfferRequirementDataId"),
+
     path("company/joboffer/jobofferstatus", views.JobOfferStatusView.as_view(), name="JobOfferStatuData"),
     path("company/joboffer/jobofferstatus/<int:id>", views.JobOfferStatusView.as_view(), name="JobOfferStatuDataId"),
 

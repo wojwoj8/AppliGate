@@ -21,6 +21,7 @@ from .serializer import (
     JobOfferTopColorsSerializer,
     JobOfferStatusSerializer,
     JobOfferAboutSerializer,
+    JobOfferResponsibilitySerializer,
 
 )
 from user_app.views import (
@@ -38,7 +39,8 @@ from rest_framework.generics import get_object_or_404
 import os
 from .models import (
     JobOffer,
-    JobOfferSkill
+    JobOfferSkill,
+    JobOfferResponsibility,
 )
 
 
@@ -257,13 +259,33 @@ class BaseJobOfferMultipleView(
         except JobOffer.DoesNotExist:
             return Response({'error': 'JobOffer not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = self.serializer_class(data=request.data)
-    
+        
+        if request.data is None:
+            serializer = self.serializer_class(data={})
+        else:
+            serializer = self.serializer_class(data=request.data)
+            
         if serializer.is_valid():
             serializer.save(job_offer=job_offer)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    def put(self, request, *args, **kwargs):
+        self.check_joboffer_owner(request)
+        offer_id = request.data.get('offer_id')
+        print(offer_id)
+        try:
+            job_offer_item = JobOffer.objects.get(id=offer_id)
+        except JobOffer.DoesNotExist:
+            return Response({'error': 'JobOffer not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+
+        serializer = self.serializer_class(job_offer_item, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def delete(self, request, *args, **kwargs):
         self.check_joboffer_owner(request)
         skill_id = self.kwargs.get("del_id")
@@ -289,4 +311,9 @@ class BaseJobOfferMultipleView(
 class JobOfferSkillView(BaseJobOfferMultipleView):
     serializer_class = JobOfferSkillSerializer
     queryset = JobOfferSkill.objects.all()
+    permission_classes = [IsAuthenticated]
+
+class JobOfferResponsibilityView(BaseJobOfferMultipleView):
+    serializer_class = JobOfferResponsibilitySerializer
+    queryset = JobOfferResponsibility.objects.all()
     permission_classes = [IsAuthenticated]

@@ -104,9 +104,12 @@ const JobOfferTop : React.FC<JobOfferTopProps> = ({jobOfferCompany, jobOfferTop,
                             <b className='fs-5'>{jobOfferCompany?.first_name}</b>
                             
                         </p>
-                        <Link to={`/company/profile/${jobOfferCompany?.username}/`} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
-                            About the company  
-                        </Link>
+                        <p className="mb-0">
+                            <Link to={`/company/profile/${jobOfferCompany?.username}/`} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                About the company  
+                            </Link>
+                        </p>
+                        
                         <div className='d-flex flex-column flex-md-row justify-content-md-between text-break my-md-2 my-1 mt-3'>
                             {/* <p>test</p> */}
                         </div>

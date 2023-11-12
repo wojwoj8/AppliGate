@@ -94,7 +94,7 @@ const changeJobOfferStatus = async () => {
                 <button className='btn btn-primary w-100 rounded-4 mt-3' onClick={changeJobOfferStatus}>Set Profile to Listed</button>
             ) }
             <div className="d-grid py-2 text-center  ">
-                  <button 
+                <button 
                       type="submit" 
                       className={`btn btn-danger btn-block rounded-4`}
                   >
@@ -103,8 +103,8 @@ const changeJobOfferStatus = async () => {
                     message={'Do you want to delete that Job Offer?'} 
                     deleteName = {'Delete'}
                     onDelete={() => saveDelete()} />
-                  </button>      
-                </div>
+                </button>      
+            </div>
         </div>
     )
 }

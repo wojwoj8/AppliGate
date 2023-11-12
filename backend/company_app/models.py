@@ -48,7 +48,6 @@ class JobOffer(models.Model):
 
 
     job_about = models.TextField(blank=True)
-    job_responsibilities = models.TextField()
     job_requirements = models.TextField()
     job_published_at = models.DateTimeField(auto_now_add=True, blank=False)
     job_application_deadline = models.DateField(blank=False)
@@ -75,3 +74,9 @@ class JobOfferSkill(models.Model):
         ("optional", "Optional"),
     ]
     skill_type = models.CharField(max_length=40, choices=SKILL_TYPE_CHOICES)
+
+# Multiple
+class JobOfferResponsibility(models.Model):
+    job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE)
+    job_responsibility = models.CharField(max_length=300, blank=False)
+

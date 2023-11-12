@@ -1,10 +1,8 @@
 import React from "react";
 import { JobOfferSkillData, JobOfferTopColorsData } from "../JobOffer";
-import { JobOfferGetDataFunction, JobOfferEditDataFunction , JobOfferEditMultipleDataFunction } from "../JobOffer";
+import { JobOfferGetDataFunction, JobOfferEditDataFunction} from "../JobOffer";
 import { MultipleErrorResponse } from "../../Profile";
-import Icon from '@mdi/react';
-import { mdiPencil } from '@mdi/js';
-import { Link } from "react-router-dom";
+
 
 
 interface JobOfferSkillProps {

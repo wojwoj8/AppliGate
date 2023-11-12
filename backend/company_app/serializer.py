@@ -6,6 +6,7 @@ from user_app.models import (
 from .models import (
     JobOfferSkill,
     JobOffer,
+    JobOfferResponsibility,
 )
 from user_app.serializer import (
     DateSerializer,
@@ -135,15 +136,22 @@ class JobOfferTopColorsSerializer(serializers.ModelSerializer):
             "background_color",
                     
         ]
+
 class JobOfferStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOffer
         fields = [
             'job_offer_status'    
         ]
+
 class JobOfferAboutSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOffer
         fields = [
             'job_about'
         ]
+
+class JobOfferResponsibilitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobOfferResponsibility
+        fields = ["id", "job_responsibility"]

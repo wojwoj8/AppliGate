@@ -160,4 +160,4 @@ class JobOfferResponsibilitySerializer(serializers.ModelSerializer):
 class JobOfferRequirementSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOfferRequirement
-        fields = ["id", "job_requirement", "requirement_type"]
+        fields = ["id", "job_requirement",]

@@ -82,7 +82,6 @@ export interface JobOfferRequirementData{
   id: number;
   offer_id: string | null;
   job_requirement: string;
-  requirement_type: string;
 }
 
 interface JobOfferData {

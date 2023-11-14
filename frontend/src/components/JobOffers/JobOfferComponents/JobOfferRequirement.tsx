@@ -224,22 +224,7 @@ const JobOfferRequirement: React.FC<JobOfferRequirementProps> = ({
                                     />
                                     {renderFieldErrorMultiple('job_requirement', 0, `job_requirement`, multipleErrors)}
                                 </div>
-                                <div className='mb-3 col-md-3'>
-
-                                    <label htmlFor={`requirement_type`} className='form-label'>
-                                        Requirement type:
-                                    </label>
-                                    <select
-                                        name={`requirement_type`}
-                                        className={`form-control${renderFieldErrorMultiple('jobOfferRequirement', 0, `requirement_type`, multipleErrors) ? ' is-invalid' : ''}`}
-                                        value={singleJobOfferRequirement?.requirement_type || ''}
-                                        onChange={handleSingleInputChange}
-                                    >
-                                        <option value="required">Required</option>
-                                        <option value="optional">Optional</option>
-                                    </select>
-                                    {renderFieldErrorMultiple('jobOfferRequirement', 0, `requirement_type`, multipleErrors)}
-                                </div>
+                                
                             </div>
                             </form>
                             <div className='text-center'>
@@ -253,9 +238,7 @@ const JobOfferRequirement: React.FC<JobOfferRequirementProps> = ({
                             {jobOfferRequirement && jobOfferRequirement[0] && <hr className="border border-primary border-3 my-1"></hr>}
                         </div>
                         )}
-                {jobOfferRequirement
-                    .filter((jobOfferRequirement) => jobOfferRequirement.requirement_type === 'required')
-                    .map((jobOfferRequirement, index) => (
+                {jobOfferRequirement.map((jobOfferRequirement, index) => (
                     <div key={index} className='row'>
                         {/* {index >= 1 && <div className="container"><hr className="border border-primary border-3 my-1"></hr></div>} */}
                         
@@ -299,22 +282,9 @@ const JobOfferRequirement: React.FC<JobOfferRequirementProps> = ({
                                     />
                                     {renderFieldErrorMultiple('jobOfferRequirement', index, `job_requirement_${index}`, multipleErrors)}
                                     </div>
-                                    <div className='mb-3 col-md-3'>
+                                    
 
-                                    <label htmlFor={`requirement_type_${index}`} className='form-label'>
-                                        Requirement type:
-                                    </label>
-                                    <select
-                                        name={`requirement_type_${index}`}
-                                        className={`form-control${renderFieldErrorMultiple('jobOfferRequirement', index, `requirement_type_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
-                                        value={jobOfferRequirement?.requirement_type || ''}
-                                        onChange={(e) => handleRequirementInputChange(index, e)}
-                                    >
-                                        <option value="required">Required</option>
-                                        <option value="optional">Optional</option>
-                                    </select>
-                                    {renderFieldErrorMultiple('jobOfferRequirement', index, `requirement_type_${index}`, multipleErrors)}
-                                </div>
+                                    
                                 </div>
                                 </form>
                             <div className='text-center mb-1'>
@@ -333,86 +303,6 @@ const JobOfferRequirement: React.FC<JobOfferRequirementProps> = ({
                     </div>
                     ))}
                     
-                    <h5>Optional</h5>
-                    {jobOfferRequirement
-                    .filter((jobOfferRequirement) => jobOfferRequirement.requirement_type === 'optional')
-                    .map((jobOfferRequirement, index) => (
-                    <div key={index} className='row'>
-                        {/* {index >= 1 && <div className="container"><hr className="border border-primary border-3 my-1"></hr></div>} */}
-                        
-                        {!editMultipleJobOfferRequirement[index] && (
-                        <>
-                            <div className='col text-start d-flex my-2'>
-                                <div className='col d-flex'>
-                                    <svg className='not-hidden' width="28px" height="28px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill={`#c1c1c1`} d="M16 3C8.8 3 3 8.8 3 16s5.8 13 13 13s13-5.8 13-13c0-1.4-.188-2.794-.688-4.094L26.688 13.5c.2.8.313 1.6.313 2.5c0 6.1-4.9 11-11 11S5 22.1 5 16S9.9 5 16 5c3 0 5.694 1.194 7.594 3.094L25 6.688C22.7 4.388 19.5 3 16 3zm11.28 4.28L16 18.563l-4.28-4.28l-1.44 1.437l5 5l.72.686l.72-.687l12-12l-1.44-1.44z"/>
-                                    </svg>
-                                    <div className='col'>
-                                        <p className='ps-3'>{jobOfferRequirement?.job_requirement || ''}</p>
-                                    </div>
-                                </div>                                                        
-                            </div>
-                            <div className='col-auto'>
-                                <div className='profile-svgs d-flex my-1' onClick={() => editMultipleRequirementButton(index, jobOfferRequirement.id)}>
-                                    <Icon path={mdiPencil} size={1} />
-                                </div>
-                                <ProfileDeleteModal id={`${jobOfferRequirement.job_requirement}_${jobOfferRequirement.id}`} onDelete={() => deleteLink(jobOfferRequirement.id)} />
-                            </div>
-                        </>
-                        
-                        )}
-                        
-                        {editMultipleJobOfferRequirement[index] && (
-                        <div className='container'>
-                            <form>
-                                <div className='row my-2'>
-                                <div className='mb-3 col-md-9'>
-                                    <label htmlFor={`job_requirement_${index}`} className='form-label'>
-                                       Requirement:
-                                    </label>
-                                    <input
-                                        type='text'
-                                        name={`job_requirement_${index}`}
-                                        className={`form-control${renderFieldErrorMultiple('jobOfferRequirement', index, `job_requirement_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
-                                        value={jobOfferRequirement?.job_requirement || ''}
-                                        onChange={(e) => handleRequirementInputChange(index, e)}
-                                        placeholder='Creating nice UI'
-                                    />
-                                    {renderFieldErrorMultiple('jobOfferRequirement', index, `job_requirement_${index}`, multipleErrors)}
-                                    </div>
-                                    <div className='mb-3 col-md-3'>
-
-                                    <label htmlFor={`requirement_type_${index}`} className='form-label'>
-                                        Requirement type:
-                                    </label>
-                                    <select
-                                        name={`requirement_type_${index}`}
-                                        className={`form-control${renderFieldErrorMultiple('jobOfferRequirement', index, `requirement_type_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
-                                        value={jobOfferRequirement?.requirement_type || ''}
-                                        onChange={(e) => handleRequirementInputChange(index, e)}
-                                    >
-                                        <option value="required">Required</option>
-                                        <option value="optional">Optional</option>
-                                    </select>
-                                    {renderFieldErrorMultiple('jobOfferRequirement', index, `requirement_type_${index}`, multipleErrors)}
-                                </div>
-                                </div>
-                                </form>
-                            <div className='text-center mb-1'>
-                                <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={() => cancelEditMultipleJobOfferRequirement(index, jobOfferRequirement.id)}>
-                                    Cancel
-                                </button>
-                                <button className='btn btn-primary' style={{width:'5rem'}} onClick={() => saveEdit(index, jobOfferRequirement.id)}>
-                                    Save
-                                </button>
-                            </div>
-                            
-                        </div>
-                        
-                        )}
-                        
-                    </div>
-                    ))}
             
             </div>
         </div>

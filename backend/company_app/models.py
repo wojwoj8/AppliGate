@@ -84,8 +84,3 @@ class JobOfferRequirement(models.Model):
     job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE)
     job_requirement = models.CharField(max_length=300, blank=False)
 
-    REQUIREMENT_TYPE_CHOICES = [
-        ("required", "Required"),
-        ("optional", "Optional"),
-    ]
-    requirement_type = models.CharField(max_length=40, choices=REQUIREMENT_TYPE_CHOICES, default='required')

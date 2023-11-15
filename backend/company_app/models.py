@@ -84,3 +84,6 @@ class JobOfferRequirement(models.Model):
     job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE)
     job_requirement = models.CharField(max_length=300, blank=False)
 
+class JobOfferWhatWeOffer(models.Model):
+    job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE)
+    job_whatweoffer = models.CharField(max_length=150, blank=False)

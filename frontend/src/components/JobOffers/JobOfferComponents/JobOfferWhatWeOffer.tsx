@@ -3,7 +3,7 @@ import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import { mdiPencil } from '@mdi/js';
 import { JobOfferGetDataFunction, JobOfferEditDataFunction, JobOfferEditMultipleDataFunction } from "../JobOffer";
-import { JobOfferRequirementData } from '../JobOffer';
+import { JobOfferWhatWeOfferData } from '../JobOffer';
 import { MultipleErrorResponse } from "../../Profile";
 import ProfileDeleteModal from '../../profileComponents/ProfileDeleteModal';
 import { JobOfferTopColorsData } from '../JobOffer';
@@ -11,10 +11,10 @@ import { JobOfferTopColorsData } from '../JobOffer';
 
 
 
-interface JobOfferRequirementProps {
-    jobOfferRequirement: JobOfferRequirementData[];
-    setJobOfferRequirement: React.Dispatch<React.SetStateAction<JobOfferRequirementData[]>>;
-    editJobOfferRequirement: boolean;
+interface JobOfferWhatWeOfferProps {
+    jobOfferWhatWeOffer: JobOfferWhatWeOfferData[];
+    setJobOfferWhatWeOffer: React.Dispatch<React.SetStateAction<JobOfferWhatWeOfferData[]>>;
+    editJobOfferWhatWeOffer: boolean;
 
     editMultipleData: (
         state: JobOfferEditMultipleDataFunction, 
@@ -26,7 +26,7 @@ interface JobOfferRequirementProps {
         id: number | undefined
     ) => Promise<void>;
 
-    editMultipleJobOfferRequirement: boolean[];
+    editMultipleJobOfferWhatWeOffer: boolean[];
     getData: (
         setData: JobOfferGetDataFunction,
         endpoint: string,
@@ -43,10 +43,10 @@ interface JobOfferRequirementProps {
         index?: number
     ) => Promise<void>;
 
-    setEditMultipleJobOfferRequirement: React.Dispatch<React.SetStateAction<boolean[]>>;
-    setSingleJobOfferRequirement: React.Dispatch<React.SetStateAction<JobOfferRequirementData | null>>;
-    setEditJobOfferRequirement: React.Dispatch<React.SetStateAction<boolean>>;
-    singleJobOfferRequirement: JobOfferRequirementData | null;
+    setEditMultipleJobOfferWhatWeOffer: React.Dispatch<React.SetStateAction<boolean[]>>;
+    setSingleJobOfferWhatWeOffer: React.Dispatch<React.SetStateAction<JobOfferWhatWeOfferData | null>>;
+    setEditJobOfferWhatWeOffer: React.Dispatch<React.SetStateAction<boolean>>;
+    singleJobOfferWhatWeOffer: JobOfferWhatWeOfferData | null;
     multipleErrors: MultipleErrorResponse;
     removeMultipleErrors: (key: string, index: number) => void;
     renderFieldErrorMultiple: (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => React.ReactNode;
@@ -60,18 +60,18 @@ interface JobOfferRequirementProps {
     jobOfferTopColors: JobOfferTopColorsData | null;
 }
 
-const JobOfferRequirement: React.FC<JobOfferRequirementProps> = ({
-    jobOfferRequirement,
-    setJobOfferRequirement,
-    editJobOfferRequirement,
+const JobOfferWhatWeOffer: React.FC<JobOfferWhatWeOfferProps> = ({
+    jobOfferWhatWeOffer,
+    setJobOfferWhatWeOffer,
+    editJobOfferWhatWeOffer,
     editMultipleData,
-    editMultipleJobOfferRequirement,
+    editMultipleJobOfferWhatWeOffer,
     getData,
     sendMultipleData,
-    setEditMultipleJobOfferRequirement,
-    setSingleJobOfferRequirement,
-    setEditJobOfferRequirement,
-    singleJobOfferRequirement,
+    setEditMultipleJobOfferWhatWeOffer,
+    setSingleJobOfferWhatWeOffer,
+    setEditJobOfferWhatWeOffer,
+    singleJobOfferWhatWeOffer,
     multipleErrors,
     removeMultipleErrors,
     renderFieldErrorMultiple,
@@ -80,71 +80,71 @@ const JobOfferRequirement: React.FC<JobOfferRequirementProps> = ({
     offerid
 }) =>{
 
-    const editMultipleRequirementButton = async (index: number, id?: number) => {
-        if (editMultipleJobOfferRequirement[index] === true){
-           await cancelEditMultipleJobOfferRequirement(index, id)
+    const editMultipleWhatWeOfferButton = async (index: number, id?: number) => {
+        if (editMultipleJobOfferWhatWeOffer[index] === true){
+           await cancelEditMultipleJobOfferWhatWeOffer(index, id)
            return
         }
-        setEditMultipleJobOfferRequirement((prevEditJobOfferRequirement) => {
-          const neweditJobOfferRequirements = [...prevEditJobOfferRequirement];
-          neweditJobOfferRequirements[index] = !prevEditJobOfferRequirement[index];
-          return neweditJobOfferRequirements;
+        setEditMultipleJobOfferWhatWeOffer((prevEditJobOfferWhatWeOffer) => {
+          const neweditJobOfferWhatWeOffers = [...prevEditJobOfferWhatWeOffer];
+          neweditJobOfferWhatWeOffers[index] = !prevEditJobOfferWhatWeOffer[index];
+          return neweditJobOfferWhatWeOffers;
         });
         
     }
 
     
-    const cancelEditMultipleJobOfferRequirement = async (index: number, id?: number) => {
-        setEditMultipleJobOfferRequirement((prevEditJobOfferRequirement) => {
-          const neweditJobOfferRequirements = [...prevEditJobOfferRequirement];
-          neweditJobOfferRequirements[index] = false;
-          return neweditJobOfferRequirements;
+    const cancelEditMultipleJobOfferWhatWeOffer = async (index: number, id?: number) => {
+        setEditMultipleJobOfferWhatWeOffer((prevEditJobOfferWhatWeOffer) => {
+          const neweditJobOfferWhatWeOffers = [...prevEditJobOfferWhatWeOffer];
+          neweditJobOfferWhatWeOffers[index] = false;
+          return neweditJobOfferWhatWeOffers;
         });
-        removeMultipleErrors('job_requirement', index)
-        await getData(setJobOfferRequirement, `/company/joboffer/requirement/${offerid}`);
+        removeMultipleErrors('whatweoffer', index)
+        await getData(setJobOfferWhatWeOffer, `/company/joboffer/weoffer/${offerid}`);
 
       };
 
-    const editRequirementButton = () =>{
-        setEditJobOfferRequirement(!editJobOfferRequirement);
-        if(editJobOfferRequirement === true){
-            removeMultipleErrors('addjob_requirement', 0)
-            setSingleJobOfferRequirement(null)
-            getData(setJobOfferRequirement, `/company/joboffer/requirement/${offerid}`);
+    const editWhatWeOfferButton = () =>{
+        setEditJobOfferWhatWeOffer(!editJobOfferWhatWeOffer);
+        if(editJobOfferWhatWeOffer === true){
+            removeMultipleErrors('addwhatweoffer', 0)
+            setSingleJobOfferWhatWeOffer(null)
+            getData(setJobOfferWhatWeOffer, `/company/joboffer/weoffer/${offerid}`);
         }
         
     }
-    const cancelEditJobOfferRequirement = async () =>{
-        setEditJobOfferRequirement(false);
-        removeMultipleErrors('addjob_requirement', 0)
+    const cancelEditJobOfferWhatWeOffer = async () =>{
+        setEditJobOfferWhatWeOffer(false);
+        removeMultipleErrors('addwhatweoffer', 0)
        
-        setSingleJobOfferRequirement(null)
+        setSingleJobOfferWhatWeOffer(null)
     }
 
     const saveEdit = async (index: number, id?: number) =>{
-        if (jobOfferRequirement[index]) {
-            jobOfferRequirement[index].offer_id = offerid;
+        if (jobOfferWhatWeOffer[index]) {
+            jobOfferWhatWeOffer[index].offer_id = offerid;
         }
-        editMultipleData(jobOfferRequirement, setEditMultipleJobOfferRequirement, setJobOfferRequirement, 
-            `/company/joboffer/requirement`, 'job_requirement', index, id)
+        editMultipleData(jobOfferWhatWeOffer, setEditMultipleJobOfferWhatWeOffer, setJobOfferWhatWeOffer, 
+            `/company/joboffer/weoffer`, 'whatweoffer', index, id)
        
     }
 
-    const resetJobOfferRequirement = () => {
-        setSingleJobOfferRequirement(null);
+    const resetJobOfferWhatWeOffer = () => {
+        setSingleJobOfferWhatWeOffer(null);
       };
 
-    const saveRequirement = () => {
-        if (singleJobOfferRequirement) {
-            singleJobOfferRequirement.offer_id = offerid;
+    const saveWhatWeOffer = () => {
+        if (singleJobOfferWhatWeOffer) {
+            singleJobOfferWhatWeOffer.offer_id = offerid;
         }
-        sendMultipleData(singleJobOfferRequirement, setEditJobOfferRequirement, setJobOfferRequirement, 
-            resetJobOfferRequirement, `/company/joboffer/requirement/${offerid}`, 'addjob_requirement');
+        sendMultipleData(singleJobOfferWhatWeOffer, setEditJobOfferWhatWeOffer, setJobOfferWhatWeOffer, 
+            resetJobOfferWhatWeOffer, `/company/joboffer/weoffer/${offerid}`, 'addwhatweoffer');
         
     }
 
     const deleteLink = (id: number) => {
-        deleteData(setEditMultipleJobOfferRequirement, setJobOfferRequirement, '/company/joboffer/requirement', id);
+        deleteData(setEditMultipleJobOfferWhatWeOffer, setJobOfferWhatWeOffer, '/company/joboffer/weoffer', id);
     }
 
     const handleSingleInputChange = (
@@ -155,15 +155,15 @@ const JobOfferRequirement: React.FC<JobOfferRequirementProps> = ({
         
       
 
-        setSingleJobOfferRequirement((prevRequirement) => ({
-        ...prevRequirement!,
+        setSingleJobOfferWhatWeOffer((prevWhatWeOffer) => ({
+        ...prevWhatWeOffer!,
         [name]: value,
         }));
     
   
         
       };
-    const handleRequirementInputChange = (
+    const handleWhatWeOfferInputChange = (
         index: number,
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
         
@@ -176,8 +176,8 @@ const JobOfferRequirement: React.FC<JobOfferRequirementProps> = ({
         [name]: value,
         };
     
-        setJobOfferRequirement((prevRequirement) => {
-        const updatedLinks = [...prevRequirement];
+        setJobOfferWhatWeOffer((prevWhatWeOffer) => {
+        const updatedLinks = [...prevWhatWeOffer];
         updatedLinks[index] = {
             ...updatedLinks[index],
             ...updatedProperty, 
@@ -186,63 +186,63 @@ const JobOfferRequirement: React.FC<JobOfferRequirementProps> = ({
         });
     };
     return(
-        <div className={`pb-1 ${(!jobOfferRequirement[0])  && 'prevHidden'}`}>
+        <div className={`pb-1 ${(!jobOfferWhatWeOffer[0])  && 'prevHidden'}`}>
             
             <div className="container shadow-lg bg-body-bg rounded-2 text-break mt-4 z-1">
                 <div className='bg-black row mb-0 rounded-top-2'>
-                        <p className='fs-3 fw-semibold text-white col mb-1'>Our Requirements</p>
+                        <p className='fs-3 fw-semibold text-white col mb-1'>What We Offer</p>
                         <div className='col-auto d-flex align-items-center'>
-                            <div className='profile-svgs d-flex my-1' onClick={editRequirementButton}>
+                            <div className='profile-svgs d-flex my-1' onClick={editWhatWeOfferButton}>
                                 <Icon className='text-white' path={mdiPlus} size={1.25} />
                             </div>
                         </div>
                     </div>
-                    {!jobOfferRequirement[0] && !editJobOfferRequirement &&
+                    {!jobOfferWhatWeOffer[0] && !editJobOfferWhatWeOffer &&
                     <div className='container'> 
                         <p className=' my-4'>
-                            Job Offer Requirement
+                            Job Offer WhatWeOffer
                         </p>
                     </div>
                     
                     }
-                    {editJobOfferRequirement && (
+                    {editJobOfferWhatWeOffer && (
                         <div className=''>
                             <form>
                             <div className='row my-2'>
-                                <div className='mb-3 col-md-12'>
-                                    <label htmlFor={`job_requirement`} className='form-label'>
-                                        Requirement:
+                                <div className='mb-3 col-md-9'>
+                                    <label htmlFor={`job_whatweoffer`} className='form-label'>
+                                        WhatWeOffer:
                                     </label>
                                     <input
                                         type='text'
-                                        name={`job_requirement`}
-                                        className={`form-control${renderFieldErrorMultiple('addjob_requirement', 0, `job_requirement`, multipleErrors) ? ' is-invalid' : ''}`} 
-                                        value={singleJobOfferRequirement?.job_requirement || ''}
+                                        name={`job_whatweoffer`}
+                                        className={`form-control${renderFieldErrorMultiple('addwhatweoffer', 0, `job_whatweoffer`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                        value={singleJobOfferWhatWeOffer?.job_whatweoffer || ''}
                                         onChange={handleSingleInputChange}
                                         placeholder='Creating nice UI'
                                         
                                     />
-                                    {renderFieldErrorMultiple('addjob_requirement', 0, `job_requirement`, multipleErrors)}
+                                    {renderFieldErrorMultiple('addwhatweoffer', 0, `job_whatweoffer`, multipleErrors)}
                                 </div>
                                 
                             </div>
                             </form>
                             <div className='text-center'>
-                                <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={cancelEditJobOfferRequirement}>
+                                <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={cancelEditJobOfferWhatWeOffer}>
                                     Cancel
                                 </button>
-                                <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveRequirement}>
+                                <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveWhatWeOffer}>
                                     Add
                                 </button>
                             </div>
-                            {jobOfferRequirement && jobOfferRequirement[0] && <hr className="border border-primary border-3 my-1"></hr>}
+                            {jobOfferWhatWeOffer && jobOfferWhatWeOffer[0] && <hr className="border border-primary border-3 my-1"></hr>}
                         </div>
                         )}
-                {jobOfferRequirement.map((jobOfferRequirement, index) => (
+                {jobOfferWhatWeOffer.map((jobOfferWhatWeOffer, index) => (
                     <div key={index} className='row'>
                         {/* {index >= 1 && <div className="container"><hr className="border border-primary border-3 my-1"></hr></div>} */}
                         
-                        {!editMultipleJobOfferRequirement[index] && (
+                        {!editMultipleJobOfferWhatWeOffer[index] && (
                         <>
                             <div className='col text-start d-flex my-2'>
                                 <div className='col d-flex'>
@@ -250,37 +250,37 @@ const JobOfferRequirement: React.FC<JobOfferRequirementProps> = ({
                                         <path fill={`${jobOfferTopColors?.svg_color}`} d="M16 3C8.8 3 3 8.8 3 16s5.8 13 13 13s13-5.8 13-13c0-1.4-.188-2.794-.688-4.094L26.688 13.5c.2.8.313 1.6.313 2.5c0 6.1-4.9 11-11 11S5 22.1 5 16S9.9 5 16 5c3 0 5.694 1.194 7.594 3.094L25 6.688C22.7 4.388 19.5 3 16 3zm11.28 4.28L16 18.563l-4.28-4.28l-1.44 1.437l5 5l.72.686l.72-.687l12-12l-1.44-1.44z"/>
                                     </svg>
                                     <div className='col'>
-                                        <p className='ps-3'>{jobOfferRequirement?.job_requirement || ''}</p>
+                                        <p className='ps-3'>{jobOfferWhatWeOffer?.job_whatweoffer || ''}</p>
                                     </div>
                                 </div>                                                        
                             </div>
                             <div className='col-auto'>
-                                <div className='profile-svgs d-flex my-1' onClick={() => editMultipleRequirementButton(index, jobOfferRequirement.id)}>
+                                <div className='profile-svgs d-flex my-1' onClick={() => editMultipleWhatWeOfferButton(index, jobOfferWhatWeOffer.id)}>
                                     <Icon path={mdiPencil} size={1} />
                                 </div>
-                                <ProfileDeleteModal id={`${jobOfferRequirement.job_requirement}_${jobOfferRequirement.id}`} onDelete={() => deleteLink(jobOfferRequirement.id)} />
+                                <ProfileDeleteModal id={`${jobOfferWhatWeOffer.job_whatweoffer}_${jobOfferWhatWeOffer.id}`} onDelete={() => deleteLink(jobOfferWhatWeOffer.id)} />
                             </div>
                         </>
                         
                         )}
                         
-                        {editMultipleJobOfferRequirement[index] && (
+                        {editMultipleJobOfferWhatWeOffer[index] && (
                         <div className='container'>
                             <form>
                                 <div className='row my-2'>
-                                <div className='mb-3 col-md-12'>
-                                    <label htmlFor={`job_requirement_${index}`} className='form-label'>
-                                       Requirement:
+                                <div className='mb-3 col-md-9'>
+                                    <label htmlFor={`job_whatweoffer_${index}`} className='form-label'>
+                                       WhatWeOffer:
                                     </label>
                                     <input
                                         type='text'
-                                        name={`job_requirement_${index}`}
-                                        className={`form-control${renderFieldErrorMultiple('job_requirement', index, `job_requirement_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
-                                        value={jobOfferRequirement?.job_requirement || ''}
-                                        onChange={(e) => handleRequirementInputChange(index, e)}
+                                        name={`job_whatweoffer_${index}`}
+                                        className={`form-control${renderFieldErrorMultiple('whatweoffer', index, `job_whatweoffer_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
+                                        value={jobOfferWhatWeOffer?.job_whatweoffer || ''}
+                                        onChange={(e) => handleWhatWeOfferInputChange(index, e)}
                                         placeholder='Creating nice UI'
                                     />
-                                    {renderFieldErrorMultiple('job_requirement', index, `job_requirement_${index}`, multipleErrors)}
+                                    {renderFieldErrorMultiple('whatweoffer', index, `job_whatweoffer_${index}`, multipleErrors)}
                                     </div>
                                     
 
@@ -288,10 +288,10 @@ const JobOfferRequirement: React.FC<JobOfferRequirementProps> = ({
                                 </div>
                                 </form>
                             <div className='text-center mb-1'>
-                                <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={() => cancelEditMultipleJobOfferRequirement(index, jobOfferRequirement.id)}>
+                                <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={() => cancelEditMultipleJobOfferWhatWeOffer(index, jobOfferWhatWeOffer.id)}>
                                     Cancel
                                 </button>
-                                <button className='btn btn-primary' style={{width:'5rem'}} onClick={() => saveEdit(index, jobOfferRequirement.id)}>
+                                <button className='btn btn-primary' style={{width:'5rem'}} onClick={() => saveEdit(index, jobOfferWhatWeOffer.id)}>
                                     Save
                                 </button>
                             </div>
@@ -308,4 +308,4 @@ const JobOfferRequirement: React.FC<JobOfferRequirementProps> = ({
         </div>
     )
 }
-export default JobOfferRequirement;
+export default JobOfferWhatWeOffer;

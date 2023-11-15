@@ -99,7 +99,7 @@ const JobOfferResponsibility: React.FC<JobOfferResponsibilityProps> = ({
           neweditJobOfferResponsibilitys[index] = false;
           return neweditJobOfferResponsibilitys;
         });
-        removeMultipleErrors('jobOfferResponsibility', index)
+        removeMultipleErrors('job_responsibility', index)
         await getData(setJobOfferResponsibility, `/company/joboffer/responsibility/${offerid}`);
 
       };
@@ -107,7 +107,7 @@ const JobOfferResponsibility: React.FC<JobOfferResponsibilityProps> = ({
     const editResponsibilityButton = () =>{
         setEditJobOfferResponsibility(!editJobOfferResponsibility);
         if(editJobOfferResponsibility === true){
-            removeMultipleErrors('job_responsibility', 0)
+            removeMultipleErrors('addjob_responsibility', 0)
             setSingleJobOfferResponsibility(null)
             getData(setJobOfferResponsibility, `/company/joboffer/responsibility/${offerid}`);
         }
@@ -115,7 +115,7 @@ const JobOfferResponsibility: React.FC<JobOfferResponsibilityProps> = ({
     }
     const cancelEditJobOfferResponsibility = async () =>{
         setEditJobOfferResponsibility(false);
-        removeMultipleErrors('job_responsibility', 0)
+        removeMultipleErrors('addjob_responsibility', 0)
        
         setSingleJobOfferResponsibility(null)
     }
@@ -138,7 +138,7 @@ const JobOfferResponsibility: React.FC<JobOfferResponsibilityProps> = ({
             singleJobOfferResponsibility.offer_id = offerid;
         }
         sendMultipleData(singleJobOfferResponsibility, setEditJobOfferResponsibility, setJobOfferResponsibility, 
-            resetJobOfferResponsibility, `/company/joboffer/responsibility/${offerid}`, 'job_responsibility');
+            resetJobOfferResponsibility, `/company/joboffer/responsibility/${offerid}`, 'addjob_responsibility');
         
     }
 
@@ -215,13 +215,13 @@ const JobOfferResponsibility: React.FC<JobOfferResponsibilityProps> = ({
                                     <input
                                         type='text'
                                         name={`job_responsibility`}
-                                        className={`form-control${renderFieldErrorMultiple('job_responsibility', 0, `job_responsibility`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                        className={`form-control${renderFieldErrorMultiple('addjob_responsibility', 0, `job_responsibility`, multipleErrors) ? ' is-invalid' : ''}`} 
                                         value={singleJobOfferResponsibility?.job_responsibility || ''}
                                         onChange={handleSingleInputChange}
                                         placeholder='Creating nice UI'
                                         
                                     />
-                                    {renderFieldErrorMultiple('job_responsibility', 0, `job_responsibility`, multipleErrors)}
+                                    {renderFieldErrorMultiple('addjob_responsibility', 0, `job_responsibility`, multipleErrors)}
                                 </div>
                             </div>
                             </form>
@@ -273,12 +273,12 @@ const JobOfferResponsibility: React.FC<JobOfferResponsibilityProps> = ({
                                     <input
                                         type='text'
                                         name={`job_responsibility_${index}`}
-                                        className={`form-control${renderFieldErrorMultiple('jobOfferResponsibility', index, `job_responsibility_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
+                                        className={`form-control${renderFieldErrorMultiple('job_responsibility', index, `job_responsibility_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={jobOfferResponsibility?.job_responsibility || ''}
                                         onChange={(e) => handleResponsibilityInputChange(index, e)}
                                         placeholder='Creating nice UI'
                                     />
-                                    {renderFieldErrorMultiple('jobOfferResponsibility', index, `job_responsibility_${index}`, multipleErrors)}
+                                    {renderFieldErrorMultiple('job_responsibility', index, `job_responsibility_${index}`, multipleErrors)}
                                     </div>
                                 </div>
 

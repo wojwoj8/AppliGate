@@ -44,18 +44,6 @@ from datetime import datetime
 from rest_framework.generics import get_object_or_404
 import os
 
-    
-# logged users can get, and other methods works only for owner
-class IsUserPermission(permissions.BasePermission):
-    def has_permission(self, request, view):
-        # print(request.__dict__)
-        # Check if the request method is GET or if the user type is "user"
-        # print(view)
-        if request.method == 'GET' or (request.user.is_authenticated and request.user.user_type == 'user'):
-            return True
-        else:
-            raise PermissionDenied("You do not have permission to perform this action. xdad")
-
 
 class SignupView(
     mixins.ListModelMixin,

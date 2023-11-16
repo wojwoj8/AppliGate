@@ -1,9 +1,12 @@
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../utils/AuthProvider";
+import NavbarJobOfferCreate from "./NavbarJobOfferCreate";
+interface NavbarProps {
+  setGlobalAlertError: (error: string) => void;
+}
 
-
-const Navbar: React.FC = () =>{
+const Navbar: React.FC<NavbarProps> = ({setGlobalAlertError}) =>{
     
     const [check, setCheck] = useState(false);
     useEffect(() => {
@@ -71,6 +74,21 @@ const Navbar: React.FC = () =>{
                 <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to='/example' className="nav-link">Example</Link>
                 </li>
+
+                <li className="nav-item dropdown-center">
+                  <a className="nav-link dropdown-toggle" href="/profileSettings" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Job Offers
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li className="dropdown-item" data-bs-dismiss="offcanvas">
+                      <Link to='/company/jobofferlistings' className="nav-link" aria-current="page">Job Offers Listing</Link>
+                    </li>
+                    {/* <li className="dropdown-item" data-bs-dismiss="offcanvas">
+                      <Link to='/company/myJobOffers' className="nav-link" aria-current="page">My Job Offers</Link>
+                    </li> */}
+                  </ul>
+                </li>
+
                 <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to={`/profile/${user.username}/`} className="nav-link" aria-current="page">Profile</Link>
                 </li>
@@ -112,9 +130,7 @@ const Navbar: React.FC = () =>{
                     Job Offers
                   </a>
                   <ul className="dropdown-menu">
-                    <li className="dropdown-item" data-bs-dismiss="offcanvas">
-                      <Link to='/company/joboffer' className="nav-link" aria-current="page">Job Offer Creator/VIEW</Link>
-                    </li>
+                    <li><NavbarJobOfferCreate setGlobalAlertError={setGlobalAlertError}/></li>
                     <li className="dropdown-item" data-bs-dismiss="offcanvas">
                       <Link to='/company/jobofferlistings' className="nav-link" aria-current="page">Job Offer Listings</Link>
                     </li>

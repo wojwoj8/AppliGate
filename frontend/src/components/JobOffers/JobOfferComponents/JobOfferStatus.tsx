@@ -91,7 +91,7 @@ const changeJobOfferStatus = async () => {
             {jobOfferStatus && jobOfferStatus?.job_offer_status === true ? (
                 <button className='btn btn-primary w-100 rounded-4 mt-3' onClick={changeJobOfferStatus}>Set JobOffer to Not listed</button>) : 
             (
-                <button className='btn btn-primary w-100 rounded-4 mt-3' onClick={changeJobOfferStatus}>Set Profile to Listed</button>
+                <button className='btn btn-primary w-100 rounded-4 mt-3' onClick={changeJobOfferStatus}>Set JobOffer to Listed</button>
             ) }
             <div className="d-grid py-2 text-center  ">
                 <button 

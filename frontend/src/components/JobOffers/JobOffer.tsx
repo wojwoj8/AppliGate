@@ -366,7 +366,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
     index: number = 0,
   ) =>{
     
-    console.log(state)
+    // console.log(state)
       try{
           const response = await axios.post(`${endpoint}`, state,  {
               headers: {
@@ -562,7 +562,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
       let preview = document.getElementById('preview');
       // let correctedUsername = username.slice(0, -1);
       if (user.username !== jobOfferCompany?.username){
-        console.log(elements)
+        // console.log(elements)
         elements.forEach((element) =>{
           if (element.classList.contains('not-hidden')) {
             // Do nothing, don't add or remove the d-none class

@@ -32,7 +32,7 @@ const ProfileAlert: React.FC<Alert> = ({ error, setError }) => {
     if (error) {
       // errMessage.pop()
       // errMessage.join(' ')
-      console.log(errMessage)
+      // console.log(errMessage)
       setShow(true);
       const timer = setTimeout(() => {
         setShow(false);

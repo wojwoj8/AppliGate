@@ -54,8 +54,8 @@ class JobOffer(models.Model):
     # Recruitment Type: Remote, In-company, On-site, etc.
     recruitment_type = models.CharField(max_length=100, blank=True)
 
-    job_benefits = models.TextField() 
-    job_additional_information = models.TextField() 
+    job_benefits = models.TextField(blank=True) 
+    job_additional_information = models.TextField(blank=True) 
 
     job_offer_status = models.BooleanField(default=False)
 

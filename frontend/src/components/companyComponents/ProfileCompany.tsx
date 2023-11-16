@@ -10,6 +10,7 @@ import { MultipleErrorResponse } from '../Profile';
 import Loading from '../Loading';
 import ProfileCompanyMain from './companyProfileComponents/ProfileCompanyMain';
 import ProfileCompanyStatus from './companyProfileComponents/ProfileCompanyStatus';
+import MyJobOffers from '../JobOffers/MyJobOffers';
 
 export interface ProfileCompanyMainData{
     first_name: string;
@@ -657,7 +658,7 @@ export interface ProfileCompanyMainData{
               {previewMode ? 'Hide Preview' : 'Show Preview'}
             </button>
           </div>
-          <div className="container shadow-lg rounded-2 text-break" id="page">
+          <div className="" id="page">
           
           {/* Every interface takes some functions/data/states from profile and 
           assign them through interface, some components have some functions, but 
@@ -676,6 +677,10 @@ export interface ProfileCompanyMainData{
                 setAlertError={setAlertError}
                 username={username}
             />
+
+                <MyJobOffers
+                
+                />
           </div>
              
           <div className='container'>
@@ -686,6 +691,8 @@ export interface ProfileCompanyMainData{
           
             <div className='profileStatusHide'>
 
+                
+
                 <ProfileCompanyStatus
                   profileStatus={profileStatus}
                   getData={getData}
@@ -694,6 +701,7 @@ export interface ProfileCompanyMainData{
                   alertError={alertError}
                   setAlertError={setAlertError}
                 />
+                
             </div>
         </div>
         </>

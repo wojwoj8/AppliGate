@@ -25,6 +25,7 @@ from .serializer import (
     JobOfferRequirementSerializer,
     JobOfferWhatWeOfferSerializer,
     JobOfferApplicationSerializer,
+    JobOfferCreateSerializer,
 
 )
 from user_app.views import (
@@ -48,20 +49,8 @@ from .models import (
     JobOfferWhatWeOffer,
     JobOfferApplication,
 )
+from datetime import datetime, timedelta
 
-
-class IsOwnerOrReadOnly(permissions.BasePermission):
-    """
-    Custom permission to only allow owners of a job offer to edit it.
-    """
-
-    def has_object_permission(self, request, view, obj):
-        # Read permissions are allowed to any request.
-        if request.method in permissions.SAFE_METHODS:
-            return True
-
-        # Write permissions are only allowed to the owner of the job offer.
-        return obj.company == request.user
 
 
 class ProfileCompanyView(BaseProfileUpdateView):
@@ -108,6 +97,45 @@ class JobOfferDeleteOfferView(generics.DestroyAPIView):
         self.check_joboffer_owner(self.request, instance)
         instance.delete()
 
+class JobOfferCreateOfferView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = JobOffer.objects.all()
+    serializer_class = JobOfferCreateSerializer
+
+    def check_user(self, request):
+        user_type = request.user.user_type
+        if user_type != 'company':
+            raise PermissionDenied("You do not have permission to perform this action.")
+        
+
+    def post(self, request, *args, **kwargs):
+        self.check_user(request)
+        deadline = (datetime.now() + timedelta(days=7)).date()
+        default_data = {
+            'title': 'Title',
+            'job_description': 'Description',
+            'job_location': 'Location',
+            'work_schedule': 'Schedule',
+            'position_level': 'Position Level',
+            'contract_type': 'Contract Type',
+            'specialization': 'Specialization',
+            'salary_min': 10,
+            'salary_max': 100,
+            'job_application_deadline': deadline,
+            'company': request.user.id,
+        }
+        
+        default_data.update(request.data)
+        
+        serializer = self.get_serializer(data=default_data)
+        
+        if serializer.is_valid():
+            job_offer = serializer.save(company=request.user)
+            return Response({"created": "Job Offer created successfully", "job_offer_id": job_offer.id}, status=status.HTTP_201_CREATED)
+        
+        print(serializer.errors)
+        return Response({"error": "Error creating job offer"}, status=status.HTTP_400_BAD_REQUEST)
+        
     
 class BaseJobOfferView(
     generics.GenericAPIView,

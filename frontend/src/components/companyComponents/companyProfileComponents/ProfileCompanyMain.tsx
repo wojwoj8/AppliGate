@@ -177,7 +177,7 @@ setPersonal, setAlertError, alertError, username}) => {
     })
 
     return(
-        <div>
+        <div className='container shadow-lg rounded-2 text-break'>
                     <div className='bg-black row mb-1 rounded-top-2 '>
                         <p className='fs-3 fw-semibold text-white col mb-1'>Personal Data</p>
                         <div className='col-auto d-flex align-items-center previewHidden'>

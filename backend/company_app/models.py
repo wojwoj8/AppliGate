@@ -54,7 +54,6 @@ class JobOffer(models.Model):
     # Recruitment Type: Remote, In-company, On-site, etc.
     recruitment_type = models.CharField(max_length=100, blank=True)
 
-    application_process = models.TextField() 
     job_benefits = models.TextField() 
     job_additional_information = models.TextField() 
 
@@ -87,3 +86,7 @@ class JobOfferRequirement(models.Model):
 class JobOfferWhatWeOffer(models.Model):
     job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE)
     job_whatweoffer = models.CharField(max_length=150, blank=False)
+
+class JobOfferApplication(models.Model):
+    job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE)
+    job_application_stage = models.CharField(max_length=100, blank=False)

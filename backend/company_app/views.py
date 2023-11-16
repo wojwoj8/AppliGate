@@ -24,6 +24,7 @@ from .serializer import (
     JobOfferResponsibilitySerializer,
     JobOfferRequirementSerializer,
     JobOfferWhatWeOfferSerializer,
+    JobOfferApplicationSerializer,
 
 )
 from user_app.views import (
@@ -45,6 +46,7 @@ from .models import (
     JobOfferResponsibility,
     JobOfferRequirement,
     JobOfferWhatWeOffer,
+    JobOfferApplication,
 )
 
 
@@ -334,3 +336,7 @@ class JobOfferWhatWeOfferView(BaseJobOfferMultipleView):
     queryset = JobOfferWhatWeOffer.objects.all()
     permission_classes = [IsAuthenticated]
     
+class JobOfferApplicationView(BaseJobOfferMultipleView):
+    serializer_class = JobOfferApplicationSerializer
+    queryset = JobOfferApplication.objects.all()
+    permission_classes = [IsAuthenticated]

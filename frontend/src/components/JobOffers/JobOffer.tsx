@@ -17,6 +17,7 @@ import JobOfferAbout from "./JobOfferComponents/JobOfferAbout";
 import JobOfferResponsibility from "./JobOfferComponents/JobOfferResponsibility";
 import JobOfferRequirement from "./JobOfferComponents/JobOfferRequirement";
 import JobOfferWhatWeOffer from "./JobOfferComponents/JobOfferWhatWeOffer";
+import JobOfferApplication from "./JobOfferComponents/JobOfferApplication";
 
 // make mulitple interfaces for easier crud
 // should make one for immutable company data
@@ -91,6 +92,12 @@ export interface JobOfferWhatWeOfferData{
   job_whatweoffer: string;
 }
 
+export interface JobOfferApplicationData{
+  id: number;
+  offer_id: string | null;
+  job_application_stage: string;
+}
+
 interface JobOfferData {
     company: string;
     title: string;
@@ -127,6 +134,7 @@ export type JobOfferGetDataFunction =
   | ArrayUpdateFunction<JobOfferResponsibilityData>
   | ArrayUpdateFunction<JobOfferRequirementData>
   | ArrayUpdateFunction<JobOfferWhatWeOfferData>
+  | ArrayUpdateFunction<JobOfferApplicationData>
   
   | UpdateFunction<JobOfferTopMoreData>
   | UpdateFunction<JobOfferTopColorsData>
@@ -145,6 +153,8 @@ export type JobOfferEditDataFunction =
     JobOfferRequirementData | null |
     JobOfferWhatWeOfferData[] |
     JobOfferWhatWeOfferData | null |
+    JobOfferApplicationData[] |
+    JobOfferApplicationData | null |
     JobOfferTopMoreData | null |
     JobOfferTopColorsData | null |
     JobOfferStatusData | null |
@@ -155,7 +165,8 @@ export type JobOfferEditMultipleDataFunction =
     JobOfferResponsibilityData[] |
     JobOfferRequirementData[] |
     JobOfferWhatWeOfferData[] |
-    JobOfferSkillData[] 
+    JobOfferSkillData[] |
+    JobOfferApplicationData[]
     ;
 const initialMultipleErrors: MultipleErrorResponse = {
     salary: {},
@@ -179,18 +190,20 @@ const initialMultipleErrors: MultipleErrorResponse = {
     const [jobOfferResponsibility, setJobOfferResponsibility] = useState<JobOfferResponsibilityData[]>([]);
     const [jobOfferRequirement, setJobOfferRequirement] = useState<JobOfferRequirementData[]>([]);
     const [jobOfferWhatWeOffer, setJobOfferWhatWeOffer] = useState<JobOfferWhatWeOfferData[]>([]);
-    
+    const [jobOfferApplication, setJobOfferApplication] = useState<JobOfferApplicationData[]>([]);
     
 
     const [jobOfferStatus, setJobOfferStatus] = useState<JobOfferStatusData | null>(null)
 
-    // const [jobOffers, setJobOffers] = useState<JobOfferListingData| null>(null);
     
     // Only one data (like post only field)
     const [singleJobOfferSkill, setSingleJobOfferSkill] = useState<JobOfferSkillData | null>(null);
     const [singleJobOfferResponsibility, setSingleJobOfferResponsibility] = useState<JobOfferResponsibilityData | null>(null);
     const [singleJobOfferRequirement, setSingleJobOfferRequirement] = useState<JobOfferRequirementData | null>(null);
     const [singleJobOfferWhatWeOffer, setSingleJobOfferWhatWeOffer] = useState<JobOfferWhatWeOfferData | null>(null);
+    const [singleJobOfferApplication, setSingleJobOfferApplication] = useState<JobOfferApplicationData | null>(null);
+   
+   
     // for loading
     const [isLoading, setIsLoading] = useState(true);
     const [progress, setProgress] = useState(0);
@@ -222,6 +235,8 @@ const initialMultipleErrors: MultipleErrorResponse = {
     const [editMultipleJobOfferRequirement, setEditMultipleJobOfferRequirement] = useState<boolean[]>([]);
     const [editJobOfferWhatWeOffer, setEditJobOfferWhatWeOffer] = useState(false);
     const [editMultipleJobOfferWhatWeOffer, setEditMultipleJobOfferWhatWeOffer] = useState<boolean[]>([]);
+    const [editJobOfferApplication, setEditJobOfferApplication] = useState(false);
+    const [editMultipleJobOfferApplication, setEditMultipleJobOfferApplication] = useState<boolean[]>([]);
 
 
 
@@ -602,6 +617,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
       await fetchDataAndUpdateProgress(setJobOfferResponsibility, `/company/joboffer/responsibility/${offerid}`)
       await fetchDataAndUpdateProgress(setJobOfferRequirement, `/company/joboffer/requirement/${offerid}`)
       await fetchDataAndUpdateProgress(setJobOfferWhatWeOffer, `/company/joboffer/weoffer/${offerid}`)
+      await fetchDataAndUpdateProgress(setJobOfferApplication, `/company/joboffer/application/${offerid}`)
       
       setIsLoading(false);
       
@@ -781,7 +797,27 @@ const initialMultipleErrors: MultipleErrorResponse = {
                       offerid={offerid}
                       jobOfferTopColors={jobOfferTopColors}
                     />
+                    <JobOfferApplication
+                      jobOfferApplication={jobOfferApplication}
+                      setJobOfferApplication={setJobOfferApplication}
+                      editJobOfferApplication={editJobOfferApplication}
+                      editMultipleData={editMultipleData}
+                      editMultipleJobOfferApplication={editMultipleJobOfferApplication}
+                      getData={getData}
+                      sendMultipleData={sendMultipleData}
+                      setEditMultipleJobOfferApplication={setEditMultipleJobOfferApplication}
+                      setSingleJobOfferApplication={setSingleJobOfferApplication}
+                      setEditJobOfferApplication={setEditJobOfferApplication}
+                      singleJobOfferApplication={singleJobOfferApplication}
+                      multipleErrors={multipleErrors}
+                      removeMultipleErrors={removeMultipleErrors}
+                      renderFieldErrorMultiple={renderFieldErrorMultiple}
+                      deleteData={deleteData}
+                      offerid={offerid}
+                      jobOfferTopColors={jobOfferTopColors}
+                    />
 
+                    
                     <JobOfferStatus
                       jobOfferStatus={jobOfferStatus}
                       setJobOfferStatus={setJobOfferStatus}

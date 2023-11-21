@@ -10,7 +10,7 @@ import { MultipleErrorResponse } from '../Profile';
 import Loading from '../Loading';
 import ProfileCompanyMain from './companyProfileComponents/ProfileCompanyMain';
 import ProfileCompanyStatus from './companyProfileComponents/ProfileCompanyStatus';
-import MyJobOffers from '../JobOffers/MyJobOffers';
+import ProfileCompanyJobOffers from './companyProfileComponents/ProfileCompanyJobOffers';
 
 export interface ProfileCompanyMainData{
     first_name: string;
@@ -618,7 +618,6 @@ export interface ProfileCompanyMainData{
         // await fetchDataAndUpdateProgress(setAbout, `/profile/about`);
         // await fetchDataAndUpdateProgress(setLink, `/profile/link`);
         await fetchDataAndUpdateProgress(setProfileStatus, `/profile/profileStatus`);
-       
         
         
         setIsLoading(false);
@@ -678,8 +677,8 @@ export interface ProfileCompanyMainData{
                 username={username}
             />
 
-                <MyJobOffers
-                
+                <ProfileCompanyJobOffers
+                  username={username}
                 />
           </div>
              

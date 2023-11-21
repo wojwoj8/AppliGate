@@ -30,9 +30,9 @@ const ProfileCompanyStatus: React.FC<ProfileCompanyStatusInterface> = ({profileS
             await setProfileStatus(updatedProfileStatus);
         
             if (updatedProfileStatus.public_profile === false) {
-              setAlertError('Profile Changed to Private, nobody can see your profile success');
+              setAlertError('Profile Changed to Private, nobody can see your profile and your Job Offers success');
             } else {
-              setAlertError('Profile Changed to Public, now everone can see your profile! Copy profile link and share it success');
+              setAlertError('Profile Changed to Public, now everone can see your profile and your Job Offers! Copy profile link and share it success');
             }
         
             editData(updatedProfileStatus, undefined, '/profile/profileStatus', 'profileStatus');

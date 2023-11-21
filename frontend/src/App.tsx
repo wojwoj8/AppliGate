@@ -66,7 +66,8 @@ function App() {
             <Route path="/company/profile/*" element={<PrivateRoute><ProfileCompany/></PrivateRoute>}></Route>
             <Route path="/company/joboffer" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route>
             <Route path="/company/joboffer/createjoboffer" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route>
-            <Route path="/company/joboffer/:offerid" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route>
+            {/* <Route path="/company/joboffer/:offerid" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route> */}
+            <Route path="/company/joboffer/:offerid" element={<PrivateRoute><JobOffer setGlobalAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/company/jobofferlistings" element={<PrivateRoute><JobOfferListing/></PrivateRoute>}></Route>
             <Route path="/company/myJobOffers" element={<PrivateRouteCompanyOnly><MyJobOffers/></PrivateRouteCompanyOnly>}></Route>
             

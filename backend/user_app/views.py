@@ -315,7 +315,7 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
 
         if username:
             user = get_object_or_404(User, username=username)
-            print(user)
+            # print(user)
 
             serializer = self.serializer_class(user, many=False)
             return Response(serializer.data)

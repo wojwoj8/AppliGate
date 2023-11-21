@@ -35,8 +35,8 @@ class JobOffer(models.Model):
     # remote, stationary etc
     work_mode = models.CharField(max_length=100, blank=True)
 
-    svg_color = models.CharField(max_length=7, blank=True, validators=[hex_color_validator], default='#ffffff')
-    background_color = models.CharField(max_length=7, blank=True, validators=[hex_color_validator], default='#ff0000')
+    svg_color = models.CharField(max_length=7, blank=True, validators=[hex_color_validator], default='#2c2cdb')
+    background_color = models.CharField(max_length=7, blank=True, validators=[hex_color_validator], default='#f7f2f2')
 
     specialization = models.CharField(max_length=100, blank=False)
 

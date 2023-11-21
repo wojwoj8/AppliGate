@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios, { AxiosError } from 'axios';
-import JobOfferListingItem from './JobOfferListingItem';
+import JobOfferListingItem from '../../JobOffers/JobOfferListingItem';
 import { Link } from 'react-router-dom';
-import Loading from '../Loading';
-import AuthContext from '../../utils/AuthProvider';
-import ErrorPage from '../ErrorPage';
-import { ErrorResponse } from '../Profile';
-import { JobOfferListingData } from './JobOfferListing';
+import Loading from '../../Loading';
+import AuthContext from '../../../utils/AuthProvider';
+import ErrorPage from '../../ErrorPage';
+import { ErrorResponse } from '../../Profile';
+import { JobOfferListingData } from '../../JobOffers/JobOfferListing';
 
-interface MyJobOffersData{
+interface ProfileCompanyJobOffersData{
   username?: string | undefined
 }
 
 
 
-const MyJobOffers: React.FC<MyJobOffersData> = ({username}) => {
+const ProfileCompanyJobOffers: React.FC<ProfileCompanyJobOffersData> = ({username}) => {
   const [jobOffers, setJobOffers] = useState<JobOfferListingData[]>([]);
 
   // for loading
@@ -80,7 +80,7 @@ const MyJobOffers: React.FC<MyJobOffersData> = ({username}) => {
   return (
     <div className='container-fluid'>
         
-      <h1>My JOB OFFERS </h1>
+      <h1>Listed Job Offers </h1>
       {jobOffers[0] ? (<ul>
         {jobOffers.map((jobOffer) => (
             <Link to={`/company/joboffer/${jobOffer.id}`} key={jobOffer.id} style={{textDecoration:"none"}}>
@@ -99,4 +99,4 @@ const MyJobOffers: React.FC<MyJobOffersData> = ({username}) => {
   );
 };
 
-export default MyJobOffers;
+export default ProfileCompanyJobOffers;

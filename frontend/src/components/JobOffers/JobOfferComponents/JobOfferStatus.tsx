@@ -80,7 +80,7 @@ const changeJobOfferStatus = async () => {
     if (updatedJobOfferStatus.job_offer_status === false) {
         setAlertError('JobOffer Changed to not listed, nobody can see that job offer success');
     } else {
-        setAlertError('JobOffer Changed to listed, now everone can see and applay for that job offer success');
+        setAlertError('JobOffer Changed to listed, now if your profile is public everyone can see and applay for that job offer success');
     }
 
     editData(updatedJobOfferStatus, undefined, `/company/joboffer/jobofferstatus/${offerid}`, 'jobOfferStatus');

@@ -64,7 +64,7 @@ class JobOfferListingView(generics.ListAPIView):
     serializer_class = JobListingsSerializer
 
     def get_queryset(self):
-        return JobOffer.objects.filter(job_offer_status=True)
+        return JobOffer.objects.filter(job_offer_status=True, company__public_profile=True)
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
@@ -76,11 +76,20 @@ class MyJobOffersListingView(generics.ListAPIView):
     serializer_class = JobListingsSerializer
 
     def get(self, request, *args, **kwargs):
-        queryset = JobOffer.objects.filter(company=self.request.user)
-        job_offers = list(queryset)  # Convert the queryset to a list of instances
-        # print(job_offers)
-        serializer = self.serializer_class(job_offers, many=True)
-        return Response(serializer.data)
+        # print(kwargs.get("username"))
+        if "username" in kwargs:
+            user = get_object_or_404(User, username=kwargs.get("username"))
+            # print(kwargs.get("username"))
+            queryset = JobOffer.objects.filter(company=user, job_offer_status=True)
+            job_offers = list(queryset)
+            serializer = self.serializer_class(job_offers, many=True)
+            return Response(serializer.data)
+        else:
+            queryset = JobOffer.objects.filter(company=self.request.user)
+            job_offers = list(queryset)  # Convert the queryset to a list of instances
+            # print(job_offers)
+            serializer = self.serializer_class(job_offers, many=True)
+            return Response(serializer.data)
 
 class JobOfferDeleteOfferView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
@@ -133,7 +142,7 @@ class JobOfferCreateOfferView(generics.CreateAPIView):
             job_offer = serializer.save(company=request.user)
             return Response({"created": "Job Offer created successfully", "job_offer_id": job_offer.id}, status=status.HTTP_201_CREATED)
         
-        print(serializer.errors)
+        # print(serializer.errors)
         return Response({"error": "Error creating job offer"}, status=status.HTTP_400_BAD_REQUEST)
         
     
@@ -190,7 +199,7 @@ class BaseJobOfferView(
 
     def put(self, request, *args, **kwargs):
         self.check_joboffer_owner(request)
-        print(request.data)
+        # print(request.data)
         id = self.kwargs.get("id")
         offer = self.get_object(id)
         serializer = self.serializer_class(offer, data=request.data)
@@ -287,7 +296,7 @@ class BaseJobOfferMultipleView(
     def post(self, request, *args, **kwargs):
         self.check_joboffer_owner(request)
         offer_id = kwargs.get('id')
-        print(offer_id)
+        # print(offer_id)
         
         try:
             job_offer = JobOffer.objects.get(id=offer_id)
@@ -312,7 +321,7 @@ class BaseJobOfferMultipleView(
         try:
             instance = self.queryset.get(id=item_id)
         except JobOffer.DoesNotExist:
-            print('test')
+            # print('test')
             return Response({'error': 'JobOffer not found'}, status=status.HTTP_404_NOT_FOUND)
         
 

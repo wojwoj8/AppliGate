@@ -126,7 +126,7 @@ class MyJobOffersListingView(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         # print(kwargs.get("username"))
         if "username" in kwargs:
-            user = get_object_or_404(User, username=kwargs.get("username")).order_by('-job_published_at')
+            user = get_object_or_404(User, username=kwargs.get("username"))
             # print(kwargs.get("username"))
             queryset = JobOffer.objects.filter(company=user, job_offer_status=True)
             job_offers = list(queryset)

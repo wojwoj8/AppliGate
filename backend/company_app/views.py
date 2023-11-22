@@ -27,6 +27,7 @@ from .serializer import (
     JobOfferApplicationSerializer,
     JobOfferCreateSerializer,
     JobApplicationSerializer,
+    JobApplicationUserListingSerializer,
 
 )
 from user_app.views import (
@@ -66,12 +67,57 @@ class JobOfferListingView(generics.ListAPIView):
     serializer_class = JobListingsSerializer
 
     def get_queryset(self):
-        return JobOffer.objects.filter(job_offer_status=True, company__public_profile=True)
+        now = datetime.now().date()
+
+        return JobOffer.objects.filter(
+            job_application_deadline__gte=now,
+            job_offer_status=True, 
+            company__public_profile=True).order_by('-job_published_at')
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data)
+        data = serializer.data
+        for job_offer_data in data:
+            job_offer_id = job_offer_data['id']
+            job_offer_data['applicant_count'] = JobApplication.objects.filter(
+                job_offer_id=job_offer_id
+            ).count()
+
+        return Response(data)
+
+
+class JobOfferUserAppliedListingView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = JobListingsSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+ 
+        applied_job_offers = JobApplication.objects.filter(
+            applicant=user,
+            job_offer__job_offer_status=True,
+            job_offer__company__public_profile=True
+        ).values_list('job_offer_id', flat=True)
+
+        queryset = JobOffer.objects.filter(id__in=applied_job_offers)
+        # order descending by application_date (on top lastly applied)
+        queryset = queryset.order_by('-jobapplication__application_date')
+
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.serializer_class(queryset, many=True)
+        data = serializer.data
+        for job_offer_data in data:
+            job_offer_id = job_offer_data['id']
+            job_offer_data['applicant_count'] = JobApplication.objects.filter(
+                job_offer_id=job_offer_id
+            ).count()
+
+        return Response(data)
+
 
 class MyJobOffersListingView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -80,18 +126,32 @@ class MyJobOffersListingView(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         # print(kwargs.get("username"))
         if "username" in kwargs:
-            user = get_object_or_404(User, username=kwargs.get("username"))
+            user = get_object_or_404(User, username=kwargs.get("username")).order_by('-job_published_at')
             # print(kwargs.get("username"))
             queryset = JobOffer.objects.filter(company=user, job_offer_status=True)
             job_offers = list(queryset)
             serializer = self.serializer_class(job_offers, many=True)
-            return Response(serializer.data)
+            data = serializer.data
+            for job_offer_data in data:
+                job_offer_id = job_offer_data['id']
+                job_offer_data['applicant_count'] = JobApplication.objects.filter(
+                    job_offer_id=job_offer_id
+                ).count()
+
+            return Response(data)
         else:
-            queryset = JobOffer.objects.filter(company=self.request.user)
+            queryset = JobOffer.objects.filter(company=self.request.user).order_by('-job_published_at')
             job_offers = list(queryset)  # Convert the queryset to a list of instances
             # print(job_offers)
             serializer = self.serializer_class(job_offers, many=True)
-            return Response(serializer.data)
+            data = serializer.data
+            for job_offer_data in data:
+                job_offer_id = job_offer_data['id']
+                job_offer_data['applicant_count'] = JobApplication.objects.filter(
+                    job_offer_id=job_offer_id
+                ).count()
+
+            return Response(data)
 
 class JobOfferDeleteOfferView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]

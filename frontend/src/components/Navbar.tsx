@@ -81,7 +81,10 @@ const Navbar: React.FC<NavbarProps> = ({setGlobalAlertError}) =>{
                   </a>
                   <ul className="dropdown-menu">
                     <li className="dropdown-item" data-bs-dismiss="offcanvas">
-                      <Link to='/company/jobofferlistings' className="nav-link" aria-current="page">Job Offers Listing</Link>
+                      <Link to='/applications' className="nav-link" aria-current="page">My applications</Link>
+                    </li>
+                    <li className="dropdown-item" data-bs-dismiss="offcanvas">
+                      <Link to='/jobofferlistings' className="nav-link" aria-current="page">Job Offers Listing</Link>
                     </li>
                     {/* <li className="dropdown-item" data-bs-dismiss="offcanvas">
                       <Link to='/company/myJobOffers' className="nav-link" aria-current="page">My Job Offers</Link>
@@ -132,7 +135,7 @@ const Navbar: React.FC<NavbarProps> = ({setGlobalAlertError}) =>{
                   <ul className="dropdown-menu">
                     <li className="dropdown-item" data-bs-dismiss="offcanvas"><NavbarJobOfferCreate setGlobalAlertError={setGlobalAlertError}/></li>
                     <li className="dropdown-item" data-bs-dismiss="offcanvas">
-                      <Link to='/company/jobofferlistings' className="nav-link" aria-current="page">Job Offer Listings</Link>
+                      <Link to='/jobofferlistings' className="nav-link" aria-current="page">Job Offer Listings</Link>
                     </li>
                     <li className="dropdown-item" data-bs-dismiss="offcanvas">
                       <Link to='/company/myJobOffers' className="nav-link" aria-current="page">My Job Offers</Link>

@@ -3,6 +3,29 @@ interface JobOfferListingItemProps {
     jobOffer: JobOfferListingData;
   }
   
+  const formatRemainingTime = (deadline: string) => {
+    const deadlineDate = new Date(deadline);
+    const currentDate = new Date();
+
+    const timeDifference = (deadlineDate as any) - (currentDate as any);
+    if (timeDifference > 0){
+        return(
+            <p className="card-text">
+                Application Deadline: {new Date(deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </p>
+        )
+    } else{
+        return(
+           
+            <p className="card-text">
+                Expired: {new Date(deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </p>
+            
+        )
+    }
+}
+
+
   const JobOfferListingItem: React.FC<JobOfferListingItemProps> = ({ jobOffer }) => {
     return (
         <div className="card mb-4">
@@ -21,15 +44,14 @@ interface JobOfferListingItemProps {
                         
                         <p className="card-text">{jobOffer.job_location}</p>
                         <p className="card-text">
-                            Salary: {jobOffer.salary_min} - {jobOffer.salary_max} {jobOffer.salary_currency} {jobOffer.salary_description}
+                            Salary: {jobOffer.salary_min} - {jobOffer.salary_max} {jobOffer.salary_currency} {jobOffer.salary_type}
                         </p>
                         {/* <p className="card-text">{jobOffer.job_description}</p> */}
                         <p className="card-text">
                             Published At: {new Date(jobOffer.job_published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                         </p>
-                        <p className="card-text">
-                            Application Deadline: {new Date(jobOffer.job_application_deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                        </p>
+                        {formatRemainingTime(jobOffer.job_application_deadline)}
+                        <span>Applicant count: {jobOffer.applicant_count}</span>
                     </div>
                 </div>
             </div>

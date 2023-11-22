@@ -18,6 +18,7 @@ import ProfileSettingsUsername from './components/ProfileSettingsUsername';
 import ProfileSettingsDelete from './components/ProfileSettingsDelete';
 import Example from './components/Example';
 import ProfileAlert from './components/profileComponents/ProfileAlert';
+import JobOfferUserApplications from './components/JobOffers/JobOfferUserApplications';
 
 // Company part
 import ProfileCompany from './components/companyComponents/ProfileCompany';
@@ -61,14 +62,15 @@ function App() {
             <Route path="/profileSettings/delete" element={<PrivateRoute><ProfileSettingsDelete setAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/" element={<PrivateRoute><Index/></PrivateRoute>} />
 
-
+            <Route path="/applications" element={<PrivateRoute><JobOfferUserApplications/></PrivateRoute>}></Route>
             {/* company routes */}
             <Route path="/company/profile/*" element={<PrivateRoute><ProfileCompany/></PrivateRoute>}></Route>
             <Route path="/company/joboffer" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route>
             <Route path="/company/joboffer/createjoboffer" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route>
             {/* <Route path="/company/joboffer/:offerid" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route> */}
             <Route path="/company/joboffer/:offerid" element={<PrivateRoute><JobOffer setGlobalAlertError={setAlertError}/></PrivateRoute>}></Route>
-            <Route path="/company/jobofferlistings" element={<PrivateRoute><JobOfferListing/></PrivateRoute>}></Route>
+            <Route path="/jobofferlistings" element={<PrivateRoute><JobOfferListing/></PrivateRoute>}></Route>
+            
             <Route path="/company/myJobOffers" element={<PrivateRouteCompanyOnly><MyJobOffers/></PrivateRouteCompanyOnly>}></Route>
             
           

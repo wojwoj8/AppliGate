@@ -35,8 +35,10 @@ urlpatterns = [
     # path("company/joboffer", views.JobOfferListingView.as_view(), name="jobOffer"),
     path("company/joboffer/createjoboffer", views.JobOfferCreateOfferView.as_view(), name="jobOfferCreateJobOffer"),
     path("company/joboffer/apply/<int:id>", views.JobApplicationView.as_view(), name="jobApply"),
+    path("applications", views.JobOfferUserAppliedListingView.as_view(), name="jobUserApplications"),
     
     
+
     path("company/joboffer/info", views.JobOfferCompanyView.as_view(), name="jobOfferCompanyData"),
     path("company/joboffer/top", views.JobOfferTopView.as_view(), name="JobOfferTopData"),
     path("company/joboffer/info/<int:id>", views.JobOfferCompanyView.as_view(), name="jobOfferCompanyDataId"),

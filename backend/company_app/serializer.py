@@ -173,14 +173,23 @@ class JobOfferWhatWeOfferSerializer(serializers.ModelSerializer):
 class JobOfferApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOfferApplication
-        fields = ["id", "job_application_stage",]
+        fields = ["id", "job_application_stage"]
+
 
 class JobOfferCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOffer
         fields = '__all__'
 
+
 class JobApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobApplication
+        fields = '__all__'
+
+class JobApplicationUserListingSerializer(serializers.ModelSerializer):
+    job_offer = JobListingsSerializer()
+    job_application = JobApplicationSerializer()
+    class Meta:
+        model = JobOffer
         fields = '__all__'

@@ -154,6 +154,11 @@ class JobApplicationView(generics.CreateAPIView):
     queryset = JobApplication.objects.all()
     serializer_class = JobApplicationSerializer
 
+    def check_user(self, request):
+        user_type = request.user.user_type
+        if user_type != 'user':
+            raise PermissionDenied("Company user can't apply for an offer!")
+
     def get(self, request, *args, **kwargs):
         job_offer_id = kwargs.get('id')
         job_offer = JobOffer.objects.get(id=job_offer_id)
@@ -165,8 +170,16 @@ class JobApplicationView(generics.CreateAPIView):
         return Response({'has_applied': has_applied})
 
     def create(self, request, *args, **kwargs):
+        self.check_user(request)
         job_offer_id = kwargs.get('id')
         job_offer = JobOffer.objects.get(id=job_offer_id)
+        status = job_offer.job_offer_status
+        if status is False:
+            raise PermissionDenied("That offer is not listed!")
+        
+        if job_offer.job_application_deadline < datetime.now().date():
+            raise PermissionDenied("The deadline for applying to this offer has passed!")
+        
         applicant = request.user
         data = {'job_offer': job_offer.id, 'applicant': applicant.id}
         serializer = self.get_serializer(data=data)

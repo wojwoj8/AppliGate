@@ -812,6 +812,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
                       error={error}
                       setError={setError}
                       setGlobalAlertError={setGlobalAlertError}
+                      deadline={jobOfferTopMore?.job_application_deadline}
                       
                     />
 

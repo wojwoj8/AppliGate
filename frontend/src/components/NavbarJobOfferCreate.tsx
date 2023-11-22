@@ -9,7 +9,7 @@ interface NavbarJobOfferCreateProps {
   }
 
 const NavbarJobOfferCreate: React.FC<NavbarJobOfferCreateProps> = ({ setGlobalAlertError }) => {
-    const {authTokens, user, logoutUser } = useContext(AuthContext);
+    const {authTokens, logoutUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleCreateJobOffer = async () => {

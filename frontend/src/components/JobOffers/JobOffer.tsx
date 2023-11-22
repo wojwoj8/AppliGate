@@ -18,6 +18,7 @@ import JobOfferResponsibility from "./JobOfferComponents/JobOfferResponsibility"
 import JobOfferRequirement from "./JobOfferComponents/JobOfferRequirement";
 import JobOfferWhatWeOffer from "./JobOfferComponents/JobOfferWhatWeOffer";
 import JobOfferApplication from "./JobOfferComponents/JobOfferApplication";
+import { BlockPickerStylesProps } from "react-color/lib/components/block/Block";
 
 // make mulitple interfaces for easier crud
 // should make one for immutable company data
@@ -98,26 +99,7 @@ export interface JobOfferApplicationData{
   job_application_stage: string;
 }
 
-interface JobOfferData {
-    company: string;
-    title: string;
-    job_description: string;
-    job_location: string;
-    work_schedule: string;
-    salary_min: number;
-    salary_max: number;
-    salary_type: string;
-    salary_currency: string;
-    job_responsibilities: string;
-    job_requirements: string;
-    job_published_at: Date;
-    job_application_deadline: Date;
-    recruitment_type: string;
-    application_process: string;
-    job_benefits: string;
-    job_additional_information: string;
-    skills: string[];
-  }
+
 
 
 // SIMPLIFICATION OF MY JobOfferGetDataFunction TYPE BECAUSE OF ERROR
@@ -191,6 +173,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
     const [jobOfferRequirement, setJobOfferRequirement] = useState<JobOfferRequirementData[]>([]);
     const [jobOfferWhatWeOffer, setJobOfferWhatWeOffer] = useState<JobOfferWhatWeOfferData[]>([]);
     const [jobOfferApplication, setJobOfferApplication] = useState<JobOfferApplicationData[]>([]);
+
     
 
     const [jobOfferStatus, setJobOfferStatus] = useState<JobOfferStatusData | null>(null)

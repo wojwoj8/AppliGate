@@ -10,6 +10,7 @@ from .models import (
     JobOfferRequirement,
     JobOfferWhatWeOffer,
     JobOfferApplication,
+    JobApplication,
 )
 from user_app.serializer import (
     DateSerializer,
@@ -177,4 +178,9 @@ class JobOfferApplicationSerializer(serializers.ModelSerializer):
 class JobOfferCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOffer
+        fields = '__all__'
+
+class JobApplicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobApplication
         fields = '__all__'

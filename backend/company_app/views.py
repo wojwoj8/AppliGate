@@ -26,6 +26,7 @@ from .serializer import (
     JobOfferWhatWeOfferSerializer,
     JobOfferApplicationSerializer,
     JobOfferCreateSerializer,
+    JobApplicationSerializer,
 
 )
 from user_app.views import (
@@ -48,6 +49,7 @@ from .models import (
     JobOfferRequirement,
     JobOfferWhatWeOffer,
     JobOfferApplication,
+    JobApplication,
 )
 from datetime import datetime, timedelta
 
@@ -144,8 +146,39 @@ class JobOfferCreateOfferView(generics.CreateAPIView):
         
         # print(serializer.errors)
         return Response({"error": "Error creating job offer"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+# check if joboffer is public and if profilie that listed is public and if date is valid datenow check?
+class JobApplicationView(generics.CreateAPIView):
+    queryset = JobApplication.objects.all()
+    serializer_class = JobApplicationSerializer
+
+    def get(self, request, *args, **kwargs):
+        job_offer_id = kwargs.get('id')
+        job_offer = JobOffer.objects.get(id=job_offer_id)
+        applicant = request.user
+
+        # Check if the user has already applied for the specified job offer
+        has_applied = JobApplication.objects.filter(job_offer=job_offer, applicant=applicant).exists()
+
+        return Response({'has_applied': has_applied})
+
+    def create(self, request, *args, **kwargs):
+        job_offer_id = kwargs.get('id')
+        job_offer = JobOffer.objects.get(id=job_offer_id)
+        applicant = request.user
+        data = {'job_offer': job_offer.id, 'applicant': applicant.id}
+        serializer = self.get_serializer(data=data)
+
         
-    
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class BaseJobOfferView(
     generics.GenericAPIView,
     mixins.ListModelMixin,

@@ -87,6 +87,16 @@ class JobOfferWhatWeOffer(models.Model):
     job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE)
     job_whatweoffer = models.CharField(max_length=150, blank=False)
 
+# recrutation process
 class JobOfferApplication(models.Model):
     job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE)
     job_application_stage = models.CharField(max_length=100, blank=False)
+
+# user applications
+class JobApplication(models.Model):
+    job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE, related_name='applications')
+    applicant = models.ForeignKey(User, on_delete=models.CASCADE)
+    application_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Applicant: {self.applicant} for Job: {self.job_offer.title}"

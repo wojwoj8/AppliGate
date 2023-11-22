@@ -5,6 +5,7 @@ from company_app.models import (
     JobOfferResponsibility,
     JobOfferRequirement,
     JobOfferWhatWeOffer,
+    JobApplication
 )
 
 from django.contrib.auth.admin import UserAdmin
@@ -19,3 +20,4 @@ admin.site.register(JobOffer)
 admin.site.register(JobOfferResponsibility)
 admin.site.register(JobOfferRequirement)
 admin.site.register(JobOfferWhatWeOffer)
+admin.site.register(JobApplication)

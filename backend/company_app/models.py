@@ -97,6 +97,13 @@ class JobApplication(models.Model):
     job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     application_date = models.DateTimeField(auto_now_add=True)
+    APPLICATION_STATUS = [
+        ("pending", "Pending"),
+        ("approved", "Approved"),
+        ("rejected", "Rejected"),
+    ]
+    status = models.CharField(max_length=15, choices=APPLICATION_STATUS, default="pending")
+
 
     def __str__(self):
         return f"Applicant: {self.applicant} for Job: {self.job_offer.title}"

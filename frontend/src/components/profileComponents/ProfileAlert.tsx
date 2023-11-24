@@ -43,13 +43,19 @@ const ProfileAlert: React.FC<Alert> = ({ error, setError }) => {
     }
   }, [error, setError]);
 
-  const alertClassName = errorType === "success" ? "alert-success" : "alert-danger";
+  const alertClassName =
+    errorType === "success" ? "alert-success" : errorType === "info" ? "alert-info" : "alert-danger";
+
 
   return (
     <div className="sticky-top">
       {show && (
         <div className={`container alert ${alertClassName} fade show`} role="alert">
-          <strong>{errorType === "success" ? 'Success!' : 'Error!'}</strong> {errFinalMessage}.
+          <strong>{errorType === "success"
+              ? "Success!"
+              : errorType === "info"
+              ? "Info!"
+              : "Error!"}</strong> {errFinalMessage}.
         </div>
       )}
     </div>

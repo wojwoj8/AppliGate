@@ -34,6 +34,7 @@ const JobOfferUserApplications: React.FC = () => {
           },
       }
       );
+      // console.log(response.data)
       setJobOffers(response.data);
      if(response.status === 200){
     }

@@ -51,7 +51,9 @@ interface JobOfferListingItemProps {
                             Published At: {new Date(jobOffer.job_published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                         </p>
                         {formatRemainingTime(jobOffer.job_application_deadline)}
-                        <span>Applicant count: {jobOffer.applicant_count}</span>
+                        <p>Applicant count: {jobOffer.applicant_count}</p>
+                        {jobOffer.status && <span>Status: {jobOffer.status}</span>}
+                        
                     </div>
                 </div>
             </div>

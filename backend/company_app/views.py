@@ -27,7 +27,7 @@ from .serializer import (
     JobOfferApplicationSerializer,
     JobOfferCreateSerializer,
     JobApplicationSerializer,
-    JobApplicationUserListingSerializer,
+    JobUserAppliedListingsSerializer,
 
 )
 from user_app.views import (
@@ -89,7 +89,7 @@ class JobOfferListingView(generics.ListAPIView):
 
 class JobOfferUserAppliedListingView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = JobListingsSerializer
+    serializer_class = JobUserAppliedListingsSerializer
 
     def get_queryset(self):
         user = self.request.user
@@ -98,23 +98,17 @@ class JobOfferUserAppliedListingView(generics.ListAPIView):
             applicant=user,
             job_offer__job_offer_status=True,
             job_offer__company__public_profile=True
-        ).values_list('job_offer_id', flat=True)
+        ).values_list('job_offer_id', flat=True).distinct()
 
+        
         queryset = JobOffer.objects.filter(id__in=applied_job_offers)
-        # order descending by application_date (on top lastly applied)
-        queryset = queryset.order_by('-jobapplication__application_date')
 
         return queryset
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(queryset, many=True, context={'request': request})
         data = serializer.data
-        for job_offer_data in data:
-            job_offer_id = job_offer_data['id']
-            job_offer_data['applicant_count'] = JobApplication.objects.filter(
-                job_offer_id=job_offer_id
-            ).count()
 
         return Response(data)
 

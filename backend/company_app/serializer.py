@@ -79,6 +79,49 @@ class JobListingsSerializer(serializers.ModelSerializer):
             "id",
         ]
 
+class JobUserAppliedListingsSerializer(serializers.ModelSerializer):
+    profile_image = serializers.ImageField(source='company.profile_image')
+    first_name = serializers.CharField(source='company.first_name')
+    background_image = serializers.ImageField(source='company.background_image')
+    
+    # new fields for applicant_count and status
+    applicant_count = serializers.SerializerMethodField()
+    status = serializers.SerializerMethodField()
+
+    class Meta:
+        model = JobOffer
+        fields = [
+            "profile_image",
+            "first_name",
+            "background_image",
+            "title",
+            "job_location",
+            "salary_min",
+            "salary_max",
+            "job_description",
+            "work_schedule",
+            "salary_currency",
+            "salary_type",
+            "job_published_at",
+            "job_application_deadline",
+            "id",
+            "applicant_count", 
+            "status",  
+        ]
+
+    def get_applicant_count(self, obj):
+        return JobApplication.objects.filter(job_offer=obj.id).count()
+
+    def get_status(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            job_application = JobApplication.objects.filter(
+                job_offer=obj.id,
+                applicant=request.user
+            ).first()
+            return job_application.status if job_application else None
+        return None
+
 # company data serializer (immutable for joboffer)
 class JobOfferCompanySerializer(serializers.ModelSerializer):
     profile_image = serializers.ImageField(source='company.profile_image')

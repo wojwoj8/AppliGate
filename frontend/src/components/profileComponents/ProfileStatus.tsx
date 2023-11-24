@@ -30,7 +30,7 @@ const ProfileStatus: React.FC<ProfileContactProps> = ({profileStatus, setProfile
             await setProfileStatus(updatedProfileStatus);
         
             if (updatedProfileStatus.public_profile === false) {
-              setAlertError('Profile Changed to Private, nobody can see your CV success');
+              setAlertError('Your profile has been set to private. This means that your CV is no longer visible, even if you have already applied for a job offer info');
             } else {
               setAlertError('Profile Changed to Public, now everone can see your CV! Copy profile link and share it success');
             }

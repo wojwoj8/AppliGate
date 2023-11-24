@@ -94,7 +94,7 @@ class JobOfferApplication(models.Model):
 
 # user applications
 class JobApplication(models.Model):
-    job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE)
+    job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE, related_name='applications')
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     application_date = models.DateTimeField(auto_now_add=True)
     APPLICATION_STATUS = [

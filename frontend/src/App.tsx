@@ -62,7 +62,7 @@ function App() {
             <Route path="/profileSettings/delete" element={<PrivateRoute><ProfileSettingsDelete setAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/" element={<PrivateRoute><Index/></PrivateRoute>} />
 
-            <Route path="/applications" element={<PrivateRouteUserOnly><JobOfferUserApplications/></PrivateRouteUserOnly>}></Route>
+            <Route path="/applications/:page" element={<PrivateRouteUserOnly><JobOfferUserApplications/></PrivateRouteUserOnly>}></Route>
             {/* company routes */}
             <Route path="/company/profile/*" element={<PrivateRoute><ProfileCompany/></PrivateRoute>}></Route>
             <Route path="/company/joboffer" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route>

@@ -7,14 +7,25 @@ import AuthContext from '../../utils/AuthProvider';
 import ErrorPage from '../ErrorPage';
 import { ErrorResponse } from '../Profile';
 import { JobOfferListingData } from './JobOfferListing';
+import { useParams } from 'react-router-dom';
+import Pagination from '../sharedComponents/Pagination';
+import { PaginationData } from '../sharedComponents/Pagination';
 
 
 
 const JobOfferUserApplications: React.FC = () => {
+  const API_BASE_URL = 'http://localhost:8000';
   const [jobOffers, setJobOffers] = useState<JobOfferListingData[]>([]);
+  const [data, setData]= useState<PaginationData>({
+    count: null,
+    next: "",
+    previous: ""
+  });
+
+  const { page } = useParams();
 
   // for loading
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
   // Authtoken for CRUD and user for username and logout
@@ -23,10 +34,11 @@ const JobOfferUserApplications: React.FC = () => {
    // Axios error for error component
    const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null)
   // Fetch job offer data from the backend
-  const fetchJobOffers = async () => {
+  const fetchJobOffers = async (url?: string) => {
     try {
-      let path = `/applications`
 
+      let path = `${API_BASE_URL}/applications/${page}?page=${page}`
+      
       const response = await axios.get(path ,{
         headers: {
             'Content-Type': 'application/json',
@@ -34,8 +46,11 @@ const JobOfferUserApplications: React.FC = () => {
           },
       }
       );
-      // console.log(response.data)
-      setJobOffers(response.data);
+      console.log(path)
+      const {results, ...rest} = response.data
+      console.log(response.data)
+      setData(rest)
+      setJobOffers(results);
      if(response.status === 200){
     }
 }catch(error: any){
@@ -56,16 +71,19 @@ const JobOfferUserApplications: React.FC = () => {
       }
 }
   };
+
+  const fetchData = async (url?: string) =>{
+      
+    setIsLoading(true);
+    setProgress(50);
+    await fetchJobOffers(url);
+    setProgress(100);
+    setIsLoading(false);
+}
+
   useEffect(() => {
-    const fetchData = async () =>{
-        setIsLoading(true);
-        setProgress(50);
-        await fetchJobOffers();
-        setProgress(100);
-        setIsLoading(false);
-    }
-    fetchData();
-  }, []);
+    fetchData(page);
+  }, [page]);
 
   if (isLoading) {
     return <Loading progress={progress} />
@@ -74,10 +92,12 @@ const JobOfferUserApplications: React.FC = () => {
     return <ErrorPage axiosError={error} />
   }
   return (
+    <>
+    
     <div className='container-fluid'>
         
       <h1>Job Offers that you applied for</h1>
-      {jobOffers[0] ? (<ul>
+      {jobOffers && jobOffers.length ? (<ul>
         {jobOffers.map((jobOffer) => (
             <Link to={`/company/joboffer/${jobOffer.id}`} key={jobOffer.id} style={{textDecoration:"none"}}>
                 <JobOfferListingItem  jobOffer={jobOffer} />
@@ -90,8 +110,11 @@ const JobOfferUserApplications: React.FC = () => {
         </div>
       )}
       
-
+      
     </div>
+    
+      <Pagination data={data} page={page}/>
+    </>
   );
 };
 

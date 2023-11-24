@@ -53,8 +53,8 @@ from .models import (
     JobApplication,
 )
 from datetime import datetime, timedelta
-
-
+from rest_framework.pagination import PageNumberPagination
+from django.db.models import F, Max
 
 class ProfileCompanyView(BaseProfileUpdateView):
     # permission_classes = [IsAuthenticated]
@@ -90,6 +90,7 @@ class JobOfferListingView(generics.ListAPIView):
 class JobOfferUserAppliedListingView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = JobUserAppliedListingsSerializer
+    pagination_class = PageNumberPagination
 
     def get_queryset(self):
         user = self.request.user
@@ -101,12 +102,26 @@ class JobOfferUserAppliedListingView(generics.ListAPIView):
         ).values_list('job_offer_id', flat=True).distinct()
 
         
-        queryset = JobOffer.objects.filter(id__in=applied_job_offers)
+        queryset = JobOffer.objects.filter(id__in=applied_job_offers).annotate(
+            latest_application_date=Max('applications__application_date')
+        ).order_by(F('latest_application_date'))
 
         return queryset
-
+    
+    def get_paginated_response(self, data):
+        return self.paginator.get_paginated_response(data)
+    
     def get(self, request, *args, **kwargs):
+        page_number = int(kwargs.get('page', 1))
+        self.pagination_class.page_size = 5
         queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+        print(page)
+        if page is not None:
+            serializer = self.serializer_class(page, many=True, context={'request': request})
+            print(self.get_paginated_response(serializer.data))
+            return self.get_paginated_response(serializer.data)
+        
         serializer = self.serializer_class(queryset, many=True, context={'request': request})
         data = serializer.data
 

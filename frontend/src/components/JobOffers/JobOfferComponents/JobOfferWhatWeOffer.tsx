@@ -219,7 +219,7 @@ const JobOfferWhatWeOffer: React.FC<JobOfferWhatWeOfferProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('addwhatweoffer', 0, `job_whatweoffer`, multipleErrors) ? ' is-invalid' : ''}`} 
                                         value={singleJobOfferWhatWeOffer?.job_whatweoffer || ''}
                                         onChange={handleSingleInputChange}
-                                        placeholder='Creating nice UI'
+                                        placeholder='Fruit fridays'
                                         
                                     />
                                     {renderFieldErrorMultiple('addwhatweoffer', 0, `job_whatweoffer`, multipleErrors)}
@@ -278,7 +278,7 @@ const JobOfferWhatWeOffer: React.FC<JobOfferWhatWeOfferProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('whatweoffer', index, `job_whatweoffer_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={jobOfferWhatWeOffer?.job_whatweoffer || ''}
                                         onChange={(e) => handleWhatWeOfferInputChange(index, e)}
-                                        placeholder='Creating nice UI'
+                                        placeholder='Fruit fridays'
                                     />
                                     {renderFieldErrorMultiple('whatweoffer', index, `job_whatweoffer_${index}`, multipleErrors)}
                                     </div>

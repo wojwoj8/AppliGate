@@ -52,6 +52,37 @@ class ProfileCompanySerializer(serializers.ModelSerializer):
         return super().to_internal_value(data)
 
 
+class JobAllListingsSerializer(serializers.ModelSerializer):
+    profile_image = serializers.ImageField(source="company.profile_image")
+    first_name = serializers.CharField(source="company.first_name")
+    background_image = serializers.ImageField(source="company.background_image")
+
+    class Meta:
+        model = JobOffer
+        fields = [
+            "profile_image",
+            "first_name",
+            "background_image",
+            "title",
+            "job_location",
+            "salary_min",
+            "salary_max",
+            "job_description",
+            "work_schedule",
+            "work_mode",
+            "salary_currency",
+            "salary_type",
+            "job_published_at",
+            "job_application_deadline",
+            "id",
+            "recruitment_type",
+            "position_level",
+            "contract_type",
+            "vacancy",
+            "specialization",
+        ]
+
+
 class JobListingsSerializer(serializers.ModelSerializer):
     profile_image = serializers.ImageField(source="company.profile_image")
     first_name = serializers.CharField(source="company.first_name")

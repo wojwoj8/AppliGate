@@ -219,7 +219,7 @@ const JobOfferRequirement: React.FC<JobOfferRequirementProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('addjob_requirement', 0, `job_requirement`, multipleErrors) ? ' is-invalid' : ''}`} 
                                         value={singleJobOfferRequirement?.job_requirement || ''}
                                         onChange={handleSingleInputChange}
-                                        placeholder='Creating nice UI'
+                                        placeholder='One year of commercial experience'
                                         
                                     />
                                     {renderFieldErrorMultiple('addjob_requirement', 0, `job_requirement`, multipleErrors)}
@@ -278,7 +278,7 @@ const JobOfferRequirement: React.FC<JobOfferRequirementProps> = ({
                                         className={`form-control${renderFieldErrorMultiple('job_requirement', index, `job_requirement_${index}`, multipleErrors) ? ' is-invalid' : ''}`}
                                         value={jobOfferRequirement?.job_requirement || ''}
                                         onChange={(e) => handleRequirementInputChange(index, e)}
-                                        placeholder='Creating nice UI'
+                                        placeholder='One year of commercial experience'
                                     />
                                     {renderFieldErrorMultiple('job_requirement', index, `job_requirement_${index}`, multipleErrors)}
                                     </div>

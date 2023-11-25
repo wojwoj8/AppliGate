@@ -6,6 +6,7 @@ import Loading from '../Loading';
 import AuthContext from '../../utils/AuthProvider';
 import ErrorPage from '../ErrorPage';
 import { ErrorResponse } from '../Profile';
+import { JobOfferSkillData } from './JobOffer';
 
 export interface JobOfferListingData {
   id: number;
@@ -27,8 +28,35 @@ export interface JobOfferListingData {
   work_mode: string;
 }
 
+export interface JobOfferListingExtendedData {
+  id: number;
+  profile_image: string;
+  first_name: string;
+  background_image: string;
+  title: string;
+  job_location: string;
+  salary_min: string;
+  salary_max: string;
+  salary_type: string;
+  job_description: string;
+  salary_currency: string;
+  job_published_at: string;
+  job_application_deadline: string;
+  work_mode: string;
+  work_schedule: string;
+  applicant_count: number;
+  status: string;
+  recruitment_type: string;
+  position_level: string;
+  contract_type: string;
+  vacancy: string;
+  specialization: string;
+  job_type: string;
+  skills: JobOfferSkillData[];
+}
+
 const JobOfferListing: React.FC = () => {
-  const [jobOffers, setJobOffers] = useState<JobOfferListingData[]>([]);
+  const [jobOffers, setJobOffers] = useState<JobOfferListingExtendedData[]>([]);
 
   // for loading
   const [isLoading, setIsLoading] = useState(true);
@@ -50,6 +78,7 @@ const JobOfferListing: React.FC = () => {
           },
       });
 
+      console.log(response.data)
       setJobOffers(response.data);
       if(response.status === 200){
       }
@@ -92,13 +121,13 @@ const JobOfferListing: React.FC = () => {
     <div className='container-fluid'>
         
       <h1>ALL JOB OFFERS LISTING</h1>
-      <ul>
+      
         {jobOffers.map((jobOffer) => (
             <Link to={`/company/joboffer/${jobOffer.id}`} key={jobOffer.id} style={{textDecoration:"none"}}>
                 <JobOfferListingItem  jobOffer={jobOffer} />
             </Link>
         ))}
-      </ul>
+      
 
     </div>
   );

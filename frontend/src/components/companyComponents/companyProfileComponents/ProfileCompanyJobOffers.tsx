@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios, { AxiosError } from 'axios';
-import JobOfferListingItem from '../../JobOffers/JobOfferListingItem';
+import JobOfferProfileListingItem from '../../JobOffers/JobOfferProfileListingItem';
 import { Link } from 'react-router-dom';
 import Loading from '../../Loading';
 import AuthContext from '../../../utils/AuthProvider';
@@ -84,7 +84,7 @@ const ProfileCompanyJobOffers: React.FC<ProfileCompanyJobOffersData> = ({usernam
       {jobOffers[0] ? (<ul>
         {jobOffers.map((jobOffer) => (
             <Link to={`/company/joboffer/${jobOffer.id}`} key={jobOffer.id} style={{textDecoration:"none"}}>
-                <JobOfferListingItem  jobOffer={jobOffer} />
+                <JobOfferProfileListingItem  jobOffer={jobOffer} />
             </Link>
         ))}
       </ul>)

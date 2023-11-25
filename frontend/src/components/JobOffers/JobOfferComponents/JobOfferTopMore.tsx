@@ -362,7 +362,7 @@ interface JobOfferTopMoreProps {
                                 <input
                                     type='text' name='work_mode'
                                     className={`form-control${renderFieldErrorMultiple('topmore', 0, 'work_mode', multipleErrors) ? ' is-invalid' : ''}`}
-                                    placeholder='In-person' value={jobOfferTopMore?.work_mode  ?? ''}
+                                    placeholder='Home office work' value={jobOfferTopMore?.work_mode  ?? ''}
                                     onChange={handleInputChange}
                                 />
                                 {renderFieldErrorMultiple('topmore', 0, 'work_mode', multipleErrors)}
@@ -372,10 +372,22 @@ interface JobOfferTopMoreProps {
                                 <input
                                     type='text' name='vacancy'
                                     className={`form-control${renderFieldErrorMultiple('topmore', 0, 'vacancy', multipleErrors) ? ' is-invalid' : ''}`}
-                                    placeholder='5' value={jobOfferTopMore?.vacancy ?? ''}
+                                    placeholder='Many vacancies (4)' value={jobOfferTopMore?.vacancy ?? ''}
                                     onChange={handleInputChange}
                                 />
                                 {renderFieldErrorMultiple('topmore', 0, 'vacancy', multipleErrors)}
+                            </div>
+                            <div className="row my-2">
+                                <div className='mb-3 col-md-12'>
+                                    <label htmlFor='specialization' className='form-label'>Specialization:</label>
+                                    <input
+                                        type='text' name='specialization'
+                                        className={`form-control${renderFieldErrorMultiple('topmore', 0, 'specialization', multipleErrors) ? ' is-invalid' : ''}`}
+                                        placeholder='Backend' value={jobOfferTopMore?.specialization ?? ''}
+                                        onChange={handleInputChange}
+                                    />
+                                    {renderFieldErrorMultiple('topmore', 0, 'specialization', multipleErrors)}
+                                </div>
                             </div>
                         </div>
                     </form>

@@ -24,6 +24,7 @@ export interface JobOfferListingData {
   job_type: string;
   applicant_count: number;
   status: string;
+  work_mode: string;
 }
 
 const JobOfferListing: React.FC = () => {

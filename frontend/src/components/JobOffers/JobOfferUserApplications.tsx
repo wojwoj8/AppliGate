@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios, { AxiosError } from 'axios';
-import JobOfferListingItem from './JobOfferListingItem';
+import JobOfferProfileListingItem from './JobOfferProfileListingItem';
 import { Link } from 'react-router-dom';
 import Loading from '../Loading';
 import AuthContext from '../../utils/AuthProvider';
@@ -34,7 +34,7 @@ const JobOfferUserApplications: React.FC = () => {
    // Axios error for error component
    const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null)
   // Fetch job offer data from the backend
-  const fetchJobOffers = async (url?: string) => {
+  const fetchJobOffers = async () => {
     try {
 
       let path = `${API_BASE_URL}/applications/${page}?page=${page}`
@@ -46,9 +46,9 @@ const JobOfferUserApplications: React.FC = () => {
           },
       }
       );
-      console.log(path)
+      
       const {results, ...rest} = response.data
-      console.log(response.data)
+     
       setData(rest)
       setJobOffers(results);
      if(response.status === 200){
@@ -72,17 +72,17 @@ const JobOfferUserApplications: React.FC = () => {
 }
   };
 
-  const fetchData = async (url?: string) =>{
+  const fetchData = async () =>{
       
     setIsLoading(true);
     setProgress(50);
-    await fetchJobOffers(url);
+    await fetchJobOffers();
     setProgress(100);
     setIsLoading(false);
 }
 
   useEffect(() => {
-    fetchData(page);
+    fetchData();
   }, [page]);
 
   if (isLoading) {
@@ -97,13 +97,13 @@ const JobOfferUserApplications: React.FC = () => {
     <div className='container-fluid'>
         
       <h1>Job Offers that you applied for</h1>
-      {jobOffers && jobOffers.length ? (<ul>
+      {jobOffers && jobOffers.length ? (<>
         {jobOffers.map((jobOffer) => (
-            <Link to={`/company/joboffer/${jobOffer.id}`} key={jobOffer.id} style={{textDecoration:"none"}}>
-                <JobOfferListingItem  jobOffer={jobOffer} />
-            </Link>
+            
+                <JobOfferProfileListingItem key={jobOffer.id}  jobOffer={jobOffer} />
+
         ))}
-      </ul>)
+      </>)
       : (
         <div>
             <h2>You didn't apply to any job offer yet</h2>

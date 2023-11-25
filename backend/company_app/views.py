@@ -113,7 +113,7 @@ class JobOfferUserAppliedListingView(generics.ListAPIView):
     
     def get(self, request, *args, **kwargs):
         page_number = int(kwargs.get('page', 1))
-        self.pagination_class.page_size = 5
+        self.pagination_class.page_size = 1
         queryset = self.get_queryset()
         page = self.paginate_queryset(queryset)
         print(page)

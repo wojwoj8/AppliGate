@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios, { AxiosError } from 'axios';
-import JobOfferListingItem from './JobOfferListingItem';
+import JobOfferProfileListingItem from './JobOfferProfileListingItem';
 import { Link } from 'react-router-dom';
 import Loading from '../Loading';
 import AuthContext from '../../utils/AuthProvider';
@@ -81,13 +81,13 @@ const MyJobOffers: React.FC<MyJobOffersData> = ({username}) => {
     <div className='container-fluid'>
         
       <h1>My JOB OFFERS </h1>
-      {jobOffers[0] ? (<ul>
+      {jobOffers && jobOffers.length ? (<>
         {jobOffers.map((jobOffer) => (
-            <Link to={`/company/joboffer/${jobOffer.id}`} key={jobOffer.id} style={{textDecoration:"none"}}>
-                <JobOfferListingItem  jobOffer={jobOffer} />
-            </Link>
+            
+                <JobOfferProfileListingItem key={jobOffer.id}  jobOffer={jobOffer} />
+
         ))}
-      </ul>)
+      </>)
       : (
         <div>
             <h2>You don't have any listed Job Offers</h2>

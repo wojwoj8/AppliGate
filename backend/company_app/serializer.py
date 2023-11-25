@@ -15,8 +15,7 @@ from .models import (
 from user_app.serializer import (
     DateSerializer,
     ProfileSerializer,
-    
-    )
+)
 from datetime import datetime
 
 
@@ -51,14 +50,12 @@ class ProfileCompanySerializer(serializers.ModelSerializer):
                 "background_image"
             ] = None  # Set it to None to represent the default image
         return super().to_internal_value(data)
-    
 
 
 class JobListingsSerializer(serializers.ModelSerializer):
-    profile_image = serializers.ImageField(source='company.profile_image')
-    first_name = serializers.CharField(source='company.first_name')
-    background_image = serializers.ImageField(source='company.background_image')
-    
+    profile_image = serializers.ImageField(source="company.profile_image")
+    first_name = serializers.CharField(source="company.first_name")
+    background_image = serializers.ImageField(source="company.background_image")
 
     class Meta:
         model = JobOffer
@@ -72,6 +69,7 @@ class JobListingsSerializer(serializers.ModelSerializer):
             "salary_max",
             "job_description",
             "work_schedule",
+            "work_mode",
             "salary_currency",
             "salary_type",
             "job_published_at",
@@ -79,11 +77,12 @@ class JobListingsSerializer(serializers.ModelSerializer):
             "id",
         ]
 
+
 class JobUserAppliedListingsSerializer(serializers.ModelSerializer):
-    profile_image = serializers.ImageField(source='company.profile_image')
-    first_name = serializers.CharField(source='company.first_name')
-    background_image = serializers.ImageField(source='company.background_image')
-    
+    profile_image = serializers.ImageField(source="company.profile_image")
+    first_name = serializers.CharField(source="company.first_name")
+    background_image = serializers.ImageField(source="company.background_image")
+
     # new fields for applicant_count and status
     applicant_count = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
@@ -100,37 +99,37 @@ class JobUserAppliedListingsSerializer(serializers.ModelSerializer):
             "salary_max",
             "job_description",
             "work_schedule",
+            "work_mode",
             "salary_currency",
             "salary_type",
             "job_published_at",
             "job_application_deadline",
             "id",
-            "applicant_count", 
-            "status",  
+            "applicant_count",
+            "status",
         ]
 
     def get_applicant_count(self, obj):
         return JobApplication.objects.filter(job_offer=obj.id).count()
 
     def get_status(self, obj):
-        request = self.context.get('request')
+        request = self.context.get("request")
         if request and request.user.is_authenticated:
             job_application = JobApplication.objects.filter(
-                job_offer=obj.id,
-                applicant=request.user
+                job_offer=obj.id, applicant=request.user
             ).first()
             return job_application.status if job_application else None
         return None
 
+
 # company data serializer (immutable for joboffer)
 class JobOfferCompanySerializer(serializers.ModelSerializer):
-    profile_image = serializers.ImageField(source='company.profile_image')
-    first_name = serializers.CharField(source='company.first_name')
-    country = serializers.CharField(source='company.country')
-    city = serializers.CharField(source='company.city')
-    background_image = serializers.ImageField(source='company.background_image')
-    username = serializers.CharField(source='company.username')
-    
+    profile_image = serializers.ImageField(source="company.profile_image")
+    first_name = serializers.CharField(source="company.first_name")
+    country = serializers.CharField(source="company.country")
+    city = serializers.CharField(source="company.city")
+    background_image = serializers.ImageField(source="company.background_image")
+    username = serializers.CharField(source="company.username")
 
     class Meta:
         model = JobOffer
@@ -143,6 +142,7 @@ class JobOfferCompanySerializer(serializers.ModelSerializer):
             "city",
         ]
 
+
 class JobOfferTopSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOffer
@@ -152,13 +152,14 @@ class JobOfferTopSerializer(serializers.ModelSerializer):
             "salary_max",
             "salary_currency",
             "salary_type",
-            
         ]
+
 
 class JobOfferSkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOfferSkill
         fields = ["id", "skill", "skill_type"]
+
 
 class JobOfferTopMoreSerializer(serializers.ModelSerializer):
     class Meta:
@@ -172,8 +173,9 @@ class JobOfferTopMoreSerializer(serializers.ModelSerializer):
             "contract_type",
             "vacancy",
             "work_mode",
-            "specialization",     
+            "specialization",
         ]
+
 
 class JobOfferTopColorsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -181,37 +183,44 @@ class JobOfferTopColorsSerializer(serializers.ModelSerializer):
         fields = [
             "svg_color",
             "background_color",
-                    
         ]
+
 
 class JobOfferStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOffer
-        fields = [
-            'job_offer_status'    
-        ]
+        fields = ["job_offer_status"]
+
 
 class JobOfferAboutSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOffer
-        fields = [
-            'job_about'
-        ]
+        fields = ["job_about"]
+
 
 class JobOfferResponsibilitySerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOfferResponsibility
         fields = ["id", "job_responsibility"]
 
+
 class JobOfferRequirementSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOfferRequirement
-        fields = ["id", "job_requirement",]
+        fields = [
+            "id",
+            "job_requirement",
+        ]
+
 
 class JobOfferWhatWeOfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOfferWhatWeOffer
-        fields = ["id", "job_whatweoffer",]
+        fields = [
+            "id",
+            "job_whatweoffer",
+        ]
+
 
 class JobOfferApplicationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -222,17 +231,19 @@ class JobOfferApplicationSerializer(serializers.ModelSerializer):
 class JobOfferCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOffer
-        fields = '__all__'
+        fields = "__all__"
 
 
 class JobApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobApplication
-        fields = '__all__'
+        fields = "__all__"
+
 
 class JobApplicationUserListingSerializer(serializers.ModelSerializer):
     job_offer = JobListingsSerializer()
     job_application = JobApplicationSerializer()
+
     class Meta:
         model = JobOffer
-        fields = '__all__'
+        fields = "__all__"

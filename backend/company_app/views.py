@@ -66,6 +66,7 @@ class ProfileCompanyView(BaseProfileUpdateView):
 class JobOfferListingView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = JobAllListingsSerializer
+    pagination_class = PageNumberPagination
 
     def get_queryset(self):
         now = datetime.now().date()
@@ -80,6 +81,8 @@ class JobOfferListingView(generics.ListAPIView):
         queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
         data = serializer.data
+        self.pagination_class.page_size = 5
+        page = self.paginate_queryset(queryset)
         for job_offer_data in data:
             job_offer_id = job_offer_data["id"]
 
@@ -93,9 +96,18 @@ class JobOfferListingView(generics.ListAPIView):
             job_offer_data["applicant_count"] = JobApplication.objects.filter(
                 job_offer_id=job_offer_id
             ).count()
-
-        return Response(data)
-
+        
+        # print(page)
+        if page is not None:
+            serializer = self.serializer_class(
+                page, many=True, context={"request": request}
+            )
+            print(self.get_paginated_response(serializer.data))
+            return self.get_paginated_response(serializer.data)
+        
+        return Response(
+            {"detail": "Invalid page"}, status=status.HTTP_404_NOT_FOUND
+            )
 
 class JobOfferUserAppliedListingView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -128,10 +140,10 @@ class JobOfferUserAppliedListingView(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         page_number = int(kwargs.get("page", 1))
-        self.pagination_class.page_size = 1
+        self.pagination_class.page_size = 5
         queryset = self.get_queryset()
         page = self.paginate_queryset(queryset)
-        print(page)
+        # print(page)
         if page is not None:
             serializer = self.serializer_class(
                 page, many=True, context={"request": request}
@@ -139,12 +151,9 @@ class JobOfferUserAppliedListingView(generics.ListAPIView):
             print(self.get_paginated_response(serializer.data))
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.serializer_class(
-            queryset, many=True, context={"request": request}
-        )
-        data = serializer.data
-
-        return Response(data)
+        return Response(
+            {"detail": "Invalid page"}, status=status.HTTP_404_NOT_FOUND
+            )
 
 
 class MyJobOffersListingView(generics.ListAPIView):
@@ -217,7 +226,6 @@ class JobOfferCreateOfferView(generics.CreateAPIView):
         deadline = (datetime.now() + timedelta(days=7)).date()
         default_data = {
             "title": "Title",
-            "job_description": "Description",
             "job_location": "Location",
             "work_schedule": "Schedule",
             "position_level": "Position Level",

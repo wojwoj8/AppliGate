@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios, { AxiosError } from 'axios';
 import JobOfferListingItem from './JobOfferListingItem';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Loading from '../Loading';
 import AuthContext from '../../utils/AuthProvider';
 import ErrorPage from '../ErrorPage';
 import { ErrorResponse } from '../Profile';
 import { JobOfferSkillData } from './JobOffer';
+import Pagination from '../sharedComponents/Pagination';
+import { PaginationData } from '../sharedComponents/Pagination';
 
 export interface JobOfferListingData {
   id: number;
@@ -57,7 +59,14 @@ export interface JobOfferListingExtendedData {
 
 const JobOfferListing: React.FC = () => {
   const [jobOffers, setJobOffers] = useState<JobOfferListingExtendedData[]>([]);
+  const API_BASE_URL = 'http://localhost:8000';
+  const [data, setData]= useState<PaginationData>({
+    count: null,
+    next: "",
+    previous: ""
+  });
 
+  const { page } = useParams();
   // for loading
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -71,34 +80,40 @@ const JobOfferListing: React.FC = () => {
   // Fetch job offer data from the backend
   const fetchJobOffers = async () => {
     try {
-      const response = await axios.get('/company/jobofferlistings',{
+
+      let path = `${API_BASE_URL}/jobofferlistings/${page}?page=${page}`
+      
+      const response = await axios.get(path ,{
         headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + String(authTokens.access),
           },
-      });
-
-      console.log(response.data)
-      setJobOffers(response.data);
-      if(response.status === 200){
       }
-  }catch(error: any){
-      const axiosError = error as AxiosError<ErrorResponse>;
-      if (error.response && error.response.status === 401) {
-          // Unauthorized - Logout the user
-          logoutUser();
-        }
-      else if (error.response && (error.response.status !== 400)) {
-          setError(axiosError)
-          
-      } 
-      else {
-          
-          console.error('Error fetching data:', error);
-          console.log(axiosError)
-          setError(axiosError);
-        }
-  }
+      );
+      console.log(response.data)
+      const {results, ...rest} = response.data
+     
+      setData(rest)
+      setJobOffers(results);
+     if(response.status === 200){
+    }
+}catch(error: any){
+    const axiosError = error as AxiosError<ErrorResponse>;
+    if (error.response && error.response.status === 401) {
+        // Unauthorized - Logout the user
+        logoutUser();
+      }
+    else if (error.response && (error.response.status !== 400)) {
+        setError(axiosError)
+        
+    } 
+    else {
+        
+        console.error('Error fetching data:', error);
+        console.log(axiosError)
+        setError(axiosError);
+      }
+}
   };
   useEffect(() => {
     const fetchData = async () =>{
@@ -109,7 +124,7 @@ const JobOfferListing: React.FC = () => {
         setIsLoading(false);
     }
     fetchData();
-  }, []);
+  }, [page]);
 
   if (isLoading) {
     return <Loading progress={progress} />
@@ -118,18 +133,29 @@ const JobOfferListing: React.FC = () => {
     return <ErrorPage axiosError={error} />
   }
   return (
+    <>
+    
     <div className='container-fluid'>
         
-      <h1>ALL JOB OFFERS LISTING</h1>
-      
+      <h1>All Job offers</h1>
+      {jobOffers && jobOffers.length ? (<>
         {jobOffers.map((jobOffer) => (
-            <Link to={`/company/joboffer/${jobOffer.id}`} key={jobOffer.id} style={{textDecoration:"none"}}>
-                <JobOfferListingItem  jobOffer={jobOffer} />
-            </Link>
-        ))}
-      
+            
+                <JobOfferListingItem key={jobOffer.id}  jobOffer={jobOffer} />
 
+        ))}
+      </>)
+      : (
+        <div>
+            <h2>There is no active job offer :(</h2>
+        </div>
+      )}
+      
+      
     </div>
+    
+      <Pagination data={data} page={page} url={'/jobofferlistings/'}/>
+    </>
   );
 };
 

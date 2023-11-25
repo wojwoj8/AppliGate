@@ -84,7 +84,7 @@ const Navbar: React.FC<NavbarProps> = ({setGlobalAlertError}) =>{
                       <Link to='/applications/1' className="nav-link" aria-current="page">My applications</Link>
                     </li>
                     <li className="dropdown-item" data-bs-dismiss="offcanvas">
-                      <Link to='/jobofferlistings' className="nav-link" aria-current="page">Job Offers Listing</Link>
+                      <Link to='/jobofferlistings/1' className="nav-link" aria-current="page">Job Offers Listing</Link>
                     </li>
                     {/* <li className="dropdown-item" data-bs-dismiss="offcanvas">
                       <Link to='/company/myJobOffers' className="nav-link" aria-current="page">My Job Offers</Link>

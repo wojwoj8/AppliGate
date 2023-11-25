@@ -30,9 +30,10 @@ interface JobOfferListingItemProps {
   const JobOfferListingItem: React.FC<JobOfferListingItemProps> = ({ jobOffer }) => {
     return (
         <div className="card shadow border-primary border-opacity-50 mb-4 container">
-            <div>
+             <Link to={`/company/joboffer/${jobOffer.id}`} className="text-decoration-none text-dark">
+            <div className="text-decoration-none">
                 <div className="row d-flex flex-nowrap">
-                    <div className="col-auto d-sm-flex  d-none">
+                    <div className="col-auto d-md-flex  d-none">
                         <img
                             src={jobOffer.profile_image}
                             alt="Background"
@@ -43,8 +44,9 @@ interface JobOfferListingItemProps {
                     <div className="card-body pt-1 pb-0 col-auto">
 
                         
-                        <h4 className="card-title link-primary">{jobOffer.title}</h4>
-                        
+                        <h4 className="card-title link link-primary mb-1">{jobOffer.title}</h4>
+                        {jobOffer.work_mode && <p className="fw-semibold">{jobOffer.work_mode}</p>}
+                        {jobOffer.job_location && <p className=""><b>Company location:</b> {jobOffer.job_location}</p>}
                         <p className="card-text">
                             <b>
                                 {jobOffer.salary_min} - {jobOffer.salary_max} {jobOffer.salary_currency} ({jobOffer.salary_type})
@@ -63,44 +65,73 @@ interface JobOfferListingItemProps {
                                 ))}
                             </div>
                         }
-                        <div className="row fst-italic d-flex">
-                        
-                            <ul className="col-auto d-inline-block">
-                            {jobOffer.position_level && <span className="m"> {jobOffer.position_level}</span >}
-                                {jobOffer.work_schedule && <li className=""> {jobOffer.work_schedule}</li>}
-                                {jobOffer.contract_type && <li className=""> {jobOffer.contract_type}</li>}
-                                {jobOffer.work_schedule && <li className=""> {jobOffer.work_schedule}</li>}
-                            </ul>
-                            
-                            
+                        <div className="row row-cols-auto fst-italic">
+                            {jobOffer.position_level && (
+                                <div className="col">
+                                    <p className="text-nowrap">{jobOffer.position_level}</p>
+                                </div>
+                            )}
+                            {jobOffer.work_schedule && (
+                                <div className="col">
+                                    <p className="text-nowrap">{jobOffer.work_schedule}</p>
+                                </div>
+                            )}
+                            {jobOffer.contract_type && (
+                                <div className="col">
+                                    <p className="text-nowrap">{jobOffer.contract_type}</p>
+                                </div>
+                            )}
+                            {jobOffer.vacancy && (
+                                <div className="col">
+                                    <p className="text-nowrap">{jobOffer.vacancy}</p>
+                                </div>
+                            )}
+                            {jobOffer.recruitment_type && (
+                                <div className="col">
+                                    <p className="text-nowrap">Rectuitment: {jobOffer.recruitment_type}</p>
+                                </div>
+                            )}
+                            {jobOffer.specialization && (
+                                <div className="col">
+                                    <p className="text-nowrap">{jobOffer.specialization}</p>
+                                </div>
+                            )}
                         </div>
 
 
-                        {jobOffer.job_type && <p className="card-text">{jobOffer.job_type}</p>}
-                        {jobOffer.work_mode && <p className="card-text">{jobOffer.work_mode}</p>}
-                        {jobOffer.job_location && <p className="card-text">{jobOffer.job_location}</p>}
+                        
+                        
                         
                         
                     </div>
                 </div>
                 <hr className="border-primary my-1 col-12"></hr>
-                <div className="row d-flex justify-content-end">
-                    <div className="col-auto">
+                <div className="row d-flex justify-content-end align-items-center justify-content-between">
+                    <div className="col-auto d-flex  d-md-none">
+                            <img
+                                src={jobOffer.profile_image}
+                                alt="Background"
+                                className="card-img p-2 job-listing-icon"
+                                
+                            />
+                        </div>
+                    <div className="col-auto ">
+                        
                         <p className="fw-light text-secondary">
                             Published At: {new Date(jobOffer.job_published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                         </p>
                     </div>
                     
-                    {/* <div className="col-sm-5">
+                    {/* <div className="col-md-5">
                         {formatRemainingTime(jobOffer.job_application_deadline)}
                     </div>
-                    <div className="col-sm-7 d-sm-flex d-block justify-content-between">
+                    <div className="col-md-7 d-md-flex d-block justify-content-between">
                     <p>Applicant count: {jobOffer.applicant_count}</p>
                     {jobOffer.status && <span>{jobOffer.status}</span>}
                     </div> */}
                 </div>
             </div>
-           
+            </Link>
         </div>
     );
   };

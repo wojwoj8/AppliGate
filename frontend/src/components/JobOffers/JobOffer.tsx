@@ -1,10 +1,7 @@
 import { ErrorResponse, MultipleErrorResponse } from "../Profile";
-import { JobOfferListingData } from "./JobOfferListing";
 import React, { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import axios, { AxiosError } from 'axios';
-import { Link, useParams } from 'react-router-dom';
-import Icon from '@mdi/react';
-import { mdiPencil } from '@mdi/js';
+import { useParams } from 'react-router-dom';
 import Loading from '../Loading';
 import AuthContext from '../../utils/AuthProvider';
 import ErrorPage from '../ErrorPage';
@@ -18,7 +15,6 @@ import JobOfferResponsibility from "./JobOfferComponents/JobOfferResponsibility"
 import JobOfferRequirement from "./JobOfferComponents/JobOfferRequirement";
 import JobOfferWhatWeOffer from "./JobOfferComponents/JobOfferWhatWeOffer";
 import JobOfferApplication from "./JobOfferComponents/JobOfferApplication";
-import { BlockPickerStylesProps } from "react-color/lib/components/block/Block";
 
 // make mulitple interfaces for easier crud
 // should make one for immutable company data

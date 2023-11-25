@@ -31,7 +31,7 @@ urlpatterns = [
     # ProfileCompany for company
     path("company/profile/<str:username>/", views.ProfileCompanyView.as_view(), name="personalCompany"),
     # path("company/profile/<str:username>/", ProfileStatusView.as_view(), name="profileStatusView"),
-    path("company/jobofferlistings", views.JobOfferListingView.as_view(), name="jobOfferListing"),
+    path("jobofferlistings/<int:page>", views.JobOfferListingView.as_view(), name="jobOfferListing"),
     # path("company/joboffer", views.JobOfferListingView.as_view(), name="jobOffer"),
     path("company/joboffer/createjoboffer", views.JobOfferCreateOfferView.as_view(), name="jobOfferCreateJobOffer"),
     path("company/joboffer/apply/<int:id>", views.JobApplicationView.as_view(), name="jobApply"),

@@ -113,7 +113,7 @@ const JobOfferUserApplications: React.FC = () => {
       
     </div>
     
-      <Pagination data={data} page={page}/>
+      <Pagination data={data} page={page} url={'/applications/'}/>
     </>
   );
 };

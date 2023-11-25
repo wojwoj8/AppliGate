@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react';
 import axios from 'axios';
 import Icon from '@mdi/react';
-import { mdiPencil } from '@mdi/js';
+import { mdiPencil, mdiPerspectiveLess } from '@mdi/js';
 import { ProfileCompanyMainData } from '../ProfileCompany';
 import { MultipleErrorResponse } from '../../Profile';
 import { GetCompanyDataFunction } from '../ProfileCompany';
@@ -44,8 +44,10 @@ setPersonal, setAlertError, alertError, username}) => {
     const { authTokens } = useContext(AuthContext); // Use the authTokens from AuthContext
     const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
     const [selectedBackgroundImageFile, setSelectedBackgroundImageFile] = useState<File | null>(null);
+    const [backgroundKey, setBackgroundKey] = useState(0);
     const allowedFormats = ['image/jpeg','image/jfif', 'image/jpg', 'image/png', 'image/bmp', 'image/gif'];
-    
+    const [imageUrl, setImageUrl] = useState('');
+
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>, data: string) => {
         const selectedFile = e.target.files && e.target.files[0];
         setSelectedImageFile(selectedFile);
@@ -116,6 +118,11 @@ setPersonal, setAlertError, alertError, username}) => {
         console.error('Error uploading image:', error);
         }
         getData(setPersonal, '/company/profile');
+        setBackgroundKey(prevKey => prevKey + 1);
+        if (personal){
+            setImageUrl(`${personal?.background_image}?${backgroundKey}`)
+        }
+        
         setSelectedImageFile(null);
     };
 
@@ -130,14 +137,19 @@ setPersonal, setAlertError, alertError, username}) => {
             Authorization: 'Bearer ' + String(authTokens.access),
             },
         });
-    
+        
         // console.log('Image removed successfully');
         setAlertError('Image removed successfully success')
+        setImageUrl(`${response.data.background_image}`)
         } catch (error) {
         setAlertError('Something went wrong error')
         console.error('Error removing image:', error);
         }
+        
         getData(setPersonal, '/company/profile');
+        
+        
+        
     };
     
     const handleInputChange = (
@@ -173,8 +185,12 @@ setPersonal, setAlertError, alertError, username}) => {
     }
 
     useEffect(() =>{
-        const img = personal?.profile_image
-    })
+        if (personal){
+            setImageUrl(personal?.background_image)
+        }
+        
+
+    },[personal?.background_image])
 
     return(
         <div className='container shadow-lg rounded-2 text-break'>
@@ -187,7 +203,7 @@ setPersonal, setAlertError, alertError, username}) => {
                         </div>
                     </div>
                     <div className='row justify-content-center '>
-                        <div className="jo-background-image" style={{backgroundImage: `url(${personal?.background_image}?${Date.now()}`}}/>
+                        <div className="jo-background-image" style={{backgroundImage: `url(${imageUrl})`}}/>
                         {/* <img src={`${personal?.background_image}?${Date.now()}`} className="img-fluid" style={{height: "200px"}}  alt="background_img"/> */}
                         <div className='prevHidden row'>
                                         <div className="mb-1 text-center d-flex justify-content-center">

@@ -42,7 +42,6 @@ class JobOffer(models.Model):
         User, on_delete=models.CASCADE, limit_choices_to={"user_type": "company"}
     )
     title = models.CharField(max_length=40, blank=False)
-    job_description = models.TextField()
     job_location = models.CharField(max_length=100, blank=False)
     # work_schedule: Full-time, Part-time, etc.
     work_schedule = models.CharField(max_length=100, blank=False)

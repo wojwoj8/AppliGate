@@ -302,7 +302,7 @@ export interface ProfileCompanyMainData{
         index: number = 0,
   
       ) =>{
-        console.log(state)
+        // console.log(state)
         try{
             const response = await axios.put(`${endpoint}/${username}`, state,  {
                 headers: {

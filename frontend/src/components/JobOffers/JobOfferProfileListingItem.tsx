@@ -57,15 +57,23 @@ interface JobOfferProfileListingItemProps {
                     </p> */}
                     
                 </div>
-                <hr className="border-primary"></hr>
+                <hr className="border-primary mb-0"></hr>
                 <div className="row">
                     <div className="col-sm-5">
                         {formatRemainingTime(jobOffer.job_application_deadline)}
                     </div>
                     <div className="col-sm-7 d-sm-flex d-block justify-content-between">
                     <p>Applicant count: {jobOffer.applicant_count}</p>
-                    {jobOffer.status && <span>{jobOffer.status}</span>}
+                    <div className="d-flex align-items-center">
+                        <svg className="me-1" width="18" height="18" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#2266ff" fillRule="evenodd" d="M6 10a4 4 0 1 0 0-8a4 4 0 0 0 0 8zm0 2A6 6 0 1 0 6 0a6 6 0 0 0 0 12z" />
+                        </svg>
+                        {jobOffer.status && <p>{jobOffer.status}</p>}
+                        
                     </div>
+                    
+                    </div>
+                    
                 </div>
             </div>
            

@@ -28,7 +28,7 @@ export interface JobOfferTopProps {
     renderFieldErrorMultiple: (field: string, index: number, errorKey: string, error: MultipleErrorResponse | undefined) => React.ReactNode;
     alertError: string;
     setAlertError: React.Dispatch<React.SetStateAction<string>>;
-    offerid: string;
+    offerid?: string;
     jobOfferTopColors: JobOfferTopColorsData | null;
     }
 

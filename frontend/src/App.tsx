@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { HashRouter, Routes, Route, Navigate, BrowserRouter} from "react-router-dom";
+import { Routes, Route, Navigate, BrowserRouter} from "react-router-dom";
 import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
 import Navbar from './components/Navbar';
@@ -69,7 +69,7 @@ function App() {
             <Route path="/company/joboffer/createjoboffer" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route>
             {/* <Route path="/company/joboffer/:offerid" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route> */}
             <Route path="/company/joboffer/:offerid" element={<PrivateRoute><JobOffer setGlobalAlertError={setAlertError}/></PrivateRoute>}></Route>
-            <Route path="/jobofferlistings" element={<PrivateRoute><JobOfferListing/></PrivateRoute>}></Route>
+            <Route path="/jobofferlistings/:page" element={<PrivateRoute><JobOfferListing/></PrivateRoute>}></Route>
             
             <Route path="/company/myJobOffers" element={<PrivateRouteCompanyOnly><MyJobOffers/></PrivateRouteCompanyOnly>}></Route>
             

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios, { AxiosError } from 'axios';
 import JobOfferProfileListingItem from './JobOfferProfileListingItem';
-import { Link } from 'react-router-dom';
 import Loading from '../Loading';
 import AuthContext from '../../utils/AuthProvider';
 import ErrorPage from '../ErrorPage';

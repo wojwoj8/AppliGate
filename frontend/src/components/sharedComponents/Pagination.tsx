@@ -10,8 +10,9 @@ export interface PaginationData {
 interface PaginationInterface{
     data: PaginationData;
     page: string | undefined;
+    url: string;
 }
-const Pagination: React.FC<PaginationInterface> = ({data, page}) =>{
+const Pagination: React.FC<PaginationInterface> = ({data, page, url}) =>{
     // console.log(data.previous !== null || data.next!== null)
     return(
         <>
@@ -21,7 +22,7 @@ const Pagination: React.FC<PaginationInterface> = ({data, page}) =>{
       <ul className="pagination">
       {data.previous && (
         <li className="page-item">
-          <Link to={`/applications/${parseInt(page!) - 1}`} className="page-link" aria-label="Previous">
+          <Link to={`${url}${parseInt(page!) - 1}`} className="page-link" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </Link>
         </li>
@@ -30,24 +31,24 @@ const Pagination: React.FC<PaginationInterface> = ({data, page}) =>{
         
         <li className="page-item">
 
-          <Link to={`/applications/${parseInt(page!) - 1}`} className="page-link">{`${parseInt(page!) - 1}`}</Link>
+          <Link to={`${url}${parseInt(page!) - 1}`} className="page-link">{`${parseInt(page!) - 1}`}</Link>
         </li>
       )}
        
         <li className="page-item">
 
-          <Link to={`/applications/${parseInt(page!)}`} className="page-link">{`${parseInt(page!)}`}</Link>
+          <Link to={`${url}${parseInt(page!)}`} className="page-link">{`${parseInt(page!)}`}</Link>
         </li>
 
       {data.next !== null  && (
         <li className="page-item">
   
-          <Link to={`/applications/${parseInt(page!) + 1}`} className="page-link">{`${parseInt(page!) + 1}`}</Link>
+          <Link to={`${url}${parseInt(page!) + 1}`} className="page-link">{`${parseInt(page!) + 1}`}</Link>
         </li>
       )}
       {data.next && (
         <li className="page-item">
-          <Link to={`/applications/${parseInt(page!) + 1}`} className="page-link" aria-label="Next">
+          <Link to={`${url}${parseInt(page!) + 1}`} className="page-link" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </Link>
         </li>

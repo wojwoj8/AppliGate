@@ -152,7 +152,9 @@ textarea{
 nav {
     z-index: 9999;
 }
-
+.cursor-pointer{
+    cursor: pointer;
+  }
 .job-listing-icon{
     // bugged on dark mode while not important
     height: 150px !important;

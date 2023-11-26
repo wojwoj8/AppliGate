@@ -188,7 +188,14 @@ class UserExperienceSerializer(serializers.ModelSerializer):
             "to_date",
             "responsibilities",
         ]
+    def validate(self, data):
+        from_date = data.get('from_date')
+        to_date = data.get('to_date')
 
+        if from_date and to_date and from_date > to_date:
+            raise serializers.ValidationError({'from_date':["From date must be before or equal to to date."]})
+
+        return data
 
 class UserEducationSerializer(serializers.ModelSerializer):
     from_date = MonthYearDateField(required=True)
@@ -205,7 +212,14 @@ class UserEducationSerializer(serializers.ModelSerializer):
             "from_date",
             "to_date",
         ]
+    def validate(self, data):
+        from_date = data.get('from_date')
+        to_date = data.get('to_date')
 
+        if from_date and to_date and from_date > to_date:
+            raise serializers.ValidationError({'from_date':["From date must be before or equal to to date."]})
+
+        return data
 
 class UserCourseSerializer(serializers.ModelSerializer):
     finish_date = MonthYearDateField(allow_null=True, required=False)

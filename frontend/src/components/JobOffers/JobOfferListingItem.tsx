@@ -1,5 +1,6 @@
 import { JobOfferListingExtendedData } from "./JobOfferListing";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 interface JobOfferListingItemProps {
     jobOffer: JobOfferListingExtendedData;
   }
@@ -27,10 +28,14 @@ interface JobOfferListingItemProps {
 }
 
 
+
   const JobOfferListingItem: React.FC<JobOfferListingItemProps> = ({ jobOffer }) => {
+
+    const nav = useNavigate();
+
     return (
-        <div className="card shadow border-primary border-opacity-50 mb-4 container">
-             <Link to={`/company/joboffer/${jobOffer.id}`} className="text-decoration-none text-dark">
+        <div className="card shadow border-primary border-opacity-50 mb-4 container cursor-pointer" onClick={() => nav(`/company/joboffer/${jobOffer.id}`)}>
+            {/* <Link to={`/company/joboffer/${jobOffer.id}`} className="text-decoration-none"> */}
             <div className="text-decoration-none">
                 <div className="row d-flex flex-nowrap">
                     <div className="col-auto d-md-flex  d-none">
@@ -131,7 +136,7 @@ interface JobOfferListingItemProps {
                     </div> */}
                 </div>
             </div>
-            </Link>
+            {/* </Link> */}
         </div>
     );
   };

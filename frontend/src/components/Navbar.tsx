@@ -135,7 +135,7 @@ const Navbar: React.FC<NavbarProps> = ({setGlobalAlertError}) =>{
                   <ul className="dropdown-menu">
                     <li className="dropdown-item" data-bs-dismiss="offcanvas"><NavbarJobOfferCreate setGlobalAlertError={setGlobalAlertError}/></li>
                     <li className="dropdown-item" data-bs-dismiss="offcanvas">
-                      <Link to='/jobofferlistings' className="nav-link" aria-current="page">Job Offer Listings</Link>
+                      <Link to='/jobofferlistings/1' className="nav-link" aria-current="page">Job Offer Listings</Link>
                     </li>
                     <li className="dropdown-item" data-bs-dismiss="offcanvas">
                       <Link to='/company/myJobOffers' className="nav-link" aria-current="page">My Job Offers</Link>

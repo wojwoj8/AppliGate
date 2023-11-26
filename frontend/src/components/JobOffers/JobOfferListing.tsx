@@ -90,7 +90,7 @@ const JobOfferListing: React.FC = () => {
           },
       }
       );
-      console.log(response.data)
+      // console.log(response.data)
       const {results, ...rest} = response.data
      
       setData(rest)

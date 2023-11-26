@@ -304,7 +304,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
       errorField: string,
       index: number = 0,
     ) =>{
-      console.log(state)
+      // console.log(state)
       try{
           const response = await axios.put(`${endpoint}`, state,  {
               headers: {

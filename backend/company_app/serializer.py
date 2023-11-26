@@ -181,7 +181,14 @@ class JobOfferTopSerializer(serializers.ModelSerializer):
             "salary_currency",
             "salary_type",
         ]
+    def validate(self, data):
+        salary_min = data.get('salary_min')
+        salary_max = data.get('salary_max')
 
+        if salary_min is not None and salary_max is not None and salary_min >= salary_max:
+            raise serializers.ValidationError({'salary_min': ["Minimum salary must be lower than maximum salary"]})
+
+        return data
 
 class JobOfferSkillSerializer(serializers.ModelSerializer):
     class Meta:

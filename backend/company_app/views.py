@@ -79,36 +79,36 @@ class JobOfferListingView(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        serializer = self.serializer_class(queryset, many=True)
-        data = serializer.data
         self.pagination_class.page_size = 5
         page = self.paginate_queryset(queryset)
-        for job_offer_data in data:
-            job_offer_id = job_offer_data["id"]
 
-            skills = JobOfferSkill.objects.filter(
-                job_offer_id=job_offer_id, skill_type="required"
-            )
-            skill_data = JobOfferSkillSerializer(skills, many=True).data
-
-            job_offer_data["skills"] = skill_data
-
-            job_offer_data["applicant_count"] = JobApplication.objects.filter(
-                job_offer_id=job_offer_id
-            ).count()
-        
-        # print(page)
         if page is not None:
-            serializer = self.serializer_class(
-                page, many=True, context={"request": request}
-            )
-            print(self.get_paginated_response(serializer.data))
+            serializer = self.serializer_class(page, many=True)
+            
+            for job_offer_data in serializer.data:
+                job_offer_id = job_offer_data["id"]
+
+                
+                skills = JobOfferSkill.objects.filter(
+                    job_offer_id=job_offer_id, skill_type="required"
+                )
+                skill_data = JobOfferSkillSerializer(skills, many=True).data
+
+               
+                job_offer_data["skills"] = skill_data
+
+                
+                job_offer_data["applicant_count"] = JobApplication.objects.filter(
+                    job_offer_id=job_offer_id
+                ).count()
+
+            
             return self.get_paginated_response(serializer.data)
-        
+
         return Response(
             {"detail": "Invalid page"}, status=status.HTTP_404_NOT_FOUND
-            )
-
+        )
+    
 class JobOfferUserAppliedListingView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = JobUserAppliedListingsSerializer

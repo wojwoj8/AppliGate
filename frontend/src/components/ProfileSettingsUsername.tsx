@@ -272,18 +272,17 @@ const ProfileSettingsUsername: React.FC<ProfileSettingsProps> = ({ setAlertError
                 </div>
 
                 <div className="d-grid py-2 text-center">
-                <button 
-                    type="submit" 
-                    className={`btn btn-primary btn-block`}
-                    disabled={handleDisabled()}
-                >
-                  <DeleteModal id={`${user.user_id}`} 
-                  name={'Change Account Data'} 
-                  message={'Do you want to change your data?'} 
-                  deleteName = {'Change'}
-                  onDelete={() => saveEdit()} />
-                    
-                </button>      
+                  <div
+                      className={`btn btn-primary btn-block ${handleDisabled() && `disabled`}`}
+                      style={{ pointerEvents: handleDisabled() ? 'none' : 'auto' }}
+                  >
+                    <DeleteModal id={`${user.user_id}`} 
+                    name={'Change Account Data'} 
+                    message={'Do you want to change your data?'} 
+                    deleteName = {'Change'}
+                    onDelete={() => saveEdit()} />
+                      
+                  </div>      
                 </div>
 
             </form>

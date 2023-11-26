@@ -7,20 +7,26 @@ interface DeleteModalProps {
   message: string;
   name: string;
   deleteName: string;
+  title?: string;
 }
 
-const DeleteModal: React.FC<DeleteModalProps> = ({ id, onDelete, message, name, deleteName }) => {
+const DeleteModal: React.FC<DeleteModalProps> = ({ id, onDelete, message, name, deleteName, title }) => {
      const sanitizedId = id.replace(/\s+/g, '-').toLowerCase();
   return (
     <>
       <div className="" data-bs-toggle="modal" data-bs-target={`#${sanitizedId}`}>
         {name}
       </div>
-      <div className="modal fade" id={sanitizedId} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby={`${sanitizedId}Label`} aria-hidden="true">
+      <div className="modal fade high-z-index" id={sanitizedId} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby={`${sanitizedId}Label`} aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h1 className="modal-title fs-5" id={`${sanitizedId}Label`}>Delete Data</h1>
+              {title ? (
+               <h1 className="modal-title fs-5" id={`${sanitizedId}Label`}>{title}</h1>
+              ): 
+              (
+                <h1 className="modal-title fs-5" id={`${sanitizedId}Label`}>Delete Data</h1>
+              )}
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">

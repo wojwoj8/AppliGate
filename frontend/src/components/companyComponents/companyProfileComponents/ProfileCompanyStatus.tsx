@@ -1,6 +1,7 @@
 import { GetCompanyDataFunction } from "../ProfileCompany";
 import { EditCompanyDataFunction } from "../ProfileCompany";
 import { ProfileStatusData } from "../ProfileCompany";
+import DeleteModal from "../../DeleteModal";
 
 
 interface ProfileCompanyStatusInterface{
@@ -41,9 +42,25 @@ const ProfileCompanyStatus: React.FC<ProfileCompanyStatusInterface> = ({profileS
     return(
         <div className='container prevHidden'>
             {profileStatus && profileStatus?.public_profile === true ? (
-                <button className='btn btn-danger w-100 rounded-4 mt-3' onClick={changeProfileStatus}>Set Profile to Private</button>) : 
+                <div className='btn btn-danger w-100 rounded-4 mt-3 btn-block'>
+                    <DeleteModal id={`1`} 
+                    name={'Set Profile to Private'} 
+                    message={'Do you want to change your profile status to Private? Your posted job offers will no longer be visible.'} 
+                    deleteName = {'Change'}
+                    title="Change Profile Status"
+                    onDelete={changeProfileStatus} />
+                
+                
+                </div>) : 
             (
-                <button className='btn btn-danger w-100 rounded-4 mt-3' onClick={changeProfileStatus}>Set Profile to Public</button>
+                <div className='btn btn-danger w-100 rounded-4 mt-3'>
+                    <DeleteModal id={`2`} 
+                    name={'Set Profile to Public'} 
+                    message={'Do you want to change your profile status to Public? Your posted job offers and profile will be visible for everyone.'} 
+                    deleteName = {'Change'}
+                    title="Change Profile Status"
+                    onDelete={changeProfileStatus} />
+                </div>
             ) }
             
         </div>

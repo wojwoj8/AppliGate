@@ -182,17 +182,16 @@ const ProfileSettingsDelete: React.FC<ProfileSettingsProps> = ({ setAlertError }
                 
 
                 <div className="d-grid py-2 text-center">
-                  <button 
-                      type="submit" 
-                      className={`btn btn-danger btn-block`}
-                      disabled={handleDisabled()}
-                  >
+                  <div
+                    className={`btn btn-danger btn-block ${handleDisabled() && `disabled`}`}
+                    style={{ pointerEvents: handleDisabled() ? 'none' : 'auto' }}
+                    >
                     <DeleteModal id={`${user.user_id}`} 
                     name={'Delete Account'} 
                     message={'Do you want to delete your account?'} 
                     deleteName = {'Change'}
                     onDelete={() => saveEdit()} />
-                  </button>      
+                  </div>      
                 </div>
 
             </form>

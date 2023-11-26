@@ -47,7 +47,7 @@ const Navbar: React.FC<NavbarProps> = ({setGlobalAlertError}) =>{
       
 
     return(
-      <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+      <nav className="navbar navbar-expand-lg bg-body-tertiary max-z-index" data-bs-theme="dark">
         <div className="container-fluid">
           <Link to='/' className="navbar-brand">AppliGate</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">

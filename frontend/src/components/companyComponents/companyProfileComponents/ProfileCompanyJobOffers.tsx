@@ -81,11 +81,11 @@ const ProfileCompanyJobOffers: React.FC<ProfileCompanyJobOffersData> = ({usernam
     <div className='container-fluid'>
         
       <h1>Listed Job Offers </h1>
-      {jobOffers[0] ? (<ul>
+      {jobOffers && jobOffers.length ? (<ul>
         {jobOffers.map((jobOffer) => (
-            <Link to={`/company/joboffer/${jobOffer.id}`} key={jobOffer.id} style={{textDecoration:"none"}}>
-                <JobOfferProfileListingItem  jobOffer={jobOffer} />
-            </Link>
+            // <Link to={`/company/joboffer/${jobOffer.id}`} key={jobOffer.id} style={{textDecoration:"none"}}>
+                <JobOfferProfileListingItem key={jobOffer.id}  jobOffer={jobOffer} />
+            // </Link>
         ))}
       </ul>)
       : (

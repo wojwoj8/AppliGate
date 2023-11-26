@@ -122,7 +122,7 @@ interface JobOfferListingItemProps {
                         </div>
                     <div className="col-auto ">
                         
-                        <p className="fw-light text-secondary">
+                        <p className="fw-light opacity-75">
                             Published At: {new Date(jobOffer.job_published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                         </p>
                     </div>

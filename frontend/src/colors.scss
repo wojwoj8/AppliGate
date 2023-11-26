@@ -149,8 +149,11 @@ textarea{
     border-radius: 0 0 20% 20%;
     background: center top/cover no-repeat;
 }
-nav {
-    z-index: 9999;
+.max-z-index {
+    z-index: 999 !important;
+}
+.high-z-index{
+    z-index: 9 !important;
 }
 .cursor-pointer{
     cursor: pointer;

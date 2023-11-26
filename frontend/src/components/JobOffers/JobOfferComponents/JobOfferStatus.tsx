@@ -185,10 +185,10 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
         await setJobOfferStatus(updatedJobOfferStatus);
 
         if (updatedJobOfferStatus.job_offer_status === false) {
-            setAlertError('JobOffer Changed to not listed, nobody can see that job offer success');
-        } else {
-            setAlertError('JobOffer Changed to listed, now if your profile is public everyone can see and applay for that job offer success');
-        }
+            setAlertError('Job offer successfully hidden. It is no longer visible, and new applications are disabled success');
+            } else {
+            setAlertError('Job offer successfully published. If your profile is public, it is now visible, and others can apply success');
+            }
 
         editData(updatedJobOfferStatus, undefined, `/company/joboffer/jobofferstatus/${offerid}`, 'jobOfferStatus');
         };
@@ -206,21 +206,35 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
             
                 <div className='prevHidden'>
                     {jobOfferStatus && jobOfferStatus?.job_offer_status === true ? (
-                        <button className='btn btn-primary w-100 rounded-4 mt-2' onClick={changeJobOfferStatus}>Set JobOffer to Not listed</button>) : 
+                        <div className='btn btn-primary w-100 rounded-4 mt-1 btn-block'>
+                            <DeleteModal id={`1`} 
+                            name={'Hide Job Offer'} 
+                            message={'Would you like to hide this job offer? Once hidden, the job offer will no longer be visible to users, and no further applications can be submitted.'} 
+                            deleteName = {'Hide'}
+                            title="Hide Job Offer"
+                            onDelete={changeJobOfferStatus} />
+                        </div>  
+                        ) : 
                     (
-                        <button className='btn btn-primary w-100 rounded-4 mt-3' onClick={changeJobOfferStatus}>Set JobOffer to Listed</button>
+                        
+                        <div className='btn btn-primary w-100 rounded-4 mt-1 btn-block'>
+                            <DeleteModal id={`2`} 
+                            name={'Publish Job Offer'} 
+                            message={'Are you ready to publish the job offer? Once posted, the job offer will be visible to everyone, and any user will have the opportunity to apply.'} 
+                            deleteName = {'Publish'}
+                            title="Publish Job Offer"
+                            onDelete={changeJobOfferStatus} />
+                        </div>      
+                        
                     ) }
                     <div className="d-grid py-2 text-center  ">
-                        <button 
-                            type="submit" 
-                            className={`btn btn-danger btn-block rounded-4`}
-                        >
+                        <div className='btn btn-danger w-100 rounded-4 mt-1 btn-block'>
                             <DeleteModal id={`${offerid}`} 
                             name={'Delete Job Offer'} 
                             message={'Do you want to delete that Job Offer?'} 
                             deleteName = {'Delete'}
                             onDelete={() => saveDelete()} />
-                        </button>      
+                        </div>      
                     </div>
                 </div>
             </div>

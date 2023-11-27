@@ -6,6 +6,9 @@ import AuthContext from '../../utils/AuthProvider';
 import ErrorPage from '../ErrorPage';
 import { ErrorResponse } from '../Profile';
 import { JobOfferListingData } from './JobOfferListing';
+import Pagination from '../sharedComponents/Pagination';
+import { PaginationData } from '../sharedComponents/Pagination';
+import { useParams } from 'react-router-dom';
 
 interface MyJobOffersData{
   username?: string | undefined
@@ -14,10 +17,19 @@ interface MyJobOffersData{
 
 
 const MyJobOffers: React.FC<MyJobOffersData> = ({username}) => {
+  
   const [jobOffers, setJobOffers] = useState<JobOfferListingData[]>([]);
+  const API_BASE_URL = 'http://localhost:8000';
+  const [data, setData]= useState<PaginationData>({
+    count: null,
+    next: "",
+    previous: ""
+  });
+
+  const { page } = useParams();
 
   // for loading
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
   // Authtoken for CRUD and user for username and logout
@@ -28,9 +40,9 @@ const MyJobOffers: React.FC<MyJobOffersData> = ({username}) => {
   // Fetch job offer data from the backend
   const fetchJobOffers = async () => {
     try {
-      let path
-      username ? (path = `/company/myJobOffers/${username}`) : ( path = `/company/myJobOffers`)
 
+      let path = `${API_BASE_URL}/company/myJobOffers/${page}?page=${page}`
+      
       const response = await axios.get(path ,{
         headers: {
             'Content-Type': 'application/json',
@@ -38,7 +50,14 @@ const MyJobOffers: React.FC<MyJobOffersData> = ({username}) => {
           },
       }
       );
-      setJobOffers(response.data);
+
+      // console.log(response)
+      
+      const {results, ...rest} = response.data
+      // console.log(rest)
+     
+      setData(rest)
+      setJobOffers(results);
      if(response.status === 200){
     }
 }catch(error: any){
@@ -59,16 +78,19 @@ const MyJobOffers: React.FC<MyJobOffersData> = ({username}) => {
       }
 }
   };
+
+  const fetchData = async () =>{
+      
+    setIsLoading(true);
+    setProgress(50);
+    await fetchJobOffers();
+    setProgress(100);
+    setIsLoading(false);
+}
+
   useEffect(() => {
-    const fetchData = async () =>{
-        setIsLoading(true);
-        setProgress(50);
-        await fetchJobOffers();
-        setProgress(100);
-        setIsLoading(false);
-    }
     fetchData();
-  }, []);
+  }, [page]);
 
   if (isLoading) {
     return <Loading progress={progress} />
@@ -77,24 +99,29 @@ const MyJobOffers: React.FC<MyJobOffersData> = ({username}) => {
     return <ErrorPage axiosError={error} />
   }
   return (
-    <div className='container-fluid'>
+    <>
+      <div className='container-fluid'>
+          
+        <h1>My JOB OFFERS </h1>
+        {jobOffers && jobOffers.length ? (<>
+          {jobOffers.map((jobOffer) => (
+              
+            <JobOfferProfileListingItem key={jobOffer.id}  jobOffer={jobOffer} />
+
+          ))}
+        </>)
+        : (
+          <div>
+              <h2>You don't have any listed Job Offers</h2>
+          </div>
+        )}
         
-      <h1>My JOB OFFERS </h1>
-      {jobOffers && jobOffers.length ? (<>
-        {jobOffers.map((jobOffer) => (
-            
-                <JobOfferProfileListingItem key={jobOffer.id}  jobOffer={jobOffer} />
-
-        ))}
-      </>)
-      : (
-        <div>
-            <h2>You don't have any listed Job Offers</h2>
-        </div>
-      )}
+          
+      </div>
+    
+      <Pagination data={data} page={page} url={'/company/myJobOffers/'}/>
       
-
-    </div>
+    </>
   );
 };
 

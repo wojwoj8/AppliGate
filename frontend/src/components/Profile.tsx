@@ -18,6 +18,7 @@ import ErrorPage from './ErrorPage';
 import Loading from './Loading';
 
 export interface ProfileData{
+  id?: number;
   first_name: string;
   last_name: string;
   date_of_birth: string;

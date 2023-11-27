@@ -29,6 +29,7 @@ from .serializer import (
     JobApplicationSerializer,
     JobUserAppliedListingsSerializer,
     JobAllListingsSerializer,
+    JobOfferAppliedForOfferListingSerializer,
 )
 from user_app.views import (
     ProfileImageUploadView,
@@ -56,6 +57,35 @@ from datetime import datetime, timedelta
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import F, Max
 
+
+class JobOfferAppliedForOfferListingView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = JobOfferAppliedForOfferListingSerializer
+    pagination_class = PageNumberPagination
+
+    def get(self, request, *args, **kwargs):
+
+        job_offer_id = kwargs.get('offer_id')  # Assuming the key is 'job_offer_id'
+        
+        # Retrieve the JobOffer instance or return 404 if not found
+        job_offer = get_object_or_404(JobOffer, id=job_offer_id)
+        print(job_offer)
+        # Filter applicants based on the job offer
+        queryset = JobApplication.objects.filter(job_offer=job_offer)
+
+        self.pagination_class.page_size = 5
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.serializer_class(page, many=True)
+
+            # Additional processing, if needed
+
+            return self.get_paginated_response(serializer.data)
+
+        return Response(
+            {"detail": "Invalid page"}, status=status.HTTP_404_NOT_FOUND
+        )
 
 class ProfileCompanyView(BaseProfileUpdateView):
     # permission_classes = [IsAuthenticated]
@@ -139,7 +169,7 @@ class JobOfferUserAppliedListingView(generics.ListAPIView):
         return self.paginator.get_paginated_response(data)
 
     def get(self, request, *args, **kwargs):
-        page_number = int(kwargs.get("page", 1))
+        # page_number = int(kwargs.get("page", 1))
         self.pagination_class.page_size = 5
         queryset = self.get_queryset()
         page = self.paginate_queryset(queryset)
@@ -148,7 +178,7 @@ class JobOfferUserAppliedListingView(generics.ListAPIView):
             serializer = self.serializer_class(
                 page, many=True, context={"request": request}
             )
-            print(self.get_paginated_response(serializer.data))
+            # print(self.get_paginated_response(serializer.data))
             return self.get_paginated_response(serializer.data)
 
         return Response(
@@ -159,13 +189,19 @@ class JobOfferUserAppliedListingView(generics.ListAPIView):
 class MyJobOffersListingView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = JobListingsSerializer
+    pagination_class = PageNumberPagination
+
+    def get_queryset(self):
+        return JobOffer.objects.filter(company=self.request.user).order_by(
+            "-job_published_at"
+        )
 
     def get(self, request, *args, **kwargs):
-        # print(kwargs.get("username"))
+        queryset = self.get_queryset()
         if "username" in kwargs:
             user = get_object_or_404(User, username=kwargs.get("username"))
             # print(kwargs.get("username"))
-            queryset = JobOffer.objects.filter(company=user, job_offer_status=True)
+            queryset = JobOffer.objects.filter(company=user, job_offer_status=True)[:3]
             job_offers = list(queryset)
             serializer = self.serializer_class(job_offers, many=True)
             data = serializer.data
@@ -177,20 +213,29 @@ class MyJobOffersListingView(generics.ListAPIView):
 
             return Response(data)
         else:
-            queryset = JobOffer.objects.filter(company=self.request.user).order_by(
-                "-job_published_at"
-            )
-            job_offers = list(queryset)  # Convert the queryset to a list of instances
-            # print(job_offers)
-            serializer = self.serializer_class(job_offers, many=True)
-            data = serializer.data
-            for job_offer_data in data:
-                job_offer_id = job_offer_data["id"]
-                job_offer_data["applicant_count"] = JobApplication.objects.filter(
-                    job_offer_id=job_offer_id
-                ).count()
+            self.pagination_class.page_size = 5
+            page = self.paginate_queryset(queryset)
 
-            return Response(data)
+            if page is not None:
+                serializer = self.serializer_class(page, many=True)
+                # job_offers = list(queryset)  
+                # print(job_offers)
+                # serializer = self.serializer_class(job_offers, many=True)
+                data = serializer.data
+                for job_offer_data in data:
+                    job_offer_id = job_offer_data["id"]
+                    job_offer_data["applicant_count"] = JobApplication.objects.filter(
+                        job_offer_id=job_offer_id
+                    ).count()
+
+                return self.get_paginated_response(serializer.data)
+
+            return Response(
+                {"detail": "Invalid page"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+
+        return Response({"detail": "Invalid page"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class JobOfferDeleteOfferView(generics.DestroyAPIView):

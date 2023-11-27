@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../utils/AuthProvider";
 import NavbarJobOfferCreate from "./NavbarJobOfferCreate";
+import DeleteModal from "./DeleteModal";
 interface NavbarProps {
   setGlobalAlertError: (error: string) => void;
 }
@@ -138,7 +139,7 @@ const Navbar: React.FC<NavbarProps> = ({setGlobalAlertError}) =>{
                       <Link to='/jobofferlistings/1' className="nav-link" aria-current="page">Job Offer Listings</Link>
                     </li>
                     <li className="dropdown-item" data-bs-dismiss="offcanvas">
-                      <Link to='/company/myJobOffers' className="nav-link" aria-current="page">My Job Offers</Link>
+                      <Link to='/company/myJobOffers/1' className="nav-link" aria-current="page">My Job Offers</Link>
                     </li>
                     
                   </ul>

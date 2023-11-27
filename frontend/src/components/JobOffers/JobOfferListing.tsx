@@ -144,7 +144,7 @@ const JobOfferListing: React.FC = () => {
       {jobOffers && jobOffers.length ? (<>
         {jobOffers.map((jobOffer) => (
             
-                <JobOfferListingItem key={jobOffer.id}  jobOffer={jobOffer} />
+            <JobOfferListingItem key={jobOffer.id}  jobOffer={jobOffer} />
 
         ))}
       </>)

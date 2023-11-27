@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios, { AxiosError } from 'axios';
-import JobOfferProfileListingItem from '../../JobOffers/JobOfferProfileListingItem';
+import JobOfferListingItem from '../../JobOffers/JobOfferListingItem';
 import { Link } from 'react-router-dom';
 import Loading from '../../Loading';
 import AuthContext from '../../../utils/AuthProvider';
 import ErrorPage from '../../ErrorPage';
 import { ErrorResponse } from '../../Profile';
-import { JobOfferListingData } from '../../JobOffers/JobOfferListing';
+import { JobOfferListingExtendedData } from '../../JobOffers/JobOfferListing';
 
 interface ProfileCompanyJobOffersData{
   username?: string | undefined
@@ -15,7 +15,7 @@ interface ProfileCompanyJobOffersData{
 
 
 const ProfileCompanyJobOffers: React.FC<ProfileCompanyJobOffersData> = ({username}) => {
-  const [jobOffers, setJobOffers] = useState<JobOfferListingData[]>([]);
+  const [jobOffers, setJobOffers] = useState<JobOfferListingExtendedData[]>([]);
 
   // for loading
   const [isLoading, setIsLoading] = useState(false);
@@ -84,7 +84,7 @@ const ProfileCompanyJobOffers: React.FC<ProfileCompanyJobOffersData> = ({usernam
       {jobOffers && jobOffers.length ? (<ul>
         {jobOffers.map((jobOffer) => (
             // <Link to={`/company/joboffer/${jobOffer.id}`} key={jobOffer.id} style={{textDecoration:"none"}}>
-                <JobOfferProfileListingItem key={jobOffer.id}  jobOffer={jobOffer} />
+                <JobOfferListingItem key={jobOffer.id}  jobOffer={jobOffer} />
             // </Link>
         ))}
       </ul>)

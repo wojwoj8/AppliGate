@@ -286,3 +286,22 @@ class JobApplicationUserListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOffer
         fields = "__all__"
+
+class UserProfileAssessSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "current_position",
+            "first_name",
+            "last_name",
+            "date_of_birth",
+            "country",
+            "city",
+            "profile_image",
+        ]
+class JobOfferAppliedForOfferListingSerializer(serializers.ModelSerializer):
+    applicant = UserProfileAssessSerializer()
+
+    class Meta:
+        model = JobApplication
+        fields = ['id', 'job_offer', 'applicant', 'application_date', 'status']

@@ -100,7 +100,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 class DateSerializer(serializers.Field):
     def to_internal_value(self, value):
-        print(value)
+        # print(value)
         if self.field_name == "date_of_birth" and value == "":
             return None
         elif value == "":

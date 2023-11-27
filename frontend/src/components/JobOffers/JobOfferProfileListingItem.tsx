@@ -1,5 +1,6 @@
 import { JobOfferListingData } from "./JobOfferListing";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 interface JobOfferProfileListingItemProps {
     jobOffer: JobOfferListingData;
   }
@@ -28,6 +29,9 @@ interface JobOfferProfileListingItemProps {
 
 
   const JobOfferProfileListingItem: React.FC<JobOfferProfileListingItemProps> = ({ jobOffer }) => {
+
+    const nav = useNavigate();
+
     return (
         <div className="card shadow border-primary border-opacity-50 mb-4 container">
             
@@ -36,7 +40,8 @@ interface JobOfferProfileListingItemProps {
                     <img
                         src={jobOffer.profile_image}
                         alt="Background"
-                        className="card-img p-2 job-listing-icon"
+                        className="card-img p-2"
+                        style={{width:'150px', height:'150px'}}
                         
                     />
                 </div>
@@ -45,6 +50,9 @@ interface JobOfferProfileListingItemProps {
                     <Link to={`/company/joboffer/${jobOffer.id}`}  style={{textDecoration:"none"}}>
                         <h5 className="card-title">{jobOffer.title}</h5>
                     </Link>
+                    <button className="btn btn-primary" onClick={() => nav(`/company/joboffer/applicants/${jobOffer.id}`)}>
+                        Evaluate applications
+                    </button>
                     <p className="card-text">{jobOffer.first_name}</p>
                     <p className="card-text">{jobOffer.job_type}</p>
                     {jobOffer.work_mode && <p className="card-text">{jobOffer.work_mode}</p>}
@@ -62,15 +70,19 @@ interface JobOfferProfileListingItemProps {
                     <div className="col-sm-5">
                         {formatRemainingTime(jobOffer.job_application_deadline)}
                     </div>
+                    
                     <div className="col-sm-7 d-sm-flex d-block justify-content-between">
+                    
                     <p>Applicant count: {jobOffer.applicant_count}</p>
+                    {jobOffer.status && 
                     <div className="d-flex align-items-center">
-                        <svg className="me-1" width="18" height="18" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#2266ff" fillRule="evenodd" d="M6 10a4 4 0 1 0 0-8a4 4 0 0 0 0 8zm0 2A6 6 0 1 0 6 0a6 6 0 0 0 0 12z" />
-                        </svg>
-                        {jobOffer.status && <p>{jobOffer.status}</p>}
-                        
-                    </div>
+                    <svg className="me-1" width="18" height="18" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#2266ff" fillRule="evenodd" d="M6 10a4 4 0 1 0 0-8a4 4 0 0 0 0 8zm0 2A6 6 0 1 0 6 0a6 6 0 0 0 0 12z" />
+                    </svg>
+                    <p>{jobOffer.status}</p>
+                </div>
+                    }
+                    
                     
                     </div>
                     

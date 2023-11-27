@@ -19,7 +19,7 @@ import ProfileSettingsDelete from './components/ProfileSettingsDelete';
 import Example from './components/Example';
 import ProfileAlert from './components/profileComponents/ProfileAlert';
 import JobOfferUserApplications from './components/JobOffers/JobOfferUserApplications';
-
+import JobOfferAssessApplicationListing from './components/JobOffers/JobOfferAssessApplicationListing';
 // Company part
 import ProfileCompany from './components/companyComponents/ProfileCompany';
 
@@ -71,8 +71,8 @@ function App() {
             <Route path="/company/joboffer/:offerid" element={<PrivateRoute><JobOffer setGlobalAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/jobofferlistings/:page" element={<PrivateRoute><JobOfferListing/></PrivateRoute>}></Route>
             
-            <Route path="/company/myJobOffers" element={<PrivateRouteCompanyOnly><MyJobOffers/></PrivateRouteCompanyOnly>}></Route>
-            
+            <Route path="/company/myJobOffers/:page" element={<PrivateRouteCompanyOnly><MyJobOffers/></PrivateRouteCompanyOnly>}></Route>
+            <Route path="/company/joboffer/applicants/:offerid" element={<PrivateRouteCompanyOnly><JobOfferAssessApplicationListing/></PrivateRouteCompanyOnly>}></Route>
           
         </Routes>
         </div>

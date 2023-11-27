@@ -29,7 +29,7 @@ const JobOfferUserApplications: React.FC = () => {
   const [progress, setProgress] = useState(0);
 
   // Authtoken for CRUD and user for username and logout
-  const { authTokens, logoutUser } = useContext(AuthContext);
+  const { authTokens, user, logoutUser } = useContext(AuthContext);
 
    // Axios error for error component
    const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null)
@@ -100,7 +100,7 @@ const JobOfferUserApplications: React.FC = () => {
       {jobOffers && jobOffers.length ? (<>
         {jobOffers.map((jobOffer) => (
             
-                <JobOfferProfileListingItem key={jobOffer.id}  jobOffer={jobOffer} />
+                <JobOfferProfileListingItem key={jobOffer.id} userType={user.user_type}  jobOffer={jobOffer} />
 
         ))}
       </>)

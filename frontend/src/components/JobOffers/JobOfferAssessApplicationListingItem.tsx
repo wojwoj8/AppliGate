@@ -18,7 +18,7 @@ const JobOfferAssessApplicationListingItem: React.FC<JobOfferAssessApplicationLi
 
     const navigate = useNavigate();
     const {authTokens, user, logoutUser } = useContext(AuthContext);
-    const { id, job_offer, applicant, application_date, status } = data;
+    const { id, job_offer, applicant, application_date, status} = data;
     const {offerid} = useParams()
 
 
@@ -28,30 +28,52 @@ const JobOfferAssessApplicationListingItem: React.FC<JobOfferAssessApplicationLi
          <div className="card shadow border-primary border-opacity-50 mb-4 container">
             
          <div className="row d-flex">
-             <div className="col-sm-4 d-sm-flex d-none align-items-center">
+             <div className="col-auto d-sm-flex   align-items-center">
                  <img
                      src={applicant.profile_image}
-                     alt="Background"
-                     className="card-img p-2"
+                     alt="Profile"
+                     className="card-img p-2 evaluate-listing-image"
                      style={{width:'150px', height:'150px'}}
                      
                  />
              </div>
              <div className="card-body col-auto">
 
-                 {/* <Link to={`/company/joboffer/${jobOffer.id}`}  style={{textDecoration:"none"}}>
-                     <h5 className="card-title">{jobOffer.title}</h5>
-                 </Link> */}
-                 <p className="card-text">{applicant.first_name} {applicant.last_name}</p>
-                 
-                 {/* <p className="card-text">{jobOffer.job_type}</p>
-                 {jobOffer.work_mode && <p className="card-text">{jobOffer.work_mode}</p>}
-                 {jobOffer.job_location && <p className="card-text">{jobOffer.job_location}</p>} */}
-                 {/* <p className="card-text">
-                     Salary: {jobOffer.salary_min} - {jobOffer.salary_max} {jobOffer.salary_currency} {jobOffer.salary_type}
-                 </p>
-                 <p className="">
-                     Published At: {new Date(jobOffer.job_published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                
+             
+                <h4 className="card-title link link-primary mb-1">
+                {applicant.first_name && applicant.last_name
+                    ? `${applicant.first_name} ${applicant.last_name}`
+                    : 'No name provided'}
+                </h4>
+                <p className="card-text fw-medium">
+                {applicant.current_position &&
+                    applicant.current_position}
+                </p>
+                {applicant.date_of_birth && <p className='mb-2 mb-md-0'><b>Date of birth: </b><span className='d-inline-flex'>{applicant.date_of_birth}</span></p>}
+                {applicant?.country || applicant?.city ? (
+                                    <div className='d-flex flex-md-row flex-column'>
+                                        <p className='mb-2 mb-md-0'>
+                                            <b className='residence-label'>Place of residence: </b>
+                                            <span className='d-inline-flex'>
+                                                {applicant?.country ? (
+                                                    <span className='d-inline'>{applicant?.country}{applicant?.city ? <>,&nbsp;</> : ' '}</span>
+                                                ) : null}
+                                                {applicant?.city ? (
+                                                    <span className='d-inline'>{applicant?.city}</span>
+                                                ) : null}
+                                            </span>
+                                        </p>
+                                    </div>
+                                ) : null}
+                {/* <p className="card-text">{jobOffer.job_type}</p>
+                {jobOffer.work_mode && <p className="card-text">{jobOffer.work_mode}</p>}
+                {jobOffer.job_location && <p className="card-text">{jobOffer.job_location}</p>} */}
+                {/* <p className="card-text">
+                    Salary: {jobOffer.salary_min} - {jobOffer.salary_max} {jobOffer.salary_currency} {jobOffer.salary_type}
+                </p>
+                <p className="">
+                    Published At: {new Date(jobOffer.job_published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                  </p> */}
                  
              </div>

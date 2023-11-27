@@ -17,6 +17,7 @@ export interface ApplicantData{
     applicant: ProfileData;
     application_date: string;
     id: number;
+    title: string;
     job_offer: number;
     status: string;
   }
@@ -41,6 +42,7 @@ const JobOfferAssessApplicationListing: React.FC = () =>{
     const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null)
     // Fetch job offer data from the backend
     const [applicant, setApplicant] = useState<ApplicantData[]>([]);
+
     const {offerid, page} = useParams()
 
 
@@ -101,8 +103,9 @@ const JobOfferAssessApplicationListing: React.FC = () =>{
         <>
         <div className='container-fluid'>
             
-          <h1>Offer {offerid} applicants </h1>
+          
           {applicant && applicant.length ? (<>
+            <h1>{applicant[0].title} offer applicants </h1>
             {applicant.map((user) => (
                 
               <JobOfferAssessApplicationListingItem key={user.id}  data={user} />
@@ -111,7 +114,7 @@ const JobOfferAssessApplicationListing: React.FC = () =>{
           </>)
           : (
             <div>
-                <h2>You don't have any listed Job Offers</h2>
+                <h2>There are no applicants for that offer</h2>
             </div>
           )}
           

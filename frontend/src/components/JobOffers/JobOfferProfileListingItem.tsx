@@ -1,8 +1,10 @@
 import { JobOfferListingData } from "./JobOfferListing";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+
 interface JobOfferProfileListingItemProps {
     jobOffer: JobOfferListingData;
+    userType?: string
   }
   
   const formatRemainingTime = (deadline: string) => {
@@ -28,9 +30,10 @@ interface JobOfferProfileListingItemProps {
 }
 
 
-  const JobOfferProfileListingItem: React.FC<JobOfferProfileListingItemProps> = ({ jobOffer }) => {
+  const JobOfferProfileListingItem: React.FC<JobOfferProfileListingItemProps> = ({ jobOffer, userType }) => {
 
     const nav = useNavigate();
+    
 
     return (
         <div className="card shadow border-primary border-opacity-50 mb-4 container">
@@ -50,9 +53,11 @@ interface JobOfferProfileListingItemProps {
                     <Link to={`/company/joboffer/${jobOffer.id}`}  style={{textDecoration:"none"}}>
                         <h5 className="card-title">{jobOffer.title}</h5>
                     </Link>
-                    <button className="btn btn-primary" onClick={() => nav(`/company/joboffer/applicants/${jobOffer.id}`)}>
-                        Evaluate applications
-                    </button>
+                    {userType === 'company' &&
+                        <button className="btn btn-primary" onClick={() => nav(`/company/joboffer/applicants/${jobOffer.id}`)}>
+                            Evaluate applications
+                        </button>
+                    }
                     <p className="card-text">{jobOffer.first_name}</p>
                     <p className="card-text">{jobOffer.job_type}</p>
                     {jobOffer.work_mode && <p className="card-text">{jobOffer.work_mode}</p>}

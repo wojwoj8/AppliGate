@@ -1,7 +1,7 @@
 import { GetDataFunction } from '../Profile';
 import { EditDataFunction } from '../Profile';
 import { ProfileStatusData } from '../Profile';
-
+import DeleteModal from '../DeleteModal';
 
 interface ProfileContactProps{
     profileStatus: ProfileStatusData | null;
@@ -41,9 +41,25 @@ const ProfileStatus: React.FC<ProfileContactProps> = ({profileStatus, setProfile
     return(
         <div className='container prevHidden'>
             {profileStatus && profileStatus?.public_profile === true ? (
-                <button className='btn btn-danger w-100 rounded-4 mt-3' onClick={changeProfileStatus}>Set Profile to Private</button>) : 
+                
+                    <div className='btn btn-danger w-100 rounded-4 mt-1 btn-block'>
+                            <DeleteModal id={`1`} 
+                            name={'Hide Profile'} 
+                            message={'Would you prefer to keep your profile private? Once hidden, your CV will no longer be visible, even if you have already applied for a job offer.'} 
+                            deleteName = {'Hide'}
+                            title="Hide Profile"
+                            onDelete={changeProfileStatus} />
+                        </div>  
+                ) : 
             (
-                <button className='btn btn-danger w-100 rounded-4 mt-3' onClick={changeProfileStatus}>Set Profile to Public</button>
+                <div className='btn btn-danger w-100 rounded-4 mt-1 btn-block'>
+                            <DeleteModal id={`1`} 
+                            name={'Public Profile'} 
+                            message={'Are you ready to make your profile public? Once updated, your profile will be visible to everyone, and other users will have the opportunity to view your information.'} 
+                            deleteName = {'Public Profile'}
+                            title="Public Profile"
+                            onDelete={changeProfileStatus} />
+                        </div>  
             ) }
             
         </div>

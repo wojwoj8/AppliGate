@@ -172,3 +172,18 @@ textarea{
         
     }
 }
+
+.evaluate-listing-image{
+    // bugged on dark mode while not important
+    height: 150px !important;
+    width: 150px !important;
+
+    
+    // md size
+    @media (max-width: 768px) {
+        
+    height: 100px !important;
+    width: 100px !important;
+        
+    }
+}

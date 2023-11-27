@@ -55,7 +55,8 @@ from .models import (
 )
 from datetime import datetime, timedelta
 from rest_framework.pagination import PageNumberPagination
-from django.db.models import F, Max
+from django.db.models import F, Max, Case, When, Value
+from django.db import models
 
 
 class JobOfferAppliedForOfferListingView(generics.ListAPIView):
@@ -64,14 +65,20 @@ class JobOfferAppliedForOfferListingView(generics.ListAPIView):
     pagination_class = PageNumberPagination
 
     def get(self, request, *args, **kwargs):
+        job_offer_id = kwargs.get("offer_id")
 
-        job_offer_id = kwargs.get('offer_id')  # Assuming the key is 'job_offer_id'
-        
-        # Retrieve the JobOffer instance or return 404 if not found
         job_offer = get_object_or_404(JobOffer, id=job_offer_id)
-        print(job_offer)
-        # Filter applicants based on the job offer
-        queryset = JobApplication.objects.filter(job_offer=job_offer)
+        # print(job_offer)
+
+        queryset = JobApplication.objects.filter(job_offer=job_offer).order_by(
+            Case(
+                When(status="pending", then=0),
+                When(status="approved", then=1),
+                When(status="rejected", then=2),
+                default=3,  # You can adjust the default value as needed
+                output_field=models.IntegerField(),
+            )
+        )
 
         self.pagination_class.page_size = 5
         page = self.paginate_queryset(queryset)
@@ -79,13 +86,10 @@ class JobOfferAppliedForOfferListingView(generics.ListAPIView):
         if page is not None:
             serializer = self.serializer_class(page, many=True)
 
-            # Additional processing, if needed
-
             return self.get_paginated_response(serializer.data)
 
-        return Response(
-            {"detail": "Invalid page"}, status=status.HTTP_404_NOT_FOUND
-        )
+        return Response({"detail": "Invalid page"}, status=status.HTTP_404_NOT_FOUND)
+
 
 class ProfileCompanyView(BaseProfileUpdateView):
     # permission_classes = [IsAuthenticated]
@@ -114,31 +118,26 @@ class JobOfferListingView(generics.ListAPIView):
 
         if page is not None:
             serializer = self.serializer_class(page, many=True)
-            
+
             for job_offer_data in serializer.data:
                 job_offer_id = job_offer_data["id"]
 
-                
                 skills = JobOfferSkill.objects.filter(
                     job_offer_id=job_offer_id, skill_type="required"
                 )
                 skill_data = JobOfferSkillSerializer(skills, many=True).data
 
-               
                 job_offer_data["skills"] = skill_data
 
-                
                 job_offer_data["applicant_count"] = JobApplication.objects.filter(
                     job_offer_id=job_offer_id
                 ).count()
 
-            
             return self.get_paginated_response(serializer.data)
 
-        return Response(
-            {"detail": "Invalid page"}, status=status.HTTP_404_NOT_FOUND
-        )
-    
+        return Response({"detail": "Invalid page"}, status=status.HTTP_404_NOT_FOUND)
+
+
 class JobOfferUserAppliedListingView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = JobUserAppliedListingsSerializer
@@ -150,8 +149,8 @@ class JobOfferUserAppliedListingView(generics.ListAPIView):
         applied_job_offers = (
             JobApplication.objects.filter(
                 applicant=user,
-                job_offer__job_offer_status=True,
-                job_offer__company__public_profile=True,
+                # job_offer__job_offer_status=True,
+                # job_offer__company__public_profile=True,
             )
             .values_list("job_offer_id", flat=True)
             .distinct()
@@ -181,9 +180,7 @@ class JobOfferUserAppliedListingView(generics.ListAPIView):
             # print(self.get_paginated_response(serializer.data))
             return self.get_paginated_response(serializer.data)
 
-        return Response(
-            {"detail": "Invalid page"}, status=status.HTTP_404_NOT_FOUND
-            )
+        return Response({"detail": "Invalid page"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class MyJobOffersListingView(generics.ListAPIView):
@@ -218,7 +215,7 @@ class MyJobOffersListingView(generics.ListAPIView):
 
             if page is not None:
                 serializer = self.serializer_class(page, many=True)
-                # job_offers = list(queryset)  
+                # job_offers = list(queryset)
                 # print(job_offers)
                 # serializer = self.serializer_class(job_offers, many=True)
                 data = serializer.data
@@ -233,9 +230,6 @@ class MyJobOffersListingView(generics.ListAPIView):
             return Response(
                 {"detail": "Invalid page"}, status=status.HTTP_404_NOT_FOUND
             )
-
-
-        return Response({"detail": "Invalid page"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class JobOfferDeleteOfferView(generics.DestroyAPIView):
@@ -379,7 +373,13 @@ class BaseJobOfferView(
         id = self.kwargs.get("id")
         try:
             job_offer = JobOffer.objects.get(id=id)
+            job_application = JobApplication.objects.filter(
+                job_offer=job_offer, applicant=request.user
+            ).first()
             owner_id = job_offer.company.id
+            # if user applied for that offer make it visible
+            if job_application is not None:
+                return
             if request.user.id != owner_id and not job_offer.job_offer_status:
                 raise PermissionDenied("This JobOffer is not listed.")
         except JobOffer.DoesNotExist:

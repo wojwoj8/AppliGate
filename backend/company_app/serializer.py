@@ -56,6 +56,8 @@ class JobAllListingsSerializer(serializers.ModelSerializer):
     profile_image = serializers.ImageField(source="company.profile_image")
     first_name = serializers.CharField(source="company.first_name")
     background_image = serializers.ImageField(source="company.background_image")
+    country = serializers.CharField(source="company.country")
+    city = serializers.CharField(source="company.city")
 
     class Meta:
         model = JobOffer
@@ -79,6 +81,8 @@ class JobAllListingsSerializer(serializers.ModelSerializer):
             "contract_type",
             "vacancy",
             "specialization",
+            "city",
+            "country",
         ]
 
 

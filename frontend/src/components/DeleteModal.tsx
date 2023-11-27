@@ -17,7 +17,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ id, onDelete, message, name, 
       <div className="" data-bs-toggle="modal" data-bs-target={`#${sanitizedId}`}>
         {name}
       </div>
-      <div className="modal fade high-z-index" id={sanitizedId} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby={`${sanitizedId}Label`} aria-hidden="true">
+      <div className="modal fade " id={sanitizedId} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby={`${sanitizedId}Label`} aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">

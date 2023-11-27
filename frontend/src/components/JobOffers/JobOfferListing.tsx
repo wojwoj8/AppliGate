@@ -55,6 +55,9 @@ export interface JobOfferListingExtendedData {
   specialization: string;
   job_type: string;
   skills: JobOfferSkillData[];
+  city: string;
+  country: string;
+  
 }
 
 const JobOfferListing: React.FC = () => {

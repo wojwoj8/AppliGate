@@ -5,27 +5,27 @@ interface JobOfferListingItemProps {
     jobOffer: JobOfferListingExtendedData;
   }
   
-  const formatRemainingTime = (deadline: string) => {
-    const deadlineDate = new Date(deadline);
-    const currentDate = new Date();
+//   const formatRemainingTime = (deadline: string) => {
+//     const deadlineDate = new Date(deadline);
+//     const currentDate = new Date();
 
-    const timeDifference = (deadlineDate as any) - (currentDate as any);
-    if (timeDifference > 0){
-        return(
-            <p className="card-text">
-                Application Deadline: {new Date(deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-            </p>
-        )
-    } else{
-        return(
+//     const timeDifference = (deadlineDate as any) - (currentDate as any);
+//     if (timeDifference > 0){
+//         return(
+//             <p className="card-text">
+//                 Application Deadline: {new Date(deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+//             </p>
+//         )
+//     } else{
+//         return(
            
-            <p className="card-text">
-                Expired: {new Date(deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-            </p>
+//             <p className="card-text">
+//                 Expired: {new Date(deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+//             </p>
             
-        )
-    }
-}
+//         )
+//     }
+// }
 
 
 
@@ -51,7 +51,13 @@ interface JobOfferListingItemProps {
                         
                         <h4 className="card-title link link-primary mb-1">{jobOffer.title}</h4>
                         {jobOffer.work_mode && <p className="fw-semibold">{jobOffer.work_mode}</p>}
-                        {jobOffer.job_location && <p className=""><b>Company location:</b> {jobOffer.job_location}</p>}
+                        <div className="d-flex row">
+
+                            {jobOffer.job_location && <p className="col-auto mb-n1"><b>Job location:</b> {jobOffer.job_location}</p>}
+                            {jobOffer.country && <p className="col-auto mt-0"><b>Company location:</b> {jobOffer.city ? `${jobOffer.country}, ${jobOffer.city}` : jobOffer.country}</p>}
+
+                        </div>
+                        
                         <p className="card-text">
                             <b>
                                 {jobOffer.salary_min} - {jobOffer.salary_max} {jobOffer.salary_currency} ({jobOffer.salary_type})

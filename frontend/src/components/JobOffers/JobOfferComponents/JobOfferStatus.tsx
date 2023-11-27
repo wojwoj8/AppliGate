@@ -146,7 +146,7 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
             return(
                 <>
                     {user.user_type === 'user' && (
-                        <button className='btn btn-info w-100 rounded-4 mt-3 not-hidden' onClick={() => navigate('/jobofferlistings')}>Offer Expired, click here to see more offers.</button>
+                        <button className='btn btn-info w-100 rounded-4 mt-3 not-hidden' onClick={() => navigate('/jobofferlistings/1')}>Offer Expired, click here to see more offers.</button>
                     )}
                     </>
             )
@@ -157,7 +157,7 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
                 {user.user_type === 'user' && (
                     
                     hasApplied.has_applied ? (
-                        <button className='btn btn-info  w-100 rounded-4 mt-3 not-hidden' onClick={() => navigate('/jobofferlistings')}>You have already applied for that offer, click here to see more offers.</button>
+                        <button className='btn btn-info  w-100 rounded-4 mt-3 not-hidden' onClick={() => navigate('/jobofferlistings/1')}>You have already applied for that offer, click here to see more offers.</button>
                     ) : (
                         <button className='btn btn-info w-100 rounded-4 mt-3 not-hidden' onClick={JobApply}>Apply for that offer</button>
                     )

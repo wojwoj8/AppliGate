@@ -28,11 +28,11 @@ const JobOfferAssessApplicationListingItem: React.FC<JobOfferAssessApplicationLi
          <div className="card shadow border-primary border-opacity-50 mb-4 container">
             
          <div className="row d-flex">
-             <div className="col-auto d-sm-flex   align-items-center">
+            <div className="col-auto d-md-flex  d-none">
                  <img
                      src={applicant.profile_image}
                      alt="Profile"
-                     className="card-img p-2 evaluate-listing-image"
+                     className="card-img pt-1 job-listing-icon"
                      style={{width:'150px', height:'150px'}}
                      
                  />
@@ -66,41 +66,38 @@ const JobOfferAssessApplicationListingItem: React.FC<JobOfferAssessApplicationLi
                                         </p>
                                     </div>
                                 ) : null}
-                {/* <p className="card-text">{jobOffer.job_type}</p>
-                {jobOffer.work_mode && <p className="card-text">{jobOffer.work_mode}</p>}
-                {jobOffer.job_location && <p className="card-text">{jobOffer.job_location}</p>} */}
-                {/* <p className="card-text">
-                    Salary: {jobOffer.salary_min} - {jobOffer.salary_max} {jobOffer.salary_currency} {jobOffer.salary_type}
-                </p>
-                <p className="">
-                    Published At: {new Date(jobOffer.job_published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-                 </p> */}
+               
                  
-             </div>
-             <hr className="border-primary mb-0"></hr>
-             <div className="row">
-                 {/* <div className="col-sm-5">
-                     {formatRemainingTime(jobOffer.job_application_deadline)}
-                 </div> */}
-                 
-                 <div className="col-sm-7 d-sm-flex d-block justify-content-between">
-                 
-                 {/* <p>Applicant count: {jobOffer.applicant_count}</p> */}
-                 {status && 
-                 <div className="d-flex align-items-center">
-                 <svg className="me-1" width="18" height="18" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                     <path fill="#2266ff" fillRule="evenodd" d="M6 10a4 4 0 1 0 0-8a4 4 0 0 0 0 8zm0 2A6 6 0 1 0 6 0a6 6 0 0 0 0 12z" />
-                 </svg>
-                 <p>{status}</p>
-             </div>
-                 }
-                 
-                 
-                 </div>
-                 
-             </div>
+            </div>
+            
          </div>
-        
+         <hr className="border-primary mb-0"></hr>
+            <div className="row">
+           
+                <div className="col-12 d-flex d-block justify-content-between">
+
+                    {status && 
+                    <div className="d-flex align-items-center">
+                        <svg className="me-1" width="18" height="18" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+                            <path 
+                            fill={status === 'pending' ? 'blue' : status === 'approved' ? '#10B981' : 'red'} 
+                            fillRule="evenodd" d="M6 10a4 4 0 1 0 0-8a4 4 0 0 0 0 8zm0 2A6 6 0 1 0 6 0a6 6 0 0 0 0 12z" />
+                        </svg>
+                        <p>{status}</p>
+                    </div>
+                    }
+                    <div className="col-auto d-flex  d-md-none">
+                        <img
+                            src={applicant.profile_image}
+                            alt="Background"
+                            className="card-img p-1 job-listing-icon"
+                            
+                        />
+                    </div>
+                 
+                </div>
+                 
+             </div>
      </div>
     )
 

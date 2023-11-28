@@ -1,6 +1,6 @@
 import { JobOfferListingData } from "./JobOfferListing";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useJobOfferContext } from "./JobOfferContexts/JobOfferContext";
 
 interface JobOfferProfileListingItemProps {
     jobOffer: JobOfferListingData;
@@ -31,10 +31,12 @@ interface JobOfferProfileListingItemProps {
 
 
   const JobOfferProfileListingItem: React.FC<JobOfferProfileListingItemProps> = ({ jobOffer, userType }) => {
+    const { setJobOffer } = useJobOfferContext();
 
-    const nav = useNavigate();
-    
-
+    const handleEvaluateClick = (jobOffer: JobOfferListingData) => {
+        
+        setJobOffer(jobOffer);
+      };
     return (
         <div className="card shadow border-primary border-opacity-50 mb-4 container">
             
@@ -54,9 +56,12 @@ interface JobOfferProfileListingItemProps {
                         <h5 className="card-title">{jobOffer.title}</h5>
                     </Link>
                     {userType === 'company' &&
-                        <button className="btn btn-primary" onClick={() => nav(`/company/joboffer/applicants/${jobOffer.id}`)}>
-                            Evaluate applications
-                        </button>
+                        
+                        <Link to={`/company/joboffer/applicants`}  style={{textDecoration:"none"}}>
+                            <button className="btn btn-primary" onClick={() => handleEvaluateClick(jobOffer)}>
+                                Evaluate applications
+                            </button>
+                        </Link>
                     }
                     <p className="card-text">{jobOffer.first_name}</p>
                     <p className="card-text">{jobOffer.job_type}</p>
@@ -82,7 +87,7 @@ interface JobOfferProfileListingItemProps {
                     {jobOffer.status && 
                     <div className="d-flex align-items-center">
                     <svg className="me-1" width="18" height="18" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="#2266ff" fillRule="evenodd" d="M6 10a4 4 0 1 0 0-8a4 4 0 0 0 0 8zm0 2A6 6 0 1 0 6 0a6 6 0 0 0 0 12z" />
+                        <path fill={jobOffer.status === 'pending' ? 'blue' : jobOffer.status === 'approved' ? '#10B981' : 'red'} fillRule="evenodd" d="M6 10a4 4 0 1 0 0-8a4 4 0 0 0 0 8zm0 2A6 6 0 1 0 6 0a6 6 0 0 0 0 12z" />
                     </svg>
                     <p>{jobOffer.status}</p>
                 </div>

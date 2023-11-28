@@ -30,7 +30,7 @@ const ProfileStatus: React.FC<ProfileContactProps> = ({profileStatus, setProfile
             await setProfileStatus(updatedProfileStatus);
         
             if (updatedProfileStatus.public_profile === false) {
-              setAlertError('Your profile has been set to private. This means that your CV is no longer visible, even if you have already applied for a job offer info');
+              setAlertError('Your profile has been set to private. This means that your CV is no longer visible, except to companies you have applied to info');
             } else {
               setAlertError('Profile Changed to Public, now everone can see your CV! Copy profile link and share it success');
             }
@@ -42,17 +42,17 @@ const ProfileStatus: React.FC<ProfileContactProps> = ({profileStatus, setProfile
         <div className='container prevHidden'>
             {profileStatus && profileStatus?.public_profile === true ? (
                 
-                    <div className='btn btn-danger w-100 rounded-4 mt-1 btn-block'>
+                    <div className='btn btn-danger w-100 rounded-4 mt-2 btn-block'>
                             <DeleteModal id={`1`} 
                             name={'Hide Profile'} 
-                            message={'Would you prefer to keep your profile private? Once hidden, your CV will no longer be visible, even if you have already applied for a job offer.'} 
+                            message={'Would you prefer to keep your profile private? Once hidden, your CV will no longer be visible, except to companies you have applied to.'} 
                             deleteName = {'Hide'}
                             title="Hide Profile"
                             onDelete={changeProfileStatus} />
                         </div>  
                 ) : 
             (
-                <div className='btn btn-danger w-100 rounded-4 mt-1 btn-block'>
+                <div className='btn btn-danger w-100 rounded-4 mt-2 btn-block'>
                             <DeleteModal id={`1`} 
                             name={'Public Profile'} 
                             message={'Are you ready to make your profile public? Once updated, your profile will be visible to everyone, and other users will have the opportunity to view your information.'} 

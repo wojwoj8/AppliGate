@@ -12,6 +12,7 @@ import { PaginationData } from "../sharedComponents/Pagination";
 import JobOfferAssessApplicationListingItem from "./JobOfferAssessApplicationListingItem";
 import Loading from "../Loading";
 import ErrorPage from "../ErrorPage";
+import { useJobOfferContext } from "./JobOfferContexts/JobOfferContext";
 
 export interface ApplicantData{
     applicant: ProfileData;
@@ -44,12 +45,18 @@ const JobOfferAssessApplicationListing: React.FC = () =>{
     const [applicant, setApplicant] = useState<ApplicantData[]>([]);
 
     const {offerid, page} = useParams()
-
-
+    const { jobOffer } = useJobOfferContext();
+    
     const getData = async (
         ) =>{
             try {
-                const response = await axios.get(`/company/joboffer/applicants/${offerid}`, {
+                if (jobOffer === null) {
+                    // Handle the case when jobOffer is null, maybe show an error message or return early
+                    navigate('/')
+                    return;
+                }
+
+                const response = await axios.get(`/company/joboffer/applicants/${jobOffer.id}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: 'Bearer ' + String(authTokens.access),
@@ -57,7 +64,7 @@ const JobOfferAssessApplicationListing: React.FC = () =>{
                 });
     
                 const {results, ...rest} = response.data
-                console.log(response.data)
+                // console.log(response.data)
                 
                 if (response.status === 200) {
                     // setGlobalAlertError('Application submitted successfully! Thank you for applying success')

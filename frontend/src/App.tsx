@@ -29,6 +29,8 @@ import JobOffer from './components/JobOffers/JobOffer';
 import JobOfferListing from './components/JobOffers/JobOfferListing';
 import MyJobOffers from './components/JobOffers/MyJobOffers';
 
+//Context JobOffer
+import { JobOfferProvider } from './components/JobOffers/JobOfferContexts/JobOfferContext';
 
 function App() {
   setInitialMode();
@@ -71,8 +73,22 @@ function App() {
             <Route path="/company/joboffer/:offerid" element={<PrivateRoute><JobOffer setGlobalAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/jobofferlistings/:page" element={<PrivateRoute><JobOfferListing/></PrivateRoute>}></Route>
             
-            <Route path="/company/myJobOffers/:page" element={<PrivateRouteCompanyOnly><MyJobOffers/></PrivateRouteCompanyOnly>}></Route>
-            <Route path="/company/joboffer/applicants/:offerid" element={<PrivateRouteCompanyOnly><JobOfferAssessApplicationListing/></PrivateRouteCompanyOnly>}></Route>
+            <Route path="/company/myJobOffers/:page" element={
+              <JobOfferProvider>
+                <PrivateRouteCompanyOnly>
+                  <MyJobOffers/>
+                </PrivateRouteCompanyOnly>
+              </JobOfferProvider>
+            
+            }></Route>
+            <Route path="/company/joboffer/applicants" element={
+              <JobOfferProvider>
+                <PrivateRouteCompanyOnly>
+                  <JobOfferAssessApplicationListing />
+                </PrivateRouteCompanyOnly>
+              </JobOfferProvider>
+            }></Route>
+            
           
         </Routes>
         </div>

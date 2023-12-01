@@ -51,8 +51,8 @@ const JobOfferAssessApplicationListing: React.FC = () =>{
         ) =>{
             try {
                 if (jobOffer === null) {
-                    // Handle the case when jobOffer is null, maybe show an error message or return early
-                    navigate('/')
+                    // when no job offer id go to my job offers
+                    navigate('/company/myJobOffers/1')
                     return;
                 }
 

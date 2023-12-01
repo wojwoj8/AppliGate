@@ -103,7 +103,7 @@ function App() {
             <Route path="/company/joboffer/applicant/*" element={
               <JobOfferProvider>
                 <PrivateRouteCompanyOnly>
-                  <Profile/>
+                  <Profile setGlobalAlertError={setAlertError}/>
                 </PrivateRouteCompanyOnly>
               </JobOfferProvider>
             }></Route>

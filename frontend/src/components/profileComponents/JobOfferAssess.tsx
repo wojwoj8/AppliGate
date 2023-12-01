@@ -2,18 +2,21 @@ import React, {useContext} from 'react';
 import axios, { AxiosError } from 'axios';
 import { ErrorResponse } from '../Profile';
 import AuthContext from '../../utils/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 
 interface JobOfferAssessProps {
   offerid: number;
   username: string | undefined;
   setError: React.Dispatch<React.SetStateAction<AxiosError<ErrorResponse, any> | null>>
+  setGlobalAlertError?: (error: string) => void;
 }
 
-const JobOfferAssess: React.FC<JobOfferAssessProps> = ({ offerid, setError, username }) => {
+const JobOfferAssess: React.FC<JobOfferAssessProps> = ({ offerid, setError, username, setGlobalAlertError }) => {
 
+  const nav = useNavigate()
 
-const { logoutUser, authTokens } = useContext(AuthContext);
+  const { logoutUser, authTokens } = useContext(AuthContext);
 
   const handleAction = async (status: string) => {
     try {
@@ -30,6 +33,12 @@ const { logoutUser, authTokens } = useContext(AuthContext);
         
 
        if(response.status === 200){
+        if(setGlobalAlertError){
+          setGlobalAlertError(`User status set to ${status} success`)
+          nav(-1)
+
+        }
+        
       }
   }catch(error: any){
         const axiosError = error as AxiosError<ErrorResponse>;

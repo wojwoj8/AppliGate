@@ -19,6 +19,10 @@ import Loading from './Loading';
 import { useJobOfferContext } from './JobOffers/JobOfferContexts/JobOfferContext';
 import JobOfferAssess from './profileComponents/JobOfferAssess';
 
+interface ProfileProps {
+  setGlobalAlertError?: (error: string) => void;
+}
+
 export interface ProfileData{
   id?: number;
   first_name: string;
@@ -158,7 +162,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
   experience: {}
 };
 
-const Profile: React.FC = () =>{
+const Profile: React.FC<ProfileProps> = ({setGlobalAlertError}) =>{
 
     // Data for all components
     const [profile, setProfile] = useState<ProfileData | null>(null);
@@ -880,6 +884,7 @@ const Profile: React.FC = () =>{
             offerid={jobOffer.id}
             username={username}
             setError={setError}
+            setGlobalAlertError={setGlobalAlertError}
           ></JobOfferAssess>
         }
       </div>

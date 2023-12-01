@@ -21,6 +21,7 @@ export interface ApplicantData{
     title: string;
     job_offer: number;
     status: string;
+    user_username: string;
   }
 const JobOfferAssessApplicationListing: React.FC = () =>{
 
@@ -56,7 +57,7 @@ const JobOfferAssessApplicationListing: React.FC = () =>{
                     return;
                 }
 
-                const response = await axios.get(`/company/joboffer/applicants/${jobOffer.id}`, {
+                const response = await axios.get(`${API_BASE_URL}/company/joboffer/applicants/${jobOffer.id}/${page}?page=${page}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: 'Bearer ' + String(authTokens.access),
@@ -69,7 +70,7 @@ const JobOfferAssessApplicationListing: React.FC = () =>{
                 if (response.status === 200) {
                     // setGlobalAlertError('Application submitted successfully! Thank you for applying success')
                     // navigate("/");
-                    
+                    setData(rest)
                     setApplicant(results)
                 }
                 } catch (error: any) {
@@ -128,7 +129,7 @@ const JobOfferAssessApplicationListing: React.FC = () =>{
             
         </div>
       
-        {/* <Pagination data={data} page={page} url={'/company/myprofile/'}/> */}
+        <Pagination data={data} page={page} url={'/company/joboffer/applicants/'}/>
         
       </>
     )

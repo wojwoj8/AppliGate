@@ -86,8 +86,12 @@ urlpatterns = [
     path("company/myJobOffers/<int:page>", views.MyJobOffersListingView.as_view(), name="myJobOffers"),
     # list job offers created by company user for profile display
     path("company/myJobOffers/<str:username>/", views.MyJobOffersListingView.as_view(), name="myJobOffersProfile"),
-    path("company/joboffer/applicants/<int:offer_id>", views.JobOfferAppliedForOfferListingView.as_view(), name="myJobOffersProfile"),
+    path("company/joboffer/applicants/<int:offer_id>/<int:page>", views.JobOfferAppliedForOfferListingView.as_view(), name="myJobOffersProfile"),
     
+    #Assess job offer button response
+    path("joboffer/profile/assess/<str:username>/<int:offer_id>", views.JobOfferAssessView.as_view(), name="JobOfferAssess"),
+    
+
     # path("company/joboffercreator/", views.ProfileCompanyView.as_view(), name="personalCompany"),
     
     

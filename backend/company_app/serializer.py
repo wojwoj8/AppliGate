@@ -313,7 +313,13 @@ class UserProfileAssessSerializer(serializers.ModelSerializer):
 class JobOfferAppliedForOfferListingSerializer(serializers.ModelSerializer):
     applicant = UserProfileAssessSerializer()
     title = serializers.CharField(source="job_offer.title")
+    user_username = serializers.CharField(source="applicant.username")
 
     class Meta:
         model = JobApplication
-        fields = ["id", "job_offer", "title", "applicant", "application_date", "status"]
+        fields = ["id", "job_offer", "title", "applicant", "application_date", "status","user_username"]
+
+class JobOfferAssessSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobApplication
+        fields = ["id","status",]

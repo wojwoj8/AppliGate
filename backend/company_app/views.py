@@ -30,6 +30,7 @@ from .serializer import (
     JobUserAppliedListingsSerializer,
     JobAllListingsSerializer,
     JobOfferAppliedForOfferListingSerializer,
+    JobOfferAssessSerializer,
 )
 from user_app.views import (
     ProfileImageUploadView,
@@ -59,6 +60,29 @@ from django.db.models import F, Max, Case, When, Value
 from django.db import models
 
 
+class JobOfferAssessView(generics.GenericAPIView,
+                         mixins.UpdateModelMixin):
+    permission_classes = [IsAuthenticated]
+    serializer_class = JobOfferAssessSerializer
+
+    def put(self, request, *args, **kwargs):
+        offer_id = self.kwargs.get('offer_id')
+        username = self.kwargs.get('username')
+        status = request.data.get('status')
+        user = request.user
+
+        
+        job_offer = get_object_or_404(JobApplication, job_offer=offer_id, job_offer__company=user ,applicant__username=username)
+        if not job_offer:
+            raise PermissionDenied("That application does not exist.")
+
+        serializer = self.serializer_class(job_offer, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+
 class JobOfferAppliedForOfferListingView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = JobOfferAppliedForOfferListingSerializer
@@ -75,12 +99,12 @@ class JobOfferAppliedForOfferListingView(generics.ListAPIView):
                 When(status="pending", then=0),
                 When(status="approved", then=1),
                 When(status="rejected", then=2),
-                default=3,  # You can adjust the default value as needed
+                default=3,  
                 output_field=models.IntegerField(),
             )
         )
 
-        self.pagination_class.page_size = 5
+        self.pagination_class.page_size = 3
         page = self.paginate_queryset(queryset)
 
         if page is not None:
@@ -113,7 +137,7 @@ class JobOfferListingView(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        self.pagination_class.page_size = 5
+        self.pagination_class.page_size = 3
         page = self.paginate_queryset(queryset)
 
         if page is not None:
@@ -169,7 +193,7 @@ class JobOfferUserAppliedListingView(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         # page_number = int(kwargs.get("page", 1))
-        self.pagination_class.page_size = 5
+        self.pagination_class.page_size = 3
         queryset = self.get_queryset()
         page = self.paginate_queryset(queryset)
         # print(page)
@@ -210,7 +234,7 @@ class MyJobOffersListingView(generics.ListAPIView):
 
             return Response(data)
         else:
-            self.pagination_class.page_size = 5
+            self.pagination_class.page_size = 3
             page = self.paginate_queryset(queryset)
 
             if page is not None:

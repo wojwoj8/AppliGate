@@ -18,6 +18,7 @@ from .models import (
     UserLanguage,
     UserLink,
 )
+from company_app.models import JobApplication
 from .serializer import (
     UserSerializer,
     ProfileSerializer,
@@ -271,10 +272,28 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
         except ValueError:
             return None
 
-    def check_username_profile(self):
+    # for through job offer company user view
+    def check_if_user_in_application(self, request):
+        
+        username = self.kwargs.get("username")
+        offer_id = self.kwargs.get("offerId")
+        request_user_type = request.user.user_type
+        request_user = request.user
+        # print('test')
+        # check if requser_user is owner, checked user is in that offer
+        verification = get_object_or_404(JobApplication, job_offer=offer_id, job_offer__company=request_user ,applicant__username=username)
+        
+        if not verification:
+            raise PermissionDenied("Profile is private")
+
+        
+
+    def check_username_profile(self, request):
         # checked username
         username = self.kwargs.get("username")
         checked_user = get_object_or_404(User, username=username)
+        
+        
         # print(self.request.__dict__)
         if self.request.user != checked_user and not checked_user.public_profile:
             raise PermissionDenied("Profile is private")
@@ -306,10 +325,15 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
             
 
     def get(self, request, *args, **kwargs):
+        # print(request.__dict__)
+        offer_id = self.kwargs.get("offerId")
         
-        if(self.check_user_type_permission(request) == False):
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        self.check_username_profile()
+        if offer_id:
+            self.check_if_user_in_application(request)
+        else:
+            if(self.check_user_type_permission(request) == False):
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            self.check_username_profile(request)
         
         username = self.kwargs.get("username")  # Get the username from URL
 
@@ -327,7 +351,7 @@ class BaseProfileUpdateView(generics.GenericAPIView, mixins.UpdateModelMixin):
 
     def put(self, request, *args, **kwargs):
         self.check_username_permission()
-        self.check_username_profile()
+        self.check_username_profile(request)
         if(self.check_user_type_permission(request) == False):
             raise PermissionDenied("You do not have permission to perform this action.")
 
@@ -407,6 +431,18 @@ class BaseProfileView(
             return self.queryset.filter(user=user)
         return self.queryset.filter(user=user, id=pk)
 
+    # for through job offer company user view
+    def check_if_user_in_application(self, request):
+        username = self.kwargs.get("username")
+        offer_id = self.kwargs.get("offerId")
+        request_user_type = request.user.user_type
+        request_user = request.user
+        # check if requser_user is owner, checked user is in that offer
+        verification = get_object_or_404(JobApplication, job_offer=offer_id, job_offer__company=request_user ,applicant__username=username)
+        
+        if not verification:
+            raise PermissionDenied("Profile is private")
+        
     # for letting only for get method looking at other CV's
     def check_username_permission(self):
         # checked username
@@ -416,7 +452,7 @@ class BaseProfileView(
             raise PermissionDenied("You do not have permission to perform this action.")
 
     # for letting to see others profile only if profile is public
-    def check_username_profile(self):
+    def check_username_profile(self, request):
         # checked username
         username = self.kwargs.get("username")
         
@@ -447,10 +483,15 @@ class BaseProfileView(
         
 
     def get(self, request, *args, **kwargs):
-        # print(request.user)
-        if(self.check_user_type_permission(request) == False):
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        self.check_username_profile()
+        # print(request.__dict__)
+        offer_id = self.kwargs.get("offerId")
+        
+        if offer_id:
+            self.check_if_user_in_application(request)
+        else:
+            if(self.check_user_type_permission(request) == False):
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            self.check_username_profile(request)
         
         queryset = self.get_queryset()
 
@@ -492,7 +533,7 @@ class BaseProfileView(
         return Response(serializer.errors, status=400)
 
     def delete(self, request, *args, **kwargs):
-        self.check_username_permission()
+        self.check_username_permission()(request)
         pk = kwargs.get("pk")
 
         try:

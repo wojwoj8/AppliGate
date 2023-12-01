@@ -16,6 +16,8 @@ import ProfileSummary from './profileComponents/ProfileSummary';
 import ProfileStatus from './profileComponents/ProfileStatus';
 import ErrorPage from './ErrorPage';
 import Loading from './Loading';
+import { useJobOfferContext } from './JobOffers/JobOfferContexts/JobOfferContext';
+import JobOfferAssess from './profileComponents/JobOfferAssess';
 
 export interface ProfileData{
   id?: number;
@@ -220,6 +222,8 @@ const Profile: React.FC = () =>{
     const params = useParams();
     const username = params['*'];
 
+    // for asssessing user
+    const { jobOffer } = useJobOfferContext();
     
 
     // Universal method for rendering errors under given inputs, gets
@@ -261,7 +265,11 @@ const Profile: React.FC = () =>{
       id?: number,
     ) => {
       let path = `${endpoint}/${username}`
-      if (id){  
+      if (jobOffer){
+        path = `${endpoint}/${username}/${jobOffer.id}`
+      }  
+      if (id){
+        
         path = `${endpoint}/${username}/${id}`
       }
         try{
@@ -620,18 +628,32 @@ const Profile: React.FC = () =>{
         completedSteps++;
         updateProgress(completedSteps);
       };
-  
-      await fetchDataAndUpdateProgress(setProfile, `/profile/`);
-      await fetchDataAndUpdateProgress(setContact, `/profile/contact`);
-      await fetchDataAndUpdateProgress(setSummary, `/profile/summary`);
-      await fetchDataAndUpdateProgress(setExperience, `/profile/experience`);
-      await fetchDataAndUpdateProgress(setEducation, `/profile/education`);
-      await fetchDataAndUpdateProgress(setCourse, `/profile/course`);
-      await fetchDataAndUpdateProgress(setLanguage, `/profile/language`);
-      await fetchDataAndUpdateProgress(setSkill, `/profile/skill`);
-      await fetchDataAndUpdateProgress(setAbout, `/profile/about`);
-      await fetchDataAndUpdateProgress(setLink, `/profile/link`);
-      await fetchDataAndUpdateProgress(setProfileStatus, `/profile/profileStatus`);
+      if (jobOffer && jobOffer.id){
+        await fetchDataAndUpdateProgress(setProfile, `/joboffer/profile/`);
+        await fetchDataAndUpdateProgress(setContact, `/joboffer/profile/contact`);
+        await fetchDataAndUpdateProgress(setSummary, `/joboffer/profile/summary`);
+        await fetchDataAndUpdateProgress(setExperience, `/joboffer/profile/experience`);
+        await fetchDataAndUpdateProgress(setEducation, `/joboffer/profile/education`);
+        await fetchDataAndUpdateProgress(setCourse, `/joboffer/profile/course`);
+        await fetchDataAndUpdateProgress(setLanguage, `/joboffer/profile/language`);
+        await fetchDataAndUpdateProgress(setSkill, `/joboffer/profile/skill`);
+        await fetchDataAndUpdateProgress(setAbout, `/joboffer/profile/about`);
+        await fetchDataAndUpdateProgress(setLink, `/joboffer/profile/link`);
+      }
+      else{
+        await fetchDataAndUpdateProgress(setProfile, `/profile/`);
+        await fetchDataAndUpdateProgress(setContact, `/profile/contact`);
+        await fetchDataAndUpdateProgress(setSummary, `/profile/summary`);
+        await fetchDataAndUpdateProgress(setExperience, `/profile/experience`);
+        await fetchDataAndUpdateProgress(setEducation, `/profile/education`);
+        await fetchDataAndUpdateProgress(setCourse, `/profile/course`);
+        await fetchDataAndUpdateProgress(setLanguage, `/profile/language`);
+        await fetchDataAndUpdateProgress(setSkill, `/profile/skill`);
+        await fetchDataAndUpdateProgress(setAbout, `/profile/about`);
+        await fetchDataAndUpdateProgress(setLink, `/profile/link`);
+        await fetchDataAndUpdateProgress(setProfileStatus, `/profile/profileStatus`);
+      }
+      
      
       
       
@@ -666,8 +688,13 @@ const Profile: React.FC = () =>{
 
       <div className='mx-4 my-2'>
         
-        
+      {jobOffer!  &&
+          <div className='d-flex justify-content-center container my-1'>
+            <h2>{jobOffer.title}</h2>
+          </div>
+        }
         <div className='d-flex justify-content-center container my-1' id='preview'>
+        
           <button className='btn btn-secondary w-100 rounded-4 mb-2' onClick={handlePreviewMode}>
             {previewMode ? 'Hide Preview' : 'Show Preview'}
           </button>
@@ -847,7 +874,16 @@ const Profile: React.FC = () =>{
                 setAlertError={setAlertError}
               />
           </div>
+
+        {jobOffer! &&
+          <JobOfferAssess
+            offerid={jobOffer.id}
+            username={username}
+            setError={setError}
+          ></JobOfferAssess>
+        }
       </div>
+      
       </>
     )
 }

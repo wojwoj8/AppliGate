@@ -66,5 +66,20 @@ urlpatterns = [
         views.ProfileChangePasswordView.as_view(),
         name='settings_password'
     ),
+
+
+    # for company view through offer id
+    path("joboffer/profile/<str:username>/<int:offerId>", views.ProfileView.as_view(), name="personalOfferId"),
+    path("joboffer/profile/contact/<str:username>/<int:offerId>", views.ProfileContactView.as_view()),
+    path("joboffer/profile/experience/<str:username>/<int:offerId>", views.ProfileExperienceView.as_view()),
+    path("joboffer/profile/education/<str:username>/<int:offerId>", views.ProfileEducationView.as_view()),
+    path("joboffer/profile/course/<str:username>/<int:offerId>", views.ProfileCourseView.as_view()),
+    path("joboffer/profile/language/<str:username>/<int:offerId>", views.ProfileLanguageView.as_view()),
+    path("joboffer/profile/skill/<str:username>/<int:offerId>", views.ProfileSkillView.as_view()),
+    path("joboffer/profile/link/<str:username>/<int:offerId>", views.ProfileLinkView.as_view()),
+    path("joboffer/profile/about/<str:username>/<int:offerId>", views.ProfileAboutView.as_view()),
+    path("joboffer/profile/summary/<str:username>/<int:offerId>", views.ProfileSummaryView.as_view()),
+    
+
 ]
 

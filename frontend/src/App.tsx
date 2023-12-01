@@ -57,7 +57,14 @@ function App() {
             {/* PrivateRoute = Accessable if logged in */}
             {/* PrivateRouteUserOnly = Accessable if logged in and user type is user */}
             {/* PrivateRouteCompanyOnly = Accessable if logged in and user type is company */}
-            <Route path="/profile/*" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>
+            {/* HAD TO MAKE THERE THAT PROVIDER... */}
+            <Route path="/profile/*" element={
+              <JobOfferProvider>
+                <PrivateRoute>
+                  <Profile/>
+                </PrivateRoute>
+              </JobOfferProvider>
+            }></Route>
             <Route path="/profileSettings" element={<PrivateRoute><ProfileSettings/></PrivateRoute>}></Route>
             <Route path="/profileSettings/userData" element={<PrivateRoute><ProfileSettingsUsername setAlertError={setAlertError}/></PrivateRoute>}></Route>
             <Route path="/profileSettings/password" element={<PrivateRoute><ProfileSettingsPassword setAlertError={setAlertError}/></PrivateRoute>}></Route>
@@ -86,14 +93,20 @@ function App() {
               </JobOfferProvider>
             
             }></Route>
-            <Route path="/company/joboffer/applicants" element={
+            <Route path="/company/joboffer/applicants/:page" element={
               <JobOfferProvider>
                 <PrivateRouteCompanyOnly>
                   <JobOfferAssessApplicationListing />
                 </PrivateRouteCompanyOnly>
               </JobOfferProvider>
             }></Route>
-            
+            <Route path="/company/joboffer/applicant/*" element={
+              <JobOfferProvider>
+                <PrivateRouteCompanyOnly>
+                  <Profile/>
+                </PrivateRouteCompanyOnly>
+              </JobOfferProvider>
+            }></Route>
           
         </Routes>
         </div>

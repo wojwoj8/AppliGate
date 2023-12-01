@@ -57,7 +57,7 @@ interface JobOfferProfileListingItemProps {
                     </Link>
                     {userType === 'company' &&
                         
-                        <Link to={`/company/joboffer/applicants`}  style={{textDecoration:"none"}}>
+                        <Link to={`/company/joboffer/applicants/1`}  style={{textDecoration:"none"}}>
                             <button className="btn btn-primary" onClick={() => handleEvaluateClick(jobOffer)}>
                                 Evaluate applications
                             </button>

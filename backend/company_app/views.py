@@ -104,7 +104,7 @@ class JobOfferAppliedForOfferListingView(generics.ListAPIView):
             )
         )
 
-        self.pagination_class.page_size = 3
+        self.pagination_class.page_size = 20
         page = self.paginate_queryset(queryset)
 
         if page is not None:

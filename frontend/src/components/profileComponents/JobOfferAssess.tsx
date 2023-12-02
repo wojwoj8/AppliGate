@@ -35,6 +35,7 @@ const JobOfferAssess: React.FC<JobOfferAssessProps> = ({ offerid, setError, user
        if(response.status === 200){
         if(setGlobalAlertError){
           setGlobalAlertError(`User status set to ${status} success`)
+          // nav back
           nav(-1)
 
         }
@@ -60,9 +61,9 @@ const JobOfferAssess: React.FC<JobOfferAssessProps> = ({ offerid, setError, user
   };
 
   return (
-    <div className='container d-md-flex '>
+    <div className='container d-md-flex column-gap-2'>
       <div
-        className='btn btn-success w-100 rounded-4 mt-2 btn-block'
+        className='btn btn-primary w-100 rounded-4 mt-2 btn-block'
         onClick={() => handleAction('approved')}
       >
         Approve

@@ -864,7 +864,7 @@ const Profile: React.FC<ProfileProps> = ({setGlobalAlertError}) =>{
            
         <div className='container'>
         
-          <button className='btn btn-primary w-100 rounded-4 mt-3' onClick={handleCopy}>Copy Profile Link</button>
+          <button className='btn btn-info w-100 rounded-4 mt-3' onClick={handleCopy}>Copy Profile Link</button>
           
         </div>
         

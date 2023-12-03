@@ -6,6 +6,8 @@ import AuthContext from "../../../utils/AuthProvider";
 import DeleteModal from "../../DeleteModal";
 import { ErrorResponse } from "../../Profile";
 import { useNavigate } from "react-router-dom";
+import { JobOfferExamData } from "../JobOffer";
+import { useJobOfferExamContext } from "../JobOfferContexts/JobOfferExamContext";
 
 interface ProfileCompanyStatusInterface{
     jobOfferStatus: JobOfferStatusData | null;
@@ -25,14 +27,16 @@ interface ProfileCompanyStatusInterface{
     setError: React.Dispatch<React.SetStateAction<AxiosError<ErrorResponse, any> | null>>
     setGlobalAlertError: (error: string) => void
     deadline: string | undefined;
+    jobOfferExam: JobOfferExamData | null
 }
 
 const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus, setJobOfferStatus, getData, 
-    editData, alertError, setAlertError, offerid, error, setError, setGlobalAlertError, deadline}) => {
+    editData, alertError, setAlertError, offerid, error, setError, setGlobalAlertError, deadline, jobOfferExam}) => {
 
     const navigate = useNavigate();
     const {authTokens, user, logoutUser } = useContext(AuthContext);
     const [hasApplied, setHasApplied] = useState({has_applied: false})
+    const { setJobOfferExamData } = useJobOfferExamContext();
 
     const deleteJobOffer = async (
     ) =>{
@@ -192,7 +196,11 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
 
         editData(updatedJobOfferStatus, undefined, `/company/joboffer/jobofferstatus/${offerid}`, 'jobOfferStatus');
         };
-
+    const handleClick = (jobOffer: JobOfferExamData) => {
+    
+        setJobOfferExamData(jobOffer);
+        navigate(`/company/joboffer/exam/${offerid}`)
+        };
 
     useEffect(() =>{
         JobApplyVerification()
@@ -202,7 +210,16 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
         <>
             <div className='container'>
             {deadline && formatRemainingTime(deadline)}
-            
+                <div className="prevHidden">
+                    <div className='btn btn-info w-100 rounded-4 mt-1 mb-2 btn-block '>
+                        <DeleteModal id={`3`} 
+                        name={'Create Exam'} 
+                        message={'Do you want to create an Exam? You will be able to create test that applicants will have to complete in order to apply for that offer. Those tests will be automatically verified by system.'} 
+                        deleteName = {'Create'}
+                        title="Create Exam"
+                        onDelete={() => handleClick(jobOfferExam!)} />
+                    </div>  
+                </div>   
             
                 <div className='prevHidden'>
                     {jobOfferStatus && jobOfferStatus?.job_offer_status === true ? (

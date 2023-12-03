@@ -31,6 +31,7 @@ from .serializer import (
     JobAllListingsSerializer,
     JobOfferAppliedForOfferListingSerializer,
     JobOfferAssessSerializer,
+    JobOfferDataSerializer,
 )
 from user_app.views import (
     ProfileImageUploadView,
@@ -447,6 +448,11 @@ class BaseJobOfferView(
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class JobOfferDataView(BaseJobOfferView):
+    serializer_class = JobOfferDataSerializer
+    queryset = JobOffer.objects.all()
+    permission_classes = [IsAuthenticated]
 
 class JobOfferCompanyView(BaseJobOfferView):
     serializer_class = JobOfferCompanySerializer

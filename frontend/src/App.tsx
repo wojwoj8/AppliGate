@@ -28,9 +28,10 @@ import ProfileCompany from './components/companyComponents/ProfileCompany';
 import JobOffer from './components/JobOffers/JobOffer';
 import JobOfferListing from './components/JobOffers/JobOfferListing';
 import MyJobOffers from './components/JobOffers/MyJobOffers';
-
+import JobOfferExamCreator from './components/JobOffers/JobOfferComponents/JobOfferExamCreator';
 //Context JobOffer
 import { JobOfferProvider } from './components/JobOffers/JobOfferContexts/JobOfferContext';
+import { JobOfferExamProvider } from './components/JobOffers/JobOfferContexts/JobOfferExamContext';
 
 function App() {
   setInitialMode();
@@ -79,10 +80,28 @@ function App() {
               </JobOfferProvider>}></Route>
             {/* company routes */}
             <Route path="/company/profile/*" element={<PrivateRoute><ProfileCompany/></PrivateRoute>}></Route>
-            <Route path="/company/joboffer" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route>
+            <Route path="/company/joboffer" element={
+              <PrivateRouteCompanyOnly>
+                <JobOfferExamProvider>
+                  <JobOffer setGlobalAlertError={setAlertError}/>
+                </JobOfferExamProvider>
+            </PrivateRouteCompanyOnly>}></Route>
             <Route path="/company/joboffer/createjoboffer" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route>
+            <Route path="/company/joboffer/exam/:offerid" element={
+            <PrivateRouteCompanyOnly>
+              <JobOfferExamProvider>
+                <JobOfferExamCreator setGlobalAlertError={setAlertError}/>
+              </JobOfferExamProvider>
+            </PrivateRouteCompanyOnly>}></Route>
             {/* <Route path="/company/joboffer/:offerid" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route> */}
-            <Route path="/company/joboffer/:offerid" element={<PrivateRoute><JobOffer setGlobalAlertError={setAlertError}/></PrivateRoute>}></Route>
+            
+            <Route path="/company/joboffer/:offerid" element={
+              <PrivateRouteCompanyOnly>
+                <JobOfferExamProvider>
+                  <JobOffer setGlobalAlertError={setAlertError}/>
+                </JobOfferExamProvider>
+            </PrivateRouteCompanyOnly>}></Route>
+            
             <Route path="/jobofferlistings/:page" element={<PrivateRoute><JobOfferListing/></PrivateRoute>}></Route>
             
             <Route path="/company/myJobOffers/:page" element={

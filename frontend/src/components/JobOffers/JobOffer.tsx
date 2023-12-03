@@ -15,7 +15,13 @@ import JobOfferResponsibility from "./JobOfferComponents/JobOfferResponsibility"
 import JobOfferRequirement from "./JobOfferComponents/JobOfferRequirement";
 import JobOfferWhatWeOffer from "./JobOfferComponents/JobOfferWhatWeOffer";
 import JobOfferApplication from "./JobOfferComponents/JobOfferApplication";
+import JobOfferExamCreator from "./JobOfferComponents/JobOfferExamCreator";
 
+
+export interface JobOfferExamData{
+  jobOfferId: number;
+  companyId: number;
+}
 // make mulitple interfaces for easier crud
 // should make one for immutable company data
 export interface JobOfferCompanyData {
@@ -118,6 +124,7 @@ export type JobOfferGetDataFunction =
   | UpdateFunction<JobOfferTopColorsData>
   | UpdateFunction<JobOfferStatusData>
   | UpdateFunction<JobOfferAboutData>
+  | UpdateFunction<JobOfferExamData>
   | undefined;
   //UNIVERSAL PUT STATES
   //single data
@@ -160,6 +167,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
    
     // Data for all components
     const [jobOfferCompany, setJobOfferCompany] = useState<JobOfferCompanyData| null>(null);
+    const [jobOfferExam, setJobOfferExam] = useState<JobOfferExamData| null>(null);
     const [jobOfferTop, setJobOfferTop] = useState<JobOfferTopData| null>(null);
     const [jobOfferTopMore, setJobOfferTopMore] = useState<JobOfferTopMoreData| null>(null);
     const [jobOfferSkill, setJobOfferSkill] = useState<JobOfferSkillData[]>([]);
@@ -275,7 +283,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
                   setData(response.data);
                 }
               const data = response.data;
-              
+              console.log(response.data)
               if(response.status === 200){
               }
           }catch(error: any){
@@ -597,6 +605,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
       await fetchDataAndUpdateProgress(setJobOfferRequirement, `/company/joboffer/requirement/${offerid}`)
       await fetchDataAndUpdateProgress(setJobOfferWhatWeOffer, `/company/joboffer/weoffer/${offerid}`)
       await fetchDataAndUpdateProgress(setJobOfferApplication, `/company/joboffer/application/${offerid}`)
+      await fetchDataAndUpdateProgress(setJobOfferExam, `/company/joboffer/data/${offerid}`);
       
       setIsLoading(false);
       
@@ -805,6 +814,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
                       alertError={alertError}
                       setAlertError={setAlertError}
                       offerid={offerid}
+                      jobOfferExam={jobOfferExam}
                       error={error}
                       setError={setError}
                       setGlobalAlertError={setGlobalAlertError}
@@ -817,7 +827,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
                 ) :
                 (
                     <div>
-                        <h2>Creator view</h2>
+                        <h2>Something went wrong</h2>
                     </div>
                 ) }
                 </div>

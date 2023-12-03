@@ -38,7 +38,8 @@ urlpatterns = [
     path("applications/<int:page>", views.JobOfferUserAppliedListingView.as_view(), name="jobUserApplications"),
     
     
-
+    path("company/joboffer/data/<int:id>", views.JobOfferDataView.as_view(), name="jobOfferData"),
+    
     path("company/joboffer/info", views.JobOfferCompanyView.as_view(), name="jobOfferCompanyData"),
     path("company/joboffer/top", views.JobOfferTopView.as_view(), name="JobOfferTopData"),
     path("company/joboffer/info/<int:id>", views.JobOfferCompanyView.as_view(), name="jobOfferCompanyDataId"),

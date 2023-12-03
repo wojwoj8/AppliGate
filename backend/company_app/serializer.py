@@ -154,6 +154,13 @@ class JobUserAppliedListingsSerializer(serializers.ModelSerializer):
         return None
 
 
+class JobOfferDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobOffer
+        fields = [
+            "company",
+            "id",
+        ]
 # company data serializer (immutable for joboffer)
 class JobOfferCompanySerializer(serializers.ModelSerializer):
     profile_image = serializers.ImageField(source="company.profile_image")
@@ -166,6 +173,8 @@ class JobOfferCompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = JobOffer
         fields = [
+            "company",
+            "id",
             "username",
             "profile_image",
             "first_name",

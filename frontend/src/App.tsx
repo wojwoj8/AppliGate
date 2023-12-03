@@ -96,11 +96,11 @@ function App() {
             {/* <Route path="/company/joboffer/:offerid" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route> */}
             
             <Route path="/company/joboffer/:offerid" element={
-              <PrivateRouteCompanyOnly>
+              <PrivateRoute>
                 <JobOfferExamProvider>
                   <JobOffer setGlobalAlertError={setAlertError}/>
                 </JobOfferExamProvider>
-            </PrivateRouteCompanyOnly>}></Route>
+            </PrivateRoute>}></Route>
             
             <Route path="/jobofferlistings/:page" element={<PrivateRoute><JobOfferListing/></PrivateRoute>}></Route>
             

@@ -4,8 +4,8 @@ import { JobOfferGetDataFunction, JobOfferEditDataFunction } from "../JobOffer";
 import { MultipleErrorResponse } from "../../Profile";
 import Icon from '@mdi/react';
 import { mdiPencil, mdiPalette } from '@mdi/js';
-import { Link } from "react-router-dom";
-import CustomColorPicker from "../../sharedComponents/ColorPicker";
+
+
 // @ts-ignore
 import { SketchPicker } from 'react-color';
 

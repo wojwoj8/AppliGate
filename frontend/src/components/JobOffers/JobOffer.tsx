@@ -15,12 +15,13 @@ import JobOfferResponsibility from "./JobOfferComponents/JobOfferResponsibility"
 import JobOfferRequirement from "./JobOfferComponents/JobOfferRequirement";
 import JobOfferWhatWeOffer from "./JobOfferComponents/JobOfferWhatWeOffer";
 import JobOfferApplication from "./JobOfferComponents/JobOfferApplication";
-import JobOfferExamCreator from "./JobOfferComponents/JobOfferExamCreator";
+
 
 
 export interface JobOfferExamData{
-  jobOfferId: number;
-  companyId: number;
+  company: number;
+  id: number;
+  has_exam: boolean;
 }
 // make mulitple interfaces for easier crud
 // should make one for immutable company data
@@ -283,7 +284,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
                   setData(response.data);
                 }
               const data = response.data;
-              console.log(response.data)
+              // console.log(response.data)
               if(response.status === 200){
               }
           }catch(error: any){

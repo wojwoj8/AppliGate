@@ -88,6 +88,8 @@ class JobOffer(models.Model):
 
     job_offer_status = models.BooleanField(default=False)
 
+    has_exam = models.BooleanField(default=False)
+
 
     def __str__(self):
         return f"Company: {self.company} Position: {self.title}"
@@ -127,11 +129,21 @@ class JobOfferApplication(models.Model):
     job_application_stage = models.CharField(max_length=100, blank=False)
 
 
-# user applications
+class Question(models.Model):
+    question = models.CharField(max_length=300, blank=True)
+    choice_a = models.CharField(max_length=100, blank=True)
+    choice_b = models.CharField(max_length=100, blank=True)
+    choice_c = models.CharField(max_length=100, blank=True)
+    choice_d = models.CharField(max_length=100, blank=True)
+    correct_choice = models.CharField(max_length=1, blank=True, choices=[('a', 'A'), ('b', 'B'), ('c', 'C'), ('d', 'D')])
+
+class JobOfferExam(models.Model):
+    job_offer = models.OneToOneField(JobOffer, on_delete=models.CASCADE, related_name='exam')
+    questions = models.ManyToManyField(Question, related_name='exams')
+
+#user applications
 class JobApplication(models.Model):
-    job_offer = models.ForeignKey(
-        JobOffer, on_delete=models.CASCADE, related_name="applications"
-    )
+    job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE, related_name="applications")
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     application_date = models.DateTimeField(auto_now_add=True)
     APPLICATION_STATUS = [
@@ -139,9 +151,16 @@ class JobApplication(models.Model):
         ("approved", "Approved"),
         ("rejected", "Rejected"),
     ]
-    status = models.CharField(
-        max_length=15, choices=APPLICATION_STATUS, default="pending"
-    )
+    status = models.CharField(max_length=15, choices=APPLICATION_STATUS, default="pending")
+
+    # New field to link to the exam
+    exam_answers = models.OneToOneField('JobApplicationExam', on_delete=models.SET_NULL, null=True, blank=True, related_name='application_answers')
 
     def __str__(self):
         return f"Applicant: {self.applicant} for Job: {self.job_offer.title}"
+
+    # user answers for the exam
+class JobApplicationExam(models.Model):
+    
+    application = models.OneToOneField(JobApplication, on_delete=models.CASCADE, related_name='user_exam_answers')
+    answers = models.JSONField(blank=True)  # Store user answers as a JSON array

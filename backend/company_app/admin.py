@@ -5,7 +5,10 @@ from company_app.models import (
     JobOfferResponsibility,
     JobOfferRequirement,
     JobOfferWhatWeOffer,
-    JobApplication
+    JobApplication,
+    Question, 
+    JobOfferExam, 
+    JobApplicationExam
 )
 
 from django.contrib.auth.admin import UserAdmin
@@ -13,6 +16,12 @@ from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
 
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ['question', 'choice_a', 'choice_b', 'choice_c', 'choice_d', 'correct_choice']
+
+admin.site.register(Question, QuestionAdmin)
+admin.site.register(JobOfferExam)
+admin.site.register(JobApplicationExam)
 
 
 admin.site.register(JobOfferSkill)

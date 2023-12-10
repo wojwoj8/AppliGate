@@ -196,10 +196,11 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
 
         editData(updatedJobOfferStatus, undefined, `/company/joboffer/jobofferstatus/${offerid}`, 'jobOfferStatus');
         };
-    const handleClick = (jobOffer: JobOfferExamData) => {
+    const handleClick = (jobOfferExamData: JobOfferExamData) => {
     
-        setJobOfferExamData(jobOffer);
-        navigate(`/company/joboffer/exam/${offerid}`)
+        setJobOfferExamData(jobOfferExamData);
+        // console.log(jobOfferExamData)
+        navigate(`/company/joboffer/examcreator`)
         };
 
     useEffect(() =>{
@@ -211,14 +212,17 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
             <div className='container'>
             {deadline && formatRemainingTime(deadline)}
                 <div className="prevHidden">
+                    {jobOfferExam &&
                     <div className='btn btn-info w-100 rounded-4 mt-1 mb-2 btn-block '>
                         <DeleteModal id={`3`} 
                         name={'Create Exam'} 
                         message={'Do you want to create an Exam? You will be able to create test that applicants will have to complete in order to apply for that offer. Those tests will be automatically verified by system.'} 
                         deleteName = {'Create'}
                         title="Create Exam"
-                        onDelete={() => handleClick(jobOfferExam!)} />
+                        onDelete={() => handleClick(jobOfferExam)} />
                     </div>  
+                    }
+                    
                 </div>   
             
                 <div className='prevHidden'>

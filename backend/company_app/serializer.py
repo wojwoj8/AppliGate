@@ -11,6 +11,9 @@ from .models import (
     JobOfferWhatWeOffer,
     JobOfferApplication,
     JobApplication,
+    JobApplicationExam,
+    JobOfferExam,
+    Question,
 )
 from user_app.serializer import (
     DateSerializer,
@@ -160,6 +163,7 @@ class JobOfferDataSerializer(serializers.ModelSerializer):
         fields = [
             "company",
             "id",
+            "has_exam",
         ]
 # company data serializer (immutable for joboffer)
 class JobOfferCompanySerializer(serializers.ModelSerializer):
@@ -332,3 +336,19 @@ class JobOfferAssessSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobApplication
         fields = ["id","status",]
+
+class JobApplicationExamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobApplicationExam
+        fields = '__all__'
+
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        exclude = ('correct_choice',)
+
+class JobOfferExamSerializer(serializers.ModelSerializer):
+    questions = QuestionSerializer(many=True, read_only=True)
+    class Meta:
+        model = JobOfferExam
+        fields = '__all__'

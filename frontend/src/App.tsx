@@ -86,21 +86,24 @@ function App() {
                   <JobOffer setGlobalAlertError={setAlertError}/>
                 </JobOfferExamProvider>
             </PrivateRouteCompanyOnly>}></Route>
+            
             <Route path="/company/joboffer/createjoboffer" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route>
-            <Route path="/company/joboffer/exam/:offerid" element={
-            <PrivateRouteCompanyOnly>
+            
+            {/* WRAPPED DIFFERENTLY BECAUSE NULLED EXAM IF IN NORMAL WAY */}
+            <Route path="/company/joboffer/examcreator" element={
               <JobOfferExamProvider>
-                <JobOfferExamCreator setGlobalAlertError={setAlertError}/>
-              </JobOfferExamProvider>
-            </PrivateRouteCompanyOnly>}></Route>
+                <PrivateRouteCompanyOnly>
+                  <JobOfferExamCreator setGlobalAlertError={setAlertError}/>
+                </PrivateRouteCompanyOnly>
+            </JobOfferExamProvider>}></Route>
             {/* <Route path="/company/joboffer/:offerid" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route> */}
             
             <Route path="/company/joboffer/:offerid" element={
-              <PrivateRoute>
-                <JobOfferExamProvider>
+              <JobOfferExamProvider>
+                <PrivateRoute>
                   <JobOffer setGlobalAlertError={setAlertError}/>
-                </JobOfferExamProvider>
-            </PrivateRoute>}></Route>
+              </PrivateRoute>
+            </JobOfferExamProvider>}></Route>
             
             <Route path="/jobofferlistings/:page" element={<PrivateRoute><JobOfferListing/></PrivateRoute>}></Route>
             

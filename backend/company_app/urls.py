@@ -92,6 +92,8 @@ urlpatterns = [
     #Assess job offer button response
     path("joboffer/profile/assess/<str:username>/<int:offer_id>", views.JobOfferAssessView.as_view(), name="JobOfferAssess"),
     
+    #exam data
+    path("joboffer/exam/<int:id>", views.JobOfferExamView.as_view(), name="JobOfferExamData"),
 
     # path("company/joboffercreator/", views.ProfileCompanyView.as_view(), name="personalCompany"),
     

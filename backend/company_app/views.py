@@ -32,6 +32,8 @@ from .serializer import (
     JobOfferAppliedForOfferListingSerializer,
     JobOfferAssessSerializer,
     JobOfferDataSerializer,
+    JobApplicationExamSerializer,
+    JobOfferExamSerializer,
 )
 from user_app.views import (
     ProfileImageUploadView,
@@ -54,6 +56,8 @@ from .models import (
     JobOfferWhatWeOffer,
     JobOfferApplication,
     JobApplication,
+    JobApplicationExam,
+    JobOfferExam,
 )
 from datetime import datetime, timedelta
 from rest_framework.pagination import PageNumberPagination
@@ -629,3 +633,21 @@ class JobOfferApplicationView(BaseJobOfferMultipleView):
     serializer_class = JobOfferApplicationSerializer
     queryset = JobOfferApplication.objects.all()
     permission_classes = [IsAuthenticated]
+
+
+class JobOfferExamView(
+    generics.GenericAPIView,
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin):
+
+    serializer_class = JobOfferExamSerializer
+    def get(self, request, *args, **kwargs):
+        job_offer_id = kwargs.get("id")
+        try:
+            job_offer_exam = JobOfferExam.objects.get(job_offer__id=job_offer_id)
+            serializer = JobOfferExamSerializer(job_offer_exam)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except JobOfferExam.DoesNotExist:
+            return Response({'error': 'Exam not found for the specified job offer'}, status=status.HTTP_404_NOT_FOUND)

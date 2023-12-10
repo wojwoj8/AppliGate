@@ -32,8 +32,8 @@ from .serializer import (
     JobOfferAppliedForOfferListingSerializer,
     JobOfferAssessSerializer,
     JobOfferDataSerializer,
-    JobApplicationExamSerializer,
-    JobOfferExamSerializer,
+    QuestionSerializer,
+
 )
 from user_app.views import (
     ProfileImageUploadView,
@@ -57,7 +57,7 @@ from .models import (
     JobOfferApplication,
     JobApplication,
     JobApplicationExam,
-    JobOfferExam,
+    Question
 )
 from datetime import datetime, timedelta
 from rest_framework.pagination import PageNumberPagination
@@ -642,12 +642,27 @@ class JobOfferExamView(
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin):
 
-    serializer_class = JobOfferExamSerializer
+    serializer_class = QuestionSerializer
+
+    def get_queryset(self):
+        job_offer_id = self.kwargs['id']
+        return Question.objects.filter(job_offer_id=job_offer_id)
+
     def get(self, request, *args, **kwargs):
-        job_offer_id = kwargs.get("id")
-        try:
-            job_offer_exam = JobOfferExam.objects.get(job_offer__id=job_offer_id)
-            serializer = JobOfferExamSerializer(job_offer_exam)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except JobOfferExam.DoesNotExist:
-            return Response({'error': 'Exam not found for the specified job offer'}, status=status.HTTP_404_NOT_FOUND)
+        job_offer_id = self.kwargs['id']
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+    # serializer_class = JobOfferExamSerializer
+    # queryset = JobOfferExam.objects.all()
+
+    # def get(self, request, *args, **kwargs):
+    #     job_offer_id = kwargs.get("id")
+    #     try:
+    #         job_offer_exam = JobOfferExam.objects.get(job_offer__id=job_offer_id)
+    #         serializer = JobOfferExamSerializer(job_offer_exam)
+    #         return Response(serializer.data, status=status.HTTP_200_OK)
+    #     except JobOfferExam.DoesNotExist:
+    #         return Response({'error': 'Exam not found for the specified job offer'}, status=status.HTTP_404_NOT_FOUND)
+        
+    # def post(self, request, *args, **kwargs):

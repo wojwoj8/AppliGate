@@ -7,7 +7,6 @@ from company_app.models import (
     JobOfferWhatWeOffer,
     JobApplication,
     Question, 
-    JobOfferExam, 
     JobApplicationExam
 )
 
@@ -17,10 +16,10 @@ from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ['question', 'choice_a', 'choice_b', 'choice_c', 'choice_d', 'correct_choice']
+    list_display = ['job_offer', 'question', 'choice_a', 'choice_b', 'choice_c', 'choice_d', 'correct_choice']
 
 admin.site.register(Question, QuestionAdmin)
-admin.site.register(JobOfferExam)
+
 admin.site.register(JobApplicationExam)
 
 

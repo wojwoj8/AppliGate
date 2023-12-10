@@ -130,6 +130,7 @@ class JobOfferApplication(models.Model):
 
 
 class Question(models.Model):
+    job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE)
     question = models.CharField(max_length=300, blank=True)
     choice_a = models.CharField(max_length=100, blank=True)
     choice_b = models.CharField(max_length=100, blank=True)
@@ -137,9 +138,6 @@ class Question(models.Model):
     choice_d = models.CharField(max_length=100, blank=True)
     correct_choice = models.CharField(max_length=1, blank=True, choices=[('a', 'A'), ('b', 'B'), ('c', 'C'), ('d', 'D')])
 
-class JobOfferExam(models.Model):
-    job_offer = models.OneToOneField(JobOffer, on_delete=models.CASCADE, related_name='exam')
-    questions = models.ManyToManyField(Question, related_name='exams')
 
 #user applications
 class JobApplication(models.Model):

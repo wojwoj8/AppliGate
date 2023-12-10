@@ -150,18 +150,12 @@ const JobOfferResponsibility: React.FC<JobOfferResponsibilityProps> = ({
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
       ) => {
         const { name, value } = event.target;
-      
-        
-      
-
         setSingleJobOfferResponsibility((prevResponsibility) => ({
         ...prevResponsibility!,
         [name]: value,
         }));
-    
-  
-        
       };
+
     const handleResponsibilityInputChange = (
         index: number,
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

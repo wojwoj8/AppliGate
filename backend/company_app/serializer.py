@@ -12,7 +12,6 @@ from .models import (
     JobOfferApplication,
     JobApplication,
     JobApplicationExam,
-    JobOfferExam,
     Question,
 )
 from user_app.serializer import (
@@ -347,8 +346,3 @@ class QuestionSerializer(serializers.ModelSerializer):
         model = Question
         exclude = ('correct_choice',)
 
-class JobOfferExamSerializer(serializers.ModelSerializer):
-    questions = QuestionSerializer(many=True, read_only=True)
-    class Meta:
-        model = JobOfferExam
-        fields = '__all__'

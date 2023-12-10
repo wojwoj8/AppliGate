@@ -643,6 +643,7 @@ class JobOfferExamView(
     mixins.DestroyModelMixin):
 
     serializer_class = QuestionSerializer
+    queryset = Question.objects.all()
 
     def get_queryset(self):
         job_offer_id = self.kwargs['id']
@@ -653,16 +654,50 @@ class JobOfferExamView(
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-    # serializer_class = JobOfferExamSerializer
-    # queryset = JobOfferExam.objects.all()
-
-    # def get(self, request, *args, **kwargs):
-    #     job_offer_id = kwargs.get("id")
-    #     try:
-    #         job_offer_exam = JobOfferExam.objects.get(job_offer__id=job_offer_id)
-    #         serializer = JobOfferExamSerializer(job_offer_exam)
-    #         return Response(serializer.data, status=status.HTTP_200_OK)
-    #     except JobOfferExam.DoesNotExist:
-    #         return Response({'error': 'Exam not found for the specified job offer'}, status=status.HTTP_404_NOT_FOUND)
+   
         
-    # def post(self, request, *args, **kwargs):
+    def perform_create(self, serializer):
+        # Ensure that the job_offer field is set to the correct JobOffer instance
+        job_offer_id = self.request.data.get('job_offer')
+        job_offer = JobOffer.objects.get(pk=job_offer_id)
+        serializer.save(job_offer=job_offer)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+    def put(self, request, *args, **kwargs):
+        item_id = request.data.get("id")
+        
+        try:
+            instance = self.queryset.get(id=item_id)
+
+        except self.serializer_class.Meta.model.DoesNotExist:
+            return Response(
+                {"error": f"{self.serializer_class.Meta.model.__name__} not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = self.serializer_class(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+    def delete(self, request, *args, **kwargs):
+        item_id = kwargs.get("id")
+        
+        try:
+            instance = self.queryset.get(id=item_id)
+            
+            instance.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except self.serializer_class.Meta.model.DoesNotExist:
+            return Response(
+                {"error": f"{self.serializer_class.Meta.model.__name__} not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )

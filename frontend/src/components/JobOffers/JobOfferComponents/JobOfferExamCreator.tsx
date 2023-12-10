@@ -21,6 +21,7 @@ import { MultipleErrorResponse, ErrorResponse } from "../../Profile";
     choice_c: string;
     choice_d: string;
     correct_choice: "a" | "b" | "c" | "d" | "A" | "B" | "C" | "D";
+    job_offer: number;
   }
   
 
@@ -49,10 +50,12 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
 
     //data
     const [question, setQuestion] = useState<QuestionData[]>([])
+    const [singleQuestion, setSingleQuestion] = useState<QuestionData | null>(null);
 
     //edit
     const [editExam, setEditExam] = useState(false)
-    const [singleQuestion, setSingleQuestion] = useState<QuestionData | null>(null);
+    const [editQuestion, setEditQuestion] = useState<boolean[]>([]);
+    
     
     
 
@@ -62,7 +65,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
         if(editExam === true){
             removeMultipleErrors('add_question', 0)
             setSingleQuestion(null)
-            // getData(setJobOfferResponsibility, `/company/joboffer/responsibility/${offerid}`);
+            // getData(setquestion, `/company/joboffer/responsibility/${offerid}`);
         }
         
     }
@@ -71,10 +74,36 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
         removeMultipleErrors('add_question', 0)
         setSingleQuestion(null)
     }
-    const saveEditExam = async (endpoint: string, state: QuestionData) =>{
-  
+
+    const editQuestionButton = async (index: number, id?: number) => {
+        if (editQuestion[index] === true){
+           await cancelEditQuestion(index, id)
+           return
+        }
+        setEditQuestion((prevEditQuestion) => {
+          const neweditquestions = [...prevEditQuestion];
+          neweditquestions[index] = !prevEditQuestion[index];
+          return neweditquestions;
+        });
+        
+    }
+
+    
+    const cancelEditQuestion = async (index: number, id?: number) => {
+        setEditQuestion((prevEditQuestion) => {
+          const neweditquestions = [...prevEditQuestion];
+          neweditquestions[index] = false;
+          return neweditquestions;
+        });
+        removeMultipleErrors('job_responsibility', index)
+        await getExam();
+
+      };
+    const saveExam = async () =>{
+        
+        singleQuestion!.job_offer = jobOfferExamData!.id
         try{
-            const response = await axios.post(`${endpoint}`, state,  {
+            const response = await axios.post(`/joboffer/exam/${jobOfferExamData!.id}`, singleQuestion,  {
                 headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
@@ -85,6 +114,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
             removeMultipleErrors(`add_question`, 0)
             getExam();
             setSingleQuestion(null);
+            setEditExam(false);
         }catch (error: any) {
           const axiosError = error as AxiosError<ErrorResponse>;
           if (error.response && error.response.status === 401) {
@@ -92,10 +122,13 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
             logoutUser();
           }
           else if (error.response && (error.response.status !== 400)) {
+            console.log(axiosError)
             setError(axiosError)
           }
           removeMultipleErrors(`add_question`, 0)
-          
+          if (axiosError.response?.data) {
+            handleMultipleErrors(`add_question`, 0, axiosError.response?.data)
+          }
             console.log(error);
           }
             
@@ -196,10 +229,104 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
           }
         }
       };
+      const deleteData = async (id: number) => {
+        try {
+          const response = await axios.delete(`/joboffer/exam/delete/${id}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + String(authTokens.access),
+            },
+          });
+      
+          
+          setEditQuestion((prevEditQuestions) => {
+            const newEditQuestions = [...prevEditQuestions];
+            newEditQuestions[id] = false;
+            return newEditQuestions;
+        });
+          
+            getExam();
+            setGlobalAlertError('Data deleted successfully success');
+      }catch (error: any) {
+        if (error.response && error.response.status === 401) {
+          // Unauthorized - Logout the user
+          logoutUser();
+        }
+        setGlobalAlertError('Something went wrong error');
+    
+          console.log(error);
+        }
+    }
 
+      const deleteQuestion = (id: number) => {
+        deleteData(id);
+    }
 
+    const handleQuestionInputChange = (
+        index: number,
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        
+    ) => {
+        let { name, value } = event.target;
+        name = name.substring(0, name.lastIndexOf('_'));
+        // console.log(value)
+        // Create an object with the new property and value
+        const updatedProperty = {
+        [name]: value,
+        };
+    
+        setQuestion((prevQuestion) => {
+        const updatedQuestions = [...prevQuestion];
+        updatedQuestions[index] = {
+            ...updatedQuestions[index],
+            ...updatedProperty, 
+        };
+        return updatedQuestions;
+        });
+    };
 
+    const saveEditExam = async (index: number, id?: number) =>{
+        question[index]!.job_offer = jobOfferExamData!.id
+        console.log(question[index])
+        try{
+            const response = await axios.put(`/joboffer/exam/${jobOfferExamData!.id}`, question[index],  {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: 'Bearer ' + String(authTokens.access),
+                },
+              });
+              setEditExam(false)
+  
+            removeMultipleErrors(`edit_question`, index)
+            cancelEditQuestion(index, id);
+            
 
+        }catch (error: any) {
+          const axiosError = error as AxiosError<ErrorResponse>;
+          if (error.response && error.response.status === 401) {
+            // Unauthorized - Logout the user
+            logoutUser();
+          }
+          else if (error.response && (error.response.status !== 400)) {
+            console.log(axiosError)
+            setError(axiosError)
+          }
+          removeMultipleErrors(`edit_question`, index)
+          // serializer for errors
+        if (axiosError.response?.data) {
+            const keys = Object.keys(axiosError.response?.data)
+            keys.forEach((key) => {
+                const newKey = key + `_${index}`;
+                axiosError.response!.data[newKey] = axiosError.response!.data[key];
+                delete axiosError.response!.data[key];
+            });
+            
+            handleMultipleErrors(`edit_question`, index, axiosError.response?.data)
+          
+        }
+            
+    }
+    }
     return(
 
         <div className={`pb-1`}>
@@ -208,58 +335,19 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
                 <div className='bg-black row mb-0 rounded-top-2'>
                         <p className='fs-3 fw-semibold text-white col mb-1'>Exam</p>
                         <div className='col-auto d-flex align-items-center'>
-                            <div className='profile-svgs d-flex my-1' onClick={editExamButton}>
+                            <div className='profile-svgs d-flex my-1 rotate' onClick={editExamButton}>
                                 <Icon className='text-white' path={mdiPlus} size={1.25} />
                             </div>
                         </div>
                     </div>
-                    
-                    <div>
-                        {question.map((question, index) => (
-                            <div key={question.id} className="d-flex row">
-                                <div className="row justify-content-center">
-                                    <p className="fs-3 fw-bold text-center">{index + 1}.{question.question}</p>
-                                </div>
-                                <div className="d-flex justify-content-between mt-3">
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_a${index}`}/>
-                                        <label className="form-check-label" htmlFor={`choice_a${index}`}>
-                                            a. {question.choice_a}
-                                        </label>
-                                    </div>
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_b${index}`}/>
-                                        <label className="form-check-label" htmlFor={`choice_b${index}`}>
-                                            b. {question.choice_b}
-                                        </label>
-                                    </div>
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_c${index}`}/>
-                                        <label className="form-check-label" htmlFor={`choice_c${index}`}>
-                                            c. {question.choice_c}
-                                        </label>
-                                    </div>
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_d${index}`}/>
-                                        <label className="form-check-label" htmlFor={`choice_d${index}`}>
-                                            d. {question.choice_d}
-                                        </label>
-                                    </div>
-            
-                                </div>
-                                <hr></hr>
-                            
-                            </div>
-
-                        ))}
-                        {editExam && (
+                    {editExam && (
                             <>
                                 <div className=''>
                                     <form>
                                         <div className='row my-2'>
                                             <div className='mb-3 col-md-12'>
                                                 <label htmlFor={`question`} className='form-label'>
-                                                    QuestionData:
+                                                    Question:
                                                 </label>
                                                 <input
                                                     type='text'
@@ -267,7 +355,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
                                                     className={`form-control${renderFieldErrorMultiple('add_question', 0, `question`, multipleErrors) ? ' is-invalid' : ''}`} 
                                                     onChange={handleSingleInputChange}
                                                     value={singleQuestion?.question || ''}
-                                                    placeholder='QuestionData'
+                                                    placeholder='Question'
                                                 />
                                                 {renderFieldErrorMultiple('add_question', 0, `question`, multipleErrors)}
                                             </div>
@@ -351,7 +439,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
                                         <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={cancelEditExam}>
                                             Cancel
                                         </button>
-                                        <button className='btn btn-primary' style={{width:'5rem'}} >
+                                        <button className='btn btn-primary' style={{width:'5rem'}} onClick={saveExam}>
                                             Add
                                         </button>
                                     </div>
@@ -359,6 +447,163 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
                                 <hr></hr>
                             </>
                         )}
+                    <div>
+                        {question.map((question, index) => (
+                            <div key={question.id} className="d-flex row">
+                                {!editQuestion[index] && (
+                                    <>
+                                        <div className="row justify-content-center">
+                                            <p className="fs-3 fw-bold text-center">{index + 1}.{question.question}</p>
+                                        </div>
+                                        <div className='col-auto'>
+                                            <div className='profile-svgs d-flex my-1' onClick={() => editQuestionButton(index, question.id)}>
+                                                <Icon path={mdiPencil} size={1} />
+                                            </div>
+                                            <ProfileDeleteModal id={`${question.id}`} onDelete={() => deleteQuestion(question.id)} />
+                                        </div>
+                                        <div className="d-flex justify-content-between mt-3">
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_a${index}`}/>
+                                                <label className="form-check-label" htmlFor={`choice_a${index}`}>
+                                                    a. {question.choice_a}
+                                                </label>
+                                            </div>
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_b${index}`}/>
+                                                <label className="form-check-label" htmlFor={`choice_b${index}`}>
+                                                    b. {question.choice_b}
+                                                </label>
+                                            </div>
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_c${index}`}/>
+                                                <label className="form-check-label" htmlFor={`choice_c${index}`}>
+                                                    c. {question.choice_c}
+                                                </label>
+                                            </div>
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_d${index}`}/>
+                                                <label className="form-check-label" htmlFor={`choice_d${index}`}>
+                                                    d. {question.choice_d}
+                                                </label>
+                                            </div>
+                    
+                                        </div>
+                                        <hr></hr>
+                                    </>
+                                    
+                                    )}
+                                {editQuestion[index] && (
+                                    <>
+                                        <div className=''>
+                                            <form>
+                                                <div className='row my-2'>
+                                                    <div className='mb-3 col-md-12'>
+                                                        <label htmlFor={`question_${index}`} className='form-label'>
+                                                            Question:
+                                                        </label>
+                                                        <input
+                                                            type='text'
+                                                            name={`question_${index}`}
+                                                            className={`form-control${renderFieldErrorMultiple('edit_question', index, `question_${index}`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                                            onChange={(e) => handleQuestionInputChange(index, e)}
+                                                            value={question?.question || ''}
+                                                            placeholder='Question'
+                                                        />
+                                                        {renderFieldErrorMultiple(`edit_question`, index, `question_${index}`, multipleErrors)}
+                                                    </div>
+                                                </div>
+                                                <div className='row my-2'>
+                                                    <div className='mb-3 col-md-3'>
+                                                        <label htmlFor={`choice_a_${index}`} className='form-label'>
+                                                            Answer a:
+                                                        </label>
+                                                        <input
+                                                            type='text'
+                                                            name={`choice_a_${index}`}
+                                                            className={`form-control${renderFieldErrorMultiple('edit_question', index, `choice_a_${index}`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                                            placeholder='Answer a'
+                                                            onChange={(e) => handleQuestionInputChange(index, e)}
+                                                            value={question?.choice_a || ''}
+                                                        />
+                                                        {renderFieldErrorMultiple('edit_question', index, `choice_a_${index}`, multipleErrors)}
+                                                    </div>
+                                                    <div className='mb-3 col-md-3'>
+                                                        <label htmlFor={`choice_b_${index}`} className='form-label'>
+                                                            Answer b:
+                                                        </label>
+                                                        <input
+                                                            type='text'
+                                                            name={`choice_b_${index}`}
+                                                            className={`form-control${renderFieldErrorMultiple('edit_question', index, `choice_b_${index}`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                                            placeholder='Answer b'
+                                                            onChange={(e) => handleQuestionInputChange(index, e)}
+                                                            value={question?.choice_b || ''}
+                                                        />
+                                                        {renderFieldErrorMultiple('edit_question', index, `choice_b_${index}`, multipleErrors)}
+                                                    </div>
+                                                    <div className='mb-3 col-md-3'>
+                                                        <label htmlFor={`job_responsibility`} className='form-label'>
+                                                            Answer c:
+                                                        </label>
+                                                        <input
+                                                            type='text'
+                                                            name={`choice_c_${index}`}
+                                                            className={`form-control${renderFieldErrorMultiple('edit_question', index, `choice_c_${index}`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                                            placeholder='Answer c'
+                                                            onChange={(e) => handleQuestionInputChange(index, e)}
+                                                            value={question?.choice_c || ''}
+                                                        />
+                                                        {renderFieldErrorMultiple('edit_question', index, `choice_c_${index}`, multipleErrors)}
+                                                    </div>
+                                                    <div className='mb-3 col-md-3'>
+                                                        <label htmlFor={`choice_d`} className='form-label'>
+                                                            Answer d:
+                                                        </label>
+                                                        <input
+                                                            type='text'
+                                                            name={`choice_d_${index}`}
+                                                            className={`form-control${renderFieldErrorMultiple('edit_question', index, `choice_d_${index}`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                                            placeholder='Answer d'
+                                                            onChange={(e) => handleQuestionInputChange(index, e)}
+                                                            value={question?.choice_d || ''}
+                                                        />
+                                                        {renderFieldErrorMultiple('edit_question', index, `choice_d_${index}`, multipleErrors)}
+                                                    </div>
+                                                </div>
+                                                <div className='row my-2'>
+                                                <div className='mb-3 col-md-12'>
+                                                        <label htmlFor={`correct_choice`} className='form-label'>
+                                                            Correct choice - one only
+                                                        </label>
+                                                        <input
+                                                            type='text'
+                                                            name={`correct_choice_${index}`}
+                                                            className={`form-control${renderFieldErrorMultiple('edit_question', index, `correct_choice_${index}`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                                            placeholder='a, b, c or d'
+                                                            onChange={(e) => handleQuestionInputChange(index, e)}
+                                                            value={question?.correct_choice || ''}
+                                                        />
+                                                        {renderFieldErrorMultiple('edit_question', index, `correct_choice_${index}`, multipleErrors)}
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <div className='text-center'>
+                                                <button className='btn btn-secondary me-2' style={{width:'5rem'}} onClick={() => cancelEditQuestion(index, question.id)}>
+                                                    Cancel
+                                                </button>
+                                                <button className='btn btn-primary' style={{width:'5rem'}}onClick={() => saveEditExam(index, question.id)} >
+                                                    Add
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <hr></hr>
+                                    </>
+                                )}
+                            
+                            </div>
+
+                        ))}
+                        
                     </div>
                     
             

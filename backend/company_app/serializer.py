@@ -344,5 +344,5 @@ class JobApplicationExamSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        exclude = ('correct_choice',)
+        fields = '__all__'
 

@@ -132,10 +132,10 @@ class JobOfferApplication(models.Model):
 class Question(models.Model):
     job_offer = models.ForeignKey(JobOffer, on_delete=models.CASCADE)
     question = models.CharField(max_length=300, blank=False)
-    choice_a = models.CharField(max_length=100, blank=False)
-    choice_b = models.CharField(max_length=100, blank=False)
-    choice_c = models.CharField(max_length=100, blank=False)
-    choice_d = models.CharField(max_length=100, blank=False)
+    choice_a = models.CharField(max_length=200, blank=False)
+    choice_b = models.CharField(max_length=200, blank=False)
+    choice_c = models.CharField(max_length=200, blank=False)
+    choice_d = models.CharField(max_length=200, blank=False)
     correct_choice = models.CharField(max_length=1, blank=False, choices=[('a', 'A'), ('b', 'B'), ('c', 'C'), ('d', 'D')])
 
 

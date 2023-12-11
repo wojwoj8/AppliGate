@@ -452,7 +452,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
                             <div key={question.id} className="d-flex row">
                                 {!editQuestion[index] && (
                                     <>
-                                        <div className="row justify-content-center">
+                                        <div className="row col justify-content-center">
                                             <p className="fs-3 fw-bold text-center">{index + 1}.{question.question}</p>
                                         </div>
                                         <div className='col-auto'>
@@ -461,26 +461,26 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
                                             </div>
                                             <ProfileDeleteModal id={`${question.id}`} onDelete={() => deleteQuestion(question.id)} />
                                         </div>
-                                        <div className="d-flex justify-content-between mt-3">
-                                            <div className="form-check">
+                                        <div className="d-flex justify-content-between flex-wrap mt-3">
+                                            <div className="form-check col-12">
                                                 <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_a${index}`}/>
                                                 <label className="form-check-label" htmlFor={`choice_a${index}`}>
                                                     a. {question.choice_a}
                                                 </label>
                                             </div>
-                                            <div className="form-check">
+                                            <div className="form-check col-12">
                                                 <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_b${index}`}/>
                                                 <label className="form-check-label" htmlFor={`choice_b${index}`}>
                                                     b. {question.choice_b}
                                                 </label>
                                             </div>
-                                            <div className="form-check">
+                                            <div className="form-check col-12">
                                                 <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_c${index}`}/>
                                                 <label className="form-check-label" htmlFor={`choice_c${index}`}>
                                                     c. {question.choice_c}
                                                 </label>
                                             </div>
-                                            <div className="form-check">
+                                            <div className="form-check col-12">
                                                 <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_d${index}`}/>
                                                 <label className="form-check-label" htmlFor={`choice_d${index}`}>
                                                     d. {question.choice_d}

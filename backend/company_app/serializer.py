@@ -163,6 +163,7 @@ class JobOfferDataSerializer(serializers.ModelSerializer):
             "company",
             "id",
             "has_exam",
+            "exam_pass_percentage",
         ]
 # company data serializer (immutable for joboffer)
 class JobOfferCompanySerializer(serializers.ModelSerializer):

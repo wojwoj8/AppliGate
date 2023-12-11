@@ -22,6 +22,7 @@ export interface JobOfferExamData{
   company: number;
   id: number;
   has_exam: boolean;
+  exam_pass_percentage: number;
 }
 // make mulitple interfaces for easier crud
 // should make one for immutable company data

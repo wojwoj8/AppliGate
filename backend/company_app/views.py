@@ -701,3 +701,40 @@ class JobOfferExamView(
                 {"error": f"{self.serializer_class.Meta.model.__name__} not found"},
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+class JobOfferPassPercentageView(
+    generics.GenericAPIView,
+    mixins.UpdateModelMixin,):
+
+    serializer_class = JobOfferDataSerializer
+    queryset = JobOffer.objects.all()
+
+    def put(self, request, *args, **kwargs):
+        offer_id = request.data.get("id")
+        
+        try:
+            instance = self.queryset.get(id=offer_id)
+
+        except self.serializer_class.Meta.model.DoesNotExist:
+            return Response(
+                {"error": f"{self.serializer_class.Meta.model.__name__} not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = self.serializer_class(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+    
+    def delete(self, request, *args, **kwargs):
+        job_offer_id = self.kwargs['id']
+        # to change job offer has exam and pass percentage
+        job_offer = JobOffer.objects.get(pk=job_offer_id)
+        job_offer.has_exam = False
+        job_offer.exam_pass_percentage = 50  
+        job_offer.save()
+
+        questions_to_delete = Question.objects.filter(job_offer_id=job_offer_id)
+        questions_to_delete.delete()
+        return Response({"message": "Questions deleted successfully"})

@@ -12,6 +12,7 @@ import DeleteModal from "../../DeleteModal";
 import ProfileDeleteModal from '../../profileComponents/ProfileDeleteModal';
 import Loading from "../../Loading";
 import { MultipleErrorResponse, ErrorResponse } from "../../Profile";
+import { useNavigate } from "react-router-dom";
 
   interface QuestionData {
     id: number;
@@ -46,7 +47,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
     const [progress, setProgress] = useState(0);
 
     const {authTokens, logoutUser } = useContext(AuthContext);
-    const {jobOfferExamData} = useJobOfferExamContext();
+    const {jobOfferExamData, setJobOfferExamData} = useJobOfferExamContext();
 
     //data
     const [question, setQuestion] = useState<QuestionData[]>([])
@@ -57,7 +58,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
     const [editQuestion, setEditQuestion] = useState<boolean[]>([]);
     
     
-    
+    const nav = useNavigate()
 
 
     const editExamButton = () =>{
@@ -100,10 +101,17 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
 
       };
     const saveExam = async () =>{
+        // to dont get error that no data sent
+        let data
+        if (singleQuestion){
+            singleQuestion!.job_offer = jobOfferExamData!.id
+            data = singleQuestion
+        }else{
+            data = {'job_offer':jobOfferExamData!.id}
+        }
         
-        singleQuestion!.job_offer = jobOfferExamData!.id
         try{
-            const response = await axios.post(`/joboffer/exam/${jobOfferExamData!.id}`, singleQuestion,  {
+            const response = await axios.post(`/joboffer/exam/${jobOfferExamData!.id}`, data,  {
                 headers: {
                   'Content-Type': 'application/json',
                   Authorization: 'Bearer ' + String(authTokens.access),
@@ -115,6 +123,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
             getExam();
             setSingleQuestion(null);
             setEditExam(false);
+            setGlobalAlertError('Question created successfully success');
         }catch (error: any) {
           const axiosError = error as AxiosError<ErrorResponse>;
           if (error.response && error.response.status === 401) {
@@ -134,6 +143,16 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
             
         
     }
+    
+    const handlePercentageChange = (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      ) => {
+        const { name, value } = event.target;
+        setJobOfferExamData((prevQuestion) => ({
+        ...prevQuestion!,
+        [name]: value,
+        }));
+      };
     const handleSingleInputChange = (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
       ) => {
@@ -246,7 +265,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
         });
           
             getExam();
-            setGlobalAlertError('Data deleted successfully success');
+            setGlobalAlertError('Question deleted successfully success');
       }catch (error: any) {
         if (error.response && error.response.status === 401) {
           // Unauthorized - Logout the user
@@ -299,7 +318,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
   
             removeMultipleErrors(`edit_question`, index)
             cancelEditQuestion(index, id);
-            
+            setGlobalAlertError('Question edited successfully success');
 
         }catch (error: any) {
           const axiosError = error as AxiosError<ErrorResponse>;
@@ -326,6 +345,70 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
         }
             
     }
+    }
+    
+    const changePassPercentage = async () =>{
+        
+        
+        try{
+            const response = await axios.put(`/joboffer/exam/percentage/${jobOfferExamData!.id}`, jobOfferExamData,  {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: 'Bearer ' + String(authTokens.access),
+                },
+              });
+              setEditExam(false)
+  
+            removeMultipleErrors(`edit_examproc`, 0)
+
+            setGlobalAlertError(`Pass percentage changed to ${jobOfferExamData?.exam_pass_percentage} successfully success`);
+        }catch (error: any) {
+          const axiosError = error as AxiosError<ErrorResponse>;
+          if (error.response && error.response.status === 401) {
+            // Unauthorized - Logout the user
+            logoutUser();
+          }
+          else if (error.response && (error.response.status !== 400)) {
+            console.log(axiosError)
+            setError(axiosError)
+          }
+          removeMultipleErrors(`edit_examproc`, 0)
+          if (axiosError.response?.data) {
+            handleMultipleErrors(`edit_examproc`, 0, axiosError.response?.data)
+          }
+            console.log(error);
+          }
+    }
+    
+    const deleteExam = async() =>{
+        
+            try {
+              const response = await axios.delete(`/joboffer/wholeexam/delete/${jobOfferExamData!.id}`, {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: 'Bearer ' + String(authTokens.access),
+                },
+              });
+          
+                setGlobalAlertError('Exam deleted successfully success');
+                nav(-1)
+          }catch (error: any) {
+            if (error.response && error.response.status === 401) {
+              // Unauthorized - Logout the user
+              logoutUser();
+            }
+            setGlobalAlertError('Something went wrong error');
+        
+              console.log(error);
+            }
+        
+    }
+
+    if (loading) {
+        return <Loading progress={progress} />
+    }
+    if (error){
+        return <ErrorPage axiosError={error} />
     }
     return(
 
@@ -571,7 +654,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
                                                     </div>
                                                 </div>
                                                 <div className='row my-2'>
-                                                <div className='mb-3 col-md-12'>
+                                                    <div className='mb-3 col-md-12'>
                                                         <label htmlFor={`correct_choice`} className='form-label'>
                                                             Correct choice - one only
                                                         </label>
@@ -603,9 +686,43 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
                             </div>
 
                         ))}
-                        
+                        <div className='mb-3 col-md-12'>
+                            <label htmlFor={`exam_pass_percentage`} className='form-label'>
+                                Pass percentage
+                            </label>
+                            <div className="input-group">
+
+                            
+                            <input
+                                type='number'
+                                name={`exam_pass_percentage`}
+                                className={`form-control${renderFieldErrorMultiple('edit_examproc', 0, `exam_pass_percentage`, multipleErrors) ? ' is-invalid' : ''}`} 
+                                placeholder='70'
+                                onChange={handlePercentageChange}
+                                min={0}
+                                max={100}
+                                value={jobOfferExamData?.exam_pass_percentage || ''}
+                            />
+                            <button className="btn btn-primary" type="button" id="button-addon2" onClick={changePassPercentage}>
+                                Change
+                            </button>
+                            </div>
+                            {renderFieldErrorMultiple('edit_examproc', 0, `exam_pass_percentage`, multipleErrors)}
+                        </div>
                     </div>
-                    
+                    <button className="btn btn-primary w-100 rounded-4 mt-1 btn-block" type="button"  onClick={() => nav(-1)}>
+                        Return to Offer
+                    </button>
+                    <div className="d-grid py-2 text-center  ">
+                        <div className='btn btn-danger w-100 rounded-4 mt-1 btn-block'>
+                            <DeleteModal id={`${jobOfferExamData!.id}`} 
+                            name={'Delete Exam'} 
+                            message={'Do you want to delete that Exam? Every user will be able to apply for that offer and those applications will no longer be automatically verified.'} 
+                            deleteName = {'Delete'}
+                            onDelete={() => deleteExam()} 
+                            />
+                        </div>      
+                    </div>
             
             </div>
         </div>

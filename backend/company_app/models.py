@@ -4,6 +4,7 @@ from user_app.models import User
 from django.core.validators import (
     RegexValidator,
     MinValueValidator, 
+    MaxValueValidator,
 
     )
 
@@ -89,6 +90,11 @@ class JobOffer(models.Model):
     job_offer_status = models.BooleanField(default=False)
 
     has_exam = models.BooleanField(default=False)
+    exam_pass_percentage = models.PositiveIntegerField(
+        default=50,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        help_text="Pass percentage required for the exam"
+    )
 
 
     def __str__(self):
@@ -153,6 +159,7 @@ class JobApplication(models.Model):
 
     # New field to link to the exam
     exam_answers = models.OneToOneField('JobApplicationExam', on_delete=models.SET_NULL, null=True, blank=True, related_name='application_answers')
+
 
     def __str__(self):
         return f"Applicant: {self.applicant} for Job: {self.job_offer.title}"

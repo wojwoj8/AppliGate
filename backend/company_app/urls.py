@@ -94,7 +94,11 @@ urlpatterns = [
     
     #exam data
     path("joboffer/exam/<int:id>", views.JobOfferExamView.as_view(), name="JobOfferExamData"),
-    path("joboffer/exam/delete/<int:id>", views.JobOfferExamView.as_view(), name="JobOfferExamData"),
+    path("joboffer/exam/delete/<int:id>", views.JobOfferExamView.as_view(), name="JobOfferExamDataDelete"),
+    path("joboffer/wholeexam/delete/<int:id>", views.JobOfferPassPercentageView.as_view(), name="JobOfferExamDataDelete"),
+    path("joboffer/exam/percentage/<int:id>", views.JobOfferPassPercentageView.as_view(), name="JobOfferExamPercentage"),
+    
+    
     
     # path("company/joboffercreator/", views.ProfileCompanyView.as_view(), name="personalCompany"),
     

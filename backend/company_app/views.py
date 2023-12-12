@@ -33,6 +33,7 @@ from .serializer import (
     JobOfferAssessSerializer,
     JobOfferDataSerializer,
     QuestionSerializer,
+    JobApplicationExamSerializer,
 
 )
 from user_app.views import (
@@ -738,3 +739,86 @@ class JobOfferPassPercentageView(
         questions_to_delete = Question.objects.filter(job_offer_id=job_offer_id)
         questions_to_delete.delete()
         return Response({"message": "Questions deleted successfully"})
+    
+# application through exam
+class JobOfferExamApplicationView(generics.CreateAPIView):
+
+    queryset = JobApplication.objects.all()
+    serializer_class = JobApplicationExamSerializer
+
+    def check_user(self, request):
+        user_type = request.user.user_type
+        if user_type != "user":
+            raise PermissionDenied("Company user can't apply for an offer!")
+
+    def get(self, request, *args, **kwargs):
+        job_offer_id = kwargs.get("id")
+        job_offer = JobOffer.objects.get(id=job_offer_id)
+        applicant = request.user
+
+        # Check if the user has already applied for the specified job offer
+        has_applied = JobApplication.objects.filter(
+            job_offer=job_offer, applicant=applicant
+        ).exists()
+
+        return Response({"has_applied": has_applied})
+
+    def create(self, request, *args, **kwargs):
+        self.check_user(request)
+        job_offer_id = kwargs.get("id")
+        job_offer = JobOffer.objects.get(id=job_offer_id)
+        status = job_offer.job_offer_status
+        if status is False:
+            raise PermissionDenied("That offer is not listed!")
+
+        if job_offer.job_application_deadline < datetime.now().date():
+            raise PermissionDenied("The deadline for applying to this offer has passed!")
+
+        applicant = request.user
+        data = {"job_offer": job_offer.id, "applicant": applicant.id}
+
+        # Include exam answers in the data
+        exam_answers_data = request.data.get("answers")
+        if exam_answers_data:
+            data["answers"] = exam_answers_data
+
+        # Create and save the JobApplication instance
+        job_application_serializer = JobApplicationSerializer(data=data)
+        if job_application_serializer.is_valid():
+            job_application = job_application_serializer.save()
+
+            # Check the correctness of the answers and calculate the score
+            if exam_answers_data:
+                question_ids = Question.objects.filter(job_offer=job_offer).values_list("id", flat=True)
+                correct_answers = Question.objects.filter(id__in=question_ids).values_list(
+                    "id", "correct_choice"
+                )
+
+                correct_count = 0
+                for question_id, user_answer in zip(question_ids, exam_answers_data):
+                    correct_choice = next(
+                        choice for q_id, choice in correct_answers if q_id == question_id
+                    )
+                    if user_answer == correct_choice:
+                        correct_count += 1
+
+                # Calculate the score as a percentage
+                total_questions = len(question_ids)
+                score_percentage = (correct_count / total_questions) * 100
+
+                # Save the JobApplicationExam instance with the calculated score
+                job_application_exam = JobApplicationExam.objects.create(
+                    application=job_application,
+                    answers=exam_answers_data,
+                    score=score_percentage,
+                )
+
+                if score_percentage >= job_offer.exam_pass_percentage:
+                    job_application.status = "approved"
+                else:
+                    job_application.status = "rejected"
+
+                job_application.save()
+
+            return Response(job_application_serializer.data, status=201)
+        return Response(job_application_serializer.errors, status=400)  

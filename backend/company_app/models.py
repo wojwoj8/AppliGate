@@ -169,3 +169,9 @@ class JobApplicationExam(models.Model):
     
     application = models.OneToOneField(JobApplication, on_delete=models.CASCADE, related_name='user_exam_answers')
     answers = models.JSONField(blank=True)  # Store user answers as a JSON array
+    score = models.PositiveIntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        blank = True,
+        null= True
+    )
+

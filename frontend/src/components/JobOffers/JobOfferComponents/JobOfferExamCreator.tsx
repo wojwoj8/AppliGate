@@ -31,6 +31,8 @@ import { useNavigate } from "react-router-dom";
 interface JobOfferExamCreatorProps {
     setGlobalAlertError: (error: string) => void
 }
+// for selected Answers because without that empty array is as never type
+type SelectedAnswers = (string | undefined)[];
 
 const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
     setGlobalAlertError
@@ -56,6 +58,9 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
     //edit
     const [editExam, setEditExam] = useState(false)
     const [editQuestion, setEditQuestion] = useState<boolean[]>([]);
+
+    //selected answers
+    const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>([]);
     
     
     const nav = useNavigate()
@@ -233,7 +238,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
           });
     
           const data = response.data;
-          console.log(data)
+          //console.log(data)
           if (response.status === 200) {
             setQuestion(data);
           }
@@ -433,6 +438,49 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
     return null;
   }
 
+  const sendAnswers = async () =>{
+
+    let data = {'job_offer':jobOfferExamData!.id,
+            'answers': selectedAnswers}
+        
+        console.log(data)
+        try{
+            const response = await axios.post(`/joboffer/exam/anwers/${jobOfferExamData!.id}`, data,  {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: 'Bearer ' + String(authTokens.access),
+                },
+              });
+              
+            
+            setGlobalAlertError('Answers sent successfully, check application status in your applications! success');
+            setSelectedAnswers([])
+        }catch (error: any) {
+          const axiosError = error as AxiosError<ErrorResponse>;
+          if (error.response && error.response.status === 401) {
+            // Unauthorized - Logout the user
+            logoutUser();
+          }
+          else if (error.response && (error.response.status !== 400)) {
+            console.log(axiosError)
+            setError(axiosError)
+          }
+          removeMultipleErrors(`add_question`, 0)
+          setGlobalAlertError('Something went wrong error');
+          console.log(error)
+          }
+            
+  }
+    // Function to handle radio button selection
+    const handleAnswerSelection = (questionIndex: number, selectedAnswer: string) => {
+        // Clone the array to avoid mutating the state directly
+        const updatedAnswers = [...selectedAnswers];
+        // Update the selected answer for the given question
+        updatedAnswers[questionIndex] = selectedAnswer;
+        // Update the state with the new array
+        setSelectedAnswers(updatedAnswers);
+    };
+
     useLayoutEffect(() => {
         if (!loading) {
           
@@ -583,25 +631,49 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
                                         </div>
                                         <div className="d-flex justify-content-between flex-wrap mt-3">
                                             <div className="form-check col-12">
-                                                <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_a${index}`}/>
+                                                <input 
+                                                    className="form-check-input" 
+                                                    type="radio" 
+                                                    name={`choice_a${index}`} 
+                                                    id={`choice_a${index}`}
+                                                    onChange={() => handleAnswerSelection(index, 'a')}
+                                                    />
                                                 <label className="form-check-label" htmlFor={`choice_a${index}`}>
                                                     a. {question.choice_a}
                                                 </label>
                                             </div>
                                             <div className="form-check col-12">
-                                                <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_b${index}`}/>
+                                                <input 
+                                                    className="form-check-input" 
+                                                    type="radio" 
+                                                    name={`choice_a${index}`} 
+                                                    id={`choice_b${index}`}
+                                                    onChange={() => handleAnswerSelection(index, 'b')}
+                                                />
                                                 <label className="form-check-label" htmlFor={`choice_b${index}`}>
                                                     b. {question.choice_b}
                                                 </label>
                                             </div>
                                             <div className="form-check col-12">
-                                                <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_c${index}`}/>
+                                                <input 
+                                                    className="form-check-input" 
+                                                    type="radio" 
+                                                    name={`choice_a${index}`} 
+                                                    id={`choice_c${index}`}
+                                                    onChange={() => handleAnswerSelection(index, 'c')}
+                                                    />
                                                 <label className="form-check-label" htmlFor={`choice_c${index}`}>
                                                     c. {question.choice_c}
                                                 </label>
                                             </div>
                                             <div className="form-check col-12">
-                                                <input className="form-check-input" type="radio" name={`choice_a${index}`} id={`choice_d${index}`}/>
+                                                <input 
+                                                    className="form-check-input" 
+                                                    type="radio" 
+                                                    name={`choice_a${index}`} 
+                                                    id={`choice_d${index}`}
+                                                    onChange={() => handleAnswerSelection(index, 'd')}
+                                                    />
                                                 <label className="form-check-label" htmlFor={`choice_d${index}`}>
                                                     d. {question.choice_d}
                                                 </label>
@@ -760,6 +832,19 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
                             />
                         </div>      
                     </div>
+
+                    {user.user_type !== "company" && (
+                        <div className="d-grid py-2 text-center">
+                            <div className='btn btn-danger w-100 rounded-4 mt-1 btn-block'>
+                                <DeleteModal id={`${jobOfferExamData!.id}`} 
+                                name={'Finish Exam'} 
+                                message={'Do you want to finish Exam? Make sure you have selected answer for each question!'} 
+                                deleteName = {'Finish Exam'}
+                                onDelete={() => sendAnswers()} 
+                                />
+                            </div>      
+                        </div>
+                    )}
             
             </div>
         </div>

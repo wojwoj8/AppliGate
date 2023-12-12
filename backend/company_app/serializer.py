@@ -347,3 +347,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = '__all__'
 
+class JobApplicationExamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobApplicationExam
+        fields = '__all__'

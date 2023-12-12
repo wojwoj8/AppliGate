@@ -146,6 +146,7 @@ export type JobOfferEditDataFunction =
     JobOfferTopColorsData | null |
     JobOfferStatusData | null |
     JobOfferAboutData | null |
+    JobOfferExamData | null |
     undefined;
 // multiple data
 export type JobOfferEditMultipleDataFunction = 
@@ -578,7 +579,7 @@ const initialMultipleErrors: MultipleErrorResponse = {
       setError(null);
       setIsLoading(true);
 
-      const steps = 2; // Total number of steps for loading bar
+      const steps = 12; // Total number of steps for loading bar
       let completedSteps = 0;
 
       const updateProgress = (completedSteps: number) => {

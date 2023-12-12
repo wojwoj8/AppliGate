@@ -90,11 +90,11 @@ function App() {
             <Route path="/company/joboffer/createjoboffer" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route>
             
             {/* WRAPPED DIFFERENTLY BECAUSE NULLED EXAM IF IN NORMAL WAY */}
-            <Route path="/company/joboffer/examcreator" element={
+            <Route path="/company/joboffer/exam" element={
               <JobOfferExamProvider>
-                <PrivateRouteCompanyOnly>
+                <PrivateRoute>
                   <JobOfferExamCreator setGlobalAlertError={setAlertError}/>
-                </PrivateRouteCompanyOnly>
+                </PrivateRoute>
             </JobOfferExamProvider>}></Route>
             {/* <Route path="/company/joboffer/:offerid" element={<PrivateRouteCompanyOnly><JobOffer setGlobalAlertError={setAlertError}/></PrivateRouteCompanyOnly>}></Route> */}
             

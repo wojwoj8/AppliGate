@@ -158,16 +158,26 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
         else{
             return(
                 <>
-                {user.user_type === 'user' && (
-                    
+                    {user.user_type === 'user' && jobOfferExam?.has_exam === false ? (
                     hasApplied.has_applied ? (
-                        <button className='btn btn-info  w-100 rounded-4 mt-3 not-hidden' onClick={() => navigate('/jobofferlistings/1')}>You have already applied for that offer, click here to see more offers.</button>
+                        <button className='btn btn-info  w-100 rounded-4 mt-3 not-hidden' onClick={() => navigate('/jobofferlistings/1')}>
+                        You have already applied for that offer, click here to see more offers.
+                        </button>
                     ) : (
-                        <button className='btn btn-info w-100 rounded-4 mt-3 not-hidden' onClick={JobApply}>Apply for that offer</button>
+                        <button className='btn btn-info w-100 rounded-4 mt-3 not-hidden' onClick={JobApply}>
+                        Apply for that offer
+                        </button>
                     )
-                    
-                )     
-                    }
+                    ) : user.user_type === 'user' && jobOfferExam?.has_exam === true ? (
+                        <div className='btn btn-info w-100 rounded-4 mt-1 mb-2 btn-block '>
+                            <DeleteModal id={`5`} 
+                            name={'Apply for that offer'} 
+                            message={'To apply for that offer you have to take a short test created by owner of that job offer.'} 
+                            deleteName = {'Take test'}
+                            title="Take test"
+                            onDelete={() => handleClick(jobOfferExam!)} />
+                        </div>  
+                    ) : null}
                 </>
             )
             
@@ -196,31 +206,50 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
 
         editData(updatedJobOfferStatus, undefined, `/company/joboffer/jobofferstatus/${offerid}`, 'jobOfferStatus');
         };
-    const handleClick = (jobOfferExamData: JobOfferExamData) => {
-    
-        setJobOfferExamData(jobOfferExamData);
+    const handleClick = async (jobOfferExamData: JobOfferExamData) => {
+        if (jobOfferExamData.has_exam === true){
+            setJobOfferExamData(jobOfferExamData)
+        } else{
+            const updatedJobOfferExam = {
+                ...jobOfferExamData!,
+                has_exam: true,
+            };
+            
+            
+            await editData(updatedJobOfferExam, undefined, `/company/joboffer/data/${offerid}`, 'jobOfferStatus');
+            await setJobOfferExamData(updatedJobOfferExam)
+        }   
+       
         // console.log(jobOfferExamData)
-        navigate(`/company/joboffer/examcreator`)
+        await navigate(`/company/joboffer/exam`)
         };
 
     useEffect(() =>{
         JobApplyVerification()
+        // console.log(jobOfferExam?.has_exam)
 
     },[hasApplied.has_applied])
     return(
         <>
             <div className='container'>
             {deadline && formatRemainingTime(deadline)}
-                <div className="prevHidden">
-                    {jobOfferExam &&
-                    <div className='btn btn-info w-100 rounded-4 mt-1 mb-2 btn-block '>
-                        <DeleteModal id={`3`} 
-                        name={'Create Exam'} 
-                        message={'Do you want to create an Exam? You will be able to create test that applicants will have to complete in order to apply for that offer. Those tests will be automatically verified by system.'} 
-                        deleteName = {'Create'}
-                        title="Create Exam"
-                        onDelete={() => handleClick(jobOfferExam)} />
-                    </div>  
+                    <div className="prevHidden">
+                        {jobOfferExam && jobOfferExam.has_exam === true ? (
+                            <div className='btn btn-info w-100 rounded-4 mt-1 mb-2 btn-block ' onClick={() => handleClick(jobOfferExam)}>
+                                Edit Exam
+                            </div>  
+                        ): (
+                            <div className='btn btn-info w-100 rounded-4 mt-1 mb-2 btn-block '>
+                                <DeleteModal id={`3`} 
+                                name={'Create Exam'} 
+                                message={'Do you want to create an Exam? You will be able to create a test that applicants will have to complete in order to apply for that offer. Those tests will be automatically verified by the system. Please note that if there are no questions in the test, the test will not function.'} 
+                                deleteName = {'Create'}
+                                title="Create Exam"
+                                onDelete={() => handleClick(jobOfferExam!)} />
+                            </div>  
+                        )
+
+                        
                     }
                     
                 </div>   

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext, useState, useEffect, useLayoutEffect } from "react";
 import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import { mdiPencil } from '@mdi/js';
@@ -46,7 +46,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
     const [loading, setLoading] = useState(true);
     const [progress, setProgress] = useState(0);
 
-    const {authTokens, logoutUser } = useContext(AuthContext);
+    const {authTokens, user, logoutUser } = useContext(AuthContext);
     const {jobOfferExamData, setJobOfferExamData} = useJobOfferExamContext();
 
     //data
@@ -403,6 +403,43 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
             }
         
     }
+     // To make preview mode by removing most of interactive elements while looking at not owned joboffer
+  const handleNotOwnedJobOffer = () =>{
+    let pageElement = document.getElementById('page');
+    let profStatus = document.getElementsByClassName('profileStatusHide');
+    if (pageElement) {
+      let elements = pageElement.querySelectorAll('button, svg, .profile-svgs, .prevHidden');
+      let preview = document.getElementById('preview');
+      // let correctedUsername = username.slice(0, -1);
+      if (user.user_type !== 'company'){
+        // console.log(elements)
+        elements.forEach((element) =>{
+          if (element.classList.contains('not-hidden')) {
+            // Do nothing, don't add or remove the d-none class
+          } else {
+          element.remove();
+          }
+        });
+        Array.from(profStatus).forEach((element) => {
+          element.remove();
+        });
+        if (preview){
+          preview.remove();
+        }
+        
+        
+      }
+    }
+    return null;
+  }
+
+    useLayoutEffect(() => {
+        if (!loading) {
+          
+           handleNotOwnedJobOffer();
+    
+        }
+      }, [loading]);
 
     if (loading) {
         return <Loading progress={progress} />
@@ -412,7 +449,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
     }
     return(
 
-        <div className={`pb-1`}>
+        <div className={`pb-1`} id="page">
             
             <div className="container shadow-lg bg-body-bg rounded-2 text-break mt-4 z-1">
                 <div className='bg-black row mb-0 rounded-top-2'>
@@ -686,7 +723,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
                             </div>
 
                         ))}
-                        <div className='mb-3 col-md-12'>
+                        <div className='mb-3 col-md-12 prevHidden'>
                             <label htmlFor={`exam_pass_percentage`} className='form-label'>
                                 Pass percentage
                             </label>
@@ -713,7 +750,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
                     <button className="btn btn-primary w-100 rounded-4 mt-1 btn-block" type="button"  onClick={() => nav(-1)}>
                         Return to Offer
                     </button>
-                    <div className="d-grid py-2 text-center  ">
+                    <div className="d-grid py-2 text-center prevHidden ">
                         <div className='btn btn-danger w-100 rounded-4 mt-1 btn-block'>
                             <DeleteModal id={`${jobOfferExamData!.id}`} 
                             name={'Delete Exam'} 

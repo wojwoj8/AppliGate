@@ -158,27 +158,37 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
         else{
             return(
                 <>
-                    {user.user_type === 'user' && jobOfferExam?.has_exam === false ? (
-                    hasApplied.has_applied ? (
-                        <button className='btn btn-info  w-100 rounded-4 mt-3 not-hidden' onClick={() => navigate('/jobofferlistings/1')}>
-                        You have already applied for that offer, click here to see more offers.
-                        </button>
-                    ) : (
-                        <button className='btn btn-info w-100 rounded-4 mt-3 not-hidden' onClick={JobApply}>
-                        Apply for that offer
-                        </button>
-                    )
-                    ) : user.user_type === 'user' && jobOfferExam?.has_exam === true ? (
-                        <div className='btn btn-info w-100 rounded-4 mt-1 mb-2 btn-block '>
-                            <DeleteModal id={`5`} 
-                            name={'Apply for that offer'} 
-                            message={'To apply for that offer you have to take a short test created by owner of that job offer.'} 
-                            deleteName = {'Take test'}
-                            title="Take test"
-                            onDelete={() => handleClick(jobOfferExam!)} />
-                        </div>  
-                    ) : null}
-                </>
+                    {user.user_type === 'user' && (
+                        <div>
+                        {jobOfferExam?.has_exam === false && (
+                            <button className='btn btn-info w-100 rounded-4 mt-3 not-hidden' onClick={hasApplied.has_applied ? () => navigate('/jobofferlistings/1') : JobApply}>
+                            {hasApplied.has_applied
+                                ? 'You have already applied for that offer, click here to see more offers.'
+                                : 'Apply for that offer'}
+                            </button>
+                        )}
+
+                        {jobOfferExam?.has_exam === true && hasApplied.has_applied && (
+                            <button className='btn btn-info w-100 rounded-4 mt-3 not-hidden' onClick={() => navigate('/jobofferlistings/1')}>
+                                You have already applied for that offer, click here to see more offers.
+                            </button>
+                        )}
+
+                        {jobOfferExam?.has_exam === true && !hasApplied.has_applied && (
+                            <div className='btn btn-info w-100 rounded-4 mt-1 mb-2 btn-block'>
+                            <DeleteModal
+                                id={`5`}
+                                name={'Apply for that offer'}
+                                message={'To apply for that offer, you have to take a short test created by the owner of that job offer.'}
+                                deleteName={'Take test'}
+                                title="Take test"
+                                onDelete={() => handleClick(jobOfferExam!)}
+                            />
+                            </div>
+                        )}
+                        </div>
+                    )}
+                    </>
             )
             
         }
@@ -233,6 +243,7 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
         <>
             <div className='container'>
             {deadline && formatRemainingTime(deadline)}
+                    
                     <div className="prevHidden">
                         {jobOfferExam && jobOfferExam.has_exam === true ? (
                             <div className='btn btn-info w-100 rounded-4 mt-1 mb-2 btn-block ' onClick={() => handleClick(jobOfferExam)}>

@@ -775,6 +775,15 @@ class JobOfferExamApplicationView(generics.CreateAPIView):
             raise PermissionDenied("The deadline for applying to this offer has passed!")
 
         applicant = request.user
+        # Check if the user has already applied for the specified job offer
+        has_applied = JobApplication.objects.filter(
+            job_offer=job_offer, applicant=applicant
+        ).exists()
+
+        if has_applied:
+            raise PermissionDenied("You have already applied for this job offer!")
+        
+        
         data = {"job_offer": job_offer.id, "applicant": applicant.id}
 
         # Include exam answers in the data
@@ -812,12 +821,23 @@ class JobOfferExamApplicationView(generics.CreateAPIView):
                     answers=exam_answers_data,
                     score=score_percentage,
                 )
-
+                
                 if score_percentage >= job_offer.exam_pass_percentage:
                     job_application.status = "approved"
                 else:
                     job_application.status = "rejected"
+                job_application.exam_answers = job_application_exam
+                job_application.save()
 
+            else:
+                # If no exam answers provided, create JobApplicationExam with score 0
+                job_application_exam = JobApplicationExam.objects.create(
+                    application=job_application,
+                    answers=[],
+                    score=0,
+                )
+                job_application.exam_answers = job_application_exam
+                job_application.status = "rejected"
                 job_application.save()
 
             return Response(job_application_serializer.data, status=201)

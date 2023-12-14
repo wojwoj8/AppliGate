@@ -14,7 +14,7 @@ import Loading from "../../Loading";
 import { MultipleErrorResponse, ErrorResponse } from "../../Profile";
 import { useNavigate } from "react-router-dom";
 
-  interface QuestionData {
+export interface QuestionData {
     id: number;
     question: string;
     choice_a: string;
@@ -455,6 +455,7 @@ const JobOfferExamCreator: React.FC<JobOfferExamCreatorProps> = ({
             
             setGlobalAlertError('Answers sent successfully, check application status in your applications! success');
             setSelectedAnswers([])
+            nav(-1)
         }catch (error: any) {
           const axiosError = error as AxiosError<ErrorResponse>;
           if (error.response && error.response.status === 401) {

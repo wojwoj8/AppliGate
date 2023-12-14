@@ -8,6 +8,7 @@ import { ErrorResponse } from "../../Profile";
 import { useNavigate } from "react-router-dom";
 import { JobOfferExamData } from "../JobOffer";
 import { useJobOfferExamContext } from "../JobOfferContexts/JobOfferExamContext";
+import { QuestionData } from "./JobOfferExamCreator";
 
 interface ProfileCompanyStatusInterface{
     jobOfferStatus: JobOfferStatusData | null;
@@ -37,6 +38,7 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
     const {authTokens, user, logoutUser } = useContext(AuthContext);
     const [hasApplied, setHasApplied] = useState({has_applied: false})
     const { setJobOfferExamData } = useJobOfferExamContext();
+    const [question, setQuestion] = useState<QuestionData[]>([])
 
     const deleteJobOffer = async (
     ) =>{
@@ -140,6 +142,31 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
                 }
             }
         }
+    const getExam = async () => {
+        try {
+            const response = await axios.get(`/joboffer/exam/${offerid}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + String(authTokens.access),
+            },
+            });
+    
+            const data = response.data;
+            //console.log(data)
+            if (response.status === 200) {
+            setQuestion(data[0]);
+            }
+        }catch (error: any) {
+            const axiosError = error as AxiosError<ErrorResponse>;
+            if (error.response && error.response.status === 401) {
+            // Unauthorized - Logout the user
+            logoutUser();
+            }
+            else if (error.response && (error.response.status !== 400)) {
+            setError(axiosError)
+            }
+        }
+        };
 
     const formatRemainingTime = (deadline: string) => {
         const deadlineDate = new Date(deadline);
@@ -175,7 +202,9 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
                         )}
 
                         {jobOfferExam?.has_exam === true && !hasApplied.has_applied && (
+                            question ?(
                             <div className='btn btn-info w-100 rounded-4 mt-1 mb-2 btn-block'>
+
                             <DeleteModal
                                 id={`5`}
                                 name={'Apply for that offer'}
@@ -185,6 +214,13 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
                                 onDelete={() => handleClick(jobOfferExam!)}
                             />
                             </div>
+                            ) : (
+                                <button className='btn btn-info w-100 rounded-4 mt-3 not-hidden' onClick={hasApplied.has_applied ? () => navigate('/jobofferlistings/1') : JobApply}>
+                                {hasApplied.has_applied
+                                ? 'You have already applied for that offer, click here to see more offers.'
+                                : 'Apply for that offer'}
+                            </button>
+                            )
                         )}
                         </div>
                     )}
@@ -236,6 +272,7 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
 
     useEffect(() =>{
         JobApplyVerification()
+        getExam();
         // console.log(jobOfferExam?.has_exam)
 
     },[hasApplied.has_applied])

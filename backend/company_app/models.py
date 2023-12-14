@@ -175,3 +175,6 @@ class JobApplicationExam(models.Model):
         null= True
     )
 
+    def __str__(self):
+        return f"Applicant: {self.application.applicant} for Job: {self.application.job_offer.title}, score: {self.score}%"
+

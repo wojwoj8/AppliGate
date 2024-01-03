@@ -36,6 +36,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (storedTokens) {
           const decodedUser = jwtDecode(storedTokens);
           if (decodedUser) {
+            
             return decodedUser;
           }
         }
@@ -61,7 +62,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           });
       
           let data = response.data;
-      
+          console.log(data)
           if (response.status === 200) {
             localStorage.setItem('authTokens', JSON.stringify(data));
             setAuthTokens(data);
@@ -177,6 +178,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (response.status === 200) {
             setAuthTokens(data)
             setUser(jwtDecode(data.access))
+            
             localStorage.setItem('authTokens',JSON.stringify(data))
         } else {
             logoutUser()

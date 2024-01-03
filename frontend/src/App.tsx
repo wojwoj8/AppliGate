@@ -16,7 +16,6 @@ import ProfileSettings from './components/ProfileSettings';
 import ProfileSettingsPassword from './components/ProfileSettingsPassword';
 import ProfileSettingsUsername from './components/ProfileSettingsUsername';
 import ProfileSettingsDelete from './components/ProfileSettingsDelete';
-import Example from './components/Example';
 import ProfileAlert from './components/profileComponents/ProfileAlert';
 import JobOfferUserApplications from './components/JobOffers/JobOfferUserApplications';
 import JobOfferAssessApplicationListing from './components/JobOffers/JobOfferAssessApplicationListing';
@@ -38,7 +37,6 @@ function App() {
   const [alertError, setAlertError] = useState('');
   return (
     <BrowserRouter>
-    
       <AuthProvider>
         <Navbar setGlobalAlertError={setAlertError}></Navbar>
         <div className='pb-2 d-flex flex-column myMain'>
@@ -49,8 +47,11 @@ function App() {
           {/* default route */}
             <Route path="*" element={<Navigate to="/" replace />} />
             {/* IfNotLoggedIn = Accessable IfNotLoggedIn */}
-            <Route path="/example" element={<Example/>}></Route>
-            <Route path="/login" element={<IfNotLoggedIn><LogIn/></IfNotLoggedIn>}></Route>
+            <Route path="/login" element={
+              <IfNotLoggedIn>
+                <LogIn/>
+              </IfNotLoggedIn>}>
+            </Route>
             <Route path="/register" element={<IfNotLoggedIn><SignUp/></IfNotLoggedIn>}></Route>
 
             
@@ -134,9 +135,6 @@ function App() {
         </div>
         <Footer></Footer>
       </AuthProvider>
-   
-    
-    {/* <div className='mt-2'></div> */}
     </BrowserRouter>
     
   );

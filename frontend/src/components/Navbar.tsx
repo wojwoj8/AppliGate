@@ -66,15 +66,13 @@ const Navbar: React.FC<NavbarProps> = ({setGlobalAlertError}) =>{
               (user.user_type === 'user') ?
               
               <ul className="navbar-nav text-primary justify-content-end flex-grow-1 pe-3">
-                <li className="nav-item" data-bs-dismiss="offcanvas">
+                {/* <li className="nav-item" data-bs-dismiss="offcanvas">
                   <p className="nav-link" aria-current="page">{user.user_type}</p>
-                </li>
+                </li> */}
                 <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to='/' className="nav-link" aria-current="page">Home</Link>
                 </li>
-                <li className="nav-item" data-bs-dismiss="offcanvas">
-                  <Link to='/example' className="nav-link">Example</Link>
-                </li>
+
 
                 <li className="nav-item dropdown-center">
                   <a className="nav-link dropdown-toggle" href="/profileSettings" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -126,9 +124,9 @@ const Navbar: React.FC<NavbarProps> = ({setGlobalAlertError}) =>{
               // logged in company user under
               :
               <ul className="navbar-nav text-primary justify-content-end flex-grow-1 pe-3">
-                <li className="nav-item" data-bs-dismiss="offcanvas">
+                {/* <li className="nav-item" data-bs-dismiss="offcanvas">
                   <p className="nav-link" aria-current="page">{user.user_type}</p>
-                </li>
+                </li> */}
                 <li className="nav-item dropdown-center">
                   <a className="nav-link dropdown-toggle" href="/profileSettings" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Job Offers
@@ -149,9 +147,7 @@ const Navbar: React.FC<NavbarProps> = ({setGlobalAlertError}) =>{
                 <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to='/' className="nav-link" aria-current="page">Home</Link>
                 </li>
-                <li className="nav-item" data-bs-dismiss="offcanvas">
-                  <Link to='/example' className="nav-link">Example</Link>
-                </li>
+                
                 <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to={`/company/profile/${user.username}/`} className="nav-link" aria-current="page">Profile</Link>
                 </li>
@@ -185,9 +181,7 @@ const Navbar: React.FC<NavbarProps> = ({setGlobalAlertError}) =>{
               // not logged in
               ) : (
               <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li className="nav-item" data-bs-dismiss="offcanvas">
-                  <Link to='/example' className="nav-link">Example</Link>
-                </li>
+                
                 <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to='/login' className="nav-link">Log In</Link>
                 </li>

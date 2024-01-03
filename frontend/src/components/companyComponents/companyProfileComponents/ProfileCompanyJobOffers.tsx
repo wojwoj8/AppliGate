@@ -80,7 +80,7 @@ const ProfileCompanyJobOffers: React.FC<ProfileCompanyJobOffersData> = ({usernam
   return (
     <div className='container-fluid'>
         
-      <h1>Listed Job Offers </h1>
+      <h1 className='text-center'>Listed Job Offers </h1>
       {jobOffers && jobOffers.length ? (<ul>
         {jobOffers.map((jobOffer) => (
             // <Link to={`/company/joboffer/${jobOffer.id}`} key={jobOffer.id} style={{textDecoration:"none"}}>

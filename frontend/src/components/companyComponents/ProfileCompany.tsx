@@ -145,24 +145,9 @@ export interface ProfileCompanyMainData{
   
       // Data for all components
       const [profileMain, setProfileMain] = useState<ProfileCompanyMainData | null>(null);
-      const [contact, setContact] = useState<ContactData| null>(null);
-      const [experience, setExperience] = useState<ExperienceData[]>([]);
-      const [education, setEducation] = useState<EducationData[]>([]);
-      const [course, setCourse] = useState<CourseData[]>([]);
-      const [language, setLanguage] = useState<LanguageData[]>([]);
-      const [link, setLink] = useState<LinkData[]>([]);
-      const [skill, setSkill] = useState<SkillData[]>([]);
-      const [about, setAbout] = useState<AboutData | null>(null);
-      const [summary, setSummary] = useState<SummaryData | null>(null);
+
       const [profileStatus, setProfileStatus] = useState<ProfileStatusData | null>(null)
-  
-      // Where is only one data in component (only contact data etc.)
-      const [singleCourse, setSingleCourse] = useState<CourseData | null>(null);
-      const [singleExperience, setSingleExperience] = useState<ExperienceData | null>(null);
-      const [singleEducation, setSingleEducation] = useState<EducationData | null>(null);
-      const [singleLanguage, setSingleLanguage] = useState<LanguageData | null>(null);
-      const [singleLink, setSingleLink] = useState<LinkData | null>(null);
-      const [singleSkill, setSingleSkill] = useState<SkillData | null>(null);
+
       
   
       // Authtoken for CRUD and user for username and logout
@@ -170,21 +155,7 @@ export interface ProfileCompanyMainData{
   
       // To chech if given form is in edit state
       const [editPersonal, setEditPersonal] = useState(false);
-      const [editContact, setEditContact] = useState(false);
-      const [editExperience, setEditExperience] = useState(false);
-      const [editMultipleExperiences, setEditMultipleExperiences] = useState<boolean[]>([]);
-      const [editEducation, setEditEducation] = useState(false);
-      const [editMultipleEducations, setEditMultipleEducations] = useState<boolean[]>([]);
-      const [editCourse, setEditCourse] = useState(false);
-      const [editMultipleCourses, setEditMultipleCourses] = useState<boolean[]>([]);
-      const [editLanguage, setEditLanguage] = useState(false);
-      const [editMultipleLanguages, setEditMultipleLanguages] = useState<boolean[]>([]);
-      const [editLink, setEditLink] = useState(false);
-      const [editMultipleLinks, setEditMultipleLinks] = useState<boolean[]>([]);
-      const [editAbout, setEditAbout] = useState(false);
-      const [editSkill, setEditSkill] = useState(false);
-      const [editSummary, setEditSummary] = useState(false);
-      
+
       // All errors for all fields
       const [multipleErrors, setMultipleErrors] = useState<MultipleErrorResponse>(initialMultipleErrors)
   
@@ -607,16 +578,7 @@ export interface ProfileCompanyMainData{
         };
         
         await fetchDataAndUpdateProgress(setProfileMain, `/company/profile/`);
-        
-        // await fetchDataAndUpdateProgress(setContact, `/profile/contact`);
-        // await fetchDataAndUpdateProgress(setSummary, `/profile/summary`);
-        // await fetchDataAndUpdateProgress(setExperience, `/profile/experience`);
-        // await fetchDataAndUpdateProgress(setEducation, `/profile/education`);
-        // await fetchDataAndUpdateProgress(setCourse, `/profile/course`);
-        // await fetchDataAndUpdateProgress(setLanguage, `/profile/language`);
-        // await fetchDataAndUpdateProgress(setSkill, `/profile/skill`);
-        // await fetchDataAndUpdateProgress(setAbout, `/profile/about`);
-        // await fetchDataAndUpdateProgress(setLink, `/profile/link`);
+
         await fetchDataAndUpdateProgress(setProfileStatus, `/profile/profileStatus`);
         
         

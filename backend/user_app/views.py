@@ -533,7 +533,8 @@ class BaseProfileView(
         return Response(serializer.errors, status=400)
 
     def delete(self, request, *args, **kwargs):
-        self.check_username_permission()(request)
+        # print(request)
+        # self.check_username_permission()(request)
         pk = kwargs.get("pk")
 
         try:

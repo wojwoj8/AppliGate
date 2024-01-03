@@ -220,16 +220,18 @@ class MyJobOffersListingView(generics.ListAPIView):
 
     def get_queryset(self):
         return JobOffer.objects.filter(company=self.request.user).order_by(
-            "-job_published_at"
+            "job_published_at"
         )
-
+    
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         if "username" in kwargs:
             user = get_object_or_404(User, username=kwargs.get("username"))
             # print(kwargs.get("username"))
-            queryset = JobOffer.objects.filter(company=user, job_offer_status=True)[:3]
+            queryset = JobOffer.objects.filter(company=user, job_offer_status=True).order_by("-job_published_at")[:3]
+            
             job_offers = list(queryset)
+            print(job_offers)
             serializer = self.serializer_class(job_offers, many=True)
             data = serializer.data
             for job_offer_data in data:

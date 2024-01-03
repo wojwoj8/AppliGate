@@ -174,7 +174,6 @@ const ProfileSettingsUsername: React.FC<ProfileSettingsProps> = ({ setAlertError
                 if (axiosError.response?.data) {
                     handleMultipleErrors(`${errorField}`, index, axiosError.response?.data)
                 }
-              // console.error('Error fetching profile:', error);
             }
           }
     }

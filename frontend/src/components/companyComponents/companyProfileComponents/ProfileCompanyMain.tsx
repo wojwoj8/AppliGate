@@ -195,7 +195,7 @@ setPersonal, setAlertError, alertError, username}) => {
     return(
         <div className='container shadow-lg rounded-2 text-break'>
                     <div className='bg-black row mb-1 rounded-top-2 '>
-                        <p className='fs-3 fw-semibold text-white col mb-1'>Personal Data</p>
+                        <p className='fs-3 fw-semibold text-white col mb-1'>Company Data</p>
                         <div className='col-auto d-flex align-items-center previewHidden'>
                             <div className='profile-svgs d-flex my-1' onClick={editProfile}>
                                 <Icon className='text-white' path={mdiPencil} size={1.25} />

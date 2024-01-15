@@ -62,7 +62,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           });
       
           let data = response.data;
-          console.log(data)
+          // console.log(data)
           if (response.status === 200) {
             localStorage.setItem('authTokens', JSON.stringify(data));
             setAuthTokens(data);

@@ -21,27 +21,27 @@ hex_color_validator = RegexValidator(
 
 # Create your models here.
 # For profile part
-class CompanyProfileMain(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+# class CompanyProfileMain(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 # For job offer part
 class JobOffer(models.Model):
     # can get other models data as foreign key
-    def get_skills(self):
-        return self.jobofferskill_set.all()
+    # def get_skills(self):
+    #     return self.jobofferskill_set.all()
 
-    def get_responsibilities(self):
-        return self.jobofferresponsibility_set.all()
+    # def get_responsibilities(self):
+    #     return self.jobofferresponsibility_set.all()
 
-    def get_requirements(self):
-        return self.jobofferrequirement_set.all()
+    # def get_requirements(self):
+    #     return self.jobofferrequirement_set.all()
 
-    def get_what_we_offer(self):
-        return self.jobofferwhatweoffer_set.all()
+    # def get_what_we_offer(self):
+    #     return self.jobofferwhatweoffer_set.all()
 
-    def get_applications(self):
-        return self.jobofferapplication_set.all()
+    # def get_applications(self):
+    #     return self.jobofferapplication_set.all()
 
     # only company user can create joboffer
     company = models.ForeignKey(

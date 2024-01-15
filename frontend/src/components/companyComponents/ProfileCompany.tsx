@@ -541,8 +541,6 @@ export interface ProfileCompanyMainData{
             if (preview){
               preview.remove();
             }
-            
-           
           }
       }
       return null;

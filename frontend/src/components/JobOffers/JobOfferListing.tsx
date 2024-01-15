@@ -137,26 +137,19 @@ const JobOfferListing: React.FC = () => {
   }
   return (
     <>
-    
-    <div className='container-fluid'>
-        
-      <h1>All Job offers</h1>
-      {jobOffers && jobOffers.length ? (<>
-        {jobOffers.map((jobOffer) => (
-            
-            <JobOfferListingItem key={jobOffer.id}  jobOffer={jobOffer} />
-
-        ))}
-      </>)
-      : (
-        <div>
-            <h2>There is no active job offer :(</h2>
-        </div>
-      )}
-      
-      
-    </div>
-    
+      <div className='container-fluid'>
+        <h1 className='text-center'>All Job offers</h1>
+        {jobOffers && jobOffers.length ? (<>
+          {jobOffers.map((jobOffer) => ( 
+              <JobOfferListingItem key={jobOffer.id}  jobOffer={jobOffer} />
+          ))}
+        </>)
+        : (
+          <div>
+              <h2 className='text-center'>There is no active job offer :(</h2>
+          </div>
+        )}
+      </div>
       <Pagination data={data} page={page} url={'/jobofferlistings/'}/>
     </>
   );

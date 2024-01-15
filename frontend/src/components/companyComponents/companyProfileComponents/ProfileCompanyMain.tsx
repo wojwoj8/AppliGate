@@ -81,7 +81,7 @@ setPersonal, setAlertError, alertError, username}) => {
         // Automatically submit the image when a file is selected
         if (selectedBackgroundFile) {
             // console.log('file has been selected')
-            const maxSize = 10000 * 1024; // 1000KB in bytes
+            const maxSize = 10000 * 1024; // 10000KB in bytes
             if (selectedBackgroundFile.size >= maxSize) {
               setAlertError("File size exceeds 10000KB limit");
             //   console.log("File size exceeds 500KB limit.")

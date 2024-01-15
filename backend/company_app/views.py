@@ -66,21 +66,17 @@ from django.db.models import F, Max, Case, When, Value
 from django.db import models
 
 
-class JobOfferAssessView(generics.GenericAPIView,
-                         mixins.UpdateModelMixin):
+class JobOfferAssessView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = JobOfferAssessSerializer
 
     def put(self, request, *args, **kwargs):
+        
         offer_id = self.kwargs.get('offer_id')
         username = self.kwargs.get('username')
-        status = request.data.get('status')
         user = request.user
-
-        
+   
         job_offer = get_object_or_404(JobApplication, job_offer=offer_id, job_offer__company=user ,applicant__username=username)
-        if not job_offer:
-            raise PermissionDenied("That application does not exist.")
 
         serializer = self.serializer_class(job_offer, data=request.data)
         if serializer.is_valid():
@@ -136,16 +132,16 @@ class JobOfferListingView(generics.ListAPIView):
         now = datetime.now().date()
 
         return JobOffer.objects.filter(
-            job_application_deadline__gte=now,
+            job_application_deadline__gt=now,
             job_offer_status=True,
             company__public_profile=True,
         ).order_by("-job_published_at")
-
+    
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         self.pagination_class.page_size = 3
         page = self.paginate_queryset(queryset)
-
+        
         if page is not None:
             serializer = self.serializer_class(page, many=True)
 
@@ -231,7 +227,7 @@ class MyJobOffersListingView(generics.ListAPIView):
             queryset = JobOffer.objects.filter(company=user, job_offer_status=True).order_by("-job_published_at")[:3]
             
             job_offers = list(queryset)
-            print(job_offers)
+            # print(job_offers)
             serializer = self.serializer_class(job_offers, many=True)
             data = serializer.data
             for job_offer_data in data:

@@ -46,7 +46,7 @@ const Index: React.FC = () =>{
     
           const data = response.data;
           if (response.status === 200) {
-            console.log(authTokens)
+            
             setProfile(data);
           }
         } catch (error: any) {
@@ -161,7 +161,7 @@ const Index: React.FC = () =>{
                     </p>
                   </div>
                   <div className="card-footer">
-                    <Link to={`/profile/${profile?.username}/`} className="btn btn-primary btn-block w-100">Create/Edit Your Profile</Link>
+                    <Link to={`/company/profile/${profile?.username}/`} className="btn btn-primary btn-block w-100">Create/Edit Your Profile</Link>
                   </div>
                 </div>
               </div>

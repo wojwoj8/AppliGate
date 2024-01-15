@@ -173,6 +173,7 @@ const JobOfferStatus: React.FC<ProfileCompanyStatusInterface> = ({jobOfferStatus
         const currentDate = new Date();
     
         const timeDifference = (deadlineDate as any) - (currentDate as any);
+        // console.log(deadlineDate)
         if (timeDifference < 0){
             return(
                 <>

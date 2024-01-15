@@ -30,9 +30,7 @@ const ProfileAlert: React.FC<Alert> = ({ error, setError }) => {
   const errFinalMessage = errMessage.join(' ')
   useEffect(() => {
     if (error) {
-      // errMessage.pop()
-      // errMessage.join(' ')
-      // console.log(errMessage)
+
       setShow(true);
       const timer = setTimeout(() => {
         setShow(false);

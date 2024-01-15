@@ -286,11 +286,7 @@ const Profile: React.FC<ProfileProps> = ({setGlobalAlertError}) =>{
             if (setData) {
                 setData(response.data);
               }
-            const data = response.data;
-            // console.log(data)
-
-            if(response.status === 200){
-            }
+            
         }catch(error: any){
             const axiosError = error as AxiosError<ErrorResponse>;
             if (error.response && error.response.status === 401) {
@@ -326,9 +322,7 @@ const Profile: React.FC<ProfileProps> = ({setGlobalAlertError}) =>{
       endpoint: string,
       errorField: string,
       index: number = 0,
-
     ) =>{
-      
       try{
           const response = await axios.put(`${endpoint}/${username}`, state,  {
               headers: {
@@ -496,7 +490,6 @@ const Profile: React.FC<ProfileProps> = ({setGlobalAlertError}) =>{
                 Authorization: 'Bearer ' + String(authTokens.access),
               },
             });
-            // set editFields to false => set state of that form to closed
             if (editField){
             editField((prevEditExperiences) => {
               const newEditExperiences = [...prevEditExperiences];
@@ -617,21 +610,19 @@ const Profile: React.FC<ProfileProps> = ({setGlobalAlertError}) =>{
     const fetchData = async () => {
       setError(null);
       setIsLoading(true);
-
       const steps = 11; // Total number of steps for loading bar
       let completedSteps = 0;
-
       const updateProgress = (completedSteps: number) => {
         completedSteps++;
         const newProgress = (completedSteps / steps) * 100;
         setProgress(newProgress);
       };
-
       const fetchDataAndUpdateProgress = async (setter: GetDataFunction, endpoint: string) => {
         await getData(setter, endpoint);
         completedSteps++;
         updateProgress(completedSteps);
       };
+      // profile in asess mode
       if (jobOffer && jobOffer.id){
         await fetchDataAndUpdateProgress(setProfile, `/joboffer/profile/`);
         await fetchDataAndUpdateProgress(setContact, `/joboffer/profile/contact`);
@@ -657,15 +648,9 @@ const Profile: React.FC<ProfileProps> = ({setGlobalAlertError}) =>{
         await fetchDataAndUpdateProgress(setLink, `/profile/link`);
         await fetchDataAndUpdateProgress(setProfileStatus, `/profile/profileStatus`);
       }
-      
-     
-      
-      
       setIsLoading(false);
-      
     };
     fetchData(); // Execute the data fetching function
-    
   }, [username]);
 
   // works like useEffect but after rendering
@@ -715,7 +700,7 @@ const Profile: React.FC<ProfileProps> = ({setGlobalAlertError}) =>{
                 getData={getData}
                 setEditPersonal={setEditPersonal}
                 editPersonal={editPersonal}
-                multipleErrors={multipleErrors}                                             
+                multipleErrors={multipleErrors}
                 removeMultipleErrors={removeMultipleErrors}
                 renderFieldErrorMultiple={renderFieldErrorMultiple}
                 alertError={alertError}
